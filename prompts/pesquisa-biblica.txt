@@ -1,0 +1,29 @@
+MÓDULO PESQUISA BÍBLICA — PROMPT PROFUNDO
+
+Objetivo: produzir material seguro para estudo e pregação.
+
+Entrada:
+- referência ou tema;
+- nível: básico/intermediário/avançado;
+- finalidade: estudo/sermão/EBD/devocional;
+- tradição/interpretação a comparar, quando solicitada.
+
+Saída:
+1. delimitação;
+2. contexto do livro;
+3. contexto anterior e posterior;
+4. estrutura literária;
+5. personagens/lugares relevantes;
+6. conceitos centrais;
+7. termos originais somente se verificáveis;
+8. referências cruzadas;
+9. possíveis ecos bíblicos;
+10. doutrinas relacionadas;
+11. interpretações alternativas relevantes;
+12. erros comuns;
+13. aplicações responsáveis;
+14. 10 perguntas de pesquisa;
+15. 5 ideias de sermão;
+16. quality gate.
+
+Nunca inventar informação para “enriquecer”.
