@@ -11,12 +11,6 @@
   "openrouter": [
     "openrouter/auto"
   ],
-  "mistral": [
-    "mistral-small-latest"
-  ],
-  "github": [
-    "openai/gpt-4.1-mini"
-  ],
   "huggingface": [
     "Qwen/Qwen2.5-7B-Instruct",
     "meta-llama/Llama-3.1-8B-Instruct",

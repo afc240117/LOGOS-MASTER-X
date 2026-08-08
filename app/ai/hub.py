@@ -1,10 +1,14 @@
 import importlib,os,time
-PROVIDERS={"gemini":"app.ai.providers.gemini","groq":"app.ai.providers.groq","openrouter":"app.ai.providers.openrouter","mistral":"app.ai.providers.mistral","github":"app.ai.providers.github_models","huggingface":"app.ai.providers.huggingface","openai":"app.ai.providers.openai"}
-KEYS={"gemini":"GEMINI_API_KEY","groq":"GROQ_API_KEY","openrouter":"OPENROUTER_API_KEY","mistral":"MISTRAL_API_KEY","github":"GITHUB_MODELS_TOKEN","huggingface":"HUGGINGFACE_API_KEY","openai":"OPENAI_API_KEY"}
-ORDERS={"economico":["gemini","groq","openrouter","github","huggingface","mistral","openai"],"automatico":["gemini","groq","openrouter","mistral","github","huggingface","openai"],"qualidade":["openai","gemini","groq","openrouter","mistral","github","huggingface"]}
+PROVIDERS={"gemini":"app.ai.providers.gemini","groq":"app.ai.providers.groq","openrouter":"app.ai.providers.openrouter","huggingface":"app.ai.providers.huggingface","openai":"app.ai.providers.openai"}
+KEYS={"gemini":"GEMINI_API_KEY","groq":"GROQ_API_KEY","openrouter":"OPENROUTER_API_KEY","huggingface":"HUGGINGFACE_API_KEY","openai":"OPENAI_API_KEY"}
+ORDERS={
+"economico":["gemini","groq","openrouter","huggingface","openai"],
+"automatico":["gemini","groq","openrouter","huggingface","openai"],
+"qualidade":["openai","gemini","groq","openrouter","huggingface"]
+}
 class AIHub:
  def configured(self): return {p:bool(os.getenv(k)) for p,k in KEYS.items()}
- def models(self): return {"openai":os.getenv("OPENAI_MODEL","gpt-5-mini"),"gemini":os.getenv("GEMINI_MODEL","gemini-2.5-flash"),"groq":os.getenv("GROQ_MODEL","llama-3.3-70b-versatile"),"openrouter":os.getenv("OPENROUTER_MODEL","openrouter/auto"),"mistral":os.getenv("MISTRAL_MODEL","mistral-small-latest"),"github":os.getenv("GITHUB_MODEL","openai/gpt-4.1-mini"),"huggingface":os.getenv("HUGGINGFACE_DEFAULT_MODEL") or os.getenv("HUGGINGFACE_MODEL","Qwen/Qwen2.5-7B-Instruct")}
+ def models(self): return {"openai":os.getenv("OPENAI_MODEL","gpt-5-mini"),"gemini":os.getenv("GEMINI_MODEL","gemini-2.5-flash"),"groq":os.getenv("GROQ_MODEL","llama-3.3-70b-versatile"),"openrouter":os.getenv("OPENROUTER_MODEL","openrouter/auto"),"huggingface":os.getenv("HUGGINGFACE_DEFAULT_MODEL") or os.getenv("HUGGINGFACE_MODEL","Qwen/Qwen2.5-7B-Instruct")}
  def order(self,mode="automatico"):
   raw=os.getenv("LOGOS_AI_ORDER","").strip() if mode=="automatico" else ""
   return [x.strip().lower() for x in raw.split(",") if x.strip() and x.strip().lower() in PROVIDERS] if raw else ORDERS.get(mode,ORDERS["automatico"])
