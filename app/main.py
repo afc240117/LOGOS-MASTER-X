@@ -27,6 +27,15 @@ def prompt_preview(r:Generate):
  p=PROMPTS.build(robj(r));return {"prompt":p,"characters":len(p)}
 @app.post("/api/quality")
 def quality(b:dict):return evaluate(str(b.get("text","")),str(b.get("mode","SERMÃO")))
+
+@app.post("/api/provider-test/{provider}")
+def provider_test(provider:str):
+ try:
+  out=AI.generate("Responda somente: LOGOS OK", "Teste técnico de conectividade. Seja breve.", provider=provider, mode="manual", max_tokens=80)
+  return {"ok":True,"provider":out["provider"],"model":out["model"],"seconds":out["seconds"],"preview":out["text"][:180]}
+ except Exception as e:
+  raise HTTPException(502,detail=str(e))
+
 @app.post("/api/generate-ai")
 def generate(r:Generate):
  try:

@@ -10,7 +10,7 @@ const Store={
 };
 const P=window.LOGOS_PROMPTS||{};
 const DEFAULT_API="https://logos-master-x-api.onrender.com";
-const App={view:"dashboard",server:false,api:Store.get("api",DEFAULT_API),currentText:"",timer:null,timerStart:0,timerSeconds:0};
+const App={view:"dashboard",server:false,api:Store.get("api",DEFAULT_API),provider:Store.get("aiProvider","auto"),aiMode:Store.get("aiMode","automatico"),model:Store.get("aiModel",""),health:null,currentText:"",timer:null,timerStart:0,timerSeconds:0};
 
 const commands=["ESTUDAR","CONTEXTO","EXEGESE","HERMENÊUTICA","ESBOÇO","SERMÃO","SÉRIE","REVISAR","APLICAR","ILUSTRAR","CONCLUIR","ORAÇÃO","DEVOCIONAL","AULA"];
 
@@ -228,10 +228,13 @@ async function runCommand(cmd,d){
        audience:d.audience,
        intensity:d.intensity,
        objective:d.objective||"",
-       notes:d.notes||""
+       notes:d.notes||"",
+       provider:App.provider||"auto",
+       ai_mode:App.aiMode||"automatico",
+       model:App.model||null
      })});
      const j=await r.json(); if(!r.ok) throw new Error(j.detail||"Erro");
-     return {text:j.text||JSON.stringify(j,null,2),engine:j.engine||"api",prompt};
+     return {text:j.text||JSON.stringify(j,null,2),engine:j.engine||"api",prompt,provider:j.provider||"",model:j.model||"",seconds:j.seconds,quality:j.quality||null,fallback_errors:j.fallback_errors||[]};
    }catch(e){App.server=false;setStatus(); return {text:localPipeline(cmd,d)+"\n\n[API indisponível; modo local ativado.]",engine:"local",prompt};}
  }
  return {text:localPipeline(cmd,d),engine:"local",prompt};
@@ -239,11 +242,23 @@ async function runCommand(cmd,d){
 function saveMaterial(type,title,text,meta={}){return Store.push("library",{id:Date.now(),type,title:title||"Sem título",text,meta,created:new Date().toISOString()})}
 
 async function checkApi(){
- if(!App.api){App.server=false;setStatus();return}
- try{const c=new AbortController();setTimeout(()=>c.abort(),1800);const r=await fetch(App.api.replace(/\/$/,"")+"/api/health",{signal:c.signal,cache:"no-store"});App.server=r.ok}catch{App.server=false}
+ if(!App.api){App.server=false;App.health=null;setStatus();return}
+ try{
+   const c=new AbortController();setTimeout(()=>c.abort(),2500);
+   const r=await fetch(App.api.replace(/\/$/,"")+"/api/health",{signal:c.signal,cache:"no-store"});
+   App.server=r.ok;
+   App.health=r.ok?await r.json():null;
+ }catch{App.server=false;App.health=null}
  setStatus();
 }
-function setStatus(){const e=$("#status");if(!e)return;e.textContent=App.server?"ONLINE / API ✅":"LOCAL / OFFLINE ✅";e.className="status "+(App.server?"online":"")}
+function setStatus(){const e=$("#status");if(!e)return;
+ if(App.server){
+   const ps=App.health?.providers||{};
+   const n=Object.values(ps).filter(Boolean).length;
+   e.textContent=`ONLINE / IA ${n} provedor${n===1?"":"es"} ✅`;
+   e.className="status online";
+ }else{e.textContent="LOCAL / OFFLINE ✅";e.className="status "}
+}
 
 function form(){
  return `<div class="two">
@@ -267,6 +282,7 @@ const views={
  <div class="card"><h3>🔥 DNA K7</h3><p class="muted">Progressão homilética, intensidade e laboratório de transcrições.</p><button class="btn primary" data-go="k7">Abrir</button></div>
  <div class="card"><h3>📚 Biblioteca</h3><p class="muted">${lib.length} materiais locais.</p><button class="btn secondary" data-go="library">Abrir</button></div>
  <div class="card"><h3>📂 Projetos</h3><p class="muted">${proj.length} projetos salvos.</p><button class="btn secondary" data-go="projects">Abrir</button></div>
+ <div class="card"><h3>🤖 AI HUB</h3><p class="muted">Provedores, modelos, prioridade e fallback.</p><button class="btn primary" data-go="aihub">Abrir</button></div>
  <div class="card"><h3>⚙️ Sistema</h3><p class="muted">Configuração API, backup e dados locais.</p><button class="btn secondary" data-go="settings">Abrir</button></div>
  </div>`},
  studio(){return `<h2>🎛️ LOGOS STUDIO</h2>${form()}<label>Comando</label><select id="cmd">${commands.map(c=>`<option>${c}</option>`).join("")}</select>
@@ -288,16 +304,44 @@ const views={
  <div class="row"><button class="btn primary" id="edSave">Salvar</button><button class="btn secondary" id="edLib">Enviar à Biblioteca</button><button class="btn secondary" id="edTxt">TXT</button><button class="btn secondary" id="edMd">Markdown</button><button class="btn secondary" id="edDoc">Word (.doc)</button><button class="btn secondary" id="edPdf">Imprimir/PDF</button></div>`},
  pulpit(){return `<h2>🎙️ Modo Púlpito</h2><div class="timer" id="timer">00:00</div><div class="row"><button class="btn primary" id="tStart">Iniciar</button><button class="btn secondary" id="tPause">Pausar</button><button class="btn danger" id="tReset">Zerar</button></div><label>Anotações de púlpito</label><textarea id="pText" rows="18" placeholder="Cole aqui a versão de púlpito..."></textarea>`},
  backup(){return `<h2>💾 Backup</h2><p class="muted">Exporta/restaura todos os dados locais do LOGOS neste navegador.</p><div class="row"><button class="btn primary" id="bkExport">Exportar JSON</button><input type="file" id="bkFile" accept=".json"><button class="btn secondary" id="bkImport">Restaurar</button></div><div id="bkOut" class="output">Pronto.</div>`},
- settings(){return `<h2>⚙️ Configurações</h2><label>URL da API (opcional)</label><input id="api" value="${escapeHtml(App.api)}" placeholder="https://seu-backend.onrender.com"><div class="row"><button class="btn primary" id="apiSave">Salvar/Testar</button><button class="btn secondary" id="apiOff">Usar somente local</button></div><div class="output">Modo atual: ${App.server?"ONLINE/API":"LOCAL/OFFLINE"}.
+ aihub(){const p=App.health?.providers||{},m=App.health?.models||{},orders=App.health?.orders||{};const names=[["gemini","Gemini"],["groq","Groq"],["openrouter","OpenRouter"],["mistral","Mistral"],["github","GitHub Models"],["huggingface","Hugging Face"],["openai","OpenAI"]];return `<h2>🤖 LOGOS AI HUB</h2>
+<p class="muted">As chaves ficam somente no Render. O navegador recebe apenas status e nomes dos modelos.</p>
+<div class="grid">${names.map(([k,n])=>`<div class="card"><h3>${p[k]?"🟢":"⚪"} ${n}</h3><p class="muted">${escapeHtml(m[k]||"—")}</p><button class="btn secondary" data-provider-test="${k}" ${p[k]?"":"disabled"}>Testar</button></div>`).join("")}</div>
+<div class="two">
+<div><label>Modo do roteador</label><select id="hubMode">
+<option value="economico" ${App.aiMode==="economico"?"selected":""}>Econômico</option>
+<option value="automatico" ${App.aiMode==="automatico"?"selected":""}>Automático</option>
+<option value="qualidade" ${App.aiMode==="qualidade"?"selected":""}>Qualidade</option>
+<option value="manual" ${App.aiMode==="manual"?"selected":""}>Manual</option>
+</select></div>
+<div><label>Provedor</label><select id="hubProvider"><option value="auto">Automático</option>${names.map(([k,n])=>`<option value="${k}" ${App.provider===k?"selected":""}>${n} ${p[k]?"✅":"—"}</option>`).join("")}</select></div>
+</div>
+<label>Modelo manual (opcional)</label><input id="hubModel" value="${escapeHtml(App.model||"")}" placeholder="Deixe vazio para usar o modelo padrão do servidor">
+<div class="row"><button class="btn primary" id="hubSave">Salvar</button><button class="btn secondary" id="hubRefresh">Atualizar status</button></div>
+<div class="output" id="hubOut">Econômico: ${(orders.economico||[]).join(" → ")||"—"}
+Automático: ${(orders.automatico||[]).join(" → ")||"—"}
+Qualidade: ${(orders.qualidade||[]).join(" → ")||"—"}</div>`},
+ settings(){const p=App.health?.providers||{},m=App.health?.models||{};return `<h2>⚙️ Configurações</h2>
+<label>URL da API</label><input id="api" value="${escapeHtml(App.api)}" placeholder="https://seu-backend.onrender.com">
+<div class="row"><button class="btn primary" id="apiSave">Salvar/Testar</button><button class="btn secondary" id="apiOff">Usar somente local</button><button class="btn secondary" data-go="aihub">Abrir AI HUB</button></div>
+<div class="output">Modo: ${App.server?"ONLINE/API":"LOCAL/OFFLINE"}
+Versão: ${App.health?.version||"—"}
+Prompt Engine: ${App.health?.prompt_engine||"—"}
+Think Engine: ${App.health?.think_engine||"—"}
+DNA K7: ${App.health?.dna_k7||"—"}
 
-A chave da IA nunca deve ficar no HTML. Ela fica somente no servidor como variável de ambiente.</div>`}
+${Object.entries(p).map(([k,v])=>`${v?"🟢":"⚪"} ${k}: ${m[k]||"—"}`).join("\\n")}
+
+As chaves secretas ficam somente no Render.</div>`}
 };
 
 async function render(view){
  App.view=view; $$(".nav button").forEach(b=>b.classList.toggle("active",b.dataset.view===view)); $("#workspace").innerHTML=views[view]?views[view]():"<h2>Módulo</h2>";
  $$("[data-go]").forEach(b=>b.onclick=()=>render(b.dataset.go));
  if(view==="studio"){let last="";
-   $("#run").onclick=async()=>{const d=fd();if(!d.text)return alert("Informe texto/tema.");$("#out").textContent="Processando...";const r=await runCommand($("#cmd").value,d);last=r.text;$("#out").textContent=`[${r.engine.toUpperCase()}]\n\n${r.text}`;Store.push("history",{id:Date.now(),cmd:$("#cmd").value,input:d,engine:r.engine,created:new Date().toISOString()});};
+   $("#run").onclick=async()=>{const d=fd();if(!d.text)return alert("Informe texto/tema.");$("#out").textContent="Processando...";const r=await runCommand($("#cmd").value,d);last=r.text;const meta=[r.provider&&`IA: ${r.provider}`,r.model&&`Modelo: ${r.model}`,r.seconds!=null&&`Tempo: ${r.seconds}s`,r.quality&&`Quality Gate: ${r.quality.score}%`].filter(Boolean).join(" • ");
+   $("#out").textContent=`[${r.engine.toUpperCase()}]${meta?"\n"+meta:""}\n\n${r.text}`;
+   Store.push("history",{id:Date.now(),cmd:$("#cmd").value,input:d,engine:r.engine,provider:r.provider,model:r.model,seconds:r.seconds,quality:r.quality,created:new Date().toISOString()});};
    $("#chat").onclick=async()=>{const d=fd();if(!d.text)return alert("Informe texto/tema.");const p=masterPrompt($("#cmd").value,d);Store.set("lastPrompt",p);await copy(p);location.href="https://chatgpt.com/";};
    $("#save").onclick=()=>{const t=$("#out").textContent;if(!t||t==="Pronto.")return;saveMaterial($("#cmd").value,fd().text,t,fd());alert("Salvo.");};
    $("#project").onclick=()=>{const d=fd();Store.push("projects",{id:Date.now(),name:d.text||"Projeto",command:$("#cmd").value,data:d,result:$("#out").textContent,created:new Date().toISOString()});alert("Projeto salvo.");};
@@ -318,7 +362,12 @@ Leitura: esta análise identifica sinais lexicais simples; a interpretação hom
  if(view==="editor"){ $("#edSave").onclick=()=>{Store.set("editor",{title:$("#edTitle").value,text:$("#edText").value});alert("Salvo localmente.");};$("#edLib").onclick=()=>{saveMaterial("editor",$("#edTitle").value,$("#edText").value);alert("Enviado.");};$("#edTxt").onclick=()=>download(($("#edTitle").value||"sermao")+".txt",$("#edText").value);$("#edMd").onclick=()=>download(($("#edTitle").value||"sermao")+".md",`# ${$("#edTitle").value}\n\n${$("#edText").value}`,"text/markdown");$("#edDoc").onclick=()=>{const html=`<html><meta charset="utf-8"><body><h1>${escapeHtml($("#edTitle").value)}</h1><div style="white-space:pre-wrap">${escapeHtml($("#edText").value)}</div></body></html>`;download(($("#edTitle").value||"sermao")+".doc",html,"application/msword");};$("#edPdf").onclick=()=>{const w=window.open("","_blank");w.document.write(`<html><head><title>${escapeHtml($("#edTitle").value)}</title><style>body{font-family:Arial;padding:40px;white-space:pre-wrap}</style></head><body><h1>${escapeHtml($("#edTitle").value)}</h1>${escapeHtml($("#edText").value)}</body></html>`);w.document.close();w.print();};}
  if(view==="pulpit"){const update=()=>{const s=App.timerSeconds+(App.timerStart?Math.floor((Date.now()-App.timerStart)/1000):0);$("#timer").textContent=`${String(Math.floor(s/60)).padStart(2,"0")}:${String(s%60).padStart(2,"0")}`};$("#tStart").onclick=()=>{if(!App.timerStart)App.timerStart=Date.now();clearInterval(App.timer);App.timer=setInterval(update,500)};$("#tPause").onclick=()=>{if(App.timerStart){App.timerSeconds+=Math.floor((Date.now()-App.timerStart)/1000);App.timerStart=0}clearInterval(App.timer);update()};$("#tReset").onclick=()=>{clearInterval(App.timer);App.timerStart=0;App.timerSeconds=0;update()};}
  if(view==="backup"){$("#bkExport").onclick=()=>download("logos-master-x-backup.json",JSON.stringify({version:1,created:new Date().toISOString(),data:Store.export()},null,2),"application/json");$("#bkImport").onclick=async()=>{const f=$("#bkFile").files[0];if(!f)return alert("Escolha o backup.");try{const j=JSON.parse(await f.text());Store.import(j.data||j);$("#bkOut").textContent="Backup restaurado. Recarregue o aplicativo."; }catch(e){$("#bkOut").textContent="Erro: "+e.message}};}
- if(view==="settings"){ $("#apiSave").onclick=async()=>{App.api=$("#api").value.trim().replace(/\/$/,"");Store.set("api",App.api);await checkApi();render("settings")};$("#apiOff").onclick=()=>{App.api="";App.server=false;Store.set("api","");setStatus();render("settings")};}
+ if(view==="aihub"){
+   $("#hubSave").onclick=()=>{App.aiMode=$("#hubMode").value;App.provider=$("#hubProvider").value;App.model=$("#hubModel").value.trim();Store.set("aiMode",App.aiMode);Store.set("aiProvider",App.provider);Store.set("aiModel",App.model);$("#hubOut").textContent="Configuração salva neste dispositivo. Próximas gerações usarão esta preferência.";};
+   $("#hubRefresh").onclick=async()=>{await checkApi();render("aihub")};
+   $$("[data-provider-test]").forEach(b=>b.onclick=async()=>{const p=b.dataset.provider;b.disabled=true;const old=b.textContent;b.textContent="Testando...";try{const r=await fetch(App.api.replace(/\\/$/,"")+"/api/provider-test/"+p,{method:"POST"});const j=await r.json();$("#hubOut").textContent=r.ok?`✅ ${p}: ${j.model} • ${j.seconds}s\\n${j.preview||""}`:`❌ ${p}: ${j.detail||"falha"}`;}catch(e){$("#hubOut").textContent=`❌ ${p}: ${e.message}`;}finally{b.disabled=false;b.textContent=old;}});
+ }
+ if(view==="settings"){ $("#apiSave").onclick=async()=>{App.api=$("#api").value.trim().replace(/\/$/,"");App.provider=$("#aiProvider").value;Store.set("api",App.api);Store.set("aiProvider",App.provider);await checkApi();render("settings")};$("#apiOff").onclick=()=>{App.api="";App.server=false;App.health=null;Store.set("api","");setStatus();render("settings")};}
 }
 
 async function openDB(){return new Promise((res,rej)=>{const r=indexedDB.open("logosx-bible",1);r.onupgradeneeded=()=>{const db=r.result;if(!db.objectStoreNames.contains("verses")){const s=db.createObjectStore("verses",{keyPath:"id"});s.createIndex("ref","ref");}if(!db.objectStoreNames.contains("meta"))db.createObjectStore("meta",{keyPath:"key"});};r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)})}
