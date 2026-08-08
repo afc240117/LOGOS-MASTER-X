@@ -9,7 +9,8 @@ const Store={
  import(x){Object.entries(x||{}).forEach(([k,v])=>{if(k.startsWith(this.p))localStorage.setItem(k,v)})}
 };
 const P=window.LOGOS_PROMPTS||{};
-const App={view:"dashboard",server:false,api:Store.get("api",""),currentText:"",timer:null,timerStart:0,timerSeconds:0};
+const DEFAULT_API="https://logos-master-x-api.onrender.com";
+const App={view:"dashboard",server:false,api:Store.get("api",DEFAULT_API),currentText:"",timer:null,timerStart:0,timerSeconds:0};
 
 const commands=["ESTUDAR","CONTEXTO","EXEGESE","HERMENÊUTICA","ESBOÇO","SERMÃO","SÉRIE","REVISAR","APLICAR","ILUSTRAR","CONCLUIR","ORAÇÃO","DEVOCIONAL","AULA"];
 
@@ -218,7 +219,17 @@ async function runCommand(cmd,d){
  const prompt=masterPrompt(cmd,d); Store.set("lastPrompt",prompt);
  if(App.server){
    try{
-     const r=await fetch(App.api.replace(/\/$/,"")+"/api/generate-ai",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({mode:cmd.toLowerCase(),text:d.text,theme:d.objective||null,prompt})});
+     const r=await fetch(App.api.replace(/\/$/,"")+"/api/generate-ai",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({
+       mode:cmd,
+       text:d.text,
+       theme:"",
+       duration:d.duration,
+       cult:d.cult,
+       audience:d.audience,
+       intensity:d.intensity,
+       objective:d.objective||"",
+       notes:d.notes||""
+     })});
      const j=await r.json(); if(!r.ok) throw new Error(j.detail||"Erro");
      return {text:j.text||JSON.stringify(j,null,2),engine:j.engine||"api",prompt};
    }catch(e){App.server=false;setStatus(); return {text:localPipeline(cmd,d)+"\n\n[API indisponível; modo local ativado.]",engine:"local",prompt};}
@@ -259,7 +270,7 @@ const views={
  <div class="card"><h3>⚙️ Sistema</h3><p class="muted">Configuração API, backup e dados locais.</p><button class="btn secondary" data-go="settings">Abrir</button></div>
  </div>`},
  studio(){return `<h2>🎛️ LOGOS STUDIO</h2>${form()}<label>Comando</label><select id="cmd">${commands.map(c=>`<option>${c}</option>`).join("")}</select>
- <div class="row"><button class="btn primary" id="run">Executar</button><button class="btn success" id="chat">Preparar e abrir ChatGPT</button><button class="btn secondary" id="save">Salvar resultado</button><button class="btn secondary" id="project">Salvar projeto</button></div><div id="out" class="output">Pronto.</div>`},
+ <div class="row"><button class="btn primary" id="run">Gerar / Executar</button><button class="btn success" id="chat">Preparar e abrir ChatGPT</button><button class="btn secondary" id="save">Salvar resultado</button><button class="btn secondary" id="project">Salvar projeto</button></div><div id="out" class="output">Pronto.</div>`},
  bible(){return `<h2>📖 Bíblia Local</h2><p class="muted">Importe uma tradução cuja licença permita seu uso. O texto fica somente neste navegador.</p>
  <div class="row"><input type="file" id="bFile" accept=".json,.csv,.txt"><button class="btn primary" id="bImport">Importar Bíblia</button><button class="btn secondary" id="bMeta">Status</button></div>
  <label>Referência</label><input id="bRef" placeholder="João 3:16 ou Romanos 8"><div class="row"><button class="btn primary" id="bOpen">Abrir</button><button class="btn secondary" id="bSend">Enviar ao Studio</button></div>
@@ -286,7 +297,7 @@ async function render(view){
  App.view=view; $$(".nav button").forEach(b=>b.classList.toggle("active",b.dataset.view===view)); $("#workspace").innerHTML=views[view]?views[view]():"<h2>Módulo</h2>";
  $$("[data-go]").forEach(b=>b.onclick=()=>render(b.dataset.go));
  if(view==="studio"){let last="";
-   $("#run").onclick=async()=>{const d=fd();if(!d.text)return alert("Informe texto/tema.");$("#out").textContent="Processando...";const r=await runCommand($("#cmd").value,d);last=r.text;$("#out").textContent=r.text;Store.push("history",{id:Date.now(),cmd:$("#cmd").value,input:d,engine:r.engine,created:new Date().toISOString()});};
+   $("#run").onclick=async()=>{const d=fd();if(!d.text)return alert("Informe texto/tema.");$("#out").textContent="Processando...";const r=await runCommand($("#cmd").value,d);last=r.text;$("#out").textContent=`[${r.engine.toUpperCase()}]\n\n${r.text}`;Store.push("history",{id:Date.now(),cmd:$("#cmd").value,input:d,engine:r.engine,created:new Date().toISOString()});};
    $("#chat").onclick=async()=>{const d=fd();if(!d.text)return alert("Informe texto/tema.");const p=masterPrompt($("#cmd").value,d);Store.set("lastPrompt",p);await copy(p);location.href="https://chatgpt.com/";};
    $("#save").onclick=()=>{const t=$("#out").textContent;if(!t||t==="Pronto.")return;saveMaterial($("#cmd").value,fd().text,t,fd());alert("Salvo.");};
    $("#project").onclick=()=>{const d=fd();Store.push("projects",{id:Date.now(),name:d.text||"Projeto",command:$("#cmd").value,data:d,result:$("#out").textContent,created:new Date().toISOString()});alert("Projeto salvo.");};

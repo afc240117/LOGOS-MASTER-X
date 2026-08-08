@@ -7,3 +7,4 @@ dist/
 build/
 data/sync.sqlite3
 .DS_Store
+apikey.txt
