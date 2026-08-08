@@ -10,7 +10,8 @@ const Store={
 };
 const P=window.LOGOS_PROMPTS||{};
 const DEFAULT_API="https://logos-master-x-api.onrender.com";
-const App={view:"dashboard",server:false,api:Store.get("api",DEFAULT_API),provider:Store.get("aiProvider","auto"),aiMode:Store.get("aiMode","automatico"),model:Store.get("aiModel",""),health:null,currentText:"",timer:null,timerStart:0,timerSeconds:0};
+const SAVED_API=Store.get("api",DEFAULT_API); const SAFE_API=(SAVED_API&&/^https:\/\//.test(SAVED_API))?SAVED_API:DEFAULT_API;
+const App={view:"dashboard",server:false,api:SAFE_API,provider:Store.get("aiProvider","auto"),aiMode:Store.get("aiMode","automatico"),model:Store.get("aiModel",""),health:null,currentText:"",timer:null,timerStart:0,timerSeconds:0};
 
 const commands=["ESTUDAR","CONTEXTO","EXEGESE","HERMENÊUTICA","ESBOÇO","SERMÃO","SÉRIE","REVISAR","APLICAR","ILUSTRAR","CONCLUIR","ORAÇÃO","DEVOCIONAL","AULA"];
 
@@ -242,14 +243,24 @@ async function runCommand(cmd,d){
 function saveMaterial(type,title,text,meta={}){return Store.push("library",{id:Date.now(),type,title:title||"Sem título",text,meta,created:new Date().toISOString()})}
 
 async function checkApi(){
- if(!App.api){App.server=false;App.health=null;setStatus();return}
- try{
-   const c=new AbortController();setTimeout(()=>c.abort(),2500);
-   const r=await fetch(App.api.replace(/\/$/,"")+"/api/health",{signal:c.signal,cache:"no-store"});
-   App.server=r.ok;
-   App.health=r.ok?await r.json():null;
- }catch{App.server=false;App.health=null}
+ if(!App.api || !/^https:\/\//.test(App.api)){App.api=DEFAULT_API;Store.set("api",App.api)}
+ const url=App.api.replace(/\/$/,"")+"/api/health";
+ async function attempt(timeoutMs){
+   const c=new AbortController();
+   const timer=setTimeout(()=>c.abort(),timeoutMs);
+   try{
+     const r=await fetch(url,{signal:c.signal,cache:"no-store"});
+     clearTimeout(timer);
+     if(!r.ok) return null;
+     return await r.json();
+   }catch(e){clearTimeout(timer);return null}
+ }
+ let data=await attempt(15000);
+ if(!data) data=await attempt(15000);
+ App.server=!!data;
+ App.health=data;
  setStatus();
+ return data;
 }
 function setStatus(){const e=$("#status");if(!e)return;
  if(App.server){
@@ -386,7 +397,32 @@ async function bibleSearch(q){const t=q.toLowerCase(),a=await dbAll("verses");re
 function formatVerses(a){return a.map(v=>`${v.ref} — ${v.text}`).join("\n")}
 async function initBibleUI(){let current=[];$("#bImport").onclick=async()=>{const f=$("#bFile").files[0];if(!f)return alert("Escolha um arquivo.");try{$("#bOut").textContent=`Importados ${await importBible(f)} versículos.`}catch(e){$("#bOut").textContent=e.message}};$("#bMeta").onclick=async()=>{const a=await dbAll("verses");$("#bOut").textContent=`Versículos locais: ${a.length}`};$("#bOpen").onclick=async()=>{current=await bibleRef($("#bRef").value);$("#bOut").textContent=formatVerses(current)||"Nada encontrado."};$("#bFind").onclick=async()=>{current=await bibleSearch($("#bSearch").value);$("#bOut").textContent=formatVerses(current)||"Nada encontrado."};$("#bSend").onclick=()=>{if(!current.length)return alert("Abra uma passagem.");Store.set("bibleSelection",current);Store.set("studioPrefill",formatVerses(current));render("studio").then(()=>$("#fText").value=formatVerses(current))};$("#bConcordance").onclick=async()=>{const q=$("#bSearch").value.trim();current=await bibleSearch(q);$("#bOut").textContent=`CONCORDÂNCIA: ${q}\nOcorrências: ${current.length}\n\n${formatVerses(current)}`};}
 
-$$(".nav button").forEach(b=>b.onclick=()=>render(b.dataset.view));
-window.addEventListener("DOMContentLoaded",()=>{checkApi();render("dashboard")});
+function bindNav(){
+ $$(".nav button").forEach(b=>b.onclick=()=>render(b.dataset.view));
+}
+async function clearOldFrontendCache(){
+ try{
+   if("serviceWorker" in navigator){
+     const regs=await navigator.serviceWorker.getRegistrations();
+     await Promise.all(regs.map(r=>r.unregister()));
+   }
+   if("caches" in window){
+     const keys=await caches.keys();
+     await Promise.all(keys.filter(k=>k.startsWith("logos-master-x")).map(k=>caches.delete(k)));
+   }
+ }catch(e){}
+}
+window.addEventListener("DOMContentLoaded",async()=>{
+ try{
+   bindNav();
+   $("#workspace").innerHTML='<div class="hero"><h1>LOGOS MASTER X</h1><p>Carregando sistema...</p></div>';
+   await clearOldFrontendCache();
+   render("dashboard");
+   await checkApi();
+ }catch(e){
+   console.error("LOGOS startup error",e);
+   const w=$("#workspace");
+   if(w) w.innerHTML=`<h2>⚠️ Diagnóstico do LOGOS</h2><div class="output">Erro ao iniciar a interface:\n${escapeHtml(e?.stack||e?.message||String(e))}\n\nRecarregue com Ctrl+F5.</div>`;
+ }
+});
 
-if("serviceWorker" in navigator && /^https?:$/.test(location.protocol)) navigator.serviceWorker.register("./sw.js").catch(()=>{});
