@@ -1,2 +1,2 @@
-LOGOS MASTER X 3.3 — PRONTO PARA USO
-Studio PRO + AI HUB + Histórico + Projetos + Editor Autosave + Púlpito PRO + Bíblia Local + Backup
+LOGOS MASTER X 3.3.2
+HOTFIX GEMINI 3.6 FLASH + OPENAI TEST/OUTPUT

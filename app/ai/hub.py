@@ -8,7 +8,7 @@ ORDERS={
 }
 class AIHub:
  def configured(self): return {p:bool(os.getenv(k)) for p,k in KEYS.items()}
- def models(self): return {"openai":os.getenv("OPENAI_MODEL","gpt-5-mini"),"gemini":os.getenv("GEMINI_MODEL","gemini-2.5-flash"),"groq":os.getenv("GROQ_MODEL","llama-3.3-70b-versatile"),"openrouter":os.getenv("OPENROUTER_MODEL","openrouter/auto"),"huggingface":os.getenv("HUGGINGFACE_DEFAULT_MODEL") or os.getenv("HUGGINGFACE_MODEL","Qwen/Qwen2.5-7B-Instruct")}
+ def models(self): return {"openai":os.getenv("OPENAI_MODEL","gpt-5-mini"),"gemini":os.getenv("GEMINI_MODEL","gemini-3.6-flash"),"groq":os.getenv("GROQ_MODEL","llama-3.3-70b-versatile"),"openrouter":os.getenv("OPENROUTER_MODEL","openrouter/auto"),"huggingface":os.getenv("HUGGINGFACE_DEFAULT_MODEL") or os.getenv("HUGGINGFACE_MODEL","Qwen/Qwen2.5-7B-Instruct")}
  def order(self,mode="automatico"):
   raw=os.getenv("LOGOS_AI_ORDER","").strip() if mode=="automatico" else ""
   return [x.strip().lower() for x in raw.split(",") if x.strip() and x.strip().lower() in PROVIDERS] if raw else ORDERS.get(mode,ORDERS["automatico"])

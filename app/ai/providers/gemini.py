@@ -3,7 +3,7 @@ from .base import ProviderResult,ProviderError
 def generate(prompt,instructions,model=None,max_tokens=12000):
  key=os.getenv("GEMINI_API_KEY")
  if not key: raise ProviderError("GEMINI_API_KEY ausente")
- model=model or os.getenv("GEMINI_MODEL","gemini-2.5-flash")
+ model=model or os.getenv("GEMINI_MODEL","gemini-3.6-flash")
  url="https://generativelanguage.googleapis.com/v1beta/models/"+urllib.parse.quote(model,safe="-._")+":generateContent"
  body={"system_instruction":{"parts":[{"text":instructions}]},"contents":[{"role":"user","parts":[{"text":prompt}]}],"generationConfig":{"maxOutputTokens":max_tokens,"temperature":.65}}
  req=urllib.request.Request(url,data=json.dumps(body).encode(),headers={"Content-Type":"application/json","x-goog-api-key":key},method="POST")
