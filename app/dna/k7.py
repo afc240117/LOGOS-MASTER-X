@@ -1,18 +1,8 @@
-class DNAK7Engine:
-    PROFILE = {
-        "name":"DNA Pentecostal K7",
-        "base_reference":"Lamentações 5:21-22",
-        "progression":["abertura","contexto","exposição","aplicação","intensificação","clímax","convite"],
-        "marks":[
-            "fidelidade bíblica",
-            "imagética verbal responsável",
-            "repetição estratégica",
-            "chamadas congregacionais",
-            "ênfase em restauração quando textual",
-            "apelo inteligível"
-        ],
-        "restrictions":["sem glossolalia","sem imitação vocal","sem referências inventadas"]
-    }
-    def apply(self, plan: dict):
-        plan["dna_k7"]=self.PROFILE.copy()
-        return plan
+LEVELS={1:"Expositivo suave",2:"Pentecostal moderado",3:"K7 equilibrado",4:"K7 intenso",5:"K7 máximo controlado"}
+def rules(level):
+ level=max(1,min(5,int(level)))
+ return f"""DNA K7 — nível {level}/5 ({LEVELS[level]})
+Progressão: texto → contexto → exposição → aplicação → intensificação → clímax → apelo.
+Não imitar voz ou identidade de pregador específico.
+Sem glossolalia. Sem manipulação emocional. A emoção nasce da verdade bíblica.
+O clímax não introduz doutrina nova e o apelo deve nascer do texto."""
