@@ -1,2 +1,2 @@
-LOGOS MASTER X 3.2.2
-HOTFIX FORTE: CACHE/PWA + RENDER COLD START + STARTUP DIAGNOSTIC
+LOGOS MASTER X 3.3 — PRONTO PARA USO
+Studio PRO + AI HUB + Histórico + Projetos + Editor Autosave + Púlpito PRO + Bíblia Local + Backup
