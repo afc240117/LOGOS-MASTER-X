@@ -935,3 +935,540 @@ html[data-layout="classico"] .classic-top #aboutTopBtn.active{
   html[data-layout="classico"] .classic-top{grid-template-columns:238px auto auto auto minmax(16px,1fr)!important;column-gap:7px!important;padding-right:18px!important}
   html[data-layout="classico"] .classic-top .top-nav button{padding-left:11px!important;padding-right:11px!important}
 }
+
+/* =========================================================
+   ETAPA 01O — TOPO À ESQUERDA + NAVEGAÇÃO REVERSÍVEL
+   ========================================================= */
+html[data-layout="classico"] .classic-top{
+  grid-template-columns:248px auto auto auto minmax(28px,1fr)!important;
+  column-gap:6px!important;
+  padding-left:10px!important;
+  padding-right:24px!important;
+}
+html[data-layout="classico"] .classic-brand{
+  width:248px!important;
+  min-width:248px!important;
+  padding-right:4px!important;
+}
+html[data-layout="classico"] .classic-top .top-nav{
+  margin-left:0!important;
+  gap:7px!important;
+}
+html[data-layout="classico"] .classic-top .top-nav button{
+  min-height:46px!important;
+  border-radius:13px!important;
+}
+html[data-layout="classico"] .classic-top #status.top-provider-status{
+  margin-left:0!important;
+}
+html[data-layout="classico"] .classic-top .top-actions{
+  margin-left:0!important;
+  gap:8px!important;
+}
+/* DNA K7 e AI HUB clonados na mesma geometria do modelo */
+html[data-layout="classico"] .classic-top .top-actions button[data-go="k7"],
+html[data-layout="classico"] .classic-top .top-actions button[data-go="aihub"]{
+  width:118px!important;
+  min-width:118px!important;
+  height:46px!important;
+  min-height:46px!important;
+  padding:0 14px!important;
+  border-radius:13px!important;
+  font-weight:800!important;
+  letter-spacing:.02em!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:8px!important;
+  background:linear-gradient(180deg,#0d121a,#080c12)!important;
+}
+html[data-layout="classico"] .classic-top .top-actions button[data-go="k7"]{
+  color:#f6cb63!important;
+  border:1px solid #6f5428!important;
+  box-shadow:inset 0 0 12px rgba(226,172,64,.05)!important;
+}
+html[data-layout="classico"] .classic-top .top-actions button[data-go="k7"] .top-ico{color:#ffd65c!important;filter:drop-shadow(0 0 6px rgba(255,195,60,.35));}
+html[data-layout="classico"] .classic-top .top-actions button[data-go="aihub"]{
+  color:#d9ebff!important;
+  border:1px solid #33475f!important;
+  box-shadow:inset 0 0 12px rgba(54,139,255,.05)!important;
+}
+html[data-layout="classico"] .classic-top .top-actions button[data-go="aihub"] .top-ico{color:#48a8ff!important;filter:drop-shadow(0 0 7px rgba(44,143,255,.55));}
+html[data-layout="classico"] .classic-top .top-actions button[data-go="k7"]:hover,
+html[data-layout="classico"] .classic-top .top-actions button[data-go="k7"].active{
+  color:#ffe59b!important;border-color:#c9963b!important;
+  box-shadow:0 0 15px rgba(217,157,43,.25),inset 0 0 12px rgba(226,172,64,.08)!important;
+}
+html[data-layout="classico"] .classic-top .top-actions button[data-go="aihub"]:hover,
+html[data-layout="classico"] .classic-top .top-actions button[data-go="aihub"].active{
+  color:#f1f8ff!important;border-color:#397fbd!important;
+  box-shadow:0 0 15px rgba(49,139,225,.26),inset 0 0 12px rgba(77,158,255,.10)!important;
+}
+@media(max-width:1500px){
+  html[data-layout="classico"] .classic-top{grid-template-columns:226px auto auto auto minmax(12px,1fr)!important;padding-left:8px!important;padding-right:14px!important;column-gap:5px!important}
+  html[data-layout="classico"] .classic-brand{width:226px!important;min-width:226px!important}
+  html[data-layout="classico"] .classic-top .top-nav{gap:5px!important}
+  html[data-layout="classico"] .classic-top .top-nav button{padding-left:10px!important;padding-right:10px!important}
+  html[data-layout="classico"] .classic-top .top-actions button[data-go="k7"],
+  html[data-layout="classico"] .classic-top .top-actions button[data-go="aihub"]{width:108px!important;min-width:108px!important;padding:0 10px!important}
+}
+
+
+/* ETAPA 01P — cards inferiores no padrão clássico dourado aprovado */
+.classic-feature-strip{
+  gap:14px!important;
+  margin-top:18px!important;
+  padding:0!important;
+}
+.classic-feature-strip article{
+  position:relative;
+  min-height:178px!important;
+  padding:18px 14px 16px!important;
+  border:1px solid rgba(113,139,177,.62)!important;
+  border-radius:18px!important;
+  background:
+    radial-gradient(circle at 50% -18%,rgba(53,86,130,.36),transparent 48%),
+    linear-gradient(160deg,#12223a 0%,#0a1525 48%,#07101c 100%)!important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.04),
+    inset 0 -18px 38px rgba(0,0,0,.20),
+    0 8px 20px rgba(0,0,0,.18)!important;
+  overflow:hidden;
+  transition:border-color .2s ease,transform .2s ease,box-shadow .2s ease;
+}
+.classic-feature-strip article::after{
+  content:"";
+  position:absolute;
+  left:14%;right:14%;bottom:-1px;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(229,176,66,.22),transparent);
+}
+.classic-feature-strip article:hover{
+  transform:translateY(-2px);
+  border-color:rgba(220,176,79,.75)!important;
+  box-shadow:0 10px 25px rgba(0,0,0,.23),0 0 16px rgba(216,159,48,.10)!important;
+}
+.classic-feature-strip .feature-ico{
+  width:58px;height:58px;
+  margin:0 0 4px!important;
+  display:grid!important;
+  place-items:center;
+  font-size:0!important;
+  filter:drop-shadow(0 0 5px rgba(246,193,88,.28));
+}
+.classic-feature-strip .feature-ico svg{
+  width:54px;height:54px;
+  fill:none;
+  stroke:#f0c56c;
+  stroke-width:2.6;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+  overflow:visible;
+}
+.classic-feature-strip .feature-ico .ai-letter{
+  fill:#f0c56c;
+  stroke:none;
+  font-size:14px;
+  font-weight:800;
+  font-family:Arial,sans-serif;
+}
+.classic-feature-strip b{
+  margin:4px 0 5px!important;
+  color:#f3c567!important;
+  font-size:15px!important;
+  line-height:1.1;
+  text-shadow:0 0 7px rgba(232,177,65,.16);
+}
+.classic-feature-strip span{
+  color:#f0f1f3!important;
+  font-size:12px!important;
+  line-height:1.32!important;
+}
+@media(max-width:1180px){.classic-feature-strip{grid-template-columns:repeat(3,minmax(0,1fr))!important}}
+@media(max-width:900px){.classic-feature-strip{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
+@media(max-width:560px){.classic-feature-strip{grid-template-columns:1fr!important}.classic-feature-strip article{min-height:154px!important}}
+
+/* =========================================================
+   ETAPA 01Q — HERO CENTRAL FULL + MENU CENTRAL FIEL
+   Escopo: somente área principal da Home.
+   ========================================================= */
+html[data-layout="classico"] .classic-home{
+  width:100%;
+  max-width:none;
+  margin:0;
+}
+html[data-layout="classico"] .home-main-grid{
+  width:100%;
+  grid-template-columns:minmax(0,1fr) 260px;
+  gap:16px;
+  align-items:start;
+}
+html[data-layout="classico"] .classic-hero{
+  width:100%;
+  min-width:0;
+  min-height:590px;
+  border-radius:18px;
+}
+html[data-layout="classico"] .classic-hero>img{
+  min-height:590px;
+  object-fit:cover;
+  object-position:center top;
+}
+html[data-layout="classico"] .hero-modebar{
+  left:50%!important;
+  right:auto!important;
+  bottom:82px;
+  width:min(900px,calc(100% - 54px));
+  height:112px;
+  transform:translateX(-50%);
+  border:1px solid rgba(237,190,92,.92);
+  border-radius:31px;
+  overflow:hidden;
+  background:
+    radial-gradient(75% 110% at 50% 120%,rgba(236,166,44,.19),transparent 47%),
+    linear-gradient(180deg,rgba(16,28,43,.97),rgba(5,12,20,.98));
+  box-shadow:
+    0 0 0 1px rgba(255,218,130,.08) inset,
+    0 12px 28px rgba(0,0,0,.42),
+    0 0 22px rgba(220,155,39,.22);
+}
+html[data-layout="classico"] .hero-modebar::after{
+  content:"";
+  position:absolute;
+  left:18%;right:18%;bottom:-2px;height:3px;
+  background:radial-gradient(ellipse at center,#ffd779 0%,#d99a29 25%,transparent 72%);
+  filter:blur(.3px);
+  pointer-events:none;
+}
+html[data-layout="classico"] .hero-modebar button{
+  min-width:0;
+  border:0;
+  border-right:1px solid rgba(184,132,48,.72);
+  background:transparent;
+  color:#f5d37b;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:7px;
+  cursor:pointer;
+  transition:background .18s ease,box-shadow .18s ease,transform .18s ease,color .18s ease;
+}
+html[data-layout="classico"] .hero-modebar button:last-child{border-right:0}
+html[data-layout="classico"] .hero-modebar button:hover{
+  color:#ffe39a;
+  background:linear-gradient(180deg,rgba(208,145,37,.10),rgba(9,15,22,.03));
+  box-shadow:inset 0 0 22px rgba(232,169,55,.08);
+}
+html[data-layout="classico"] .hero-mode-icon{
+  width:46px;height:46px;
+  display:grid;place-items:center;
+  color:#f1cd77;
+  filter:drop-shadow(0 0 7px rgba(236,176,63,.20));
+}
+html[data-layout="classico"] .hero-mode-icon svg{
+  width:100%;height:100%;
+  fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;
+}
+html[data-layout="classico"] .hero-mode-icon.hero-fire svg{fill:currentColor;stroke:none}
+html[data-layout="classico"] .hero-modebar b{
+  color:#fff;
+  font-size:13px;
+  font-weight:600;
+  letter-spacing:.22em;
+  line-height:1;
+}
+html[data-layout="classico"] .hero-studio{
+  left:50%!important;
+  right:auto!important;
+  bottom:16px;
+  width:min(500px,calc(100% - 110px));
+  height:62px;
+  transform:translateX(-50%);
+  border-radius:20px;
+  border:1px solid #f4cf79;
+  background:linear-gradient(180deg,#f6d27a 0%,#c88c31 52%,#9f661c 100%);
+  box-shadow:0 0 0 2px rgba(72,43,8,.72),0 0 18px rgba(230,162,50,.36),inset 0 1px rgba(255,255,255,.45);
+  color:#fff;
+  text-shadow:0 1px 2px rgba(0,0,0,.55);
+}
+html[data-layout="classico"] .hero-studio:hover{
+  filter:brightness(1.06);
+  box-shadow:0 0 0 2px rgba(72,43,8,.72),0 0 24px rgba(239,178,59,.48),inset 0 1px rgba(255,255,255,.5);
+}
+html[data-layout="classico"] .hero-play{
+  width:44px;height:44px;display:grid;place-items:center;flex:0 0 44px;
+}
+html[data-layout="classico"] .hero-play svg{width:100%;height:100%;fill:#111;stroke:#f7db92;stroke-width:1.6}
+html[data-layout="classico"] .hero-play path{fill:#f6d06e;stroke:none}
+html[data-layout="classico"] .hero-studio span{line-height:1.05}
+html[data-layout="classico"] .hero-studio b{font-size:20px;letter-spacing:.015em}
+html[data-layout="classico"] .hero-studio small{font-size:11px;color:#fff4d9;margin-top:3px}
+
+/* A coluna direita permanece compacta para deixar a arte central usar todo o espaço útil. */
+html[data-layout="classico"] .home-right{width:260px;min-width:260px}
+
+@media(max-width:1280px){
+  html[data-layout="classico"] .home-main-grid{grid-template-columns:minmax(0,1fr) 238px;gap:12px}
+  html[data-layout="classico"] .home-right{width:238px;min-width:238px}
+  html[data-layout="classico"] .hero-modebar{width:calc(100% - 40px)}
+}
+@media(max-width:1100px){
+  html[data-layout="classico"] .home-main-grid{grid-template-columns:1fr}
+  html[data-layout="classico"] .home-right{width:100%;min-width:0;grid-template-columns:1fr 1fr}
+}
+
+/* ETAPA 01R — acabamento premium dos cards inferiores */
+html[data-layout="classico"] .classic-feature-strip{
+  gap:14px!important;
+  padding:0 1px 13px!important;
+  border-bottom:1px solid rgba(205,145,37,.68);
+  background:linear-gradient(90deg,transparent 0%,rgba(214,151,38,.035) 10%,rgba(214,151,38,.07) 50%,rgba(214,151,38,.035) 90%,transparent 100%);
+}
+html[data-layout="classico"] .classic-feature-strip article{
+  border:1px solid rgba(112,143,184,.78)!important;
+  background:
+    radial-gradient(ellipse at 50% 0%,rgba(71,105,151,.28) 0%,rgba(31,58,91,.16) 35%,transparent 64%),
+    linear-gradient(180deg,#102039 0%,#0b182a 52%,#081321 100%)!important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.075),
+    inset 1px 0 0 rgba(111,148,194,.05),
+    inset -1px 0 0 rgba(111,148,194,.05),
+    inset 0 -28px 42px rgba(0,5,12,.26),
+    0 8px 20px rgba(0,0,0,.24),
+    0 0 0 1px rgba(4,10,18,.35)!important;
+}
+html[data-layout="classico"] .classic-feature-strip article::before{
+  content:"";
+  position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+  background:
+    linear-gradient(90deg,rgba(94,132,179,.08),transparent 18%,transparent 82%,rgba(94,132,179,.08)),
+    radial-gradient(ellipse at 50% 100%,rgba(224,159,43,.075),transparent 55%);
+}
+html[data-layout="classico"] .classic-feature-strip article::after{
+  left:10%;right:10%;bottom:-1px;height:2px;
+  background:linear-gradient(90deg,transparent,rgba(224,162,48,.15) 22%,rgba(245,190,76,.32) 50%,rgba(224,162,48,.15) 78%,transparent);
+  filter:blur(.15px);
+}
+html[data-layout="classico"] .classic-feature-strip .feature-ico{
+  width:64px;height:64px!important;
+  margin:-2px 0 3px!important;
+  filter:
+    drop-shadow(0 1px 0 rgba(255,238,179,.32))
+    drop-shadow(0 0 4px rgba(247,190,70,.52))
+    drop-shadow(0 0 11px rgba(224,151,29,.18));
+}
+html[data-layout="classico"] .classic-feature-strip .feature-ico svg{
+  width:58px;height:58px;
+  stroke:#f5c969;
+  stroke-width:2.8;
+}
+html[data-layout="classico"] .classic-feature-strip .feature-ico .ai-letter{fill:#f5c969}
+html[data-layout="classico"] .classic-feature-strip b{
+  color:#f4c55d!important;
+  font-weight:800!important;
+  text-shadow:0 1px 0 #4a2a00,0 0 5px rgba(247,187,61,.30),0 0 12px rgba(212,139,25,.12)!important;
+}
+html[data-layout="classico"] .classic-feature-strip span{
+  color:#f2f3f5!important;
+  text-shadow:0 1px 2px rgba(0,0,0,.72);
+}
+html[data-layout="classico"] .classic-feature-strip article:hover{
+  border-color:rgba(235,187,84,.86)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.08),inset 0 -28px 42px rgba(0,5,12,.24),0 10px 24px rgba(0,0,0,.27),0 0 18px rgba(221,158,37,.16)!important;
+}
+
+/* ================================================================
+   ETAPA 01T — HERO INTEGRADO AO BACKGROUND + FAIXA INFORMATIVA
+   Referência: Home clássica aprovada. Mantém topo/lateral/cards intactos.
+   ================================================================ */
+html[data-layout="classico"] .home-main-grid{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) 260px!important;
+  gap:14px!important;
+  align-items:start!important;
+}
+html[data-layout="classico"] .classic-hero{
+  position:relative!important;
+  min-height:560px!important;
+  height:560px!important;
+  overflow:hidden!important;
+  border:1px solid rgba(69,91,121,.78)!important;
+  border-radius:18px!important;
+  background:#06101b!important;
+  box-shadow:inset 0 0 70px rgba(0,0,0,.22),0 12px 30px rgba(0,0,0,.18)!important;
+}
+html[data-layout="classico"] .classic-hero::before{
+  content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:linear-gradient(180deg,transparent 0%,transparent 58%,rgba(3,8,14,.06) 70%,rgba(3,8,14,.30) 100%),linear-gradient(90deg,rgba(2,7,12,.12),transparent 8%,transparent 92%,rgba(2,7,12,.12));
+}
+html[data-layout="classico"] .classic-hero>img{
+  position:absolute!important;inset:0!important;
+  width:100%!important;height:100%!important;min-height:0!important;
+  object-fit:cover!important;object-position:center top!important;
+  display:block!important;border:0!important;border-radius:0!important;
+  filter:saturate(1.04) contrast(1.03)!important;
+}
+/* A faixa faz parte visualmente da fotografia: sem recorte/caixa externa. */
+html[data-layout="classico"] .hero-modebar{
+  display:grid!important;position:absolute!important;z-index:3!important;
+  left:50%!important;right:auto!important;bottom:82px!important;
+  transform:translateX(-50%)!important;
+  width:min(820px,calc(100% - 70px))!important;height:116px!important;
+  grid-template-columns:repeat(4,1fr)!important;
+  border:1px solid #d7a744!important;border-radius:30px!important;
+  overflow:hidden!important;
+  background:linear-gradient(180deg,rgba(15,27,44,.94),rgba(5,13,23,.97))!important;
+  box-shadow:0 0 0 1px rgba(255,213,116,.10),0 0 24px rgba(231,167,53,.30),0 16px 35px rgba(0,0,0,.32),inset 0 1px rgba(255,255,255,.055)!important;
+  pointer-events:none!important;
+}
+html[data-layout="classico"] .hero-modebar::after{
+  content:""!important;display:block!important;position:absolute!important;
+  left:18%!important;right:18%!important;bottom:-3px!important;height:7px!important;
+  background:radial-gradient(ellipse at center,#ffc84f 0%,rgba(239,164,42,.58) 25%,transparent 70%)!important;
+  filter:blur(2px)!important;pointer-events:none!important;
+}
+html[data-layout="classico"] .hero-modebar button{
+  cursor:default!important;pointer-events:none!important;
+  border:0!important;border-right:1px solid rgba(166,116,38,.78)!important;
+  background:transparent!important;color:#f5ce72!important;
+  box-shadow:none!important;transform:none!important;
+}
+html[data-layout="classico"] .hero-modebar button:last-child{border-right:0!important}
+html[data-layout="classico"] .hero-modebar button:hover{background:transparent!important;color:#f5ce72!important;box-shadow:none!important;transform:none!important}
+html[data-layout="classico"] .hero-mode-icon{filter:drop-shadow(0 0 5px rgba(244,185,65,.28))!important}
+html[data-layout="classico"] .hero-modebar b{color:#fff!important;text-shadow:0 1px 3px #000!important}
+/* CTA continua funcional e fica integrado ao mesmo fundo, como no modelo. */
+html[data-layout="classico"] .hero-studio{
+  display:flex!important;z-index:4!important;position:absolute!important;
+  left:50%!important;right:auto!important;bottom:14px!important;
+  transform:translateX(-50%)!important;
+  width:min(500px,calc(100% - 120px))!important;height:60px!important;
+}
+html[data-layout="classico"] .home-right{display:grid!important;width:260px!important;min-width:260px!important;align-content:start!important;gap:14px!important}
+@media(max-width:1280px){
+ html[data-layout="classico"] .home-main-grid{grid-template-columns:minmax(0,1fr) 238px!important;gap:12px!important}
+ html[data-layout="classico"] .home-right{width:238px!important;min-width:238px!important}
+ html[data-layout="classico"] .hero-modebar{width:calc(100% - 40px)!important}
+}
+@media(max-width:1100px){
+ html[data-layout="classico"] .home-main-grid{grid-template-columns:1fr!important}
+ html[data-layout="classico"] .home-right{width:100%!important;min-width:0!important;grid-template-columns:1fr 1fr!important}
+}
+
+/* ================================================================
+   ETAPA 01U — HOME HERO ORIGINAL, SEM RECORTE
+   A arte original e exibida inteira; a extensao inferior faz a faixa,
+   CTA e brilho parecerem parte do mesmo background panoramico.
+   ================================================================ */
+html[data-layout="classico"] .classic-hero{
+  --hero-image-ratio:3.2147;
+  min-height:0!important;
+  height:auto!important;
+  aspect-ratio:1048 / 570!important;
+  overflow:hidden!important;
+  isolation:isolate;
+  border:1px solid rgba(64,86,116,.72)!important;
+  border-radius:18px!important;
+  background:
+    radial-gradient(ellipse at 50% 69%,rgba(232,161,40,.14) 0%,rgba(232,161,40,.035) 22%,transparent 48%),
+    linear-gradient(180deg,#06101b 0%,#06101b 56%,#07111d 74%,#030912 100%)!important;
+  box-shadow:inset 0 0 80px rgba(0,0,0,.18),0 12px 30px rgba(0,0,0,.20)!important;
+}
+html[data-layout="classico"] .classic-hero>img{
+  position:absolute!important;
+  z-index:0!important;
+  left:0!important;top:0!important;right:0!important;bottom:auto!important;
+  width:100%!important;
+  height:auto!important;
+  min-height:0!important;
+  max-height:none!important;
+  object-fit:contain!important;
+  object-position:center top!important;
+  display:block!important;
+  border:0!important;
+  border-radius:0!important;
+  filter:saturate(1.06) contrast(1.035) brightness(1.02)!important;
+}
+/* mascara apenas a area de icones impressos na arte-base, sem recortar a foto */
+html[data-layout="classico"] .classic-hero::before{
+  content:""!important;
+  position:absolute!important;z-index:1!important;
+  left:0!important;right:0!important;top:47%!important;bottom:0!important;
+  pointer-events:none!important;
+  background:
+    linear-gradient(180deg,transparent 0%,rgba(5,13,23,.82) 19%,#07111d 36%,#06101b 68%,#030912 100%),
+    radial-gradient(ellipse at 50% 42%,rgba(239,169,48,.12),transparent 48%)!important;
+}
+html[data-layout="classico"] .classic-hero::after{
+  content:"";position:absolute;z-index:2;pointer-events:none;
+  left:10%;right:10%;bottom:72px;height:18px;
+  background:radial-gradient(ellipse at center,rgba(255,202,76,.98) 0%,rgba(238,161,39,.55) 22%,rgba(210,132,21,.16) 48%,transparent 72%);
+  filter:blur(3px);
+}
+html[data-layout="classico"] .hero-modebar{
+  z-index:3!important;
+  left:50%!important;right:auto!important;bottom:88px!important;
+  transform:translateX(-50%)!important;
+  width:min(900px,calc(100% - 34px))!important;
+  height:116px!important;
+  border:1px solid #e1ad47!important;
+  border-radius:30px!important;
+  background:
+    radial-gradient(ellipse at 50% 110%,rgba(203,136,30,.12),transparent 48%),
+    linear-gradient(180deg,rgba(17,31,50,.97),rgba(5,13,23,.985))!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.065),inset 0 -18px 36px rgba(0,0,0,.18),0 0 0 1px rgba(255,215,121,.08),0 0 24px rgba(232,166,48,.24),0 15px 34px rgba(0,0,0,.34)!important;
+}
+html[data-layout="classico"] .hero-modebar::after{
+  left:18%!important;right:18%!important;bottom:-7px!important;height:13px!important;
+  background:radial-gradient(ellipse at center,#ffd15a 0%,rgba(243,171,47,.72) 22%,rgba(218,135,24,.20) 52%,transparent 74%)!important;
+  filter:blur(2.5px)!important;
+}
+html[data-layout="classico"] .hero-modebar button{
+  min-width:0!important;padding:10px 6px!important;
+  border-right:1px solid rgba(181,127,42,.72)!important;
+}
+html[data-layout="classico"] .hero-mode-icon{
+  width:50px!important;height:50px!important;
+  color:#f4ca68!important;
+  filter:drop-shadow(0 1px 0 rgba(255,239,184,.26)) drop-shadow(0 0 7px rgba(242,180,56,.30))!important;
+}
+html[data-layout="classico"] .hero-modebar b{
+  font-size:13px!important;font-weight:700!important;letter-spacing:.24em!important;
+  color:#fff!important;text-shadow:0 2px 4px #000!important;
+}
+html[data-layout="classico"] .hero-studio{
+  z-index:5!important;bottom:15px!important;
+  width:min(520px,calc(100% - 100px))!important;height:62px!important;
+  border-radius:20px!important;
+  border:1px solid #f6d27b!important;
+  background:linear-gradient(180deg,#f7d57f 0%,#d49a3b 46%,#a9691b 100%)!important;
+  box-shadow:0 0 0 2px rgba(70,41,7,.78),0 0 22px rgba(235,168,48,.42),inset 0 1px rgba(255,255,255,.52)!important;
+}
+html[data-layout="classico"] .classic-feature-strip{
+  margin-top:14px!important;
+  position:relative;
+}
+html[data-layout="classico"] .classic-feature-strip::after{
+  content:"";position:absolute;left:7%;right:7%;bottom:-14px;height:18px;pointer-events:none;
+  background:radial-gradient(ellipse at center,rgba(241,170,47,.48),rgba(202,126,22,.12) 38%,transparent 72%);
+  filter:blur(5px);
+}
+html[data-layout="classico"] .home-slogan{
+  margin-top:0!important;padding:19px 18px 20px!important;
+  border-top:1px solid rgba(158,104,30,.72)!important;
+  border-bottom:1px solid rgba(119,78,24,.42)!important;
+  background:linear-gradient(90deg,transparent 0%,rgba(151,91,18,.10) 18%,rgba(202,129,24,.18) 50%,rgba(151,91,18,.10) 82%,transparent 100%)!important;
+  box-shadow:inset 0 10px 25px rgba(211,137,27,.035),0 -4px 18px rgba(211,137,27,.08)!important;
+  text-shadow:0 0 10px rgba(232,167,54,.28)!important;
+}
+@media(max-width:1280px){
+ html[data-layout="classico"] .classic-hero{aspect-ratio:1048 / 585!important}
+ html[data-layout="classico"] .hero-modebar{width:calc(100% - 28px)!important}
+}
+@media(max-width:900px){
+ html[data-layout="classico"] .classic-hero{aspect-ratio:1048 / 650!important}
+ html[data-layout="classico"] .hero-modebar{height:104px!important;bottom:84px!important}
+ html[data-layout="classico"] .hero-mode-icon{width:42px!important;height:42px!important}
+ html[data-layout="classico"] .hero-modebar b{font-size:11px!important;letter-spacing:.16em!important}
+ html[data-layout="classico"] .hero-studio{width:min(500px,calc(100% - 44px))!important}
+}

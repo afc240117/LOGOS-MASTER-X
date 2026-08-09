@@ -345,9 +345,16 @@ function fd(){const av=$("#fAudience")?.value||"Igreja local",cv=$("#fCult")?.va
 
 const views={
  dashboard(){const s=projectStats();return `<div class="classic-home">
-<section class="home-main-grid"><div class="classic-hero"><img src="/static/brand/classic-hero.png" alt="LOGOS MASTER X DNA K7"><div class="hero-modebar"><button data-go="bible">📖<b>BÍBLIA</b></button><button data-go="studio">🧬<b>ESTUDO</b></button><button data-go="studio">🎙<b>PREGAÇÃO</b></button><button data-go="k7">🔥<b>AVIVAMENTO</b></button></div><button class="hero-studio" data-go="studio">▶ <span><b>ACESSAR STUDIO</b><small>Comece seu próximo estudo ou mensagem</small></span></button></div>
+<section class="home-main-grid"><div class="classic-hero"><img src="/static/brand/classic-hero.png" alt="LOGOS MASTER X DNA K7"><div class="hero-modebar"><button type="button" data-hero-info="bible" aria-label="Bíblia"><i class="hero-mode-icon"><svg viewBox="0 0 64 54" aria-hidden="true"><path d="M5 8c10-3 18-2 27 5v34c-9-7-17-8-27-5V8Z"/><path d="M59 8c-10-3-18-2-27 5v34c9-7 17-8 27-5V8Z"/><path d="M32 13v34"/></svg></i><b>BÍBLIA</b></button><button type="button" data-hero-info="study" aria-label="Estudo"><i class="hero-mode-icon"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M18 5c18 11 10 20 28 30S48 53 22 59"/><path d="M46 5C28 16 36 25 18 35S16 53 42 59"/><path d="M23 13h18M18 24h28M18 40h28M23 51h18"/></svg></i><b>ESTUDO</b></button><button type="button" data-hero-info="preaching" aria-label="Pregação"><i class="hero-mode-icon"><svg viewBox="0 0 64 64" aria-hidden="true"><rect x="23" y="5" width="18" height="35" rx="9"/><path d="M18 28v5c0 8 6 14 14 14s14-6 14-14v-5M32 47v12M23 59h18"/><path d="M28 13h8M28 20h8M28 27h8"/></svg></i><b>PREGAÇÃO</b></button><button type="button" data-hero-info="revival" aria-label="Avivamento"><i class="hero-mode-icon hero-fire"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M34 4c4 13-8 15-2 27 4-4 8-9 9-15 10 8 16 18 15 29-1 11-10 17-23 17S9 54 8 43c-1-11 5-21 15-29-1 9 2 14 6 18 1-12 9-16 5-28Z"/></svg></i><b>AVIVAMENTO</b></button></div><button class="hero-studio" data-go="studio"><i class="hero-play"><svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="20"/><path d="m20 15 14 9-14 9V15Z"/></svg></i><span><b>ACESSAR STUDIO</b><small>Comece seu próximo estudo ou mensagem</small></span></button></div>
 <aside class="home-right"><div class="purpose-card"><h3>O PROPÓSITO</h3><p>Equipar pregadores, professores e estudantes da Bíblia com uma ferramenta poderosa para estudar, preparar e pregar mensagens com profundidade, clareza e fidelidade à Palavra de Deus.</p><blockquote>“A minha palavra e a minha pregação não consistiram em palavras persuasivas de sabedoria humana, mas em demonstração do Espírito e de poder.”<small>1 Coríntios 2:4</small></blockquote><button class="gold-outline" data-go="about">Saiba mais →</button></div><div class="system-card"><h3>RESUMO DO SISTEMA <em>● Online</em></h3><div><span>Versão</span><b>${App.health?.version||"3.7.x"}</b></div><div><span>DNA K7</span><b>1 – 10</b></div><div><span>Precisão</span><b>Quality Gate</b></div><div><span>Update Center</span><b>Ativo</b></div><div><span>Modo Mobile</span><b>Preparado</b></div></div></aside></section>
-<section class="feature-strip"><article><i>🪶</i><b>DNA K7</b><span>A força de uma pregação que atravessa gerações.</span></article><article><i>📖</i><b>Contexto e Exposição</b><span>Base bíblica sólida e profundidade.</span></article><article><i>🎯</i><b>Aplicações Reais</b><span>Da Bíblia para a vida da igreja de hoje.</span></article><article><i>👥</i><b>Preparação para o Púlpito</b><span>Organização, clareza e impacto.</span></article><article><i>▣</i><b>AI HUB</b><span>Integração com múltiplas Inteligências Artificiais.</span></article><article><i>📱</i><b>Mobile First</b><span>Estude onde quiser. No computador, tablet ou celular.</span></article></section><div class="home-slogan">LOGOS MASTER X — DA PALAVRA AO PÚLPITO. DA INSPIRAÇÃO À PREPARAÇÃO.</div></div>`},
+<section class="feature-strip classic-feature-strip">
+<article><i class="feature-ico"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M50 8C35 14 22 25 16 39c-2 5-3 10-3 15 6-9 14-16 24-21"/><path d="M14 51c9-7 17-16 24-27 4-6 8-11 12-16"/></svg></i><b>DNA K7</b><span>A força de uma pregação<br>que atravessa gerações.</span></article>
+<article><i class="feature-ico"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M8 14c9-3 17-2 24 4v34c-8-6-16-7-24-4Z"/><path d="M56 14c-9-3-17-2-24 4v34c8-6 16-7 24-4Z"/><path d="M32 18v34"/></svg></i><b>Contexto e Exposição</b><span>Base bíblica sólida<br>e profundidade.</span></article>
+<article><i class="feature-ico"><svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="31" cy="32" r="18"/><circle cx="31" cy="32" r="10"/><circle cx="31" cy="32" r="3"/><path d="M42 21 56 8v10h-8v8Z"/></svg></i><b>Aplicações Reais</b><span>Da Bíblia para a vida<br>da igreja de hoje.</span></article>
+<article><i class="feature-ico"><svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="22" cy="26" r="8"/><circle cx="42" cy="26" r="8"/><circle cx="32" cy="18" r="9"/><path d="M7 49c1-9 7-14 15-14 4 0 7 1 10 4"/><path d="M57 49c-1-9-7-14-15-14-4 0-7 1-10 4"/><path d="M17 53c1-11 7-17 15-17s14 6 15 17"/></svg></i><b>Preparação para<br>o Púlpito</b><span>Organização, clareza<br>e impacto.</span></article>
+<article><i class="feature-ico"><svg viewBox="0 0 64 64" aria-hidden="true"><rect x="14" y="14" width="36" height="36" rx="4"/><rect x="24" y="24" width="16" height="16" rx="3"/><path d="M20 5v9M30 5v9M40 5v9M50 5v9M20 50v9M30 50v9M40 50v9M50 50v9M5 20h9M5 30h9M5 40h9M50 20h9M50 30h9M50 40h9"/><text x="32" y="36" text-anchor="middle" class="ai-letter">A</text></svg></i><b>AI HUB</b><span>Integração com múltiplas<br>Inteligências Artificiais.</span></article>
+<article><i class="feature-ico"><svg viewBox="0 0 64 64" aria-hidden="true"><rect x="21" y="6" width="22" height="52" rx="4"/><path d="M27 12h10M29 51h6"/></svg></i><b>Mobile First</b><span>Estude onde quiser.<br>No computador, tablet<br>ou celular.</span></article>
+</section><div class="home-slogan">LOGOS MASTER X — DA PALAVRA AO PÚLPITO. DA INSPIRAÇÃO À PREPARAÇÃO.</div></div>`},
  studio(){return `<h2>🎛️ LOGOS STUDIO PRO</h2>
 <p class="studio-subtitle muted">Prepare o conteúdo, escolha a ocasião e o público. O tipo de material é definido no campo Comando, sem atalhos duplicados.</p>
 ${form()}
@@ -409,6 +416,24 @@ ${Object.entries(p).map(([k,v])=>`${v?"🟢":"⚪"} ${k}: ${m[k]||"—"}`).join(
 
 As chaves secretas ficam somente no servidor.</div>`}
 };
+
+let topViewStack=[];
+function isTopToggleButton(el){return !!el?.closest?.(".classic-top");}
+function toggleTopView(target){
+  if(!target)return;
+  if(App.view===target && topViewStack.length){
+    const back=topViewStack.pop()||"dashboard";
+    render(back);
+    return;
+  }
+  if(App.view!==target){topViewStack.push(App.view||"dashboard");}
+  render(target);
+}
+function toggleAppearancePanel(){
+  const existing=$("#appearanceBackdrop");
+  if(existing){existing.remove();return;}
+  openAppearance();
+}
 
 async function render(view){
  App.view=view; $$(".nav button").forEach(b=>b.classList.toggle("active",b.dataset.view===view)); $("#workspace").innerHTML=views[view]?views[view]():"<h2>Módulo</h2>";
@@ -573,8 +598,8 @@ function closeMobileNav(){document.body.classList.remove("mobile-nav-open");$("#
 function toggleMobileNav(){if(document.body.classList.contains("mobile-nav-open")){closeMobileNav();return}document.body.classList.add("mobile-nav-open");if(!$("#mobileNavBackdrop")){const d=document.createElement("div");d.id="mobileNavBackdrop";d.className="mobile-nav-backdrop";d.addEventListener("click",closeMobileNav);document.body.appendChild(d)}}
 function installMobileNav(){const top=document.querySelector(".top");if(top&&!$("#mobileNavToggle")){const b=document.createElement("button");b.id="mobileNavToggle";b.className="mobile-nav-toggle";b.setAttribute("aria-label","Abrir menu");b.innerHTML='<span>☰</span><small>Menu</small>';b.addEventListener("click",toggleMobileNav);top.insertBefore(b,top.firstChild)}document.querySelectorAll(".nav button[data-view]").forEach(b=>b.addEventListener("click",()=>{if(innerWidth<=760)closeMobileNav()}));window.addEventListener("resize",()=>{if(innerWidth>760)closeMobileNav()});}
 installMobileNav();installUpdateControls();
-const top=document.querySelector('.top');if(top&&!document.querySelector('#aboutTopBtn')){let aboutReturnView='dashboard';const x=document.createElement('button');x.id='aboutTopBtn';x.className='top-mini';x.textContent='ⓘ Sobre';x.onclick=()=>{if(App.view==='about'){render(aboutReturnView||'dashboard');x.classList.remove('active');}else{aboutReturnView=App.view||'dashboard';render('about');x.classList.add('active');}};safeTopInsert(x);const i=document.createElement('button');i.id='installTopBtn';i.className='top-mini';i.textContent='📲 Instalar';i.onclick=installPwa;safeTopInsert(i);}
-const top2=document.querySelector(".top");if(top2&&!document.querySelector("#appearanceBtn")){const b=document.createElement("button");b.id="appearanceBtn";b.className="btn secondary appearance-trigger";b.textContent="🎨 Aparência";b.onclick=openAppearance;safeTopInsert(b);}
+const top=document.querySelector('.top');if(top&&!document.querySelector('#aboutTopBtn')){const x=document.createElement('button');x.id='aboutTopBtn';x.className='top-mini';x.textContent='ⓘ Sobre';x.onclick=()=>toggleTopView('about');safeTopInsert(x);const i=document.createElement('button');i.id='installTopBtn';i.className='top-mini';i.textContent='📲 Instalar';i.onclick=installPwa;safeTopInsert(i);}
+const top2=document.querySelector(".top");if(top2&&!document.querySelector("#appearanceBtn")){const b=document.createElement("button");b.id="appearanceBtn";b.className="btn secondary appearance-trigger";b.textContent="🎨 Aparência";b.onclick=toggleAppearancePanel;safeTopInsert(b);}
 render("dashboard");
    await checkApi();
  }catch(e){
