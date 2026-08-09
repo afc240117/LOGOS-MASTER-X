@@ -17,7 +17,7 @@ from app.think.engine import build_plan
 from app.quality.gate import evaluate
 from app.quality.reviewer import independent_review
 BASE=Path(__file__).resolve().parent;STATIC=BASE/"web"/"static";DB=BASE.parent/"data"/"sync.sqlite3";AI=AIHub();PROMPTS=PromptEngine()
-app=FastAPI(title="LOGOS MASTER X API",version="3.5.2");app.add_middleware(CORSMiddleware,allow_origins=["*"],allow_methods=["*"],allow_headers=["*"]);app.mount("/static",StaticFiles(directory=STATIC),name="static")
+app=FastAPI(title="LOGOS MASTER X API",version="3.7.1");app.add_middleware(CORSMiddleware,allow_origins=["*"],allow_methods=["*"],allow_headers=["*"]);app.mount("/static",StaticFiles(directory=STATIC),name="static")
 class Generate(BaseModel):
  mode:str="SERMÃO";text:str=Field(min_length=1);theme:str|None=None;duration:int=40;cult:str="Avivamento";audience:str="Igreja local";intensity:int=3;objective:str|None=None;notes:str|None=None;provider:str="auto";ai_mode:str="automatico";model:str|None=None
 class SyncPayload(BaseModel): payload:dict
@@ -26,13 +26,16 @@ def robj(r):return PromptRequest(r.mode,r.text,r.theme or "",r.duration,r.cult,r
 def home():return FileResponse(STATIC/"index.html")
 @app.get("/api/health")
 def health():
- c=AI.configured();return {"status":"ok","version":"LOGOS-MASTER-X-3.5.2","ai":any(c.values()),"providers":c,"models":AI.models(),"modes":["rapido","economico","automatico","qualidade","manual"],"orders":{m:AI.order(m) for m in ["rapido","economico","automatico","qualidade"]},"prompt_engine":"modular-2.0","think_engine":"14-stage","dna_k7":"engine","quality_gate":True,"capabilities":["studio","ai-hub","think-engine","dna-k7","quality-gate","bible-local","library","projects","editor","pulpit","backup"]}
+ c=AI.configured();return {"status":"ok","version":"LOGOS-MASTER-X-3.7.1","ai":any(c.values()),"providers":c,"models":AI.models(),"modes":["rapido","economico","automatico","qualidade","manual"],"orders":{m:AI.order(m) for m in ["rapido","economico","automatico","qualidade"]},"prompt_engine":"modular-2.0","think_engine":"14-stage","dna_k7":"engine","quality_gate":True,"capabilities":["studio","ai-hub","think-engine","dna-k7","quality-gate","bible-local","library","projects","editor","pulpit","backup"]}
+@app.get("/api/ai-metrics")
+def ai_metrics(): return AI.metrics()
+
 @app.get("/api/diagnostics")
 def diagnostics():
     cfg=AI.configured()
     return {
         "status":"ok",
-        "version":"LOGOS-MASTER-X-3.5.2",
+        "version":"LOGOS-MASTER-X-3.7.1",
         "configured_providers":[k for k,v in cfg.items() if v],
         "provider_count":sum(1 for v in cfg.values() if v),
         "default_models":AI.models(),
