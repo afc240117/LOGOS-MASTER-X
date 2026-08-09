@@ -1,1 +1,0 @@
-export function climaxStage(input={}){return {stage:"CLÍMAX",flow:["Recordação da grande ideia","Confronto com a resposta exigida","Esperança oferecida pelo texto","Resposta da igreja","Oração"],rule:"Não introduzir doutrina nova no clímax; concentrar o que já foi demonstrado."};}

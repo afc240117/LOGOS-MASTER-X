@@ -1,9 +1,0 @@
-{
-  "description": "Formato recomendado para importar Bíblia no LOGOS MASTER X",
-  "verse": {
-    "book": "João",
-    "chapter": 3,
-    "verse": 16,
-    "text": "Texto do versículo da tradução que você tem permissão para usar."
-  }
-}

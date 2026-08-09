@@ -49,18 +49,25 @@ class AIHub:
    else:
     s["errors"]+=1;s["last_error"]=error[:180]
     if "429" in error or "rate" in error.lower() or "limit" in error.lower():s["rate_limits"]+=1;s["last_status"]="limited"
-   self._recent[p].append((ok,seconds))
+   self._recent[p].append((ok,seconds,time.time()))
  def metrics(self):
   cfg=self.configured(); total=sum(v["success"] for v in self._stats.values()); rows={}
   for p in PUBLIC_PROVIDERS:
    s=dict(self._stats[p]);avg=round(s["seconds_total"]/s["success"],2) if s["success"] else None
    rows[p]={**s,"configured":bool(cfg.get(p)),"avg_seconds":avg,"share_pct":round((s["success"]/total*100),1) if total else 0,"status":s["last_status"] if s["requests"] else ("ready" if cfg.get(p) else "offline")}
-  # Estimativa operacional, não cota oficial da API: baseada em sucesso/erros observados.
+  # Carga operacional ATUAL: janela móvel de 5 minutos. Erros/429 antigos não deixam o painel permanentemente laranja/vermelho.
   success=sum(x["success"] for x in rows.values()); errors=sum(x["errors"] for x in rows.values()); limits=sum(x["rate_limits"] for x in rows.values())
-  if limits or (errors>=3 and errors>success*.2): load="alta"
-  elif success>=100: load="moderada"
+  now=time.time(); recent_events=[]
+  for p in PUBLIC_PROVIDERS:
+   for event in self._recent[p]:
+    ts=event[2] if len(event)>2 else now
+    if now-ts<=300: recent_events.append(event)
+  recent_total=len(recent_events); recent_errors=sum(1 for x in recent_events if not x[0]); recent_slow=sum(1 for x in recent_events if x[0] and x[1]>=45)
+  if recent_total==0: load="normal"
+  elif recent_errors>=3 or (recent_total>=4 and recent_errors/recent_total>=.5): load="alta"
+  elif recent_errors>=1 or recent_slow>=2 or recent_total>=12: load="moderada"
   else: load="normal"
-  return {"smart_router":True,"environment":"public" if self.is_public_server() else "local","online_providers":sum(1 for p in PUBLIC_PROVIDERS if cfg.get(p)),"public_provider_total":len(PUBLIC_PROVIDERS),"providers":rows,"totals":{"requests":success+errors,"success":success,"errors":errors,"rate_limits":limits},"load":load,"capacity_note":"Capacidade estimada depende das cotas reais de cada provedor; o monitor usa telemetria observada e não inventa limites.","future_slots":FUTURE_PROVIDERS,"local_reserve":{"provider":"9router","available":bool(cfg.get("9router")) and not self.is_public_server(),"label":"Reserva local"},"uptime_seconds":round(time.time()-self._started)}
+  return {"smart_router":True,"environment":"public" if self.is_public_server() else "local","online_providers":sum(1 for p in PUBLIC_PROVIDERS if cfg.get(p)),"public_provider_total":len(PUBLIC_PROVIDERS),"providers":rows,"totals":{"requests":success+errors,"success":success,"errors":errors,"rate_limits":limits},"recent":{"window_minutes":5,"requests":recent_total,"errors":recent_errors,"slow":recent_slow},"load":load,"capacity_note":"Carga atual usa somente os últimos 5 minutos; totais históricos ficam separados. Cotas oficiais continuam sendo definidas por cada provedor.","future_slots":FUTURE_PROVIDERS,"local_reserve":{"provider":"9router","available":bool(cfg.get("9router")) and not self.is_public_server(),"label":"Reserva local"},"uptime_seconds":round(time.time()-self._started)}
  def generate(self,prompt,instructions,provider="auto",mode="automatico",model=None,max_tokens=12000):
   cfg=self.configured(); candidates=[provider] if provider not in ("auto","automatico","") else self.order(mode); errors=[]
   if self.is_public_server() and provider=="9router": candidates=[]; errors.append("9router: reserva local; indisponível no servidor público")
