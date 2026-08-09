@@ -796,3 +796,49 @@ html[data-layout="classico"] .classic-top .top-provider.active{
 html[data-layout="classico"] .classic-top .top-provider .top-ico{width:23px;height:23px;flex:0 0 23px}
 html[data-layout="classico"] .classic-top .top-provider svg{width:100%;height:100%;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 @media(max-width:1420px){html[data-layout="classico"] .classic-top .top-provider{display:none}}
+
+/* =========================================================
+   ETAPA 01L — STATUS DE PROVEDORES + LOGO TRANSPARENTE
+   ========================================================= */
+html[data-layout="classico"] .classic-top #status.top-provider-status{
+  display:inline-flex!important;
+  min-width:190px;
+  height:46px;
+  padding:0 15px;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  border:1px solid rgba(159,116,43,.88);
+  border-radius:14px;
+  background:linear-gradient(180deg,#17130d 0%,#080d13 100%);
+  color:#f3cc68;
+  font-size:11px;
+  line-height:1.05;
+  letter-spacing:.01em;
+  cursor:pointer;
+  white-space:nowrap;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.035),0 5px 14px rgba(0,0,0,.18);
+}
+html[data-layout="classico"] .classic-top #status.top-provider-status:hover,
+html[data-layout="classico"] .classic-top #status.top-provider-status:focus-visible{
+  color:#ffe08b;
+  border-color:#d4a347;
+  background:linear-gradient(180deg,#292016 0%,#0b1016 100%);
+  box-shadow:0 0 15px rgba(217,157,43,.28),inset 0 0 12px rgba(226,172,64,.08);
+  outline:none;
+}
+html[data-layout="classico"] .classic-top #status.top-provider-status .status-dot{
+  width:8px;height:8px;border-radius:50%;background:#42d894;box-shadow:0 0 9px rgba(66,216,148,.55);flex:0 0 8px;
+}
+html[data-layout="classico"] .classic-top #status.top-provider-status .status-reserve{color:#e8c56e}
+html[data-layout="classico"] .classic-top #status.top-provider-status .status-chevron{color:#e9bd58;margin-left:2px}
+html[data-layout="classico"] .classic-brand{
+  background:transparent!important;
+  box-shadow:none!important;
+  overflow:visible;
+}
+html[data-layout="classico"] .classic-brand::after{display:none!important}
+html[data-layout="classico"] .classic-brand .classic-header-logo{
+  filter:drop-shadow(0 2px 7px rgba(0,0,0,.48)) saturate(1.02) contrast(1.03)!important;
+}
+@media(max-width:1420px){html[data-layout="classico"] .classic-top #status.top-provider-status{display:none!important}}
