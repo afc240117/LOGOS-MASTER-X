@@ -407,3 +407,43 @@ html[data-layout="moderno"] body{background:radial-gradient(circle at 50% -10%,c
   color:#ffd879;
   filter:drop-shadow(0 0 7px rgba(255,206,104,.34));
 }
+
+/* ============================================================
+   ETAPA 01E — LATERAL: ÍCONES DOURADOS MAIORES COMO MODELO
+   Escopo: apenas Principal/Ferramentas; preserva os 4 botões inferiores.
+   ============================================================ */
+.classic-sidebar .nav button{
+  min-height:46px;
+  padding:7px 8px;
+  gap:11px;
+}
+.classic-sidebar .nav button .side-ico{
+  width:34px!important;
+  height:34px!important;
+  flex:0 0 34px!important;
+  display:grid!important;
+  place-items:center!important;
+  color:#f1c45e!important;
+  filter:drop-shadow(0 0 5px rgba(240,184,72,.24))!important;
+}
+.classic-sidebar .nav button .side-ico svg{
+  width:29px!important;
+  height:29px!important;
+  fill:none!important;
+  stroke:currentColor!important;
+  stroke-width:1.85!important;
+  stroke-linecap:round!important;
+  stroke-linejoin:round!important;
+}
+.classic-sidebar .nav button:hover .side-ico,
+.classic-sidebar .nav button.active .side-ico{
+  color:#ffd773!important;
+  filter:drop-shadow(0 0 8px rgba(255,202,88,.40))!important;
+}
+.classic-sidebar .nav button>span{
+  font-size:13px;
+  line-height:1.08;
+}
+.classic-sidebar .nav button small{
+  margin-top:2px;
+}
