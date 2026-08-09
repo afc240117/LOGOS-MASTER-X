@@ -447,3 +447,118 @@ html[data-layout="moderno"] body{background:radial-gradient(circle at 50% -10%,c
 .classic-sidebar .nav button small{
   margin-top:2px;
 }
+
+/* =========================================================
+   ETAPA 01G — LOGO + CONTAINER LATERAL FIEL AO MODELO
+   Escopo deliberadamente limitado: marca e moldura da lateral.
+   ========================================================= */
+html[data-layout="classico"] .classic-layout{
+  grid-template-columns:232px minmax(0,1fr);
+}
+html[data-layout="classico"] .classic-brand{
+  width:258px;
+  min-width:258px;
+  height:64px;
+  padding:0;
+  margin:0;
+  overflow:hidden;
+  background:#03070b;
+  border:0;
+  display:flex;
+  align-items:center;
+}
+html[data-layout="classico"] .classic-brand .classic-header-logo{
+  width:250px;
+  height:64px;
+  display:block;
+  object-fit:cover;
+  object-position:left center;
+  filter:saturate(1.04) contrast(1.02);
+}
+
+html[data-layout="classico"] .classic-sidebar{
+  position:relative;
+  box-sizing:border-box;
+  width:220px;
+  margin:10px 0 10px 0;
+  padding:12px 10px 16px;
+  border:1px solid rgba(74,96,128,.72);
+  border-left-color:rgba(58,75,100,.5);
+  border-radius:20px;
+  overflow:hidden;
+  background:
+    radial-gradient(140% 60% at 100% 44%,rgba(20,61,101,.18) 0%,rgba(8,25,43,.10) 30%,transparent 62%),
+    linear-gradient(90deg,#050b12 0%,#07101a 62%,#081521 84%,#07101a 100%);
+  box-shadow:
+    inset -18px 0 38px rgba(10,44,77,.12),
+    inset 0 1px 0 rgba(255,255,255,.025),
+    0 12px 32px rgba(0,0,0,.28);
+}
+html[data-layout="classico"] .classic-sidebar::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  border-radius:inherit;
+  background:
+    linear-gradient(180deg,rgba(255,255,255,.018),transparent 16%,transparent 78%,rgba(19,55,89,.08)),
+    radial-gradient(100% 48% at 100% 50%,rgba(32,94,145,.11),transparent 64%);
+  z-index:0;
+}
+html[data-layout="classico"] .classic-sidebar::after{
+  content:"";
+  position:absolute;
+  top:38px;
+  right:-1px;
+  bottom:38px;
+  width:2px;
+  pointer-events:none;
+  background:linear-gradient(180deg,transparent,rgba(64,120,174,.30) 14%,rgba(64,120,174,.20) 62%,transparent);
+  filter:blur(.15px);
+  opacity:.8;
+}
+html[data-layout="classico"] .classic-sidebar>*{position:relative;z-index:1}
+
+html[data-layout="classico"] .classic-sidebar .side-brand{
+  min-height:58px;
+  margin:-2px 0 8px;
+  padding:8px 6px 13px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  border-bottom:1px solid rgba(103,120,142,.30);
+  background:linear-gradient(180deg,rgba(9,17,27,.28),rgba(4,10,16,.04));
+}
+html[data-layout="classico"] .classic-sidebar .side-brand>div{width:100%}
+html[data-layout="classico"] .classic-sidebar .side-brand strong{
+  display:block;
+  color:#f0f1ef;
+  font-size:18px;
+  line-height:1.08;
+  font-weight:500;
+  letter-spacing:.015em;
+  white-space:nowrap;
+  text-shadow:0 1px 10px rgba(255,255,255,.04);
+}
+html[data-layout="classico"] .classic-sidebar .side-brand .brand-x{
+  color:#f5d486;
+  font-family:Georgia,'Times New Roman',serif;
+  font-size:21px;
+  font-weight:700;
+  text-shadow:0 0 10px rgba(225,166,55,.20);
+}
+html[data-layout="classico"] .classic-sidebar .side-brand small{
+  display:block;
+  margin-top:5px;
+  color:#e9b94d;
+  font-size:10px;
+  line-height:1;
+  font-weight:700;
+  letter-spacing:.30em;
+}
+
+@media(max-width:850px){
+  html[data-layout="classico"] .classic-sidebar{width:auto;margin:8px;border-radius:18px}
+  html[data-layout="classico"] .classic-brand{width:auto;min-width:0;max-width:260px}
+}
