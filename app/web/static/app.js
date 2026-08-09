@@ -346,7 +346,11 @@ function fd(){const av=$("#fAudience")?.value||"Igreja local",cv=$("#fCult")?.va
 const views={
  dashboard(){const s=projectStats();return `<div class="classic-home exact-reference-home">
 <div class="reference-body-wrap">
+<<<<<<< HEAD
 <img class="reference-body-img" src="/static/brand/classic-reference-body.png" alt="LOGOS MASTER X DNA K7 — Home clássica">
+=======
+<img class="reference-body-img" src="/static/brand/classic-reference-body-01ai.png?v=01ai" alt="LOGOS MASTER X DNA K7 — Home clássica">
+>>>>>>> faa460d (LOGOS MASTER X 3.7.3 - Update Center, precisao e temas mobile)
 <button class="reference-hit reference-hit-studio" data-go="studio" aria-label="Acessar Studio"></button>
 <button class="reference-hit reference-hit-about" data-go="about" aria-label="Saiba mais sobre o LOGOS"></button>
 </div></div>`},

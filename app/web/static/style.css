@@ -1529,4 +1529,178 @@ html[data-layout="classico"] .reference-body-img{
     max-width:100%!important;
     height:auto!important;
   }
+<<<<<<< HEAD
+=======
+}
+
+/* ================================================================
+   ETAPA 01AB — MICROAJUSTE FINAL DE SIMETRIA HORIZONTAL
+   Folga óptica idêntica nos dois lados da área central.
+   Mantém a imagem integral, sem crop, zoom ou deformação.
+   ================================================================ */
+@media (min-width:851px){
+  html[data-layout="classico"] .classic-layout > main{
+    box-sizing:border-box!important;
+    padding-left:8px!important;
+    padding-right:8px!important;
+  }
+  html[data-layout="classico"] .classic-layout .workspace,
+  html[data-layout="classico"] .exact-reference-home,
+  html[data-layout="classico"] .reference-body-wrap{
+    box-sizing:border-box!important;
+    width:100%!important;
+    max-width:100%!important;
+    margin-left:auto!important;
+    margin-right:auto!important;
+  }
+  html[data-layout="classico"] .reference-body-img{
+    display:block!important;
+    width:100%!important;
+    max-width:100%!important;
+    height:auto!important;
+    margin:0 auto!important;
+    object-fit:contain!important;
+    object-position:center top!important;
+  }
+}
+
+/* ================================================================
+   ETAPA 01AC — MICROAJUSTE ÓPTICO ENTRE SIDEBARS
+   Corrige a pequena lacuna à esquerda e devolve respiro à direita.
+   Não recorta, não amplia e não altera a arte.
+   ================================================================ */
+@media (min-width:851px){
+  html[data-layout="classico"] .classic-layout > main{
+    padding-left:0!important;
+    padding-right:0!important;
+    overflow:visible!important;
+  }
+
+  html[data-layout="classico"] .classic-layout .workspace,
+  html[data-layout="classico"] .exact-reference-home,
+  html[data-layout="classico"] .reference-body-wrap{
+    box-sizing:border-box!important;
+  }
+
+  html[data-layout="classico"] .reference-body-wrap{
+    width:calc(100% - 16px)!important;
+    max-width:calc(100% - 16px)!important;
+    margin-left:0!important;
+    margin-right:16px!important;
+    transform:translateX(-10px)!important;
+    overflow:visible!important;
+  }
+
+  html[data-layout="classico"] .reference-body-img{
+    display:block!important;
+    width:100%!important;
+    max-width:100%!important;
+    height:auto!important;
+    margin:0!important;
+    object-fit:contain!important;
+    object-position:center top!important;
+    transform:none!important;
+  }
+}
+
+
+/* =================================================================
+   ETAPA 01AI — GABARITO ORIGINAL APROVADO
+   A imagem central foi recortada DIRETAMENTE da referência oficial.
+   A arte não é reconstruída, deslocada nem redesenhada.
+   ================================================================= */
+@media (min-width:851px){
+  html[data-layout="classico"],
+  html[data-layout="classico"] body{
+    width:100%!important;
+    max-width:100%!important;
+    overflow-x:hidden!important;
+  }
+
+  html[data-layout="classico"] .classic-layout{
+    display:grid!important;
+    grid-template-columns:220px minmax(0,1fr)!important;
+    gap:0!important;
+    width:100%!important;
+    max-width:100%!important;
+    margin:0!important;
+    padding:0!important;
+    overflow:hidden!important;
+  }
+
+  html[data-layout="classico"] .classic-sidebar{
+    box-sizing:border-box!important;
+    width:220px!important;
+    min-width:220px!important;
+    max-width:220px!important;
+    margin:0!important;
+    padding:0!important;
+    transform:none!important;
+  }
+
+  html[data-layout="classico"] .classic-layout > main{
+    box-sizing:border-box!important;
+    min-width:0!important;
+    width:100%!important;
+    max-width:100%!important;
+    margin:0!important;
+    padding:0!important;
+    overflow:visible!important;
+    transform:none!important;
+  }
+
+  html[data-layout="classico"] #workspace:has(.exact-reference-home),
+  html[data-layout="classico"] .workspace:has(.exact-reference-home),
+  html[data-layout="classico"] .exact-reference-home,
+  html[data-layout="classico"] .reference-body-wrap{
+    box-sizing:border-box!important;
+    display:block!important;
+    min-width:0!important;
+    width:100%!important;
+    max-width:100%!important;
+    height:auto!important;
+    max-height:none!important;
+    margin:0!important;
+    padding:0!important;
+    transform:none!important;
+    overflow:visible!important;
+  }
+
+  html[data-layout="classico"] .reference-body-img{
+    box-sizing:border-box!important;
+    display:block!important;
+    width:100%!important;
+    max-width:100%!important;
+    min-width:0!important;
+    height:auto!important;
+    max-height:none!important;
+    margin:0!important;
+    padding:0!important;
+    object-fit:contain!important;
+    object-position:center top!important;
+    transform:none!important;
+    clip-path:none!important;
+  }
+}
+
+@media (max-width:850px){
+  html[data-layout="classico"] .reference-body-wrap{
+    width:100%!important;
+    max-width:100%!important;
+    margin:0!important;
+    padding:0!important;
+    overflow:visible!important;
+  }
+
+  html[data-layout="classico"] .reference-body-img{
+    display:block!important;
+    width:100%!important;
+    max-width:100%!important;
+    height:auto!important;
+    object-fit:contain!important;
+    object-position:center top!important;
+    transform:none!important;
+    clip-path:none!important;
+  }
+>>>>>>> faa460d (LOGOS MASTER X 3.7.3 - Update Center, precisao e temas mobile)
 }
