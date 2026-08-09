@@ -536,6 +536,9 @@ function bindNav(){
  $$(".nav button").forEach(b=>{
    b.onclick=()=>{
      if(b.dataset.view==="appearance"){openAppearance();return;}
+     // Update Center agora vive somente no menu lateral e abre como popup.
+     // Não troca a página atual e não fica flutuando na tela.
+     if(b.dataset.view==="updates"){openUpdateCenter();return;}
      render(b.dataset.view);
    };
  });
@@ -592,7 +595,20 @@ async function waitForRenderDeploy(expected=APP_BUILD_VERSION,timeoutMs=240000){
 async function openUpdateCenter(){let prod=await getProductionVersion(),dev=null;if(IS_LOCAL_HOST){try{dev=await devApi('/api/dev/status')}catch{}}const auto=Store.get('autoPublish',false);actionModal({icon:'🚀',title:'Update Center • LOGOS '+APP_BUILD_VERSION,message:IS_LOCAL_HOST?`Local ${APP_BUILD_VERSION} • Render ${prod} • Git ${dev?.dirty?'com alterações':'limpo'} • Auto-publicar ${auto?'ON':'OFF'}`:`Instalada ${APP_BUILD_VERSION} • Render ${prod}`,actions:IS_LOCAL_HOST?[{label:'📋 Git status',close:false,run:async()=>{const x=await devApi('/api/dev/status');actionModal({icon:'Git',title:'Status local',message:(x.branch||'main')+' • '+(x.dirty?'Há alterações para publicar':'Tudo publicado')+(x.files?.length?' • '+x.files.length+' arquivo(s)':''),actions:[{label:'Fechar',kind:'primary'}]})}},{label:'🚀 Publicar no Render',kind:'primary',close:false,run:async()=>{actionModal({icon:'↥',title:'GitHub → Render',message:'Enviando alterações ao GitHub. O Render deverá iniciar o deploy automático da branch principal.',actions:[]});try{const x=await devApi('/api/dev/publish',{method:'POST'});actionModal({icon:'⏳',title:'GitHub atualizado',message:(x.message||'Commit enviado')+' • commit '+(x.commit||'—')+'. Verificando o Render automaticamente...',actions:[]});const dep=await waitForRenderDeploy(APP_BUILD_VERSION);actionModal({icon:dep.ok?'✓':'⏳',title:dep.ok?'Render atualizado':'Render ainda processando',message:dep.ok?'Produção confirmada na versão '+dep.version+'. Local e Render estão sincronizados.':'O GitHub foi atualizado, mas o Render ainda informa '+dep.version+'. Você pode verificar novamente em alguns instantes.',actions:[{label:'Verificar novamente',kind:'primary',run:openUpdateCenter},{label:'Fechar'}]})}catch(e){actionModal({icon:'!',title:'Falha ao publicar',message:e.message,actions:[{label:'Fechar',kind:'primary'}]})}}},{label:`⚙ Auto-publicar ${auto?'ON':'OFF'}`,run:()=>toggleAutoPublish(!auto)}]:[{label:'🔄 Verificar atualização',kind:'primary',close:false,run:()=>checkFrontendVersion(true)},{label:'⬆️ Atualizar agora',run:()=>forceFrontendRefresh(prod)}]});}
 function toggleAutoPublish(on){Store.set('autoPublish',!!on);if(autoPublishTimer){clearInterval(autoPublishTimer);autoPublishTimer=null}if(on&&IS_LOCAL_HOST){autoPublishTimer=setInterval(async()=>{try{const s=await devApi('/api/dev/status');if(s.dirty)await devApi('/api/dev/publish',{method:'POST'})}catch(e){console.warn('Auto-publicar:',e.message)}},15000)}actionModal({icon:on?'✓':'○',title:'Auto-publicar '+(on?'ativado':'desativado'),message:on?'Enquanto esta página local estiver aberta, o LOGOS verificará alterações a cada 15 segundos e publicará no GitHub para o Render fazer o deploy automático. Use somente quando quiser enviar mudanças automaticamente.':'As alterações só serão enviadas pelo botão Publicar agora.',actions:[{label:'Fechar',kind:'primary'}]});}
 function safeTopInsert(node){const top=document.querySelector('.top');const actions=document.querySelector('.top-actions');const host=actions||top;if(!host||!node)return;const status=$('#status');if(status&&status.parentNode===host)host.insertBefore(node,status);else host.appendChild(node);}
-function installUpdateControls(){const top=document.querySelector('.top');if(top&&!$('#updateCenterBtn')){const b=document.createElement('button');b.id='updateCenterBtn';b.className='btn secondary update-center-top';b.textContent=IS_LOCAL_HOST?'🚀 Publicar / Atualizar':'🔄 Atualizações';b.onclick=openUpdateCenter;safeTopInsert(b);}if(!$('#updateDock')){const d=document.createElement('div');d.id='updateDock';d.className='update-dock';d.innerHTML=`<span>LOGOS ${APP_BUILD_VERSION}</span><button id="updateDockCheck">🔄 Verificar</button>${IS_LOCAL_HOST?'<button id="updateDockPublish">🚀 Publicar</button><button id="updateDockAuto">⚙ Auto</button>':'<button id="updateDockNow">⬆ Atualizar</button>'}`;document.body.appendChild(d);$('#updateDockCheck').onclick=()=>checkFrontendVersion(true);$('#updateDockPublish')&&($('#updateDockPublish').onclick=openUpdateCenter);$('#updateDockAuto')&&($('#updateDockAuto').onclick=()=>toggleAutoPublish(!Store.get('autoPublish',false)));$('#updateDockNow')&&($('#updateDockNow').onclick=openUpdateCenter);}if(IS_LOCAL_HOST&&Store.get('autoPublish',false))toggleAutoPublish(true);}
+function installUpdateControls(){
+ // 3.7.6b: os controles visuais de atualização ficam exclusivamente no
+ // botão "Update Center" do menu lateral. O próprio actionModal já possui
+ // X, fecha ao clicar fora e só aparece quando o usuário solicitar.
+ // Mantemos apenas o comportamento opcional de auto-publicação já salvo.
+ $("#updateCenterBtn")?.remove();
+ $("#updateDock")?.remove();
+ if(IS_LOCAL_HOST&&Store.get('autoPublish',false)&&!autoPublishTimer){
+   autoPublishTimer=setInterval(async()=>{
+     try{const st=await devApi('/api/dev/status');if(st.dirty)await devApi('/api/dev/publish',{method:'POST'})}
+     catch(e){console.warn('Auto-publicar:',e.message)}
+   },15000);
+ }
+}
 
 window.addEventListener("DOMContentLoaded",async()=>{
  try{

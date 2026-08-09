@@ -52,12 +52,36 @@ def dev_status(request:Request):
 @app.post("/api/dev/publish")
 def dev_publish(request:Request):
     _local_dev(request)
+
+    # Atualiza a referência do GitHub antes de publicar. Isso evita tentar
+    # um push com origin/main antigo e também permite publicar commits locais
+    # já existentes mesmo quando não há arquivos modificados no momento.
+    _git("fetch","origin","main")
+
     status=_git("status","--porcelain")
-    if not status: return {"ok":True,"message":"Nenhuma alteração para publicar","commit":_git("rev-parse","--short","HEAD")}
-    _git("add","-A")
-    # Nunca publique segredos locais mesmo se uma configuração Git externa mudar.
-    subprocess.run(["git","reset","--",".env"],cwd=BASE.parent,text=True,capture_output=True)
-    _git("commit","-m","LOGOS MASTER X 3.7.6 - Render sync, mobile splash e PWA")
+    if status:
+        _git("add","-A")
+        # Nunca publique segredos locais mesmo se uma configuração Git externa mudar.
+        subprocess.run(["git","reset","--",".env"],cwd=BASE.parent,text=True,capture_output=True)
+        # Pode acontecer de só .env estar alterado; nesse caso não há nada para commit.
+        staged=subprocess.run(["git","diff","--cached","--quiet"],cwd=BASE.parent).returncode
+        if staged!=0:
+            _git("commit","-m","LOGOS MASTER X - Atualizacao pelo Update Center")
+
+    # Publicação segura: nunca usa force. Se o GitHub estiver à frente ou o
+    # histórico divergir, interrompe e explica em vez de sobrescrever dados.
+    local=_git("rev-parse","HEAD")
+    remote=_git("rev-parse","origin/main")
+    if local==remote:
+        return {"ok":True,"message":"Local e GitHub já estão sincronizados","commit":_git("rev-parse","--short","HEAD"),"target":"https://logos-master-x-api.onrender.com"}
+
+    is_remote_ancestor=subprocess.run(
+        ["git","merge-base","--is-ancestor","origin/main","HEAD"],
+        cwd=BASE.parent,text=True,capture_output=True
+    ).returncode==0
+    if not is_remote_ancestor:
+        raise HTTPException(409,"GitHub possui alterações que não estão no projeto local. Sincronização manual necessária antes de publicar; nenhum arquivo foi sobrescrito.")
+
     _git("push","origin","main")
     return {"ok":True,"message":"GitHub atualizado; o Render deve iniciar o deploy automático","commit":_git("rev-parse","--short","HEAD"),"target":"https://logos-master-x-api.onrender.com"}
 
