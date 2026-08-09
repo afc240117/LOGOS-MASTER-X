@@ -1,10 +1,4 @@
 {
-  "name": "LOGOS MASTER X",
-  "short_name": "LOGOS X",
-  "start_url": "./index.html",
-  "scope": "./",
-  "display": "standalone",
-  "background_color": "#05070b",
-  "theme_color": "#05070b",
-  "description": "Sistema de preparação bíblica, Studio e DNA K7."
+  "name":"LOGOS MASTER X","short_name":"LOGOS X","start_url":"/","scope":"/","display":"standalone","background_color":"#05070b","theme_color":"#05070b","description":"DNA K7 • Bíblia • Estudo • Pregação",
+  "icons":[{"src":"/static/brand/icon-gold-192.png","sizes":"192x192","type":"image/png"},{"src":"/static/brand/icon-gold-512.png","sizes":"512x512","type":"image/png"}]
 }
