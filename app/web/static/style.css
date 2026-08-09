@@ -388,3 +388,22 @@ html[data-layout="moderno"] body{background:radial-gradient(circle at 50% -10%,c
 .classic-sidebar .side-special .side-install:hover{
   background:linear-gradient(90deg,#9b6018 0%,#e1a641 18%,#ffe08b 50%,#dda039 82%,#965817 100%);
 }
+
+/* ============================================================
+   ETAPA 01D — ÍCONES SUPERIORES FIEIS AO MODELO
+   Escopo: somente ícones de Principal/Ferramentas da lateral.
+   ============================================================ */
+.classic-sidebar .nav button .side-ico{
+  width:29px;height:29px;
+  color:#f0c66b;
+  filter:drop-shadow(0 0 4px rgba(240,190,88,.18));
+}
+.classic-sidebar .nav button .side-ico svg{
+  width:24px;height:24px;
+  stroke-width:1.8;
+}
+.classic-sidebar .nav button:hover .side-ico,
+.classic-sidebar .nav button.active .side-ico{
+  color:#ffd879;
+  filter:drop-shadow(0 0 7px rgba(255,206,104,.34));
+}
