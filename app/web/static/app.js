@@ -334,7 +334,7 @@ function form(){
 function fd(){const av=$("#fAudience")?.value||"Igreja local",cv=$("#fCult")?.value||"Avivamento";const audience=av==="__custom__"?($("#fAudienceCustom")?.value.trim()||"Público personalizado"):av;const cult=cv==="__custom__"?($("#fCultCustom")?.value.trim()||"Ocasião personalizada"):cv;return {text:$("#fText")?.value.trim()||"",objective:$("#fObjective")?.value.trim()||"",duration:Number($("#fDuration")?.value||40),cult,intensity:Number($("#fK7")?.value||3),audience,notes:$("#fNotes")?.value.trim()||""}}
 
 const views={
- dashboard(){const s=projectStats(),h=Store.get("history",[])[0];return `<div class="hero"><h1>LOGOS MASTER X 3.6.5</h1><p>Preparação bíblica • IA multiprovedor • DNA K7 • uso local + nuvem</p></div>
+ dashboard(){const s=projectStats(),h=Store.get("history",[])[0];return `<div class="hero"><h1>LOGOS MASTER X 3.6.6</h1><p>Preparação bíblica • IA multiprovedor • DNA K7 • uso local + nuvem</p></div>
 <div class="grid">
 <div class="card"><h3>🎛️ Studio</h3><p class="muted">Sermão, estudo, esboço, exegese, EBD, devocional e série.</p><button class="btn primary" data-go="studio">Abrir Studio</button></div>
 <div class="card"><h3>🤖 AI HUB</h3><p class="muted">${App.server?Object.values(App.health?.providers||{}).filter(Boolean).length+" provedores ativos":"Verificando API..."}</p><button class="btn primary" data-go="aihub">Abrir AI HUB</button></div>
@@ -511,11 +511,45 @@ async function clearOldFrontendCache(){
    }
  }catch(e){}
 }
+
+const APP_BUILD_VERSION="3.6.6";
+function publicAsset(path){
+ const local=location.hostname==="127.0.0.1"||location.hostname==="localhost";
+ return (local?"/static/":"/")+String(path).replace(/^\/+/,"");
+}
+function showUpdateBanner(remoteVersion){
+ if(document.getElementById("logosUpdateBanner")) return;
+ const bar=document.createElement("div");
+ bar.id="logosUpdateBanner";
+ bar.style.cssText="position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:99999;background:#111827;color:#fff;border:1px solid rgba(255,255,255,.18);box-shadow:0 16px 40px rgba(0,0,0,.35);border-radius:16px;padding:12px 14px;display:flex;gap:12px;align-items:center;max-width:calc(100vw - 24px);font:600 14px system-ui";
+ bar.innerHTML='<span>🚀 Nova versão '+escapeHtml(remoteVersion)+' disponível</span><button id="logosUpdateNow" style="border:0;border-radius:10px;padding:9px 12px;font-weight:800;cursor:pointer">Atualizar agora</button>';
+ document.body.appendChild(bar);
+ document.getElementById("logosUpdateNow").onclick=async()=>{await forceFrontendRefresh(remoteVersion)};
+}
+async function forceFrontendRefresh(remoteVersion){
+ try{
+   if("serviceWorker" in navigator){const regs=await navigator.serviceWorker.getRegistrations();await Promise.all(regs.map(r=>r.unregister()));}
+   if("caches" in window){const keys=await caches.keys();await Promise.all(keys.map(k=>caches.delete(k)));}
+ }catch(e){}
+ try{localStorage.setItem("logosLastBuild",remoteVersion||APP_BUILD_VERSION)}catch(e){}
+ const u=new URL(location.href);u.searchParams.set("build",remoteVersion||Date.now());location.replace(u.toString());
+}
+async function checkFrontendVersion(){
+ try{
+   const r=await fetch(publicAsset("version.json")+"?t="+Date.now(),{cache:"no-store",headers:{"Cache-Control":"no-cache"}});
+   if(!r.ok)return;
+   const j=await r.json();const remote=String(j.version||"").trim();
+   if(remote&&remote!==APP_BUILD_VERSION)showUpdateBanner(remote);
+   try{localStorage.setItem("logosCurrentBuild",APP_BUILD_VERSION)}catch(e){}
+ }catch(e){}
+}
+
 window.addEventListener("DOMContentLoaded",async()=>{
  try{
    bindNav();
    $("#workspace").innerHTML='<div class="hero"><h1>LOGOS MASTER X</h1><p>Carregando sistema...</p></div>';
    await clearOldFrontendCache();
+   await checkFrontendVersion();
    applyVisual();
 const top=document.querySelector(".top");if(top&&!document.querySelector("#appearanceBtn")){const b=document.createElement("button");b.id="appearanceBtn";b.className="btn secondary appearance-trigger";b.textContent="🎨 Aparência";b.onclick=openAppearance;top.insertBefore(b,document.querySelector("#status"));}
 render("dashboard");

@@ -1,7 +1,7 @@
 <!doctype html><html lang="pt-BR"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#05070b"><meta name="description" content="LOGOS MASTER X">
-<title>LOGOS MASTER X</title><link rel="manifest" href="/static/manifest.webmanifest"><link rel="stylesheet" href="/static/style.css?v=365"></head>
+<title>LOGOS MASTER X</title><link rel="manifest" href="/static/manifest.webmanifest"><link rel="stylesheet" href="/static/style.css?v=366"></head>
 <body><div class="app"><header class="top"><div class="brand"><strong>LOGOS MASTER X</strong><small>Sistema Operacional Homilético</small></div><div id="status" class="status">LOCAL / OFFLINE ✅</div></header>
 <div class="layout"><aside class="sidebar"><nav class="nav">
 <div class="section">Principal</div>
@@ -11,4 +11,12 @@
 <div class="section">Sistema</div>
 <button data-view="aihub">🤖 AI HUB</button><button data-view="backup">💾 Backup</button><button data-view="settings">⚙️ Configurações</button>
 </nav></aside><main><section id="workspace" class="workspace"></section></main></div></div>
-<script src="/static/prompt-library.js?v=322"></script><script src="/static/app.js?v=365"></script></body></html>
+<script>
+(function(){
+  try {
+    if ('serviceWorker' in navigator) navigator.serviceWorker.getRegistrations().then(function(rs){rs.forEach(function(r){r.unregister();});});
+    if ('caches' in window) caches.keys().then(function(keys){keys.filter(function(k){return k.indexOf('logos-master-x')===0;}).forEach(function(k){caches.delete(k);});});
+  } catch(e) {}
+})();
+</script>
+<script src="/static/prompt-library.js?v=366"></script><script src="/static/app.js?v=366"></script></body></html>
