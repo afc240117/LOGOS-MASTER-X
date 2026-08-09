@@ -1355,120 +1355,374 @@ html[data-layout="classico"] .home-right{display:grid!important;width:260px!impo
  html[data-layout="classico"] .home-right{width:100%!important;min-width:0!important;grid-template-columns:1fr 1fr!important}
 }
 
+
 /* ================================================================
-   ETAPA 01U — HOME HERO ORIGINAL, SEM RECORTE
-   A arte original e exibida inteira; a extensao inferior faz a faixa,
-   CTA e brilho parecerem parte do mesmo background panoramico.
+   ETAPA 01W — HOME POR IMAGEM ORIGINAL DE REFERÊNCIA
+   Sem reconstrução aleatória: usa exatamente a composição aprovada.
    ================================================================ */
-html[data-layout="classico"] .classic-hero{
-  --hero-image-ratio:3.2147;
-  min-height:0!important;
-  height:auto!important;
-  aspect-ratio:1048 / 570!important;
-  overflow:hidden!important;
-  isolation:isolate;
-  border:1px solid rgba(64,86,116,.72)!important;
-  border-radius:18px!important;
-  background:
-    radial-gradient(ellipse at 50% 69%,rgba(232,161,40,.14) 0%,rgba(232,161,40,.035) 22%,transparent 48%),
-    linear-gradient(180deg,#06101b 0%,#06101b 56%,#07111d 74%,#030912 100%)!important;
-  box-shadow:inset 0 0 80px rgba(0,0,0,.18),0 12px 30px rgba(0,0,0,.20)!important;
+html[data-layout="classico"] #workspace:has(.exact-reference-home){
+  padding:0!important;
+  border:0!important;
+  background:#030a12!important;
+  box-shadow:none!important;
+  overflow:visible!important;
 }
-html[data-layout="classico"] .classic-hero>img{
-  position:absolute!important;
-  z-index:0!important;
-  left:0!important;top:0!important;right:0!important;bottom:auto!important;
+html[data-layout="classico"] .exact-reference-home{
+  width:100%!important;
+  max-width:none!important;
+  margin:0!important;
+  padding:0!important;
+  background:#030a12!important;
+}
+html[data-layout="classico"] .reference-body-wrap{
+  position:relative!important;
+  width:100%!important;
+  max-width:1180px!important;
+  margin:0 auto!important;
+  overflow:hidden!important;
+  background:#030a12!important;
+}
+html[data-layout="classico"] .reference-body-img{
+  display:block!important;
   width:100%!important;
   height:auto!important;
-  min-height:0!important;
-  max-height:none!important;
+  max-width:100%!important;
   object-fit:contain!important;
   object-position:center top!important;
-  display:block!important;
   border:0!important;
   border-radius:0!important;
-  filter:saturate(1.06) contrast(1.035) brightness(1.02)!important;
+  box-shadow:none!important;
 }
-/* mascara apenas a area de icones impressos na arte-base, sem recortar a foto */
-html[data-layout="classico"] .classic-hero::before{
-  content:""!important;
-  position:absolute!important;z-index:1!important;
-  left:0!important;right:0!important;top:47%!important;bottom:0!important;
-  pointer-events:none!important;
-  background:
-    linear-gradient(180deg,transparent 0%,rgba(5,13,23,.82) 19%,#07111d 36%,#06101b 68%,#030912 100%),
-    radial-gradient(ellipse at 50% 42%,rgba(239,169,48,.12),transparent 48%)!important;
+html[data-layout="classico"] .reference-hit{
+  position:absolute!important;
+  z-index:4!important;
+  padding:0!important;
+  margin:0!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  color:transparent!important;
+  cursor:pointer!important;
+  opacity:0!important;
 }
-html[data-layout="classico"] .classic-hero::after{
-  content:"";position:absolute;z-index:2;pointer-events:none;
-  left:10%;right:10%;bottom:72px;height:18px;
-  background:radial-gradient(ellipse at center,rgba(255,202,76,.98) 0%,rgba(238,161,39,.55) 22%,rgba(210,132,21,.16) 48%,transparent 72%);
-  filter:blur(3px);
+/* coordenadas proporcionais da arte original 1180 x 846 */
+html[data-layout="classico"] .reference-hit-studio{
+  left:21.9%!important;
+  top:67.6%!important;
+  width:40.9%!important;
+  height:7.9%!important;
 }
-html[data-layout="classico"] .hero-modebar{
-  z-index:3!important;
-  left:50%!important;right:auto!important;bottom:88px!important;
-  transform:translateX(-50%)!important;
-  width:min(900px,calc(100% - 34px))!important;
-  height:116px!important;
-  border:1px solid #e1ad47!important;
-  border-radius:30px!important;
-  background:
-    radial-gradient(ellipse at 50% 110%,rgba(203,136,30,.12),transparent 48%),
-    linear-gradient(180deg,rgba(17,31,50,.97),rgba(5,13,23,.985))!important;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.065),inset 0 -18px 36px rgba(0,0,0,.18),0 0 0 1px rgba(255,215,121,.08),0 0 24px rgba(232,166,48,.24),0 15px 34px rgba(0,0,0,.34)!important;
+html[data-layout="classico"] .reference-hit-about{
+  left:83.6%!important;
+  top:34.7%!important;
+  width:12.8%!important;
+  height:4.6%!important;
 }
-html[data-layout="classico"] .hero-modebar::after{
-  left:18%!important;right:18%!important;bottom:-7px!important;height:13px!important;
-  background:radial-gradient(ellipse at center,#ffd15a 0%,rgba(243,171,47,.72) 22%,rgba(218,135,24,.20) 52%,transparent 74%)!important;
-  filter:blur(2.5px)!important;
-}
-html[data-layout="classico"] .hero-modebar button{
-  min-width:0!important;padding:10px 6px!important;
-  border-right:1px solid rgba(181,127,42,.72)!important;
-}
-html[data-layout="classico"] .hero-mode-icon{
-  width:50px!important;height:50px!important;
-  color:#f4ca68!important;
-  filter:drop-shadow(0 1px 0 rgba(255,239,184,.26)) drop-shadow(0 0 7px rgba(242,180,56,.30))!important;
-}
-html[data-layout="classico"] .hero-modebar b{
-  font-size:13px!important;font-weight:700!important;letter-spacing:.24em!important;
-  color:#fff!important;text-shadow:0 2px 4px #000!important;
-}
-html[data-layout="classico"] .hero-studio{
-  z-index:5!important;bottom:15px!important;
-  width:min(520px,calc(100% - 100px))!important;height:62px!important;
-  border-radius:20px!important;
-  border:1px solid #f6d27b!important;
-  background:linear-gradient(180deg,#f7d57f 0%,#d49a3b 46%,#a9691b 100%)!important;
-  box-shadow:0 0 0 2px rgba(70,41,7,.78),0 0 22px rgba(235,168,48,.42),inset 0 1px rgba(255,255,255,.52)!important;
-}
-html[data-layout="classico"] .classic-feature-strip{
-  margin-top:14px!important;
-  position:relative;
-}
-html[data-layout="classico"] .classic-feature-strip::after{
-  content:"";position:absolute;left:7%;right:7%;bottom:-14px;height:18px;pointer-events:none;
-  background:radial-gradient(ellipse at center,rgba(241,170,47,.48),rgba(202,126,22,.12) 38%,transparent 72%);
-  filter:blur(5px);
-}
-html[data-layout="classico"] .home-slogan{
-  margin-top:0!important;padding:19px 18px 20px!important;
-  border-top:1px solid rgba(158,104,30,.72)!important;
-  border-bottom:1px solid rgba(119,78,24,.42)!important;
-  background:linear-gradient(90deg,transparent 0%,rgba(151,91,18,.10) 18%,rgba(202,129,24,.18) 50%,rgba(151,91,18,.10) 82%,transparent 100%)!important;
-  box-shadow:inset 0 10px 25px rgba(211,137,27,.035),0 -4px 18px rgba(211,137,27,.08)!important;
-  text-shadow:0 0 10px rgba(232,167,54,.28)!important;
-}
-@media(max-width:1280px){
- html[data-layout="classico"] .classic-hero{aspect-ratio:1048 / 585!important}
- html[data-layout="classico"] .hero-modebar{width:calc(100% - 28px)!important}
+html[data-layout="classico"] .reference-hit:focus-visible{
+  opacity:1!important;
+  outline:2px solid #f0bd58!important;
+  outline-offset:-3px!important;
+  border-radius:14px!important;
 }
 @media(max-width:900px){
- html[data-layout="classico"] .classic-hero{aspect-ratio:1048 / 650!important}
- html[data-layout="classico"] .hero-modebar{height:104px!important;bottom:84px!important}
- html[data-layout="classico"] .hero-mode-icon{width:42px!important;height:42px!important}
- html[data-layout="classico"] .hero-modebar b{font-size:11px!important;letter-spacing:.16em!important}
- html[data-layout="classico"] .hero-studio{width:min(500px,calc(100% - 44px))!important}
+  html[data-layout="classico"] .reference-body-wrap{max-width:100%!important}
+}
+
+/* ================================================================
+   ETAPA 01X — REFERÊNCIA ORIGINAL FULL WIDTH, SEM RECORTE
+   Preenche integralmente a área útil entre sidebars, mantendo proporção.
+   ================================================================ */
+html[data-layout="classico"] .exact-reference-home{
+  width:100%!important;
+  min-width:0!important;
+  max-width:none!important;
+}
+html[data-layout="classico"] .reference-body-wrap{
+  width:100%!important;
+  max-width:none!important;
+  min-width:0!important;
+  margin:0!important;
+  overflow:hidden!important;
+}
+html[data-layout="classico"] .reference-body-img{
+  display:block!important;
+  width:100%!important;
+  max-width:none!important;
+  height:auto!important;
+  object-fit:contain!important;
+  object-position:center top!important;
+}
+
+/* ================================================================
+   ETAPA 01Z — ALTA DEFINIÇÃO / ARTE INTEIRA / ZERO RECORTE
+   ================================================================ */
+html[data-layout="classico"] .exact-reference-home{
+  width:100%!important;
+  max-width:none!important;
+  min-width:0!important;
+  overflow:visible!important;
+}
+html[data-layout="classico"] .reference-body-wrap{
+  display:block!important;
+  width:100%!important;
+  max-width:none!important;
+  min-width:0!important;
+  height:auto!important;
+  max-height:none!important;
+  margin:0!important;
+  padding:0!important;
+  overflow:visible!important;
+}
+html[data-layout="classico"] .reference-body-img{
+  display:block!important;
+  width:100%!important;
+  max-width:100%!important;
+  height:auto!important;
+  max-height:none!important;
+  margin:0!important;
+  padding:0!important;
+  object-fit:contain!important;
+  object-position:center top!important;
+  transform:none!important;
+  clip-path:none!important;
+}
+
+/* ================================================================
+   ETAPA 01AA — ENCAIXE HORIZONTAL SIMÉTRICO DA HOME CLÁSSICA
+   Remove a lacuna entre sidebar esquerdo e arte e impede overflow à direita.
+   Não altera a arte, escala interna, brilho ou proporções.
+   ================================================================ */
+@media (min-width:851px){
+  html[data-layout="classico"] .classic-layout{
+    grid-template-columns:220px minmax(0,1fr)!important;
+    column-gap:0!important;
+    gap:0!important;
+    width:100%!important;
+    max-width:100%!important;
+    overflow:hidden!important;
+  }
+  html[data-layout="classico"] .classic-sidebar{
+    width:220px!important;
+    margin-left:0!important;
+    margin-right:0!important;
+  }
+  html[data-layout="classico"] .classic-layout > main{
+    min-width:0!important;
+    width:100%!important;
+    max-width:100%!important;
+    padding-left:0!important;
+    padding-right:0!important;
+    overflow:hidden!important;
+  }
+  html[data-layout="classico"] .classic-layout .workspace,
+  html[data-layout="classico"] .exact-reference-home,
+  html[data-layout="classico"] .reference-body-wrap{
+    min-width:0!important;
+    width:100%!important;
+    max-width:100%!important;
+    margin-left:0!important;
+    margin-right:0!important;
+  }
+  html[data-layout="classico"] .reference-body-img{
+    width:100%!important;
+    max-width:100%!important;
+    height:auto!important;
+  }
+}
+
+/* ================================================================
+   ETAPA 01AB — MICROAJUSTE FINAL DE SIMETRIA HORIZONTAL
+   Folga óptica idêntica nos dois lados da área central.
+   Mantém a imagem integral, sem crop, zoom ou deformação.
+   ================================================================ */
+@media (min-width:851px){
+  html[data-layout="classico"] .classic-layout > main{
+    box-sizing:border-box!important;
+    padding-left:8px!important;
+    padding-right:8px!important;
+  }
+  html[data-layout="classico"] .classic-layout .workspace,
+  html[data-layout="classico"] .exact-reference-home,
+  html[data-layout="classico"] .reference-body-wrap{
+    box-sizing:border-box!important;
+    width:100%!important;
+    max-width:100%!important;
+    margin-left:auto!important;
+    margin-right:auto!important;
+  }
+  html[data-layout="classico"] .reference-body-img{
+    display:block!important;
+    width:100%!important;
+    max-width:100%!important;
+    height:auto!important;
+    margin:0 auto!important;
+    object-fit:contain!important;
+    object-position:center top!important;
+  }
+}
+
+/* ================================================================
+   ETAPA 01AC — MICROAJUSTE ÓPTICO ENTRE SIDEBARS
+   Corrige a pequena lacuna à esquerda e devolve respiro à direita.
+   Não recorta, não amplia e não altera a arte.
+   ================================================================ */
+@media (min-width:851px){
+  html[data-layout="classico"] .classic-layout > main{
+    padding-left:0!important;
+    padding-right:0!important;
+    overflow:visible!important;
+  }
+
+  html[data-layout="classico"] .classic-layout .workspace,
+  html[data-layout="classico"] .exact-reference-home,
+  html[data-layout="classico"] .reference-body-wrap{
+    box-sizing:border-box!important;
+  }
+
+  html[data-layout="classico"] .reference-body-wrap{
+    width:calc(100% - 16px)!important;
+    max-width:calc(100% - 16px)!important;
+    margin-left:0!important;
+    margin-right:16px!important;
+    transform:translateX(-10px)!important;
+    overflow:visible!important;
+  }
+
+  html[data-layout="classico"] .reference-body-img{
+    display:block!important;
+    width:100%!important;
+    max-width:100%!important;
+    height:auto!important;
+    margin:0!important;
+    object-fit:contain!important;
+    object-position:center top!important;
+    transform:none!important;
+  }
+}
+
+
+/* =================================================================
+   ETAPA 01AI — GABARITO ORIGINAL APROVADO
+   A imagem central foi recortada DIRETAMENTE da referência oficial.
+   A arte não é reconstruída, deslocada nem redesenhada.
+   ================================================================= */
+@media (min-width:851px){
+  html[data-layout="classico"],
+  html[data-layout="classico"] body{
+    width:100%!important;
+    max-width:100%!important;
+    overflow-x:hidden!important;
+  }
+
+  html[data-layout="classico"] .classic-layout{
+    display:grid!important;
+    grid-template-columns:220px minmax(0,1fr)!important;
+    gap:0!important;
+    width:100%!important;
+    max-width:100%!important;
+    margin:0!important;
+    padding:0!important;
+    overflow:hidden!important;
+  }
+
+  html[data-layout="classico"] .classic-sidebar{
+    box-sizing:border-box!important;
+    width:220px!important;
+    min-width:220px!important;
+    max-width:220px!important;
+    margin:0!important;
+    padding:0!important;
+    transform:none!important;
+  }
+
+  html[data-layout="classico"] .classic-layout > main{
+    box-sizing:border-box!important;
+    min-width:0!important;
+    width:100%!important;
+    max-width:100%!important;
+    margin:0!important;
+    padding:0!important;
+    overflow:visible!important;
+    transform:none!important;
+  }
+
+  html[data-layout="classico"] #workspace:has(.exact-reference-home),
+  html[data-layout="classico"] .workspace:has(.exact-reference-home),
+  html[data-layout="classico"] .exact-reference-home,
+  html[data-layout="classico"] .reference-body-wrap{
+    box-sizing:border-box!important;
+    display:block!important;
+    min-width:0!important;
+    width:100%!important;
+    max-width:100%!important;
+    height:auto!important;
+    max-height:none!important;
+    margin:0!important;
+    padding:0!important;
+    transform:none!important;
+    overflow:visible!important;
+  }
+
+  html[data-layout="classico"] .reference-body-img{
+    box-sizing:border-box!important;
+    display:block!important;
+    width:100%!important;
+    max-width:100%!important;
+    min-width:0!important;
+    height:auto!important;
+    max-height:none!important;
+    margin:0!important;
+    padding:0!important;
+    object-fit:contain!important;
+    object-position:center top!important;
+    transform:none!important;
+    clip-path:none!important;
+  }
+}
+
+@media (max-width:850px){
+  html[data-layout="classico"] .reference-body-wrap{
+    width:100%!important;
+    max-width:100%!important;
+    margin:0!important;
+    padding:0!important;
+    overflow:visible!important;
+  }
+
+  html[data-layout="classico"] .reference-body-img{
+    display:block!important;
+    width:100%!important;
+    max-width:100%!important;
+    height:auto!important;
+    object-fit:contain!important;
+    object-position:center top!important;
+    transform:none!important;
+    clip-path:none!important;
+  }
+}
+
+
+/* ================================================================
+   ETAPA 01AJ — RESPIRO DAS PÁGINAS INTERNAS
+   NÃO altera a Home 01AI.
+   Corrige apenas Studio, AI HUB, Biblioteca, Projetos, Histórico etc.
+   ================================================================ */
+@media (min-width:851px){
+  html[data-layout="classico"] #workspace:not(:has(.exact-reference-home)){
+    box-sizing:border-box!important;
+    width:100%!important;
+    max-width:100%!important;
+    min-width:0!important;
+    padding-left:14px!important;
+    padding-right:18px!important;
+    padding-bottom:18px!important;
+    overflow-x:hidden!important;
+  }
+
+  html[data-layout="classico"] #workspace:not(:has(.exact-reference-home)) > *{
+    box-sizing:border-box!important;
+    max-width:100%!important;
+    min-width:0!important;
+  }
 }
