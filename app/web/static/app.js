@@ -8,6 +8,11 @@ const Store={
  export(){const x={};for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k?.startsWith(this.p))x[k]=localStorage.getItem(k)}return x},
  import(x){Object.entries(x||{}).forEach(([k,v])=>{if(k.startsWith(this.p))localStorage.setItem(k,v)})}
 };
+let mobileLoadingProgress=8;let mobileLoadingTimer=null;
+function startMobileLoading(){const el=document.getElementById('mobileLoadingBar');if(!el)return;mobileLoadingTimer=setInterval(()=>{mobileLoadingProgress=Math.min(92,mobileLoadingProgress+Math.max(1,(92-mobileLoadingProgress)*.08));el.style.width=mobileLoadingProgress+'%';},120);}
+function finishMobileLoading(){if(mobileLoadingTimer){clearInterval(mobileLoadingTimer);mobileLoadingTimer=null}const el=document.getElementById('mobileLoadingBar');if(el)el.style.width='100%';setTimeout(()=>{const splash=document.getElementById('mobileLoading');if(splash){splash.classList.add('is-done');setTimeout(()=>splash.remove(),420)}},180);}
+startMobileLoading();
+
 const P=window.LOGOS_PROMPTS||{};
 const DEFAULT_API="https://logos-master-x-api.onrender.com";
 const IS_LOCAL_HOST=location.hostname==="127.0.0.1"||location.hostname==="localhost";
@@ -31,18 +36,21 @@ const CULT_TYPES=["Avivamento","Doutrina / Ensino","Santa Ceia","Missões","Evan
 const MODE_ESTIMATES={rapido:"~25–45 s",economico:"~45–120 s",automatico:"~30–60 s",qualidade:"~40–90 s"};
 function modeAverage(mode){const a=Store.get("modeTimes:"+mode,[]);if(!a.length)return "Sem média ainda";return `Média recente: ${Math.round(a.reduce((x,y)=>x+y,0)/a.length)} s`;}
 function saveModeTime(mode,seconds){if(!Number.isFinite(seconds)||seconds<=0)return;const a=Store.get("modeTimes:"+mode,[]);a.unshift(seconds);Store.set("modeTimes:"+mode,a.slice(0,8));}
-const VISUAL_DEFAULT={layout:"classico",theme:"dark",accent:"#d6b25e",mobileLayout:"auto",appIcon:"gold"};
+const VISUAL_DEFAULT={layout:"classico",theme:"dark",accent:"#d6b25e",mobileLayout:"auto",appIcon:"dna"};
+const APP_ICON_OPTIONS=[['dna','DNA + Bíblia'],['pulpit','Púlpito'],['cassette','K7'],['screen','LOGOS X']];
+function syncManifestIcon(icon=activeVisual().appIcon){const ok=APP_ICON_OPTIONS.some(([x])=>x===icon)?icon:'dna';let link=document.querySelector('link[rel="manifest"]');if(!link){link=document.createElement('link');link.rel='manifest';document.head.appendChild(link)}link.href='/static/manifest-'+ok+'.webmanifest?v=376';}
+
 let visualPreview=null;
 function visualSettings(){const v={...VISUAL_DEFAULT,...Store.get("visual",{})};if(v.theme==="system")v.theme="dark";if(v.layout==="compacto"||v.layout==="modernox"||v.layout==="pulpito")v.layout="moderno";return v;}
 function activeVisual(){const v=visualPreview?{...VISUAL_DEFAULT,...visualPreview}:visualSettings();if(v.theme==="system")v.theme="dark";if(v.layout==="compacto"||v.layout==="modernox"||v.layout==="pulpito")v.layout="moderno";return v;}
-function applyVisual(v=activeVisual()){const root=document.documentElement;if(v.theme==="system")v={...v,theme:"dark"};if(v.layout==="compacto")v={...v,layout:"modernox"};root.dataset.layout=v.layout;root.dataset.theme=v.theme;root.dataset.mobileLayout=v.mobileLayout||"auto";root.style.setProperty("--accent",v.accent);root.style.setProperty("--gold",v.accent);updateNavIcons(v.layout);}
+function applyVisual(v=activeVisual()){const root=document.documentElement;if(v.theme==="system")v={...v,theme:"dark"};if(v.layout==="compacto")v={...v,layout:"modernox"};root.dataset.layout=v.layout;root.dataset.theme=v.theme;root.dataset.mobileLayout=v.mobileLayout||"auto";root.style.setProperty("--accent",v.accent);root.style.setProperty("--gold",v.accent);syncManifestIcon(v.appIcon);updateNavIcons(v.layout);}
 const NAV_META={
  dashboard:["◈","Dashboard","grid"],studio:["🎛","Studio","sliders"],bible:["📖","Bíblia","book"],knowledge:["🧠","Biblioteca Viva","brain"],
  k7:["🔥","DNA K7","flame"],editor:["📝","Editor","edit"],pulpit:["🎙","Púlpito","mic"],library:["📚","Biblioteca","library"],projects:["📂","Projetos","folder"],
  aihub:["🤖","AI HUB","spark"],appearance:["🎨","Aparência","settings"],about:["ⓘ","Sobre o LOGOS","book"],custompages:["➕","Minhas páginas","folder"],backup:["💾","Backup","save"],settings:["⚙️","Configurações","settings"]};
 function modernIcon(kind){const paths={grid:'<rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/>',sliders:'<path d="M4 6h16M7 12h10M9 18h6"/><circle cx="9" cy="6" r="2"/><circle cx="14" cy="12" r="2"/><circle cx="11" cy="18" r="2"/>',book:'<path d="M4 5.5A3.5 3.5 0 0 1 7.5 2H11v18H7.5A3.5 3.5 0 0 0 4 23zM20 5.5A3.5 3.5 0 0 0 16.5 2H13v18h3.5A3.5 3.5 0 0 1 20 23z"/>',brain:'<path d="M9 4a3 3 0 0 0-5 2 3 3 0 0 0 0 5 4 4 0 0 0 3 7h2M15 4a3 3 0 0 1 5 2 3 3 0 0 1 0 5 4 4 0 0 1-3 7h-2M9 4v16M15 4v16M9 9h3M12 15h3"/>',flame:'<path d="M12 22c4 0 7-3 7-7 0-5-4-7-4-11-3 2-5 5-5 8-1-1-2-2-2-4-2 2-3 4-3 7 0 4 3 7 7 7z"/>',edit:'<path d="M4 20h4L19 9l-4-4L4 16zM13.5 6.5l4 4"/>',mic:'<rect x="9" y="3" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v4M8 22h8"/>',library:'<path d="M4 4h4v16H4zM10 4h4v16h-4zM16 5l4-1 2 15-4 1z"/>',folder:'<path d="M3 6h7l2 2h9v11H3z"/>',spark:'<path d="M12 2l1.8 5.2L19 9l-5.2 1.8L12 16l-1.8-5.2L5 9l5.2-1.8zM19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/>',save:'<path d="M4 3h14l2 2v16H4zM8 3v6h8V3M8 21v-7h8v7"/>',settings:'<circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.1-1l2-1.5-2-3.5-2.4 1a8 8 0 0 0-1.7-1L14.5 3h-5L9 6a8 8 0 0 0-1.7 1L5 6 3 9.5 5.1 11a7 7 0 0 0 0 2L3 14.5 5 18l2.3-1a8 8 0 0 0 1.7 1l.5 3h5l.5-3a8 8 0 0 0 1.7-1l2.3 1 2-3.5-2.1-1.5a7 7 0 0 0 .1-1z"/>'};return `<svg class="modern-nav-icon" viewBox="0 0 24 24" aria-hidden="true">${paths[kind]||paths.spark}</svg>`;}
 function updateNavIcons(layout=activeVisual().layout){if(!(layout==="moderno"||layout==="modernox"))return;$$('.nav button[data-view]').forEach(b=>{const m=NAV_META[b.dataset.view];if(!m)return;b.innerHTML=`${modernIcon(m[2])}<span>${m[1]}</span>`;});}
-function appearancePanel(){const v=activeVisual();const colors=[["#d6b25e","Gold"],["#4f8cff","Blue"],["#9b59b6","Purple"],["#c64b5d","Crimson"],["#27b07d","Emerald"],["#c7ced8","Silver"]];return `<div class="appearance-backdrop" id="appearanceBackdrop" role="dialog" aria-modal="true"><div class="appearance-panel" id="appearancePanel"><div class="appearance-head"><h3>🎨 Aparência</h3><button class="btn secondary" id="appearanceClose">✕ Fechar</button></div><p class="muted">Clássico e Moderno são as duas identidades principais. Cor e modo mobile acompanham o tema inteiro.</p><label>Estilo</label><div class="visual-options">${[["classico","🏛️ Clássico"],["moderno","🚀 Moderno"]].map(([x,l])=>`<button class="visual-choice ${v.layout===x?"active":""}" data-layout="${x}">${l}</button>`).join("")}</div><label>Variante de cor</label><div class="theme-swatches">${colors.map(([c,n])=>`<button class="theme-swatch ${v.accent===c?"active":""}" data-accent="${c}" style="--dot:${c}"><i></i><span>${n}</span></button>`).join("")}</div><label>📱 Layout no celular</label><div class="visual-options">${[["auto","Automático"],["mobile-clean","Clean"],["mobile-pro","Pro"]].map(([x,l])=>`<button class="visual-choice ${v.mobileLayout===x?"active":""}" data-mobile-layout="${x}">${l}</button>`).join("")}</div><label>Ícone do aplicativo</label><div class="icon-picker">${["gold","blue","classic","pro"].map(x=>`<button data-app-icon="${x}" class="icon-choice ${v.appIcon===x?"active":""}"><img src="/static/brand/icon-${x}-192.png"><span>${x}</span></button>`).join("")}</div><div class="row appearance-actions"><button class="btn primary" id="visualSave">💾 Salvar tema</button><button class="btn secondary" id="visualReset">↩ Restaurar</button><button class="btn secondary" id="visualCloseBottom">✕ Fechar</button></div></div></div>`;}
+function appearancePanel(){const v=activeVisual();const colors=[["#d6b25e","Gold"],["#4f8cff","Blue"],["#9b59b6","Purple"],["#c64b5d","Crimson"],["#27b07d","Emerald"],["#c7ced8","Silver"]];return `<div class="appearance-backdrop" id="appearanceBackdrop" role="dialog" aria-modal="true"><div class="appearance-panel" id="appearancePanel"><div class="appearance-head"><h3>🎨 Aparência</h3><button class="btn secondary" id="appearanceClose">✕ Fechar</button></div><p class="muted">Clássico e Moderno são as duas identidades principais. Cor e modo mobile acompanham o tema inteiro.</p><label>Estilo</label><div class="visual-options">${[["classico","🏛️ Clássico"],["moderno","🚀 Moderno"]].map(([x,l])=>`<button class="visual-choice ${v.layout===x?"active":""}" data-layout="${x}">${l}</button>`).join("")}</div><label>Variante de cor</label><div class="theme-swatches">${colors.map(([c,n])=>`<button class="theme-swatch ${v.accent===c?"active":""}" data-accent="${c}" style="--dot:${c}"><i></i><span>${n}</span></button>`).join("")}</div><label>📱 Layout no celular</label><div class="visual-options">${[["auto","Automático"],["mobile-clean","Clean"],["mobile-pro","Pro"]].map(([x,l])=>`<button class="visual-choice ${v.mobileLayout===x?"active":""}" data-mobile-layout="${x}">${l}</button>`).join("")}</div><label>Ícone do aplicativo</label><div class="icon-picker">${APP_ICON_OPTIONS.map(([x,label])=>`<button data-app-icon="${x}" class="icon-choice ${v.appIcon===x?"active":""}"><img src="/static/brand/app-icons/icon-${x}-192.png?v=376"><span>${label}</span></button>`).join("")}</div><p class="muted icon-install-note">O ícone escolhido será usado na próxima instalação. Se o app já estiver instalado, remova o atalho e instale novamente para trocar o ícone.</p><div class="row appearance-actions"><button class="btn primary" id="visualSave">💾 Salvar tema</button><button class="btn secondary" id="visualReset">↩ Restaurar</button><button class="btn secondary" id="visualCloseBottom">✕ Fechar</button></div></div></div>`;}
 function openAppearance(){
   $("#appearanceBackdrop")?.remove(); visualPreview={...visualSettings()};
   document.body.insertAdjacentHTML("beforeend",appearancePanel());
@@ -345,10 +353,17 @@ function fd(){const av=$("#fAudience")?.value||"Igreja local",cv=$("#fCult")?.va
 
 const views={
  dashboard(){const s=projectStats();return `<div class="classic-home exact-reference-home">
-<div class="reference-body-wrap">
+<div class="reference-body-wrap desktop-reference-home">
 <img class="reference-body-img" src="/static/brand/classic-reference-body-01ai.png?v=01ai" alt="LOGOS MASTER X DNA K7 — Home clássica">
 <button class="reference-hit reference-hit-studio" data-go="studio" aria-label="Acessar Studio"></button>
 <button class="reference-hit reference-hit-about" data-go="about" aria-label="Saiba mais sobre o LOGOS"></button>
+</div>
+<div class="mobile-reference-home" aria-label="LOGOS MASTER X — Home adaptada para celular">
+  <div class="mobile-home-piece mobile-home-hero"><img src="/static/brand/mobile-home/hero-mobile.png?v=01ak" alt="LOGOS MASTER X DNA K7"><button data-go="studio" aria-label="Acessar Studio"></button></div>
+  <div class="mobile-home-piece mobile-home-info"><img src="/static/brand/mobile-home/info-mobile.png?v=01ak" alt="Propósito e resumo do sistema"><button data-go="about" aria-label="Saiba mais sobre o LOGOS"></button></div>
+  <div class="mobile-home-piece"><img src="/static/brand/mobile-home/features-a-mobile.png?v=01ak" alt="DNA K7, Contexto e Exposição, Aplicações Reais"></div>
+  <div class="mobile-home-piece"><img src="/static/brand/mobile-home/features-b-mobile.png?v=01ak" alt="Preparação para o Púlpito, AI HUB, Mobile First"></div>
+  <div class="mobile-home-piece mobile-home-slogan"><img src="/static/brand/mobile-home/slogan-mobile.png?v=01ak" alt="Da Palavra ao Púlpito. Da inspiração à preparação."></div>
 </div></div>`},
  studio(){return `<h2>🎛️ LOGOS STUDIO PRO</h2>
 <p class="studio-subtitle muted">Prepare o conteúdo, escolha a ocasião e o público. O tipo de material é definido no campo Comando, sem atalhos duplicados.</p>
@@ -527,20 +542,16 @@ function bindNav(){
 }
 async function clearOldFrontendCache(){
  try{
-   if("serviceWorker" in navigator){
-     const regs=await navigator.serviceWorker.getRegistrations();
-     await Promise.all(regs.map(r=>r.unregister()));
-   }
    if("caches" in window){
      const keys=await caches.keys();
-     await Promise.all(keys.filter(k=>k.startsWith("logos-master-x")).map(k=>caches.delete(k)));
+     await Promise.all(keys.filter(k=>k.startsWith("logos-master-x")&&k!=="logos-master-x-3.7.6").map(k=>caches.delete(k)));
    }
  }catch(e){}
 }
 
-const APP_BUILD_VERSION="3.7.4";
+const APP_BUILD_VERSION="3.7.6";
 function publicAsset(path){return "/"+String(path).replace(/^\/+/,"");}
-const PRODUCTION_VERSION_URL="https://logos-master-x.netlify.app/version.json";
+const PRODUCTION_VERSION_URL="https://logos-master-x-api.onrender.com/static/version.json";
 function showUpdateBanner(remoteVersion){
  if(document.getElementById("logosUpdateBanner")) return;
  const bar=document.createElement("div");
@@ -560,7 +571,7 @@ async function forceFrontendRefresh(remoteVersion){
 }
 async function checkFrontendVersion(showResult=false){
  try{
-   const source=(IS_LOCAL_HOST?PRODUCTION_VERSION_URL:publicAsset("version.json"))+"?t="+Date.now();
+   const source=(IS_LOCAL_HOST?PRODUCTION_VERSION_URL:publicAsset("static/version.json"))+"?t="+Date.now();
    const r=await fetch(source,{cache:"no-store",headers:{"Cache-Control":"no-cache"}});
    if(!r.ok)throw new Error("HTTP "+r.status);
    const j=await r.json();const remote=String(j.version||"").trim();
@@ -577,8 +588,9 @@ let deferredInstallPrompt=null;window.addEventListener('beforeinstallprompt',e=>
 let autoPublishTimer=null;
 async function devApi(path,opts={}){const r=await fetch(location.origin+path,{cache:"no-store",...opts});const j=await r.json().catch(()=>({}));if(!r.ok)throw new Error(j.detail||j.message||"Falha");return j;}
 async function getProductionVersion(){try{const r=await fetch(PRODUCTION_VERSION_URL+"?t="+Date.now(),{cache:"no-store"});if(!r.ok)return "—";return String((await r.json()).version||"—")}catch{return "—"}}
-async function openUpdateCenter(){let prod=await getProductionVersion(),dev=null;if(IS_LOCAL_HOST){try{dev=await devApi('/api/dev/status')}catch{}}const auto=Store.get('autoPublish',false);actionModal({icon:'🚀',title:'Update Center • LOGOS '+APP_BUILD_VERSION,message:IS_LOCAL_HOST?`Local ${APP_BUILD_VERSION} • Produção ${prod} • Git ${dev?.dirty?'com alterações':'limpo'} • Auto-publicar ${auto?'ON':'OFF'}`:`Instalada ${APP_BUILD_VERSION} • Disponível ${prod}`,actions:IS_LOCAL_HOST?[{label:'📋 Git status',close:false,run:async()=>{const x=await devApi('/api/dev/status');actionModal({icon:'Git',title:'Status local',message:(x.branch||'main')+' • '+(x.dirty?'Há alterações para publicar':'Tudo publicado')+(x.files?.length?' • '+x.files.length+' arquivo(s)':''),actions:[{label:'Fechar',kind:'primary'}]})}},{label:'🚀 Publicar agora',kind:'primary',close:false,run:async()=>{actionModal({icon:'↥',title:'Publicando '+APP_BUILD_VERSION,message:'Enviando alterações para GitHub. O Netlify publicará o commit automaticamente.',actions:[]});try{const x=await devApi('/api/dev/publish',{method:'POST'});actionModal({icon:'✓',title:'Enviado ao GitHub',message:(x.message||'Publicação concluída')+' • commit '+(x.commit||'—')+'. Aguarde o Netlify e use Verificar atualização.',actions:[{label:'Verificar produção',kind:'primary',run:openUpdateCenter},{label:'Fechar'}]})}catch(e){actionModal({icon:'!',title:'Falha ao publicar',message:e.message,actions:[{label:'Fechar',kind:'primary'}]})}}},{label:`⚙ Auto-publicar ${auto?'ON':'OFF'}`,run:()=>toggleAutoPublish(!auto)}]:[{label:'🔄 Verificar atualização',kind:'primary',close:false,run:()=>checkFrontendVersion(true)},{label:'⬆️ Atualizar agora',run:()=>forceFrontendRefresh(prod)}]});}
-function toggleAutoPublish(on){Store.set('autoPublish',!!on);if(autoPublishTimer){clearInterval(autoPublishTimer);autoPublishTimer=null}if(on&&IS_LOCAL_HOST){autoPublishTimer=setInterval(async()=>{try{const s=await devApi('/api/dev/status');if(s.dirty)await devApi('/api/dev/publish',{method:'POST'})}catch(e){console.warn('Auto-publicar:',e.message)}},15000)}actionModal({icon:on?'✓':'○',title:'Auto-publicar '+(on?'ativado':'desativado'),message:on?'Enquanto esta página local estiver aberta, o LOGOS verificará alterações a cada 15 segundos e publicará no GitHub. Use somente quando quiser enviar mudanças automaticamente.':'As alterações só serão enviadas pelo botão Publicar agora.',actions:[{label:'Fechar',kind:'primary'}]});}
+async function waitForRenderDeploy(expected=APP_BUILD_VERSION,timeoutMs=240000){const started=Date.now();while(Date.now()-started<timeoutMs){const v=await getProductionVersion();if(v===expected)return {ok:true,version:v};await new Promise(r=>setTimeout(r,8000));}return {ok:false,version:await getProductionVersion()};}
+async function openUpdateCenter(){let prod=await getProductionVersion(),dev=null;if(IS_LOCAL_HOST){try{dev=await devApi('/api/dev/status')}catch{}}const auto=Store.get('autoPublish',false);actionModal({icon:'🚀',title:'Update Center • LOGOS '+APP_BUILD_VERSION,message:IS_LOCAL_HOST?`Local ${APP_BUILD_VERSION} • Render ${prod} • Git ${dev?.dirty?'com alterações':'limpo'} • Auto-publicar ${auto?'ON':'OFF'}`:`Instalada ${APP_BUILD_VERSION} • Render ${prod}`,actions:IS_LOCAL_HOST?[{label:'📋 Git status',close:false,run:async()=>{const x=await devApi('/api/dev/status');actionModal({icon:'Git',title:'Status local',message:(x.branch||'main')+' • '+(x.dirty?'Há alterações para publicar':'Tudo publicado')+(x.files?.length?' • '+x.files.length+' arquivo(s)':''),actions:[{label:'Fechar',kind:'primary'}]})}},{label:'🚀 Publicar no Render',kind:'primary',close:false,run:async()=>{actionModal({icon:'↥',title:'GitHub → Render',message:'Enviando alterações ao GitHub. O Render deverá iniciar o deploy automático da branch principal.',actions:[]});try{const x=await devApi('/api/dev/publish',{method:'POST'});actionModal({icon:'⏳',title:'GitHub atualizado',message:(x.message||'Commit enviado')+' • commit '+(x.commit||'—')+'. Verificando o Render automaticamente...',actions:[]});const dep=await waitForRenderDeploy(APP_BUILD_VERSION);actionModal({icon:dep.ok?'✓':'⏳',title:dep.ok?'Render atualizado':'Render ainda processando',message:dep.ok?'Produção confirmada na versão '+dep.version+'. Local e Render estão sincronizados.':'O GitHub foi atualizado, mas o Render ainda informa '+dep.version+'. Você pode verificar novamente em alguns instantes.',actions:[{label:'Verificar novamente',kind:'primary',run:openUpdateCenter},{label:'Fechar'}]})}catch(e){actionModal({icon:'!',title:'Falha ao publicar',message:e.message,actions:[{label:'Fechar',kind:'primary'}]})}}},{label:`⚙ Auto-publicar ${auto?'ON':'OFF'}`,run:()=>toggleAutoPublish(!auto)}]:[{label:'🔄 Verificar atualização',kind:'primary',close:false,run:()=>checkFrontendVersion(true)},{label:'⬆️ Atualizar agora',run:()=>forceFrontendRefresh(prod)}]});}
+function toggleAutoPublish(on){Store.set('autoPublish',!!on);if(autoPublishTimer){clearInterval(autoPublishTimer);autoPublishTimer=null}if(on&&IS_LOCAL_HOST){autoPublishTimer=setInterval(async()=>{try{const s=await devApi('/api/dev/status');if(s.dirty)await devApi('/api/dev/publish',{method:'POST'})}catch(e){console.warn('Auto-publicar:',e.message)}},15000)}actionModal({icon:on?'✓':'○',title:'Auto-publicar '+(on?'ativado':'desativado'),message:on?'Enquanto esta página local estiver aberta, o LOGOS verificará alterações a cada 15 segundos e publicará no GitHub para o Render fazer o deploy automático. Use somente quando quiser enviar mudanças automaticamente.':'As alterações só serão enviadas pelo botão Publicar agora.',actions:[{label:'Fechar',kind:'primary'}]});}
 function safeTopInsert(node){const top=document.querySelector('.top');const actions=document.querySelector('.top-actions');const host=actions||top;if(!host||!node)return;const status=$('#status');if(status&&status.parentNode===host)host.insertBefore(node,status);else host.appendChild(node);}
 function installUpdateControls(){const top=document.querySelector('.top');if(top&&!$('#updateCenterBtn')){const b=document.createElement('button');b.id='updateCenterBtn';b.className='btn secondary update-center-top';b.textContent=IS_LOCAL_HOST?'🚀 Publicar / Atualizar':'🔄 Atualizações';b.onclick=openUpdateCenter;safeTopInsert(b);}if(!$('#updateDock')){const d=document.createElement('div');d.id='updateDock';d.className='update-dock';d.innerHTML=`<span>LOGOS ${APP_BUILD_VERSION}</span><button id="updateDockCheck">🔄 Verificar</button>${IS_LOCAL_HOST?'<button id="updateDockPublish">🚀 Publicar</button><button id="updateDockAuto">⚙ Auto</button>':'<button id="updateDockNow">⬆ Atualizar</button>'}`;document.body.appendChild(d);$('#updateDockCheck').onclick=()=>checkFrontendVersion(true);$('#updateDockPublish')&&($('#updateDockPublish').onclick=openUpdateCenter);$('#updateDockAuto')&&($('#updateDockAuto').onclick=()=>toggleAutoPublish(!Store.get('autoPublish',false)));$('#updateDockNow')&&($('#updateDockNow').onclick=openUpdateCenter);}if(IS_LOCAL_HOST&&Store.get('autoPublish',false))toggleAutoPublish(true);}
 
@@ -597,7 +609,9 @@ const top=document.querySelector('.top');if(top&&!document.querySelector('#about
 const top2=document.querySelector(".top");if(top2&&!document.querySelector("#appearanceBtn")){const b=document.createElement("button");b.id="appearanceBtn";b.className="btn secondary appearance-trigger";b.textContent="🎨 Aparência";b.onclick=toggleAppearancePanel;safeTopInsert(b);}
 render("dashboard");
    await checkApi();
+   finishMobileLoading();
  }catch(e){
+   finishMobileLoading();
    console.error("LOGOS startup error",e);
    const w=$("#workspace");
    if(w) w.innerHTML=`<h2>⚠️ Diagnóstico do LOGOS</h2><div class="output">Erro ao iniciar a interface:\n${escapeHtml(e?.stack||e?.message||String(e))}\n\nRecarregue com Ctrl+F5.</div>`;

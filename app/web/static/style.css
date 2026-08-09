@@ -1726,3 +1726,78 @@ html[data-layout="classico"] .reference-body-img{
     min-width:0!important;
   }
 }
+
+/* ================================================================
+   ETAPA 01AK — HOME MOBILE RESPONSIVA REAL
+   Desktop permanece 01AI. No celular a arte aprovada é repartida
+   automaticamente em blocos legíveis, sem alterar páginas internas/menu.
+   ================================================================ */
+.mobile-reference-home{display:none}
+@media (max-width:850px){
+  html[data-layout="classico"] #workspace:has(.exact-reference-home){
+    min-height:0!important;height:auto!important;padding:0 8px 72px!important;
+    overflow:visible!important;background:#030a12!important;
+  }
+  html[data-layout="classico"] .exact-reference-home{min-height:0!important;height:auto!important}
+  html[data-layout="classico"] .desktop-reference-home{display:none!important}
+  html[data-layout="classico"] .mobile-reference-home{
+    display:grid!important;grid-template-columns:1fr;gap:10px;width:100%;max-width:680px;
+    margin:0 auto;padding:0;background:#030a12;
+  }
+  html[data-layout="classico"] .mobile-home-piece{
+    position:relative;overflow:hidden;width:100%;border:1px solid rgba(215,166,70,.22);
+    border-radius:14px;background:#030a12;box-shadow:0 10px 28px rgba(0,0,0,.24)
+  }
+  html[data-layout="classico"] .mobile-home-piece img{display:block;width:100%;height:auto;margin:0}
+  html[data-layout="classico"] .mobile-home-piece button{
+    position:absolute;z-index:4;border:0;background:transparent;opacity:0;cursor:pointer
+  }
+  html[data-layout="classico"] .mobile-home-hero button{left:22%;right:18%;bottom:2.5%;height:11%}
+  html[data-layout="classico"] .mobile-home-info button{left:12%;right:12%;top:48%;height:10%}
+  html[data-layout="classico"] .mobile-home-slogan{border-radius:10px}
+}
+@media (max-width:420px){
+  html[data-layout="classico"] #workspace:has(.exact-reference-home){padding-left:5px!important;padding-right:5px!important}
+  html[data-layout="classico"] .mobile-reference-home{gap:7px}
+  html[data-layout="classico"] .mobile-home-piece{border-radius:11px}
+}
+
+/* ================================================================
+   ETAPA 01AL — RENDER = LOCAL + SPLASH MOBILE + RESPIRO INTERNO
+   Mantém a Home 01AK e garante folga consistente nas páginas internas.
+   ================================================================ */
+.mobile-loading{display:none}
+.icon-install-note{margin:8px 0 0;font-size:11px;line-height:1.45}
+@media (max-width:850px){
+  .mobile-loading{display:flex;position:fixed;inset:0;z-index:100000;background:#02070d;align-items:center;justify-content:center;opacity:1;transition:opacity .38s ease;overflow:hidden}
+  .mobile-loading.is-done{opacity:0;pointer-events:none}
+  .mobile-loading-frame{position:relative;width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#02070d}
+  .mobile-loading-frame>img{display:block;width:100%;height:100%;object-fit:contain;object-position:center center}
+  .mobile-loading-live{position:absolute;left:14.5%;right:14.5%;bottom:15.2%;height:8px;border-radius:999px;overflow:hidden;background:rgba(3,9,15,.72);box-shadow:0 0 0 1px rgba(220,160,49,.5),0 0 18px rgba(45,160,255,.18)}
+  .mobile-loading-live i{display:block;width:8%;height:100%;border-radius:inherit;background:linear-gradient(90deg,#0f8fe8,#6dd5ff);box-shadow:0 0 12px rgba(65,185,255,.75);transition:width .16s linear}
+
+  html[data-layout="classico"] #workspace:not(:has(.exact-reference-home)){
+    box-sizing:border-box!important;
+    width:100%!important;
+    max-width:100%!important;
+    min-width:0!important;
+    padding-left:14px!important;
+    padding-right:14px!important;
+    padding-top:12px!important;
+    padding-bottom:82px!important;
+    overflow-x:hidden!important;
+  }
+  html[data-layout="classico"] #workspace:not(:has(.exact-reference-home)) > *{
+    box-sizing:border-box!important;
+    width:100%!important;
+    max-width:100%!important;
+    min-width:0!important;
+  }
+}
+@media (max-width:420px){
+  html[data-layout="classico"] #workspace:not(:has(.exact-reference-home)){
+    padding-left:11px!important;
+    padding-right:11px!important;
+  }
+  .mobile-loading-live{left:14%;right:14%;bottom:15%}
+}

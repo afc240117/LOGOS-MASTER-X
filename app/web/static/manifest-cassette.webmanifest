@@ -9,13 +9,13 @@
   "description": "DNA K7 • Bíblia • Estudo • Pregação",
   "icons": [
     {
-      "src": "/static/brand/app-icons/icon-dna-192.png",
+      "src": "/static/brand/app-icons/icon-cassette-192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "/static/brand/app-icons/icon-dna-512.png",
+      "src": "/static/brand/app-icons/icon-cassette-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"

@@ -1,8 +1,20 @@
 <!doctype html><html lang="pt-BR"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#05070b"><meta name="description" content="LOGOS MASTER X">
-<title>LOGOS MASTER X</title><link rel="manifest" href="/static/manifest.webmanifest"><link rel="stylesheet" href="/static/style.css?v=classic01aj"></head>
-<body><div class="app classic-shell">
+<title>LOGOS MASTER X</title>
+<script>
+(function(){
+  var allowed={dna:1,pulpit:1,cassette:1,screen:1}, icon="dna";
+  try{var raw=localStorage.getItem("logosx:visual");if(raw){var v=JSON.parse(raw);if(v&&allowed[v.appIcon])icon=v.appIcon;}}catch(e){}
+  var link=document.createElement("link");link.rel="manifest";link.href="/static/manifest-"+icon+".webmanifest?v=376";document.head.appendChild(link);
+})();
+</script>
+<link rel="stylesheet" href="/static/style.css?v=classic01al-376"></head>
+<body>
+<div id="mobileLoading" class="mobile-loading" aria-label="Carregando LOGOS MASTER X">
+  <div class="mobile-loading-frame"><img src="/static/brand/mobile-loading.png?v=376" alt="LOGOS MASTER X DNA K7 — Carregando"><div class="mobile-loading-live"><i id="mobileLoadingBar"></i></div></div>
+</div>
+<div class="app classic-shell">
 <header class="top classic-top">
   <div class="brand classic-brand"><img class="classic-header-logo" src="/static/brand/logo-header-classic-transparent.png?v=01l" alt="LOGOS MASTER X — DNA K7"></div>
   <nav class="top-nav" aria-label="Navegação principal">
@@ -44,10 +56,8 @@
 </aside><main><section id="workspace" class="workspace"></section></main></div></div>
 <script>
 (function(){
-  try {
-    if ('serviceWorker' in navigator) navigator.serviceWorker.getRegistrations().then(function(rs){rs.forEach(function(r){r.unregister();});});
-    if ('caches' in window) caches.keys().then(function(keys){keys.filter(function(k){return k.indexOf('logos-master-x')===0;}).forEach(function(k){caches.delete(k);});});
-  } catch(e) {}
+  window.setTimeout(function(){var x=document.getElementById('mobileLoading');if(x){x.classList.add('is-done');window.setTimeout(function(){x.remove();},500);}},7000);
+  if ('serviceWorker' in navigator) window.addEventListener('load',function(){navigator.serviceWorker.register('/static/sw.js?v=376').catch(function(){});});
 })();
 </script>
-<script src="/static/prompt-library.js?v=375"></script><script src="/static/app.js?v=classic01ai"></script></body></html>
+<script src="/static/prompt-library.js?v=376"></script><script src="/static/app.js?v=classic01al-376"></script></body></html>
