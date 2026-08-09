@@ -13,7 +13,7 @@ window.LOGOS_BUILD_DEEP_PROMPT=function(mode,d){
  "\nDuração: "+(d.duration||40)+" minutos",
  "\nCulto: "+(d.cult||""),
  "\nPúblico: "+(d.audience||""),
- "\nIntensidade K7: "+(d.intensity||3)+"/5",
+ "\nIntensidade K7: "+(d.intensity||10)+"/10",
  "\nObjetivo: "+(d.objective||""),
  "\nObservações: "+(d.notes||""),
  "\n\nINSTRUÇÃO FINAL: execute o fluxo completo do LOGOS MASTER, desenvolvendo o material de forma proporcional ao tempo e finalizando com Quality Gate."

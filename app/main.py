@@ -1,6 +1,6 @@
-import json,os,sqlite3
+import json,os,sqlite3,subprocess
 from pathlib import Path
-from fastapi import FastAPI,HTTPException,Header
+from fastapi import FastAPI,HTTPException,Header,Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
@@ -17,25 +17,54 @@ from app.think.engine import build_plan
 from app.quality.gate import evaluate
 from app.quality.reviewer import independent_review
 BASE=Path(__file__).resolve().parent;STATIC=BASE/"web"/"static";DB=BASE.parent/"data"/"sync.sqlite3";AI=AIHub();PROMPTS=PromptEngine()
-app=FastAPI(title="LOGOS MASTER X API",version="3.7.1");app.add_middleware(CORSMiddleware,allow_origins=["*"],allow_methods=["*"],allow_headers=["*"]);app.mount("/static",StaticFiles(directory=STATIC),name="static")
+app=FastAPI(title="LOGOS MASTER X API",version="3.7.3");app.add_middleware(CORSMiddleware,allow_origins=["*"],allow_methods=["*"],allow_headers=["*"]);app.mount("/static",StaticFiles(directory=STATIC),name="static")
 class Generate(BaseModel):
- mode:str="SERMÃO";text:str=Field(min_length=1);theme:str|None=None;duration:int=40;cult:str="Avivamento";audience:str="Igreja local";intensity:int=3;objective:str|None=None;notes:str|None=None;provider:str="auto";ai_mode:str="automatico";model:str|None=None
+ mode:str="SERMÃO";text:str=Field(min_length=1);theme:str|None=None;duration:int=40;cult:str="Avivamento";audience:str="Igreja local";intensity:int=10;objective:str|None=None;notes:str|None=None;provider:str="auto";ai_mode:str="automatico";model:str|None=None
 class SyncPayload(BaseModel): payload:dict
 def robj(r):return PromptRequest(r.mode,r.text,r.theme or "",r.duration,r.cult,r.audience,r.intensity,r.objective or "",r.notes or "")
 @app.get("/",include_in_schema=False)
 def home():return FileResponse(STATIC/"index.html")
 @app.get("/api/health")
 def health():
- c=AI.configured();return {"status":"ok","version":"LOGOS-MASTER-X-3.7.1","ai":any(c.values()),"providers":c,"models":AI.models(),"modes":["rapido","economico","automatico","qualidade","manual"],"orders":{m:AI.order(m) for m in ["rapido","economico","automatico","qualidade"]},"prompt_engine":"modular-2.0","think_engine":"14-stage","dna_k7":"engine","quality_gate":True,"capabilities":["studio","ai-hub","think-engine","dna-k7","quality-gate","bible-local","library","projects","editor","pulpit","backup"]}
+ c=AI.configured();return {"status":"ok","version":"LOGOS-MASTER-X-3.7.3","ai":any(c.values()),"providers":c,"models":AI.models(),"modes":["rapido","economico","automatico","qualidade","manual"],"orders":{m:AI.order(m) for m in ["rapido","economico","automatico","qualidade"]},"prompt_engine":"modular-2.0","think_engine":"14-stage","dna_k7":"engine","quality_gate":True,"capabilities":["studio","ai-hub","think-engine","dna-k7","quality-gate","bible-local","library","projects","editor","pulpit","backup"]}
 @app.get("/api/ai-metrics")
 def ai_metrics(): return AI.metrics()
+
+
+
+def _local_dev(request:Request):
+    if request.client and request.client.host not in {"127.0.0.1","::1","localhost"}:
+        raise HTTPException(403,"Update Center disponível somente na máquina local")
+
+def _git(*args):
+    r=subprocess.run(["git",*args],cwd=BASE.parent,text=True,capture_output=True,timeout=60)
+    if r.returncode!=0: raise HTTPException(500,(r.stderr or r.stdout or "Falha Git").strip())
+    return r.stdout.strip()
+
+@app.get("/api/dev/status")
+def dev_status(request:Request):
+    _local_dev(request)
+    status=_git("status","--porcelain")
+    return {"ok":True,"branch":_git("branch","--show-current") or "main","dirty":bool(status),"files":[x for x in status.splitlines() if x],"commit":_git("rev-parse","--short","HEAD")}
+
+@app.post("/api/dev/publish")
+def dev_publish(request:Request):
+    _local_dev(request)
+    status=_git("status","--porcelain")
+    if not status: return {"ok":True,"message":"Nenhuma alteração para publicar","commit":_git("rev-parse","--short","HEAD")}
+    _git("add","-A")
+    # Nunca publique segredos locais mesmo se uma configuração Git externa mudar.
+    subprocess.run(["git","reset","--",".env"],cwd=BASE.parent,text=True,capture_output=True)
+    _git("commit","-m","LOGOS MASTER X 3.7.3 - Update Center, precisao e temas mobile")
+    _git("push","origin","main")
+    return {"ok":True,"message":"GitHub atualizado; Netlify receberá o novo commit","commit":_git("rev-parse","--short","HEAD")}
 
 @app.get("/api/diagnostics")
 def diagnostics():
     cfg=AI.configured()
     return {
         "status":"ok",
-        "version":"LOGOS-MASTER-X-3.7.1",
+        "version":"LOGOS-MASTER-X-3.7.3",
         "configured_providers":[k for k,v in cfg.items() if v],
         "provider_count":sum(1 for v in cfg.values() if v),
         "default_models":AI.models(),
