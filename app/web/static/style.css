@@ -562,3 +562,93 @@ html[data-layout="classico"] .classic-sidebar .side-brand small{
   html[data-layout="classico"] .classic-sidebar{width:auto;margin:8px;border-radius:18px}
   html[data-layout="classico"] .classic-brand{width:auto;min-width:0;max-width:260px}
 }
+
+/* =========================================================
+   ETAPA 01H — TOPO CLÁSSICO FIEL AO MODELO
+   Escopo: somente barra superior. Botões ficam neutros;
+   dourado aparece em hover/ativo. Update permanece acessível
+   pela lateral/dock, sem poluir o topo.
+   ========================================================= */
+html[data-layout="classico"] .classic-top{
+  min-height:78px;height:78px;
+  padding:10px 18px;
+  display:grid;
+  grid-template-columns:258px minmax(520px,1fr) minmax(180px,250px) auto;
+  align-items:center;
+  gap:14px;
+  background:linear-gradient(180deg,#05090e 0%,#03070c 100%);
+  border-bottom:1px solid rgba(61,78,103,.55);
+  box-shadow:0 8px 24px rgba(0,0,0,.18);
+}
+html[data-layout="classico"] .classic-top .top-nav{
+  display:flex;align-items:center;min-width:0;
+}
+html[data-layout="classico"] .classic-top .top-nav button,
+html[data-layout="classico"] .classic-top .top-actions button{
+  height:48px;
+  padding:0 18px;
+  display:inline-flex;align-items:center;justify-content:center;gap:9px;
+  border:1px solid rgba(57,72,94,.64);
+  border-right-width:0;
+  background:linear-gradient(180deg,#0c1520,#09111b);
+  color:#edf1f5;
+  font-size:14px;font-weight:500;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.018);
+  transition:color .16s ease,border-color .16s ease,background .16s ease,box-shadow .16s ease;
+  transform:none!important;
+}
+html[data-layout="classico"] .classic-top .top-nav button:first-child{border-radius:13px 0 0 13px}
+html[data-layout="classico"] .classic-top .top-nav button:last-child{border-radius:0 13px 13px 0;border-right-width:1px}
+html[data-layout="classico"] .classic-top .top-nav button:hover,
+html[data-layout="classico"] .classic-top .top-nav button.active,
+html[data-layout="classico"] .classic-top .top-actions button:hover,
+html[data-layout="classico"] .classic-top .top-actions button.active{
+  color:#ffd67a;
+  border-color:#bd8a31;
+  background:linear-gradient(180deg,#211b11,#0e1319);
+  box-shadow:inset 0 0 0 1px rgba(255,211,111,.08),0 0 14px rgba(221,157,46,.28);
+  position:relative;z-index:2;
+}
+html[data-layout="classico"] .classic-top .top-ico{
+  width:22px;height:22px;display:grid;place-items:center;flex:0 0 22px;
+  color:currentColor;
+}
+html[data-layout="classico"] .classic-top .top-ico svg,
+html[data-layout="classico"] .classic-top .top-search svg{
+  width:100%;height:100%;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;
+}
+html[data-layout="classico"] .classic-top .top-search{
+  height:46px;min-width:0;
+  display:flex;align-items:center;
+  border:1px solid rgba(63,79,103,.72);
+  border-radius:14px;
+  background:#070d14;
+  color:#d7dee6;
+  overflow:hidden;
+}
+html[data-layout="classico"] .classic-top .top-search input{
+  min-width:0;width:100%;height:100%;border:0!important;outline:0;background:transparent!important;color:#e7ebef!important;padding:0 10px 0 16px!important;
+}
+html[data-layout="classico"] .classic-top .top-search input::placeholder{color:#7d8794}
+html[data-layout="classico"] .classic-top .top-search i{width:20px;height:20px;margin-right:14px;display:grid;place-items:center}
+html[data-layout="classico"] .classic-top .top-actions{display:flex;align-items:center;gap:8px;white-space:nowrap}
+html[data-layout="classico"] .classic-top .top-actions button{
+  border-right-width:1px;border-radius:13px;padding:0 14px;
+}
+html[data-layout="classico"] .classic-top .top-actions .icon-only{width:48px;padding:0}
+/* O status e o botão de publicação continuam disponíveis em outras áreas; ocultos aqui para manter a barra limpa. */
+html[data-layout="classico"] .classic-top #status,
+html[data-layout="classico"] .classic-top #updateCenterBtn{display:none!important}
+
+@media(max-width:1420px){
+  html[data-layout="classico"] .classic-top{grid-template-columns:238px minmax(460px,1fr) auto;gap:10px}
+  html[data-layout="classico"] .classic-top .top-search{display:none}
+  html[data-layout="classico"] .classic-brand{width:238px;min-width:238px}
+  html[data-layout="classico"] .classic-brand .classic-header-logo{width:232px}
+  html[data-layout="classico"] .classic-top .top-nav button{padding:0 14px}
+}
+@media(max-width:1120px){
+  html[data-layout="classico"] .classic-top{grid-template-columns:210px 1fr auto}
+  html[data-layout="classico"] .classic-top .top-nav button{padding:0 11px}
+  html[data-layout="classico"] .classic-top .top-actions button span{display:none}
+}
