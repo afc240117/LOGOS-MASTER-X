@@ -10,9 +10,17 @@ const Store={
 };
 const P=window.LOGOS_PROMPTS||{};
 const DEFAULT_API="https://logos-master-x-api.onrender.com";
-const LOCAL_API=(location.protocol==="http:"||location.protocol==="https:")?location.origin:"";
-const SAVED_API=Store.get("api",LOCAL_API||DEFAULT_API);
-const SAFE_API=SAVED_API||LOCAL_API||DEFAULT_API;
+const IS_LOCAL_HOST=location.hostname==="127.0.0.1"||location.hostname==="localhost";
+const LOCAL_API=IS_LOCAL_HOST?location.origin:"";
+let SAVED_API=Store.get("api","");
+// Migração 3.6.7: versões anteriores podiam salvar o próprio domínio do Netlify
+// como API. No site público isso aponta /api para o frontend estático e força
+// o fallback local. Em produção, use sempre o backend público do Render.
+if(!IS_LOCAL_HOST && (!SAVED_API || SAVED_API===location.origin || /netlify\.app\/?$/i.test(SAVED_API))){
+  SAVED_API=DEFAULT_API;
+  Store.set("api",DEFAULT_API);
+}
+const SAFE_API=IS_LOCAL_HOST?LOCAL_API:(SAVED_API||DEFAULT_API);
 const ROUTER_PROFILE_VERSION="3.5.0";
 let _savedProvider=Store.get("aiProvider","auto"), _savedMode=Store.get("aiMode","automatico");
 if(Store.get("routerProfileVersion","")!==ROUTER_PROFILE_VERSION){_savedProvider="gemini";_savedMode="rapido";Store.set("aiProvider",_savedProvider);Store.set("aiMode",_savedMode);Store.set("routerProfileVersion",ROUTER_PROFILE_VERSION);}
@@ -266,7 +274,7 @@ async function runCommand(cmd,d){
  const prompt=masterPrompt(cmd,d); Store.set("lastPrompt",prompt);
  if(App.server){
    try{
-     const generationBase=((App.provider==="9router"&&LOCAL_API)?LOCAL_API:App.api).replace(/\/$/,"");
+     const generationBase=((App.provider==="9router"&&IS_LOCAL_HOST)?LOCAL_API:App.api).replace(/\/$/,"");
      const r=await fetch(generationBase+"/api/generate-ai",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({
        mode:cmd,
        text:d.text,
@@ -297,8 +305,9 @@ async function checkApi(){
  // If this interface is being served by the local LOGOS backend, always use
  // the same local origin for health, provider status, tests and generation.
  // A previously saved Render URL must not mask the local .env configuration.
- const localHost = location.hostname === "127.0.0.1" || location.hostname === "localhost";
- if(LOCAL_API && localHost) App.api=LOCAL_API;
+ const localHost = IS_LOCAL_HOST;
+ if(localHost) App.api=LOCAL_API;
+ else if(!App.api || App.api===location.origin || /netlify\.app\/?$/i.test(App.api)){App.api=DEFAULT_API;Store.set("api",DEFAULT_API);}
  const url=App.api.replace(/\/$/,"")+"/api/health";
  async function attempt(timeoutMs){
    const c=new AbortController();
@@ -512,7 +521,7 @@ async function clearOldFrontendCache(){
  }catch(e){}
 }
 
-const APP_BUILD_VERSION="3.6.6";
+const APP_BUILD_VERSION="3.6.7";
 function publicAsset(path){
  const local=location.hostname==="127.0.0.1"||location.hostname==="localhost";
  return (local?"/static/":"/")+String(path).replace(/^\/+/,"");

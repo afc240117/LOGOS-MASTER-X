@@ -1,4 +1,4 @@
-const CACHE_VERSION="logos-master-x-3.6.6";
+const CACHE_VERSION="logos-master-x-3.6.7";
 self.addEventListener("install",event=>{self.skipWaiting();});
 self.addEventListener("activate",event=>{event.waitUntil((async()=>{
   const keys=await caches.keys();
