@@ -1,0 +1,33 @@
+MÓDULO GERADOR DE SERMÃO — PROMPT PROFUNDO
+
+Use integralmente:
+1. PROMPT MESTRE;
+2. DNA K7;
+3. PERFIL DE DURAÇÃO;
+4. PERFIL DE CULTO;
+5. INTENSIDADE K7;
+6. QUALITY GATE.
+
+ENTRADAS:
+- tema;
+- texto bíblico;
+- duração: 20/30/40/50/60;
+- tipo de culto;
+- público;
+- intensidade K7 1-5;
+- objetivo;
+- observações.
+
+SAÍDA:
+PARTE 1 — FICHA DA MENSAGEM
+PARTE 2 — CONTEXTO E EXEGESE
+PARTE 3 — SERMÃO COMPLETO
+PARTE 4 — CLÍMAX E APELO
+PARTE 5 — VERSÃO DE PÚLPITO
+PARTE 6 — CRONOGRAMA DE TEMPO
+PARTE 7 — QUALITY GATE.
+
+Para cada ponto, incluir explicitamente:
+TEXTO → EXPLICAÇÃO → VERDADE → APLICAÇÃO → TRANSIÇÃO.
+
+A mensagem deve atingir a duração pela profundidade, não por enchimento.

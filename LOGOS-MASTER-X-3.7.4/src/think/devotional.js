@@ -1,0 +1,1 @@
+export function devotionalStage(input={}){return {stage:"DEVOCIONAL",format:{reading:input.text||input.passage||"Texto bíblico",reflection:"Explique uma verdade central em linguagem breve e pastoral.",application:"Uma prática clara para hoje.",question:"Uma pergunta de reflexão.",prayer:"Oração curta ligada ao texto."}};}
