@@ -652,3 +652,38 @@ html[data-layout="classico"] .classic-top #updateCenterBtn{display:none!importan
   html[data-layout="classico"] .classic-top .top-nav button{padding:0 11px}
   html[data-layout="classico"] .classic-top .top-actions button span{display:none}
 }
+
+
+/* ETAPA 01I — topo mais limpo e botões independentes */
+html[data-layout="classico"] .classic-top .top-nav{
+  gap:8px;
+}
+html[data-layout="classico"] .classic-top .top-nav button{
+  border-radius:13px !important;
+  border:1px solid #263246 !important;
+  margin:0;
+  background:linear-gradient(180deg,#0d1622 0%,#09111b 100%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.025);
+}
+html[data-layout="classico"] .classic-top .top-nav button:first-child,
+html[data-layout="classico"] .classic-top .top-nav button:last-child{
+  border-radius:13px !important;
+}
+html[data-layout="classico"] .classic-top .top-nav button:hover,
+html[data-layout="classico"] .classic-top .top-nav button.active{
+  color:#ffd675;
+  border-color:#c29034 !important;
+  background:linear-gradient(180deg,#282116 0%,#11151b 100%);
+  box-shadow:0 0 15px rgba(212,154,47,.34), inset 0 0 14px rgba(219,163,59,.08);
+}
+html[data-layout="classico"] .classic-top .top-search{
+  padding-right:12px;
+}
+html[data-layout="classico"] .classic-top .top-search input{
+  width:100%;
+  padding:0 15px;
+}
+html[data-layout="classico"] .classic-top .top-search i{display:none!important}
+html[data-layout="classico"] .classic-top .top-actions{
+  gap:10px;
+}
