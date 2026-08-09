@@ -10,14 +10,60 @@ const Store={
 };
 const P=window.LOGOS_PROMPTS||{};
 const DEFAULT_API="https://logos-master-x-api.onrender.com";
-const SAVED_API=Store.get("api",DEFAULT_API); const SAFE_API=(SAVED_API&&/^https:\/\//.test(SAVED_API))?SAVED_API:DEFAULT_API;
-const App={view:"dashboard",server:false,api:SAFE_API,provider:Store.get("aiProvider","auto"),aiMode:Store.get("aiMode","automatico"),model:Store.get("aiModel",""),health:null,currentText:"",timer:null,timerStart:0,timerSeconds:0};
+const LOCAL_API=(location.protocol==="http:"||location.protocol==="https:")?location.origin:"";
+const SAVED_API=Store.get("api",LOCAL_API||DEFAULT_API);
+const SAFE_API=SAVED_API||LOCAL_API||DEFAULT_API;
+const ROUTER_PROFILE_VERSION="3.5.0";
+let _savedProvider=Store.get("aiProvider","auto"), _savedMode=Store.get("aiMode","automatico");
+if(Store.get("routerProfileVersion","")!==ROUTER_PROFILE_VERSION){_savedProvider="gemini";_savedMode="rapido";Store.set("aiProvider",_savedProvider);Store.set("aiMode",_savedMode);Store.set("routerProfileVersion",ROUTER_PROFILE_VERSION);}
+const App={view:"dashboard",server:false,api:SAFE_API,provider:_savedProvider,aiMode:_savedMode,model:Store.get("aiModel",""),health:null,currentText:"",lastStudioText:"",timer:null,timerStart:0,timerSeconds:0};
+
+const AUDIENCES=["Igreja local","Público misto","Pessoas sem Cristo","Novos convertidos","Jovens e adolescentes","Crianças","Casais","Culto de Varões","Círculo de Oração","Liderança e obreiros","Pastores e líderes","Missionários e evangelistas","Pessoas em luto","Pessoas em crise ou sofrimento","Pessoal / devocional individual","EBD / estudantes da Bíblia"];
+const CULT_TYPES=["Avivamento","Doutrina / Ensino","Santa Ceia","Missões","Evangelístico","Oração e Intercessão","Consagração","Ação de Graças","Batismo","Culto Fúnebre / Consolo","Vigília","Conferência / Encontro","Culto ao Ar Livre","Celebração Especial"];
+const MODE_ESTIMATES={rapido:"~25–45 s",economico:"~45–120 s",automatico:"~30–60 s",qualidade:"~40–90 s"};
+function modeAverage(mode){const a=Store.get("modeTimes:"+mode,[]);if(!a.length)return "Sem média ainda";return `Média recente: ${Math.round(a.reduce((x,y)=>x+y,0)/a.length)} s`;}
+function saveModeTime(mode,seconds){if(!Number.isFinite(seconds)||seconds<=0)return;const a=Store.get("modeTimes:"+mode,[]);a.unshift(seconds);Store.set("modeTimes:"+mode,a.slice(0,8));}
+const VISUAL_DEFAULT={layout:"classico",theme:"dark",accent:"#d6b25e"};
+let visualPreview=null;
+function visualSettings(){const v={...VISUAL_DEFAULT,...Store.get("visual",{})};if(v.theme==="system")v.theme="dark";if(v.layout==="compacto")v.layout="modernox";return v;}
+function activeVisual(){const v=visualPreview?{...VISUAL_DEFAULT,...visualPreview}:visualSettings();if(v.theme==="system")v.theme="dark";if(v.layout==="compacto")v.layout="modernox";return v;}
+function applyVisual(v=activeVisual()){const root=document.documentElement;if(v.theme==="system")v={...v,theme:"dark"};if(v.layout==="compacto")v={...v,layout:"modernox"};root.dataset.layout=v.layout;root.dataset.theme=v.theme;root.style.setProperty("--accent",v.accent);root.style.setProperty("--gold",v.accent);updateNavIcons(v.layout);}
+const NAV_META={
+ dashboard:["◈","Dashboard","grid"],studio:["🎛","Studio","sliders"],bible:["📖","Bíblia","book"],knowledge:["🧠","Biblioteca Viva","brain"],
+ k7:["🔥","DNA K7","flame"],editor:["📝","Editor","edit"],pulpit:["🎙","Púlpito","mic"],library:["📚","Biblioteca","library"],projects:["📂","Projetos","folder"],
+ aihub:["🤖","AI HUB","spark"],backup:["💾","Backup","save"],settings:["⚙️","Configurações","settings"]};
+function modernIcon(kind){const paths={grid:'<rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/>',sliders:'<path d="M4 6h16M7 12h10M9 18h6"/><circle cx="9" cy="6" r="2"/><circle cx="14" cy="12" r="2"/><circle cx="11" cy="18" r="2"/>',book:'<path d="M4 5.5A3.5 3.5 0 0 1 7.5 2H11v18H7.5A3.5 3.5 0 0 0 4 23zM20 5.5A3.5 3.5 0 0 0 16.5 2H13v18h3.5A3.5 3.5 0 0 1 20 23z"/>',brain:'<path d="M9 4a3 3 0 0 0-5 2 3 3 0 0 0 0 5 4 4 0 0 0 3 7h2M15 4a3 3 0 0 1 5 2 3 3 0 0 1 0 5 4 4 0 0 1-3 7h-2M9 4v16M15 4v16M9 9h3M12 15h3"/>',flame:'<path d="M12 22c4 0 7-3 7-7 0-5-4-7-4-11-3 2-5 5-5 8-1-1-2-2-2-4-2 2-3 4-3 7 0 4 3 7 7 7z"/>',edit:'<path d="M4 20h4L19 9l-4-4L4 16zM13.5 6.5l4 4"/>',mic:'<rect x="9" y="3" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v4M8 22h8"/>',library:'<path d="M4 4h4v16H4zM10 4h4v16h-4zM16 5l4-1 2 15-4 1z"/>',folder:'<path d="M3 6h7l2 2h9v11H3z"/>',spark:'<path d="M12 2l1.8 5.2L19 9l-5.2 1.8L12 16l-1.8-5.2L5 9l5.2-1.8zM19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/>',save:'<path d="M4 3h14l2 2v16H4zM8 3v6h8V3M8 21v-7h8v7"/>',settings:'<circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.1-1l2-1.5-2-3.5-2.4 1a8 8 0 0 0-1.7-1L14.5 3h-5L9 6a8 8 0 0 0-1.7 1L5 6 3 9.5 5.1 11a7 7 0 0 0 0 2L3 14.5 5 18l2.3-1a8 8 0 0 0 1.7 1l.5 3h5l.5-3a8 8 0 0 0 1.7-1l2.3 1 2-3.5-2.1-1.5a7 7 0 0 0 .1-1z"/>'};return `<svg class="modern-nav-icon" viewBox="0 0 24 24" aria-hidden="true">${paths[kind]||paths.spark}</svg>`;}
+function updateNavIcons(layout=activeVisual().layout){$$('.nav button[data-view]').forEach(b=>{const m=NAV_META[b.dataset.view];if(!m)return;b.innerHTML=(layout==="moderno"||layout==="modernox")?`${modernIcon(m[2])}<span>${m[1]}</span>`:`<span class="classic-nav-icon">${m[0]}</span><span>${m[1]}</span>`;});}
+function appearancePanel(){const v=activeVisual();return `<div class="appearance-backdrop" id="appearanceBackdrop" role="dialog" aria-modal="true" aria-label="Aparência"><div class="appearance-panel" id="appearancePanel"><div class="appearance-head"><h3>🎨 Aparência</h3><button type="button" class="btn secondary appearance-close" id="appearanceClose">✕ Fechar</button></div><p class="muted">Experimente à vontade. As mudanças só ficam permanentes ao clicar em Salvar tema.</p><label>Layout</label><div class="visual-options">${[["classico","Clássico"],["moderno","Moderno"],["modernox","Moderno X"],["pulpito","Púlpito"]].map(([x,l])=>`<button type="button" class="visual-choice ${v.layout===x?"active":""}" data-layout="${x}">${l}</button>`).join("")}</div><label>Tema</label><div class="visual-options">${[["dark","Escuro"],["light","Claro"]].map(([x,l])=>`<button type="button" class="visual-choice ${v.theme===x?"active":""}" data-theme="${x}">${l}</button>`).join("")}</div><label>Cor principal</label><div class="color-options">${["#d6b25e","#4f8cff","#27b07d","#9b59b6","#c64b5d","#e67e22","#5f6b7a","#00a6a6"].map(c=>`<button type="button" class="color-dot ${v.accent===c?"active":""}" data-accent="${c}" style="--dot:${c}"></button>`).join("")}<input id="customAccent" type="color" value="${v.accent}" title="Cor personalizada"></div><div class="row appearance-actions"><button type="button" class="btn primary" id="visualSave">💾 Salvar tema</button><button type="button" class="btn secondary" id="visualReset">↩ Restaurar tema</button><button type="button" class="btn secondary" id="visualCloseBottom">✕ Fechar</button></div></div></div>`;}
+function openAppearance(){
+  $("#appearanceBackdrop")?.remove(); visualPreview={...visualSettings()};
+  document.body.insertAdjacentHTML("beforeend",appearancePanel());
+  const backdrop=$("#appearanceBackdrop"), panel=$("#appearancePanel"), saved={...visualSettings()};
+  const close=(restore=true)=>{document.removeEventListener("keydown",onKey);if(restore){visualPreview=null;applyVisual(saved);}backdrop?.remove();};
+  const onKey=e=>{if(e.key==="Escape")close(true);}; document.addEventListener("keydown",onKey);
+  $("#appearanceClose")?.addEventListener("click",e=>{e.preventDefault();e.stopPropagation();close(true);});
+  $("#visualCloseBottom")?.addEventListener("click",()=>close(true)); panel?.addEventListener("click",e=>e.stopPropagation()); backdrop?.addEventListener("click",()=>close(true));
+  const refresh=()=>{applyVisual(visualPreview); $$(`[data-layout]`).forEach(x=>x.classList.toggle("active",x.dataset.layout===visualPreview.layout)); $$(`[data-theme]`).forEach(x=>x.classList.toggle("active",x.dataset.theme===visualPreview.theme)); $$(`[data-accent]`).forEach(x=>x.classList.toggle("active",x.dataset.accent===visualPreview.accent));};
+  $$('[data-layout]').forEach(b=>b.addEventListener("click",()=>{visualPreview={...activeVisual(),layout:b.dataset.layout};refresh();}));
+  $$('[data-theme]').forEach(b=>b.addEventListener("click",()=>{visualPreview={...activeVisual(),theme:b.dataset.theme};refresh();}));
+  $$('[data-accent]').forEach(b=>b.addEventListener("click",()=>{visualPreview={...activeVisual(),accent:b.dataset.accent};refresh();}));
+  $("#customAccent")?.addEventListener("input",e=>{visualPreview={...activeVisual(),accent:e.target.value};applyVisual(visualPreview);});
+  $("#visualSave")?.addEventListener("click",()=>{const v={...activeVisual()};Store.set("visual",v);visualPreview=null;applyVisual(v);close(false);});
+  $("#visualReset")?.addEventListener("click",()=>{Store.set("visual",VISUAL_DEFAULT);visualPreview=null;applyVisual(VISUAL_DEFAULT);close(false);});
+}
 
 const commands=["ESTUDAR","CONTEXTO","EXEGESE","HERMENÊUTICA","ESBOÇO","SERMÃO","SÉRIE","REVISAR","APLICAR","ILUSTRAR","CONCLUIR","ORAÇÃO","DEVOCIONAL","AULA"];
 
 function escapeHtml(s=""){return String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[m]))}
 function download(name,text,type="text/plain"){const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([text],{type}));a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500)}
-async function copy(text){try{await navigator.clipboard.writeText(text);alert("Copiado.")}catch{alert("Não foi possível copiar automaticamente.")}}
+function closeActionModal(){document.querySelector("#logosActionBackdrop")?.remove()}
+function actionModal({icon="✓",title="Pronto",message="",actions=[]}={}){closeActionModal();const html=`<div class="logos-action-backdrop" id="logosActionBackdrop"><div class="logos-action-modal" role="dialog" aria-modal="true"><div class="logos-action-icon">${icon}</div><div class="logos-action-copy"><h3>${escapeHtml(title)}</h3><p>${escapeHtml(message)}</p></div><button class="logos-action-x" id="logosActionX" aria-label="Fechar">✕</button><div class="logos-action-buttons">${actions.map((a,i)=>`<button class="btn ${a.kind||"secondary"}" data-action-index="${i}">${escapeHtml(a.label)}</button>`).join("")}</div></div></div>`;document.body.insertAdjacentHTML("beforeend",html);const bd=$("#logosActionBackdrop");$("#logosActionX")?.addEventListener("click",closeActionModal);bd?.addEventListener("click",e=>{if(e.target===bd)closeActionModal()});$$('[data-action-index]').forEach(b=>b.addEventListener('click',async()=>{const a=actions[Number(b.dataset.actionIndex)];if(a?.run)await a.run();if(a?.close!==false)closeActionModal();}));}
+async function copy(text,{silent=false}={}){text=String(text??"");if(!text)return false;let ok=false;try{await navigator.clipboard.writeText(text);ok=true}catch{}if(!ok){try{const ta=document.createElement("textarea");ta.value=text;ta.setAttribute("readonly","");ta.style.position="fixed";ta.style.opacity="0";ta.style.pointerEvents="none";document.body.appendChild(ta);ta.focus();ta.select();ta.setSelectionRange(0,ta.value.length);ok=document.execCommand("copy");ta.remove()}catch{}}if(!silent)actionModal({icon:ok?"✓":"!",title:ok?"Texto copiado":"Não foi possível copiar",message:ok?`Conteúdo completo copiado: ${text.length.toLocaleString("pt-BR")} caracteres.`:"Use Ctrl+C após selecionar o texto manualmente.",actions:[{label:"Fechar",kind:"primary"}]});return ok;}
+function studioOutputText(){if(App.lastStudioText)return String(App.lastStudioText).trim();const e=$("#out");return e?String(e.innerText||e.textContent||"").trim():""}
+function inlineRich(s=""){let x=escapeHtml(s);x=x.replace(/\*\*([^*]+)\*\*/g,"<strong>$1</strong>").replace(/\*([^*]+)\*/g,"<em>$1</em>").replace(/`([^`]+)`/g,"<code>$1</code>");return x;}
+function sectionIcon(title=""){const t=String(title).toLowerCase();if(t.includes("dna k7")||t.includes("progressão k7")||t.includes("intensifica"))return "🔥";if(t.includes("texto")||t.includes("delimita")||t.includes("leitura"))return "📖";if(t.includes("contexto"))return "🧭";if(t.includes("observa"))return "🔎";if(t.includes("interpreta")||t.includes("exeg"))return "🧠";if(t.includes("grande ideia")||t.includes("verdade central"))return "💡";if(t.includes("estrutura")||t.includes("esboço")||t.includes("movimento"))return "🧱";if(t.includes("aplica"))return "🎯";if(t.includes("pergunta")||t.includes("reflex"))return "❓";if(t.includes("clímax"))return "⚡";if(t.includes("apelo")||t.includes("oração"))return "🙏";if(t.includes("quality")||t.includes("verificar")||t.includes("revis"))return "✅";if(t.includes("conclus"))return "🏁";return "✦";}
+function renderGeneratedMessage(raw="",ctx={}){const lines=String(raw).replace(/\r/g,"").split("\n");let html=`<article class="generated-message"><div class="generated-hero"><div class="generated-logo">✦</div><div><strong>LOGOS MASTER X</strong><span>${escapeHtml(ctx.command||"Material gerado")}</span></div><div class="generated-badges"><span>🔥 DNA K7 ${Number(ctx.intensity||3)}/5</span>${ctx.provider?`<span>🤖 ${escapeHtml(ctx.provider)}</span>`:""}${ctx.seconds!=null?`<span>⏱ ${escapeHtml(ctx.seconds)}s</span>`:""}${ctx.quality!=null?`<span>✅ QG ${escapeHtml(ctx.quality)}%</span>`:""}</div></div>`;let listOpen=false,sectionOpen=false;const closeList=()=>{if(listOpen){html+="</ul>";listOpen=false}},closeSection=()=>{closeList();if(sectionOpen){html+="</section>";sectionOpen=false}};for(const original of lines){const trim=original.trim();if(!trim){closeList();continue}if(trim==="---"){closeList();continue}if(/^\[LOGOS-AI-HUB\]$/i.test(trim))continue;if(/^IA:\s/i.test(trim)){html+=`<div class="generated-meta">${inlineRich(trim)}</div>`;continue}const hm=trim.match(/^#{1,6}\s+(.+)$/);if(hm){closeSection();const title=hm[1].replace(/^\*\*|\*\*$/g,"");const ico=sectionIcon(title);html+=`<section class="generated-section ${ico==="🔥"?"dna-k7-section":""}"><h3><span class="generated-section-icon">${ico}</span><span>${inlineRich(title)}</span></h3>`;sectionOpen=true;continue}if(/^\[QUALITY GATE/i.test(trim)){closeSection();html+=`<section class="generated-section quality-section"><h3><span class="generated-section-icon">✅</span><span>Quality Gate</span></h3><p class="quality-line">${inlineRich(trim.replace(/^\[|\]$/g,""))}</p>`;sectionOpen=true;continue}const bullet=trim.match(/^[-*•]\s+(.+)$/);if(bullet){if(!sectionOpen){html+='<section class="generated-section">';sectionOpen=true}if(!listOpen){html+='<ul class="generated-list">';listOpen=true}html+=`<li>${inlineRich(bullet[1])}</li>`;continue}closeList();const numbered=trim.match(/^(\d+)[.)]\s+(.+)$/);if(numbered){html+=`<div class="generated-number"><span>${numbered[1]}</span><p>${inlineRich(numbered[2])}</p></div>`;continue}const special=/DNA K7|K7|CLÍMAX|APELO|\[VERIFICAR\]|\[AUTOCORREÇÃO\]/i.test(trim);html+=`<p class="${special?"generated-emphasis":""}">${inlineRich(trim)}</p>`;}closeSection();html+='</article>';return html;}
+function openShareMenu(title,text){if(!text||text==="Pronto."||text==="Processando...")return actionModal({icon:"i",title:"Nada para compartilhar",message:"Gere um conteúdo primeiro.",actions:[{label:"Fechar",kind:"primary"}]});const safeTitle=title||"LOGOS MASTER X";const actions=[{label:"📋 Copiar tudo",kind:"primary",close:false,run:async()=>{await copy(text,{silent:true});actionModal({icon:"✓",title:"Texto copiado",message:"O conteúdo completo está na área de transferência.",actions:[{label:"Fechar",kind:"primary"}]})}},{label:"✉️ E-mail",run:async()=>{await copy(text,{silent:true});location.href=`mailto:?subject=${encodeURIComponent(safeTitle)}&body=${encodeURIComponent("O texto completo do LOGOS MASTER X foi copiado para a área de transferência. Cole-o aqui no corpo do e-mail.")}`;}},{label:"💬 WhatsApp Web",run:async()=>{const w=window.open("about:blank","_blank");await copy(text,{silent:true});if(w)w.location.href="https://web.whatsapp.com/";}},{label:"📝 Abrir no Editor",run:()=>{Store.set("editor",{title:safeTitle,text});render("editor")}},{label:"⬇️ Baixar TXT",run:()=>download((safeTitle||"logos").replace(/[\/:*?"<>|]+/g,"-")+".txt",text)}];if(navigator.share)actions.unshift({label:"📤 Compartilhar pelo sistema",kind:"success",run:async()=>{try{await navigator.share({title:safeTitle,text})}catch(e){if(e?.name!=="AbortError")throw e}}});actionModal({icon:"↗",title:"Compartilhar / usar texto",message:"Escolha o que deseja fazer com a mensagem completa.",actions});}
 
 function durationProfile(m){
  m=Number(m);
@@ -220,7 +266,8 @@ async function runCommand(cmd,d){
  const prompt=masterPrompt(cmd,d); Store.set("lastPrompt",prompt);
  if(App.server){
    try{
-     const r=await fetch(App.api.replace(/\/$/,"")+"/api/generate-ai",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({
+     const generationBase=((App.provider==="9router"&&LOCAL_API)?LOCAL_API:App.api).replace(/\/$/,"");
+     const r=await fetch(generationBase+"/api/generate-ai",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({
        mode:cmd,
        text:d.text,
        theme:"",
@@ -240,14 +287,18 @@ async function runCommand(cmd,d){
  }
  return {text:localPipeline(cmd,d),engine:"local",prompt};
 }
-function saveMaterial(type,title,text,meta={}){return Store.push("library",{id:Date.now(),type,title:title||"Sem título",text,meta,created:new Date().toISOString()})}
+function saveMaterial(type,title,text,meta={}){return Store.push("library",{id:Date.now(),type,title:title||"Sem título",text,meta,favorite:false,pinned:false,created:new Date().toISOString()})}
 function wordCount(t=""){return String(t).trim()?String(t).trim().split(/\s+/).length:0}
 function readingMinutes(t="",wpm=130){return Math.max(1,Math.ceil(wordCount(t)/wpm))}
 function projectStats(){return {history:Store.get("history",[]).length,library:Store.get("library",[]).length,projects:Store.get("projects",[]).length}}
 
 
 async function checkApi(){
- if(!App.api || !/^https:\/\//.test(App.api)){App.api=DEFAULT_API;Store.set("api",App.api)}
+ // If this interface is being served by the local LOGOS backend, always use
+ // the same local origin for health, provider status, tests and generation.
+ // A previously saved Render URL must not mask the local .env configuration.
+ const localHost = location.hostname === "127.0.0.1" || location.hostname === "localhost";
+ if(LOCAL_API && localHost) App.api=LOCAL_API;
  const url=App.api.replace(/\/$/,"")+"/api/health";
  async function attempt(timeoutMs){
    const c=new AbortController();
@@ -266,31 +317,24 @@ async function checkApi(){
  setStatus();
  return data;
 }
-function setStatus(){const e=$("#status");if(!e)return;
- if(App.server){
-   const ps=App.health?.providers||{};
-   const n=Object.values(ps).filter(Boolean).length;
-   e.textContent=`ONLINE / IA ${n} provedor${n===1?"":"es"} ✅`;
-   e.className="status online";
- }else{e.textContent="LOCAL / OFFLINE ✅";e.className="status "}
-}
+function providerStatusModal(){const ps=App.health?.providers||{},ms=App.health?.models||{};const names=[["gemini","Gemini"],["groq","Groq"],["openrouter","OpenRouter"],["huggingface","Hugging Face"],["openai","OpenAI"],["9router","9Router"]];const online=names.filter(([k])=>ps[k]);const details=online.map(([k,n])=>`<div class="provider-detail"><span class="provider-check">✓</span><div><strong>${n}</strong><small>${escapeHtml(ms[k]||"Configurado")}</small>${k==="9router"?'<em>Roteador multiprovedor conectado; pode encaminhar solicitações aos modelos configurados no 9Router.</em>':''}</div></div>`).join("");closeActionModal();document.body.insertAdjacentHTML("beforeend",`<div class="logos-action-backdrop" id="logosActionBackdrop"><div class="logos-action-modal provider-modal" role="dialog" aria-modal="true"><div class="logos-action-icon">AI</div><div class="logos-action-copy"><h3>Provedores online</h3><p>${online.length} de ${names.length} integrações disponíveis no LOGOS.</p></div><button class="logos-action-x" id="logosActionX">✕</button><div class="provider-detail-list">${details||'<p>Nenhum provedor online.</p>'}</div><div class="logos-action-buttons"><button class="btn primary" id="openAIHubFromStatus">Abrir AI HUB</button><button class="btn secondary" id="closeProviderStatus">Fechar</button></div></div></div>`);$("#logosActionX")?.addEventListener("click",closeActionModal);$("#closeProviderStatus")?.addEventListener("click",closeActionModal);$("#openAIHubFromStatus")?.addEventListener("click",()=>{closeActionModal();render("aihub")});}
+function setStatus(){const e=$("#status");if(!e)return;if(App.server){const ps=App.health?.providers||{};const n=Object.values(ps).filter(Boolean).length;e.innerHTML=`<span class="status-dot"></span><strong>ONLINE</strong><span>IA ${n}/6</span><span class="status-chevron">⌄</span>`;e.className="status online status-clickable";e.title="Clique para ver os provedores online";e.onclick=providerStatusModal;}else{e.textContent="LOCAL / OFFLINE ✅";e.className="status";e.onclick=null;}}
 
+function fieldHead(classic,kind,title){return `<div class="studio-section-head"><span class="studio-classic-icon">${classic}</span>${modernIcon(kind)}<strong>${title}</strong></div>`;}
 function form(){
- return `<div class="two">
- <div><label>Texto bíblico / tema</label><textarea id="fText" placeholder="Ex.: Lamentações 5:21-22 — restauração espiritual"></textarea></div>
- <div><label>Objetivo</label><textarea id="fObjective" placeholder="Ex.: levar a igreja ao arrependimento e à esperança"></textarea></div></div>
- <div class="three">
- <div><label>Tempo</label><select id="fDuration">${[20,30,35,40,50,60,70].map(x=>`<option ${x===40?"selected":""}>${x}</option>`).join("")}</select></div>
- <div><label>Tipo de culto</label><select id="fCult">${["Avivamento","Doutrina","Santa Ceia","Missões","Jovens","Família","Círculo de Oração","Evangelístico","EBD"].map(x=>`<option>${x}</option>`).join("")}</select></div>
- <div><label>Intensidade K7</label><select id="fK7">${[1,2,3,4,5].map(x=>`<option ${x===3?"selected":""}>${x}</option>`).join("")}</select></div>
- </div>
- <label>Público</label><input id="fAudience" value="Igreja local">
- <label>Observações</label><textarea id="fNotes" placeholder="Observações, foco, limitações..."></textarea>`;
+ return `<div class="studio-section studio-content">${fieldHead("📝","edit","Conteúdo da mensagem")}
+ <div class="two"><div><label>Texto bíblico / tema</label><textarea id="fText" placeholder="Ex.: Lamentações 5:21-22 — restauração espiritual"></textarea></div><div><label>Objetivo</label><textarea id="fObjective" placeholder="Ex.: levar a igreja ao arrependimento e à esperança"></textarea></div></div></div>
+ <div class="studio-section studio-context">${fieldHead("⛪","book","Contexto e público")}
+ <div class="three"><div><label>Tempo</label><select id="fDuration">${[20,30,35,40,50,60,70].map(x=>`<option ${x===40?"selected":""}>${x}</option>`).join("")}</select></div>
+ <div><label>Tipo de culto / ocasião</label><select id="fCult">${CULT_TYPES.map(x=>`<option value="${x}">${x}</option>`).join("")}<option value="__custom__">Outro / personalizado...</option></select><input id="fCultCustom" class="audience-custom" placeholder="Digite o culto / ocasião" style="display:none" autocomplete="off"></div>
+ <div><label class="label-with-info">Intensidade K7 <button type="button" class="info-dot" id="k7Info" aria-label="O que é Intensidade K7?">i</button></label><select id="fK7">${[1,2,3,4,5].map(x=>`<option ${x===3?"selected":""}>${x}</option>`).join("")}</select></div></div>
+ <label>Público-alvo</label><select id="fAudience">${AUDIENCES.map((x,i)=>`<option value="${x}" ${i===0?"selected":""}>${x}</option>`).join("")}<option value="__custom__">Outro / personalizado...</option></select><input id="fAudienceCustom" class="audience-custom" placeholder="Digite o público personalizado" style="display:none" autocomplete="off"></div>
+ <div class="studio-section studio-direction">${fieldHead("🎯","spark","Direcionamento")}<label>Comando</label><select id="cmd">${commands.map(c=>`<option>${c}</option>`).join("")}</select><label>Observações</label><textarea id="fNotes" placeholder="Observações, foco, limitações..."></textarea></div>`;
 }
-function fd(){return {text:$("#fText")?.value.trim()||"",objective:$("#fObjective")?.value.trim()||"",duration:Number($("#fDuration")?.value||40),cult:$("#fCult")?.value||"Avivamento",intensity:Number($("#fK7")?.value||3),audience:$("#fAudience")?.value||"Igreja local",notes:$("#fNotes")?.value.trim()||""}}
+function fd(){const av=$("#fAudience")?.value||"Igreja local",cv=$("#fCult")?.value||"Avivamento";const audience=av==="__custom__"?($("#fAudienceCustom")?.value.trim()||"Público personalizado"):av;const cult=cv==="__custom__"?($("#fCultCustom")?.value.trim()||"Ocasião personalizada"):cv;return {text:$("#fText")?.value.trim()||"",objective:$("#fObjective")?.value.trim()||"",duration:Number($("#fDuration")?.value||40),cult,intensity:Number($("#fK7")?.value||3),audience,notes:$("#fNotes")?.value.trim()||""}}
 
 const views={
- dashboard(){const s=projectStats(),h=Store.get("history",[])[0];return `<div class="hero"><h1>LOGOS MASTER X 3.3</h1><p>Preparação bíblica • IA multiprovedor • DNA K7 • uso local + nuvem</p></div>
+ dashboard(){const s=projectStats(),h=Store.get("history",[])[0];return `<div class="hero"><h1>LOGOS MASTER X 3.6.5</h1><p>Preparação bíblica • IA multiprovedor • DNA K7 • uso local + nuvem</p></div>
 <div class="grid">
 <div class="card"><h3>🎛️ Studio</h3><p class="muted">Sermão, estudo, esboço, exegese, EBD, devocional e série.</p><button class="btn primary" data-go="studio">Abrir Studio</button></div>
 <div class="card"><h3>🤖 AI HUB</h3><p class="muted">${App.server?Object.values(App.health?.providers||{}).filter(Boolean).length+" provedores ativos":"Verificando API..."}</p><button class="btn primary" data-go="aihub">Abrir AI HUB</button></div>
@@ -302,10 +346,19 @@ const views={
 <div class="card"><h3>🕘 Histórico</h3><p class="muted">${s.history} gerações. ${h?`Última: ${escapeHtml(h.cmd||"")}`:""}</p><button class="btn secondary" data-go="history">Ver histórico</button></div>
 </div>`},
  studio(){return `<h2>🎛️ LOGOS STUDIO PRO</h2>
-<div class="chips"><span class="chip" data-preset="SERMÃO">Sermão</span><span class="chip" data-preset="ESTUDAR">Estudo</span><span class="chip" data-preset="ESBOÇO">Esboço</span><span class="chip" data-preset="EXEGESE">Exegese</span><span class="chip" data-preset="AULA">EBD/Aula</span><span class="chip" data-preset="DEVOCIONAL">Devocional</span><span class="chip" data-preset="SÉRIE">Série</span></div>
+<p class="studio-subtitle muted">Prepare o conteúdo, escolha a ocasião e o público. O tipo de material é definido no campo Comando, sem atalhos duplicados.</p>
 ${form()}
-<label>Comando</label><select id="cmd">${commands.map(c=>`<option>${c}</option>`).join("")}</select>
-<div class="row"><button class="btn primary" id="run">Gerar / Executar</button><button class="btn success" id="chat">Preparar e abrir ChatGPT</button><button class="btn secondary" id="save">Salvar resultado</button><button class="btn secondary" id="toEditor">Abrir no Editor</button><button class="btn secondary" id="project">Salvar projeto</button></div>
+<div class="studio-router">
+  <div class="studio-router-title"><label>Perfil de geração</label><span class="muted">Tempo aproximado — varia conforme tamanho e disponibilidade da IA.</span></div>
+  <div class="mode-picker" id="studioModePicker">
+    <button type="button" class="mode-btn ${App.aiMode==="rapido"?"active":""}" data-studio-mode="rapido"><span>⚡ <strong>Rápido</strong><em>${MODE_ESTIMATES.rapido}</em></span><small>Gemini primeiro<br>${modeAverage("rapido")}</small></button>
+    <button type="button" class="mode-btn ${App.aiMode==="economico"?"active":""}" data-studio-mode="economico"><span>💰 <strong>Econômico</strong><em>${MODE_ESTIMATES.economico}</em></span><small>9Router primeiro<br>${modeAverage("economico")}</small></button>
+    <button type="button" class="mode-btn ${App.aiMode==="automatico"?"active":""}" data-studio-mode="automatico"><span>🧠 <strong>Automático</strong><em>${MODE_ESTIMATES.automatico}</em></span><small>Gemini + fallback<br>${modeAverage("automatico")}</small></button>
+    <button type="button" class="mode-btn ${App.aiMode==="qualidade"?"active":""}" data-studio-mode="qualidade"><span>💎 <strong>Qualidade</strong><em>${MODE_ESTIMATES.qualidade}</em></span><small>Gemini + revisão<br>${modeAverage("qualidade")}</small></button>
+  </div>
+  <div class="muted studio-router-status" id="studioModeStatus">Perfil ativo: ${App.aiMode||"automatico"}. Ao escolher um perfil, o provedor fica em Automático para seguir a rota do AI HUB.</div>
+</div>
+<div class="row studio-actions"><button class="btn primary" id="run">Gerar / Executar</button><button class="btn smart" id="copyResult">📋 Copiar texto</button><button class="btn smart" id="shareResult">📤 Compartilhar / Abrir app</button><button class="btn secondary" id="save">Salvar resultado</button><button class="btn secondary" id="toEditor">Abrir no Editor</button><button class="btn secondary" id="project">Salvar projeto</button></div>
 <div id="out" class="output">Pronto.</div>`},
  bible(){return `<h2>📖 Bíblia Local</h2><p class="muted">Importe uma tradução cuja licença permita seu uso. O texto fica somente neste navegador.</p>
  <div class="row"><input type="file" id="bFile" accept=".json,.csv,.txt"><button class="btn primary" id="bImport">Importar Bíblia</button><button class="btn secondary" id="bMeta">Status</button></div>
@@ -316,9 +369,8 @@ ${form()}
  <label>Transcrição</label><textarea id="kText" rows="13" placeholder="Cole a transcrição K7..."></textarea>
  <div class="row"><button class="btn primary" id="kAnalyze">Analisar</button><button class="btn secondary" id="kPrompt">Ver DNA Mestre</button></div>
  <div id="kOut" class="output">Análises salvas: ${analyses.length}</div>`},
- library(){const q="";return `<h2>📚 Biblioteca</h2><label>Buscar</label><input id="libQ" placeholder="tema, texto, tipo..."><div class="row"><button class="btn primary" id="libSearch">Pesquisar</button><button class="btn secondary" id="libExport">Exportar biblioteca</button></div><div id="libList" class="list"></div>`},
- history(){const a=Store.get("history",[]);return `<h2>🕘 Histórico</h2><div class="row"><button class="btn danger" id="histClear">Limpar histórico</button></div><div id="histList" class="list">${a.length?a.map((x,i)=>`<div class="item"><strong>${escapeHtml(x.cmd||"Geração")}</strong><br><small>${new Date(x.created).toLocaleString()} • ${escapeHtml(x.provider||x.engine||"local")} ${x.model?"• "+escapeHtml(x.model):""}</small><div class="row"><button class="btn secondary" data-hopen="${i}">Abrir no Editor</button><button class="btn secondary" data-hcopy="${i}">Copiar</button></div></div>`).join(""):"<div class='item'>Nenhuma geração ainda.</div>"}</div>`},
- projects(){const a=Store.get("projects",[]);return `<h2>📂 Projetos</h2><div id="projList" class="list">${a.length?a.map((x,i)=>`<div class="item"><strong>${escapeHtml(x.name)}</strong><br><small>${escapeHtml(x.command||"")} • ${new Date(x.created).toLocaleString()}</small><div class="row"><button class="btn secondary" data-popen="${i}">Abrir no Editor</button><button class="btn danger" data-pdel="${i}">Excluir</button></div></div>`).join(""):"<div class='item'>Nenhum projeto salvo.</div>"}</div>`},
+ library(){return `<h2>📚 Biblioteca</h2><label>Buscar</label><input id="libQ" placeholder="tema, texto, tipo..."><div class="row"><button class="btn primary" id="libSearch">Pesquisar</button><button class="btn secondary" id="libExport">Exportar biblioteca</button></div><div class="library-filters"><button class="chip active" data-lib-filter="all">Todos</button><button class="chip" data-lib-filter="pinned">📌 Fixados</button><button class="chip" data-lib-filter="favorites">❤️ Favoritos</button></div><div id="libList" class="list"></div>`},
+ history(){const a=Store.get("history",[]).slice().sort((x,y)=>(Number(!!y.pinned)-Number(!!x.pinned))||(Number(!!y.favorite)-Number(!!x.favorite))||String(y.created||"").localeCompare(String(x.created||"")));return `<h2>🕘 Histórico</h2><div class="history-toolbar"><label class="history-select-all"><input type="checkbox" id="histSelectAll"> Selecionar tudo</label><button class="btn secondary" id="histPinSelected">📌 Fixar selecionados</button><button class="btn secondary" id="histFavSelected">❤️ Favoritar selecionados</button><button class="btn danger" id="histDeleteSelected">🗑 Excluir selecionados</button><button class="btn danger ghost-danger" id="histClear">Excluir tudo</button></div><div id="histList" class="list history-list">${a.length?a.map(x=>`<div class="item history-item ${x.pinned?"is-pinned":""} ${x.favorite?"is-favorite":""}" data-hid="${x.id}"><div class="history-item-head"><label class="history-check"><input type="checkbox" data-hsel="${x.id}"></label><div><strong>${x.pinned?"📌 ":""}${x.favorite?"❤️ ":""}${escapeHtml(x.cmd||"Geração")}</strong><br><small>${new Date(x.created).toLocaleString()} • ${escapeHtml(x.provider||x.engine||"local")} ${x.model?"• "+escapeHtml(x.model):""}</small></div></div><div class="row"><button class="btn secondary" data-hopen="${x.id}">Abrir no Editor</button><button class="btn secondary" data-hcopy="${x.id}">Copiar</button><button class="btn secondary" data-hpin="${x.id}">${x.pinned?"Desafixar":"📌 Fixar"}</button><button class="btn secondary" data-hfav="${x.id}">${x.favorite?"♡ Remover favorito":"❤️ Favoritar"}</button></div></div>`).join(""):"<div class='item'>Nenhuma geração ainda.</div>"}</div>`},
  knowledge(){return `<h2>🧠 Biblioteca Viva Local</h2><div class="chips"><span class="chip">Temas</span><span class="chip">Doutrinas</span><span class="chip">Personagens</span><span class="chip">História</span><span class="chip">Geografia</span><span class="chip">Cronologia</span><span class="chip">Ilustrações</span><span class="chip">Aplicações</span></div>
  <label>Pesquisar em dados locais</label><input id="knowQ" placeholder="Ex.: restauração, Paulo, Jerusalém"><button class="btn primary" id="knowSearch">Pesquisar</button><div id="knowOut" class="output">Digite uma pesquisa.</div>`},
  editor(){const x=Store.get("editor",{title:"",text:""});return `<h2>📝 Editor Inteligente</h2><label>Título</label><input id="edTitle" value="${escapeHtml(x.title)}"><label>Texto</label><textarea id="edText" rows="22">${escapeHtml(x.text)}</textarea>
@@ -326,23 +378,27 @@ ${form()}
 <div class="row"><button class="btn primary" id="edSave">Salvar</button><button class="btn secondary" id="edLib">Enviar à Biblioteca</button><button class="btn secondary" id="edTxt">TXT</button><button class="btn secondary" id="edMd">Markdown</button><button class="btn secondary" id="edDoc">Word (.doc)</button><button class="btn secondary" id="edPdf">Imprimir/PDF</button></div>`},
  pulpit(){const ed=Store.get("editor",{text:""});return `<h2>🎙️ Modo Púlpito PRO</h2><div class="timer" id="timer">00:00</div><div class="row"><button class="btn primary" id="tStart">Iniciar</button><button class="btn secondary" id="tPause">Pausar</button><button class="btn danger" id="tReset">Zerar</button><button class="btn secondary" id="pFontUp">A+</button><button class="btn secondary" id="pFontDown">A-</button><button class="btn secondary" id="pScroll">Rolagem automática</button></div><label>Texto de púlpito</label><textarea id="pText" rows="18">${escapeHtml(ed.text||"")}</textarea>`},
  backup(){return `<h2>💾 Backup</h2><p class="muted">Exporta/restaura todos os dados locais do LOGOS neste navegador.</p><div class="row"><button class="btn primary" id="bkExport">Exportar JSON</button><input type="file" id="bkFile" accept=".json"><button class="btn secondary" id="bkImport">Restaurar</button></div><div id="bkOut" class="output">Pronto.</div>`},
- aihub(){const p=App.health?.providers||{},m=App.health?.models||{},orders=App.health?.orders||{};const names=[["gemini","Gemini"],["groq","Groq"],["openrouter","OpenRouter"],["huggingface","Hugging Face"],["openai","OpenAI"]];return `<h2>🤖 LOGOS AI HUB</h2>
-<p class="muted">As chaves ficam somente no Render. O navegador recebe apenas status e nomes dos modelos.</p>
-<div class="grid">${names.map(([k,n])=>`<div class="card"><h3>${p[k]?"🟢":"⚪"} ${n}</h3><p class="muted">${escapeHtml(m[k]||"—")}</p><button class="btn secondary" data-provider-test="${k}" ${p[k]?"":"disabled"}>Testar</button></div>`).join("")}</div>
+ aihub(){const p=App.health?.providers||{},m=App.health?.models||{},orders=App.health?.orders||{};const names=[["gemini","Gemini"],["groq","Groq"],["openrouter","OpenRouter"],["huggingface","Hugging Face"],["openai","OpenAI"],["9router","9Router"]];return `<h2>🤖 LOGOS AI HUB</h2>
+<p class="muted">As chaves ficam somente no servidor. O navegador recebe apenas status e nomes dos modelos. O 9Router pode usar endereço local agora e endereço cloud depois.</p>
+<div class="grid">${names.map(([k,n])=>`<div class="card"><h3>${p[k]?"🟢":"⚪"} ${n}</h3><p class="muted">${escapeHtml(m[k]||(k==="9router"?"oc/deepseek-v4-flash-free":"—"))}</p><button class="btn secondary" data-provider-test="${k}" ${(p[k]||k==="9router")?"":"disabled"}>Testar</button></div>`).join("")}</div>
 <div class="two">
 <div><label>Modo do roteador</label><select id="hubMode">
-<option value="economico" ${App.aiMode==="economico"?"selected":""}>Econômico</option>
-<option value="automatico" ${App.aiMode==="automatico"?"selected":""}>Automático</option>
-<option value="qualidade" ${App.aiMode==="qualidade"?"selected":""}>Qualidade</option>
+<option value="rapido" ${App.aiMode==="rapido"?"selected":""}>⚡ Rápido — Gemini primeiro</option>
+<option value="economico" ${App.aiMode==="economico"?"selected":""}>💰 Econômico — 9Router primeiro</option>
+<option value="automatico" ${App.aiMode==="automatico"?"selected":""}>🧠 Automático — Gemini + fallback</option>
+<option value="qualidade" ${App.aiMode==="qualidade"?"selected":""}>💎 Qualidade — Gemini + revisão independente</option>
 <option value="manual" ${App.aiMode==="manual"?"selected":""}>Manual</option>
 </select></div>
 <div><label>Provedor</label><select id="hubProvider"><option value="auto">Automático</option>${names.map(([k,n])=>`<option value="${k}" ${App.provider===k?"selected":""}>${n} ${p[k]?"✅":"—"}</option>`).join("")}</select></div>
 </div>
 <label>Modelo manual (opcional)</label><input id="hubModel" value="${escapeHtml(App.model||"")}" placeholder="Deixe vazio para usar o modelo padrão do servidor">
 <div class="row"><button class="btn primary" id="hubSave">Salvar</button><button class="btn secondary" id="hubRefresh">Atualizar status</button></div>
-<div class="output" id="hubOut">Econômico: ${(orders.economico||[]).join(" → ")||"—"}
-Automático: ${(orders.automatico||[]).join(" → ")||"—"}
-Qualidade: ${(orders.qualidade||[]).join(" → ")||"—"}</div>`},
+<div class="output" id="hubOut">⚡ Rápido: ${(orders.rapido||[]).join(" → ")||"—"}
+💰 Econômico: ${(orders.economico||[]).join(" → ")||"—"}
+🧠 Automático: ${(orders.automatico||[]).join(" → ")||"—"}
+💎 Qualidade: ${(orders.qualidade||[]).join(" → ")||"—"}
+
+Os perfis mudam apenas o roteamento. O tamanho máximo do estudo/sermão permanece o mesmo.</div>`},
  settings(){const p=App.health?.providers||{},m=App.health?.models||{};return `<h2>⚙️ Configurações</h2>
 <label>URL da API</label><input id="api" value="${escapeHtml(App.api)}" placeholder="https://seu-backend.onrender.com">
 <div class="row"><button class="btn primary" id="apiSave">Salvar/Testar</button><button class="btn secondary" id="apiOff">Usar somente local</button><button class="btn secondary" data-go="aihub">Abrir AI HUB</button></div>
@@ -354,21 +410,50 @@ DNA K7: ${App.health?.dna_k7||"—"}
 
 ${Object.entries(p).map(([k,v])=>`${v?"🟢":"⚪"} ${k}: ${m[k]||"—"}`).join("\\n")}
 
-As chaves secretas ficam somente no Render.</div>`}
+As chaves secretas ficam somente no servidor.</div>`}
 };
 
 async function render(view){
  App.view=view; $$(".nav button").forEach(b=>b.classList.toggle("active",b.dataset.view===view)); $("#workspace").innerHTML=views[view]?views[view]():"<h2>Módulo</h2>";
  $$("[data-go]").forEach(b=>b.onclick=()=>render(b.dataset.go));
  if(view==="studio"){let last="";
+   const audienceSelect=$("#fAudience"), audienceCustom=$("#fAudienceCustom");
+   const syncAudience=()=>{if(!audienceSelect||!audienceCustom)return;const custom=audienceSelect.value==="__custom__";audienceCustom.style.display=custom?"block":"none";if(custom)audienceCustom.focus();};
+   audienceSelect?.addEventListener("change",syncAudience);syncAudience();
+   const cultSelect=$("#fCult"),cultCustom=$("#fCultCustom");const syncCult=()=>{if(!cultSelect||!cultCustom)return;const custom=cultSelect.value==="__custom__";cultCustom.style.display=custom?"block":"none";if(custom)cultCustom.focus();};cultSelect?.addEventListener("change",syncCult);syncCult();
+   $("#k7Info")?.addEventListener("click",()=>actionModal({icon:"K7",title:"Intensidade DNA K7",message:"Controla o grau de intensidade homilética pentecostal sem alterar a fidelidade bíblica: 1 = expositivo suave; 2 = expositivo pentecostal; 3 = equilibrado; 4 = intenso; 5 = intensidade máxima com controle. Não altera o tamanho do estudo.",actions:[{label:"Entendi",kind:"primary"}]}));
+   $$('[data-studio-mode]').forEach(b=>b.onclick=()=>{
+     App.aiMode=b.dataset.studioMode;
+     App.provider="auto";
+     App.model="";
+     Store.set("aiMode",App.aiMode);
+     Store.set("aiProvider",App.provider);
+     Store.set("aiModel",App.model);
+     $$('[data-studio-mode]').forEach(x=>x.classList.toggle("active",x===b));
+     const labels={rapido:"⚡ Rápido — Gemini primeiro",economico:"💰 Econômico — 9Router primeiro",automatico:"🧠 Automático — Gemini + fallback",qualidade:"💎 Qualidade — Gemini + revisão independente"};
+     $("#studioModeStatus").textContent=`Perfil ativo: ${labels[App.aiMode]||App.aiMode}. Provedor: Automático.`;
+   });
    $$("[data-preset]").forEach(b=>b.onclick=()=>{$("#cmd").value=b.dataset.preset});
 
-   $("#run").onclick=async()=>{const d=fd();if(!d.text)return alert("Informe texto/tema.");$("#out").textContent="Processando...";const r=await runCommand($("#cmd").value,d);last=r.text;const meta=[r.provider&&`IA: ${r.provider}`,r.model&&`Modelo: ${r.model}`,r.seconds!=null&&`Tempo: ${r.seconds}s`,r.quality&&`Quality Gate: ${r.quality.score}%`].filter(Boolean).join(" • ");
-   $("#out").textContent=`[${r.engine.toUpperCase()}]${meta?"\n"+meta:""}\n\n${r.text}`;
-   Store.push("history",{id:Date.now(),cmd:$("#cmd").value,input:d,engine:r.engine,provider:r.provider,model:r.model,seconds:r.seconds,quality:r.quality,result:r.text,created:new Date().toISOString()});};
-   $("#chat").onclick=async()=>{const d=fd();if(!d.text)return alert("Informe texto/tema.");const p=masterPrompt($("#cmd").value,d);Store.set("lastPrompt",p);await copy(p);location.href="https://chatgpt.com/";};
-   $("#save").onclick=()=>{const t=$("#out").textContent;if(!t||t==="Pronto.")return;saveMaterial($("#cmd").value,fd().text,t,fd());alert("Salvo.");};$("#toEditor").onclick=()=>{const t=$("#out").textContent;if(!t||t==="Pronto.")return alert("Gere um conteúdo primeiro.");Store.set("editor",{title:fd().text||$("#cmd").value,text:t});render("editor");};
-   $("#project").onclick=()=>{const d=fd();Store.push("projects",{id:Date.now(),name:d.text||"Projeto",command:$("#cmd").value,data:d,result:$("#out").textContent,created:new Date().toISOString()});alert("Projeto salvo.");};
+   $("#run").onclick=async()=>{const d=fd();if(!d.text)return actionModal({icon:"i",title:"Informe o texto ou tema",message:"Preencha o campo Texto bíblico / tema antes de gerar.",actions:[{label:"Entendi",kind:"primary"}]});App.lastStudioText="";$("#out").textContent="Processando...";const selectedMode=App.aiMode||"automatico",startedAt=performance.now();const r=await runCommand($("#cmd").value,d);saveModeTime(selectedMode,(performance.now()-startedAt)/1000);last=r.text;const meta=[r.provider&&`IA: ${r.provider}`,r.model&&`Modelo: ${r.model}`,r.seconds!=null&&`Tempo: ${r.seconds}s`,r.quality&&`Quality Gate: ${r.quality.score}%`].filter(Boolean).join(" • ");
+   const q=r.quality||null;const qDetails=q&&q.source==="revisor-ia-independente"?`
+
+## ✅ QUALITY GATE INDEPENDENTE
+Origem: ${q.source} • Revisor: ${q.review_provider||"—"} / ${q.review_model||"—"} • Revisão: ${q.review_seconds??"—"}s
+Critérios: ${Object.entries(q.scores||{}).map(([k,v])=>`${k}=${v}/20`).join(" • ")}
+${(q.observacoes||[]).map(x=>`[${x.tipo}] ${x.trecho}${x.motivo?` — ${x.motivo}`:""}`).join("\n")}${q.autocorrection_count?`
+[AUTOCORREÇÃO] ${q.autocorrection_count} correção(ões) segura(s) aplicada(s) automaticamente.`:""}${(q.autocorrections||[]).map(x=>`
+✓ ${x.original} → ${x.substituicao}`).join("")}${q.resumo?`
+Resumo: ${q.resumo}`:""}`:q&&q.source?`
+
+## ✅ QUALITY GATE
+Origem: ${q.source}${q.review_error?` • ${q.review_error}`:""}`:"";
+   const fullText=`[LOGOS-AI-HUB]${meta?"\n"+meta:""}\n\n${r.text}${qDetails}`;App.lastStudioText=fullText;$("#out").innerHTML=renderGeneratedMessage(fullText,{command:$("#cmd").value,intensity:d.intensity,provider:r.provider,seconds:r.seconds,quality:q?.score});
+   Store.push("history",{id:Date.now(),cmd:$("#cmd").value,input:d,engine:r.engine,provider:r.provider,model:r.model,seconds:r.seconds,quality:r.quality,result:fullText,favorite:false,pinned:false,created:new Date().toISOString()});};
+   $("#copyResult").onclick=()=>{const t=studioOutputText();if(!t||t==="Pronto."||t==="Processando...")return actionModal({icon:"i",title:"Nada para copiar",message:"Gere um conteúdo primeiro.",actions:[{label:"Fechar",kind:"primary"}]});copy(t);};
+   $("#shareResult").onclick=()=>openShareMenu(fd().text||"LOGOS MASTER X",studioOutputText());
+   $("#save").onclick=()=>{const t=studioOutputText();if(!t||t==="Pronto.")return actionModal({icon:"i",title:"Nada para salvar",message:"Gere um conteúdo primeiro.",actions:[{label:"Fechar",kind:"primary"}]});saveMaterial($("#cmd").value,fd().text,t,fd());actionModal({icon:"✓",title:"Material salvo",message:"A mensagem completa foi salva na Biblioteca do LOGOS.",actions:[{label:"Abrir Biblioteca",kind:"primary",run:()=>render("library")},{label:"Continuar aqui"}]});};$("#toEditor").onclick=()=>{const t=studioOutputText();if(!t||t==="Pronto."||t==="Processando...")return actionModal({icon:"i",title:"Nada para abrir",message:"Gere um conteúdo primeiro.",actions:[{label:"Fechar",kind:"primary"}]});Store.set("editor",{title:fd().text||$("#cmd").value,text:t});render("editor");};
+   $("#project").onclick=()=>{const d=fd();Store.push("projects",{id:Date.now(),name:d.text||"Projeto",command:$("#cmd").value,data:d,result:studioOutputText(),created:new Date().toISOString()});actionModal({icon:"✓",title:"Projeto salvo",message:"O projeto foi salvo neste dispositivo.",actions:[{label:"Abrir Projetos",kind:"primary",run:()=>render("projects")},{label:"Continuar aqui"}]});};
  }
  if(view==="bible") initBibleUI();
  if(view==="k7"){ $("#kAnalyze").onclick=()=>{const t=$("#kText").value;const words=["restaura","altar","oração","igreja","espírito","voltemos","olhe","perceba","clamor","renova"];const hits=words.map(w=>[w,(t.toLowerCase().match(new RegExp(w,"g"))||[]).length]).filter(x=>x[1]);const r=`ANÁLISE K7 LOCAL
@@ -380,8 +465,8 @@ Progressão de referência:
 abertura → contexto → exposição → aplicação → intensificação → clímax → convite
 
 Leitura: esta análise identifica sinais lexicais simples; a interpretação homilética deve considerar a transcrição inteira.`;$("#kOut").textContent=r;Store.push("k7analyses",{id:Date.now(),hits,textLength:t.length,created:new Date().toISOString()});}; $("#kPrompt").onclick=()=>$("#kOut").textContent=P.dna||"DNA K7 está em prompts/dna-k7-MASTER.txt"; }
- if(view==="library"){function show(q=""){const a=Store.get("library",[]).filter(x=>JSON.stringify(x).toLowerCase().includes(q.toLowerCase()));$("#libList").innerHTML=a.length?a.map((x,i)=>`<div class="item"><strong>${escapeHtml(x.title)}</strong><br><small>${escapeHtml(x.type)} • ${new Date(x.created).toLocaleString()}</small><div class="row"><button class="btn secondary" data-copy="${i}">Copiar</button></div></div>`).join(""):"<div class='item'>Nenhum resultado.</div>"; $$("[data-copy]").forEach((b,i)=>b.onclick=()=>copy(a[Number(b.dataset.copy)].text));} show();$("#libSearch").onclick=()=>show($("#libQ").value);$("#libExport").onclick=()=>download("logos-biblioteca.json",JSON.stringify(Store.get("library",[]),null,2),"application/json");}
- if(view==="history"){const a=Store.get("history",[]);$$("[data-hopen]").forEach(b=>b.onclick=()=>{const x=a[Number(b.dataset.hopen)];Store.set("editor",{title:(x.input?.text||x.cmd||"Material"),text:x.result||x.text||""});render("editor")});$$("[data-hcopy]").forEach(b=>b.onclick=()=>{const x=a[Number(b.dataset.hcopy)];copy(x.result||x.text||JSON.stringify(x,null,2))});$("#histClear").onclick=()=>{if(confirm("Limpar todo o histórico?")){Store.set("history",[]);render("history")}};}
+ if(view==="library"){let filter="all";function show(q=""){let a=Store.get("library",[]).filter(x=>JSON.stringify(x).toLowerCase().includes(q.toLowerCase()));if(filter==="favorites")a=a.filter(x=>x.favorite);if(filter==="pinned")a=a.filter(x=>x.pinned);a.sort((x,y)=>(Number(!!y.pinned)-Number(!!x.pinned))||(Number(!!y.favorite)-Number(!!x.favorite))||String(y.created||"").localeCompare(String(x.created||"")));$("#libList").innerHTML=a.length?a.map(x=>`<div class="item library-item ${x.pinned?"is-pinned":""} ${x.favorite?"is-favorite":""}"><div class="library-item-head"><div><strong>${x.pinned?"📌 ":""}${x.favorite?"❤️ ":""}${escapeHtml(x.title)}</strong><br><small>${escapeHtml(x.type)} • ${new Date(x.created).toLocaleString()}</small></div></div><div class="row"><button class="btn secondary" data-lib-open="${x.id}">Abrir</button><button class="btn secondary" data-lib-copy="${x.id}">Copiar</button><button class="btn secondary" data-lib-fav="${x.id}">${x.favorite?"♡ Remover favorito":"❤️ Favoritar"}</button><button class="btn secondary" data-lib-pin="${x.id}">${x.pinned?"Desafixar":"📌 Fixar"}</button><button class="btn danger" data-lib-del="${x.id}">Excluir</button></div></div>`).join(""):"<div class='item'>Nenhum resultado.</div>";const find=id=>Store.get("library",[]).find(x=>String(x.id)===String(id));const update=(id,fn)=>{Store.set("library",Store.get("library",[]).map(x=>String(x.id)===String(id)?fn({...x}):x));show($("#libQ").value)};$$('[data-lib-open]').forEach(b=>b.onclick=()=>{const x=find(b.dataset.libOpen);if(!x)return;Store.set("editor",{title:x.title||"Material",text:x.text||""});render("editor")});$$('[data-lib-copy]').forEach(b=>b.onclick=()=>{const x=find(b.dataset.libCopy);if(x)copy(x.text||"")});$$('[data-lib-fav]').forEach(b=>b.onclick=()=>update(b.dataset.libFav,x=>({...x,favorite:!x.favorite})));$$('[data-lib-pin]').forEach(b=>b.onclick=()=>update(b.dataset.libPin,x=>({...x,pinned:!x.pinned})));$$('[data-lib-del]').forEach(b=>b.onclick=()=>{const x=find(b.dataset.libDel);if(!x)return;actionModal({icon:"🗑",title:"Excluir material?",message:`${x.title||"Este material"} será removido da Biblioteca.`,actions:[{label:"Excluir",kind:"danger",run:()=>{Store.set("library",Store.get("library",[]).filter(i=>String(i.id)!==String(x.id)));show($("#libQ").value)}},{label:"Cancelar"}]})});}show();$("#libSearch").onclick=()=>show($("#libQ").value);$("#libExport").onclick=()=>download("logos-biblioteca.json",JSON.stringify(Store.get("library",[]),null,2),"application/json");$$('[data-lib-filter]').forEach(b=>b.onclick=()=>{filter=b.dataset.libFilter;$$('[data-lib-filter]').forEach(x=>x.classList.toggle('active',x===b));show($("#libQ").value)});}
+ if(view==="history"){const all=()=>Store.get("history",[]),find=id=>all().find(x=>String(x.id)===String(id)),update=(id,fn)=>Store.set("history",all().map(x=>String(x.id)===String(id)?fn({...x}):x)),selected=()=>$$('[data-hsel]:checked').map(x=>String(x.dataset.hsel));$$("[data-hopen]").forEach(b=>b.onclick=()=>{const x=find(b.dataset.hopen);if(!x)return;Store.set("editor",{title:(x.input?.text||x.cmd||"Material"),text:x.result||x.text||""});render("editor")});$$("[data-hcopy]").forEach(b=>b.onclick=()=>{const x=find(b.dataset.hcopy);if(x)copy(x.result||x.text||JSON.stringify(x,null,2))});$$('[data-hpin]').forEach(b=>b.onclick=()=>{update(b.dataset.hpin,x=>({...x,pinned:!x.pinned}));render("history")});$$('[data-hfav]').forEach(b=>b.onclick=()=>{update(b.dataset.hfav,x=>({...x,favorite:!x.favorite}));render("history")});$("#histSelectAll")?.addEventListener("change",e=>$$('[data-hsel]').forEach(x=>x.checked=e.target.checked));$("#histPinSelected")?.addEventListener("click",()=>{const ids=selected();if(!ids.length)return actionModal({icon:"i",title:"Nada selecionado",message:"Marque uma ou mais gerações do histórico.",actions:[{label:"Fechar",kind:"primary"}]});Store.set("history",all().map(x=>ids.includes(String(x.id))?{...x,pinned:true}:x));render("history")});$("#histFavSelected")?.addEventListener("click",()=>{const ids=selected();if(!ids.length)return actionModal({icon:"i",title:"Nada selecionado",message:"Marque uma ou mais gerações do histórico.",actions:[{label:"Fechar",kind:"primary"}]});Store.set("history",all().map(x=>ids.includes(String(x.id))?{...x,favorite:true}:x));render("history")});$("#histDeleteSelected")?.addEventListener("click",()=>{const ids=selected();if(!ids.length)return actionModal({icon:"i",title:"Nada selecionado",message:"Marque uma ou mais gerações para excluir.",actions:[{label:"Fechar",kind:"primary"}]});actionModal({icon:"🗑",title:"Excluir selecionados?",message:`${ids.length} item(ns) serão removidos do histórico.`,actions:[{label:"Excluir",kind:"danger",run:()=>{Store.set("history",all().filter(x=>!ids.includes(String(x.id))));render("history")}},{label:"Cancelar"}]})});$("#histClear")?.addEventListener("click",()=>actionModal({icon:"🗑",title:"Excluir todo o histórico?",message:"Todas as gerações do Histórico serão removidas deste dispositivo. Biblioteca e Projetos não serão apagados.",actions:[{label:"Excluir tudo",kind:"danger",run:()=>{Store.set("history",[]);render("history")}},{label:"Cancelar"}]}));}
  if(view==="projects"){const a=Store.get("projects",[]);$$("[data-popen]").forEach(b=>b.onclick=()=>{const x=a[Number(b.dataset.popen)];Store.set("editor",{title:x.name||"Projeto",text:x.result||""});render("editor")});$$("[data-pdel]").forEach(b=>b.onclick=()=>{const i=Number(b.dataset.pdel);const n=[...a];n.splice(i,1);Store.set("projects",n);render("projects")});}
  if(view==="knowledge"){ $("#knowSearch").onclick=async()=>{const q=$("#knowQ").value.toLowerCase().trim();const urls=["data/themes/themes.json","data/doctrine/doctrine.json","data/characters/characters.json","data/history/history.json","data/geography/geography.json","data/chronology/chronology.json","data/illustrations/illustrations.json","data/applications/applications.json"];let all=[];for(const u of urls){try{const j=await fetch("../../"+u);all=all.concat(j.map(x=>({...x,_source:u})))}catch{}}const hits=all.filter(x=>JSON.stringify(x).toLowerCase().includes(q));$("#knowOut").textContent=hits.length?hits.slice(0,50).map(x=>`${x.name||x.title||x.scope||x.label} — ${x.summary||x.text||x.notes||JSON.stringify(x)}`).join("\n\n"):"Nenhum resultado. Se abriu por file://, o navegador pode bloquear leitura dos JSON; use a versão servida/PWA.";};}
  if(view==="editor"){const saveEd=()=>{Store.set("editor",{title:$("#edTitle").value,text:$("#edText").value});$("#edWords").textContent=`${wordCount($("#edText").value)} palavras`;$("#edTime").textContent=`~${readingMinutes($("#edText").value)} min de leitura`;};let timer;["input","change"].forEach(ev=>{$("#edTitle").addEventListener(ev,()=>{clearTimeout(timer);timer=setTimeout(saveEd,350)});$("#edText").addEventListener(ev,()=>{clearTimeout(timer);timer=setTimeout(saveEd,350)})});$("#edSave").onclick=()=>{saveEd();alert("Salvo localmente.");};$("#edLib").onclick=()=>{saveMaterial("editor",$("#edTitle").value,$("#edText").value);alert("Enviado.");};$("#edTxt").onclick=()=>download(($("#edTitle").value||"sermao")+".txt",$("#edText").value);$("#edMd").onclick=()=>download(($("#edTitle").value||"sermao")+".md",`# ${$("#edTitle").value}\n\n${$("#edText").value}`,"text/markdown");$("#edDoc").onclick=()=>{const html=`<html><meta charset="utf-8"><body><h1>${escapeHtml($("#edTitle").value)}</h1><div style="white-space:pre-wrap">${escapeHtml($("#edText").value)}</div></body></html>`;download(($("#edTitle").value||"sermao")+".doc",html,"application/msword");};$("#edPdf").onclick=()=>{const w=window.open("","_blank");w.document.write(`<html><head><title>${escapeHtml($("#edTitle").value)}</title><style>body{font-family:Arial;padding:40px;white-space:pre-wrap}</style></head><body><h1>${escapeHtml($("#edTitle").value)}</h1>${escapeHtml($("#edText").value)}</body></html>`);w.document.close();w.print();};}
@@ -390,7 +475,7 @@ Leitura: esta análise identifica sinais lexicais simples; a interpretação hom
  if(view==="aihub"){
    $("#hubSave").onclick=()=>{App.aiMode=$("#hubMode").value;App.provider=$("#hubProvider").value;App.model=$("#hubModel").value.trim();Store.set("aiMode",App.aiMode);Store.set("aiProvider",App.provider);Store.set("aiModel",App.model);$("#hubOut").textContent="Configuração salva neste dispositivo. Próximas gerações usarão esta preferência.";};
    $("#hubRefresh").onclick=async()=>{await checkApi();render("aihub")};
-   $$("[data-provider-test]").forEach(b=>b.onclick=async()=>{const p=b.dataset.providerTest;b.disabled=true;const old=b.textContent;b.textContent="Testando...";try{const r=await fetch(App.api.replace(/\/$/,"")+"/api/provider-test/"+p,{method:"POST"});const j=await r.json();$("#hubOut").textContent=r.ok?`✅ ${p}: ${j.model} • ${j.seconds}s\\n${j.preview||""}`:`❌ ${p}: ${j.detail||"falha"}`;}catch(e){$("#hubOut").textContent=`❌ ${p}: ${e.message}`;}finally{b.disabled=false;b.textContent=old;}});
+   $$("[data-provider-test]").forEach(b=>b.onclick=async()=>{const p=b.dataset.providerTest;b.disabled=true;const old=b.textContent;b.textContent="Testando...";try{const localHost = location.hostname === "127.0.0.1" || location.hostname === "localhost"; const testBase=((LOCAL_API && localHost)?LOCAL_API:App.api).replace(/\/$/,"");const r=await fetch(testBase+"/api/provider-test/"+p,{method:"POST"});const j=await r.json();$("#hubOut").textContent=r.ok?`✅ ${p}: ${j.model} • ${j.seconds}s\\n${j.preview||""}`:`❌ ${p}: ${j.detail||"falha"}`;}catch(e){$("#hubOut").textContent=`❌ ${p}: ${e.message}`;}finally{b.disabled=false;b.textContent=old;}});
  }
  if(view==="settings"){ $("#apiSave").onclick=async()=>{App.api=$("#api").value.trim().replace(/\/$/,"");Store.set("api",App.api);await checkApi();render("settings")};$("#apiOff").onclick=()=>{App.api="";App.server=false;App.health=null;Store.set("api","");setStatus();render("settings")};}
 }
@@ -431,7 +516,9 @@ window.addEventListener("DOMContentLoaded",async()=>{
    bindNav();
    $("#workspace").innerHTML='<div class="hero"><h1>LOGOS MASTER X</h1><p>Carregando sistema...</p></div>';
    await clearOldFrontendCache();
-   render("dashboard");
+   applyVisual();
+const top=document.querySelector(".top");if(top&&!document.querySelector("#appearanceBtn")){const b=document.createElement("button");b.id="appearanceBtn";b.className="btn secondary appearance-trigger";b.textContent="🎨 Aparência";b.onclick=openAppearance;top.insertBefore(b,document.querySelector("#status"));}
+render("dashboard");
    await checkApi();
  }catch(e){
    console.error("LOGOS startup error",e);

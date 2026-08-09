@@ -5,12 +5,19 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel,Field
+from app.core.env import load_project_env
+
+# Load project .env before AIHub is instantiated, so provider keys/models are available.
+# Local project .env is authoritative when present. This fixes Windows/session variables
+# (including empty/stale values) masking keys restored into the project .env.
+ENV_FILE = load_project_env(override=True)
 from app.ai.hub import AIHub
 from app.prompt_engine import PromptEngine,PromptRequest
 from app.think.engine import build_plan
 from app.quality.gate import evaluate
+from app.quality.reviewer import independent_review
 BASE=Path(__file__).resolve().parent;STATIC=BASE/"web"/"static";DB=BASE.parent/"data"/"sync.sqlite3";AI=AIHub();PROMPTS=PromptEngine()
-app=FastAPI(title="LOGOS MASTER X API",version="3.3.2");app.add_middleware(CORSMiddleware,allow_origins=["*"],allow_methods=["*"],allow_headers=["*"]);app.mount("/static",StaticFiles(directory=STATIC),name="static")
+app=FastAPI(title="LOGOS MASTER X API",version="3.5.2");app.add_middleware(CORSMiddleware,allow_origins=["*"],allow_methods=["*"],allow_headers=["*"]);app.mount("/static",StaticFiles(directory=STATIC),name="static")
 class Generate(BaseModel):
  mode:str="SERMÃO";text:str=Field(min_length=1);theme:str|None=None;duration:int=40;cult:str="Avivamento";audience:str="Igreja local";intensity:int=3;objective:str|None=None;notes:str|None=None;provider:str="auto";ai_mode:str="automatico";model:str|None=None
 class SyncPayload(BaseModel): payload:dict
@@ -19,17 +26,17 @@ def robj(r):return PromptRequest(r.mode,r.text,r.theme or "",r.duration,r.cult,r
 def home():return FileResponse(STATIC/"index.html")
 @app.get("/api/health")
 def health():
- c=AI.configured();return {"status":"ok","version":"LOGOS-MASTER-X-3.3.2","ai":any(c.values()),"providers":c,"models":AI.models(),"modes":["economico","automatico","qualidade","manual"],"orders":{m:AI.order(m) for m in ["economico","automatico","qualidade"]},"prompt_engine":"modular-2.0","think_engine":"14-stage","dna_k7":"engine","quality_gate":True,"capabilities":["studio","ai-hub","think-engine","dna-k7","quality-gate","bible-local","library","projects","editor","pulpit","backup"]}
+ c=AI.configured();return {"status":"ok","version":"LOGOS-MASTER-X-3.5.2","ai":any(c.values()),"providers":c,"models":AI.models(),"modes":["rapido","economico","automatico","qualidade","manual"],"orders":{m:AI.order(m) for m in ["rapido","economico","automatico","qualidade"]},"prompt_engine":"modular-2.0","think_engine":"14-stage","dna_k7":"engine","quality_gate":True,"capabilities":["studio","ai-hub","think-engine","dna-k7","quality-gate","bible-local","library","projects","editor","pulpit","backup"]}
 @app.get("/api/diagnostics")
 def diagnostics():
     cfg=AI.configured()
     return {
         "status":"ok",
-        "version":"LOGOS-MASTER-X-3.3.2",
+        "version":"LOGOS-MASTER-X-3.5.2",
         "configured_providers":[k for k,v in cfg.items() if v],
         "provider_count":sum(1 for v in cfg.values() if v),
         "default_models":AI.models(),
-        "router_orders":{m:AI.order(m) for m in ["economico","automatico","qualidade"]},
+        "router_orders":{m:AI.order(m) for m in ["rapido","economico","automatico","qualidade"]},
         "prompt_engine":"modular-2.0",
         "think_engine":"14-stage",
         "dna_k7":True,
@@ -56,7 +63,10 @@ def provider_test(provider:str):
 def generate(r:Generate):
  try:
   out=AI.generate(PROMPTS.build(robj(r)),PROMPTS.system_instructions(),r.provider,r.ai_mode,r.model,int(os.getenv("LOGOS_MAX_OUTPUT_TOKENS","12000")))
-  return {"engine":"logos-ai-hub","prompt_engine":"modular-2.0","think_engine":"14-stage",**out,"quality":evaluate(out["text"],r.mode)}
+  quality_result=independent_review(AI,out["text"],r.mode,out.get("provider"))
+  # Autocorreção 3.5.1: aplica somente trocas exatas e seguras sugeridas pelo revisor independente.
+  final_text=quality_result.pop("corrected_text",out["text"])
+  return {"engine":"logos-ai-hub","prompt_engine":"modular-2.0","think_engine":"14-stage",**out,"text":final_text,"quality":quality_result}
  except Exception as e: raise HTTPException(502,detail=f"AI HUB: {e}")
 def db():
  DB.parent.mkdir(parents=True,exist_ok=True);c=sqlite3.connect(DB);c.execute("create table if not exists sync(workspace text primary key,payload text not null,updated text default current_timestamp)");return c

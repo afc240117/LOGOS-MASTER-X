@@ -1,0 +1,14 @@
+LOGOS MASTER X - HOTFIX 3.4.1 INTERFACE
+
+Corrige os caminhos dos arquivos estaticos na pagina inicial:
+- /static/style.css
+- /static/prompt-library.js
+- /static/app.js
+- /static/manifest.webmanifest
+
+Instalacao:
+1. Pare o LOGOS MASTER X (Ctrl+C no CMD).
+2. Extraia este ZIP dentro da pasta principal LOGOS-MASTER-X.
+3. Confirme "Substituir os arquivos no destino".
+4. Inicie novamente na porta 8080.
+5. No navegador, use Ctrl+F5.
