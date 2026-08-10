@@ -37,7 +37,7 @@ const MODE_ESTIMATES={rapido:"~25–45 s",economico:"~45–120 s",automatico:"~3
 function modeAverage(mode){const a=Store.get("modeTimes:"+mode,[]);if(!a.length)return "Sem média ainda";return `Média recente: ${Math.round(a.reduce((x,y)=>x+y,0)/a.length)} s`;}
 function saveModeTime(mode,seconds){if(!Number.isFinite(seconds)||seconds<=0)return;const a=Store.get("modeTimes:"+mode,[]);a.unshift(seconds);Store.set("modeTimes:"+mode,a.slice(0,8));}
 const VISUAL_DEFAULT={layout:"classico",theme:"dark",accent:"#d6b25e",mobileLayout:"mobile-pro",appIcon:"fixed"};
-function syncManifestIcon(){let link=document.querySelector('link[rel="manifest"]');if(!link){link=document.createElement('link');link.rel="manifest";document.head.appendChild(link)}link.href="/static/manifest.webmanifest?v=377";}
+function syncManifestIcon(){let link=document.querySelector('link[rel="manifest"]');if(!link){link=document.createElement('link');link.rel="manifest";document.head.appendChild(link)}link.href="/static/manifest.webmanifest?v=378";}
 
 let visualPreview=null;
 function visualSettings(){const v={...VISUAL_DEFAULT,...Store.get("visual",{})};if(v.theme==="system")v.theme="dark";if(v.layout==="compacto"||v.layout==="modernox"||v.layout==="moderno"||v.layout==="pulpito")v.layout="clean";if(v.mobileLayout==="auto")v.mobileLayout="mobile-pro";return v;}
@@ -48,8 +48,14 @@ const NAV_META={
  k7:["🔥","DNA K7","flame"],editor:["📝","Editor","edit"],pulpit:["🎙","Púlpito","mic"],library:["📚","Biblioteca","library"],projects:["📂","Projetos","folder"],
  aihub:["🤖","AI HUB","spark"],appearance:["🎨","Aparência","settings"],about:["ⓘ","Sobre o LOGOS","book"],custompages:["➕","Minhas páginas","folder"],backup:["💾","Backup","save"],settings:["⚙️","Configurações","settings"]};
 function modernIcon(kind){const paths={grid:'<rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/>',sliders:'<path d="M4 6h16M7 12h10M9 18h6"/><circle cx="9" cy="6" r="2"/><circle cx="14" cy="12" r="2"/><circle cx="11" cy="18" r="2"/>',book:'<path d="M4 5.5A3.5 3.5 0 0 1 7.5 2H11v18H7.5A3.5 3.5 0 0 0 4 23zM20 5.5A3.5 3.5 0 0 0 16.5 2H13v18h3.5A3.5 3.5 0 0 1 20 23z"/>',brain:'<path d="M9 4a3 3 0 0 0-5 2 3 3 0 0 0 0 5 4 4 0 0 0 3 7h2M15 4a3 3 0 0 1 5 2 3 3 0 0 1 0 5 4 4 0 0 1-3 7h-2M9 4v16M15 4v16M9 9h3M12 15h3"/>',flame:'<path d="M12 22c4 0 7-3 7-7 0-5-4-7-4-11-3 2-5 5-5 8-1-1-2-2-2-4-2 2-3 4-3 7 0 4 3 7 7 7z"/>',edit:'<path d="M4 20h4L19 9l-4-4L4 16zM13.5 6.5l4 4"/>',mic:'<rect x="9" y="3" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v4M8 22h8"/>',library:'<path d="M4 4h4v16H4zM10 4h4v16h-4zM16 5l4-1 2 15-4 1z"/>',folder:'<path d="M3 6h7l2 2h9v11H3z"/>',spark:'<path d="M12 2l1.8 5.2L19 9l-5.2 1.8L12 16l-1.8-5.2L5 9l5.2-1.8zM19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/>',save:'<path d="M4 3h14l2 2v16H4zM8 3v6h8V3M8 21v-7h8v7"/>',settings:'<circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.1-1l2-1.5-2-3.5-2.4 1a8 8 0 0 0-1.7-1L14.5 3h-5L9 6a8 8 0 0 0-1.7 1L5 6 3 9.5 5.1 11a7 7 0 0 0 0 2L3 14.5 5 18l2.3-1a8 8 0 0 0 1.7 1l.5 3h5l.5-3a8 8 0 0 0 1.7-1l2.3 1 2-3.5-2.1-1.5a7 7 0 0 0 .1-1z"/>'};return `<svg class="modern-nav-icon" viewBox="0 0 24 24" aria-hidden="true">${paths[kind]||paths.spark}</svg>`;}
-function updateNavIcons(layout=activeVisual().layout){if(layout!=="clean")return;$$('.nav button[data-view]').forEach(b=>{const m=NAV_META[b.dataset.view];if(!m)return;b.innerHTML=`${modernIcon(m[2])}<span>${m[1]}</span>`;});}
-function appearancePanel(){const v=activeVisual();return `<div class="appearance-backdrop" id="appearanceBackdrop" role="dialog" aria-modal="true"><div class="appearance-panel" id="appearancePanel"><div class="appearance-head"><h3>🎨 Aparência</h3><button class="btn secondary" id="appearanceClose">✕ Fechar</button></div><p class="muted">O tema Clássico permanece preservado. O tema Clean é a segunda identidade, mais leve e suave.</p><label>🖥️ Tema no PC</label><div class="visual-options">${[["classico","🏛️ Clássico — padrão"],["clean","✦ Clean"]].map(([x,l])=>`<button class="visual-choice ${v.layout===x?"active":""}" data-layout="${x}">${l}</button>`).join("")}</div><label>📱 Tema no celular / Android</label><div class="visual-options">${[["mobile-pro","⚡ Pro — padrão"],["mobile-clean","✦ Clean"]].map(([x,l])=>`<button class="visual-choice ${v.mobileLayout===x?"active":""}" data-mobile-layout="${x}">${l}</button>`).join("")}</div><div class="fixed-icon-card"><img src="/static/brand/app-icon-fixed-192.png?v=377" alt="Ícone LOGOS MASTER X"><div><strong>Ícone oficial fixo</strong><small>LOGOS MASTER X • DNA K7</small></div></div><p class="muted icon-install-note">O ícone não é mais selecionável. Em instalações antigas, reinstale o atalho/PWA para atualizar o ícone.</p><div class="row appearance-actions"><button class="btn primary" id="visualSave">💾 Salvar tema</button><button class="btn secondary" id="visualReset">↩ Restaurar padrões</button><button class="btn secondary" id="visualCloseBottom">✕ Fechar</button></div></div></div>`;}
+function updateNavIcons(layout=activeVisual().layout){
+ if(layout!=="clean")return;
+ $$('.nav button[data-view]').forEach(b=>{
+   const m=NAV_META[b.dataset.view];if(!m)return;
+   b.innerHTML=`<i class="clean-retro-ico" aria-hidden="true">${m[0]}</i><span>${m[1]}</span>`;
+ });
+}
+function appearancePanel(){const v=activeVisual();return `<div class="appearance-backdrop" id="appearanceBackdrop" role="dialog" aria-modal="true"><div class="appearance-panel" id="appearancePanel"><div class="appearance-head"><h3>🎨 Aparência</h3><button class="btn secondary" id="appearanceClose">✕ Fechar</button></div><p class="muted">O tema Clássico permanece preservado. O tema Clean é a segunda identidade, mais leve e suave.</p><label>🖥️ Tema no PC</label><div class="visual-options">${[["classico","🏛️ Clássico — padrão"],["clean","✦ Clean"]].map(([x,l])=>`<button class="visual-choice ${v.layout===x?"active":""}" data-layout="${x}">${l}</button>`).join("")}</div><label>📱 Tema no celular / Android</label><div class="visual-options">${[["mobile-pro","⚡ Pro — padrão"],["mobile-clean","✦ Clean"]].map(([x,l])=>`<button class="visual-choice ${v.mobileLayout===x?"active":""}" data-mobile-layout="${x}">${l}</button>`).join("")}</div><div class="fixed-icon-card"><img src="/static/brand/app-icon-fixed-192.png?v=378" alt="Ícone LOGOS MASTER X"><div><strong>Ícone oficial fixo</strong><small>LOGOS MASTER X • DNA K7</small></div></div><p class="muted icon-install-note">O ícone não é mais selecionável. Em instalações antigas, reinstale o atalho/PWA para atualizar o ícone.</p><div class="row appearance-actions"><button class="btn primary" id="visualSave">💾 Salvar tema</button><button class="btn secondary" id="visualReset">↩ Restaurar padrões</button><button class="btn secondary" id="visualCloseBottom">✕ Fechar</button></div></div></div>`;}
 function openAppearance(){
   $("#appearanceBackdrop")?.remove(); visualPreview={...visualSettings()};
   document.body.insertAdjacentHTML("beforeend",appearancePanel());
@@ -347,8 +353,40 @@ function form(){
 }
 function fd(){const av=$("#fAudience")?.value||"Igreja local",cv=$("#fCult")?.value||"Avivamento";const audience=av==="__custom__"?($("#fAudienceCustom")?.value.trim()||"Público personalizado"):av;const cult=cv==="__custom__"?($("#fCultCustom")?.value.trim()||"Ocasião personalizada"):cv;return {text:$("#fText")?.value.trim()||"",objective:$("#fObjective")?.value.trim()||"",duration:Number($("#fDuration")?.value||40),cult,intensity:Number($("#fK7")?.value||10),audience,notes:$("#fNotes")?.value.trim()||""}}
 
+
+function cleanDashboard(){
+ const s=projectStats();
+ return `<div class="clean-home">
+   <section class="clean-hero">
+     <div class="clean-hero-copy">
+       <span class="clean-eyebrow">✦ LOGOS MASTER X • DNA K7</span>
+       <h1>Da Palavra ao Púlpito.</h1>
+       <p>Estudo bíblico, preparação, organização e pregação em uma interface leve e direta.</p>
+       <div class="clean-hero-actions">
+         <button class="btn primary" data-go="studio">▶ Acessar Studio</button>
+         <button class="btn secondary" data-go="about">ⓘ Conhecer o propósito</button>
+       </div>
+     </div>
+     <div class="clean-hero-mark" aria-hidden="true"><span>📼</span><b>✕</b><span>🧬</span></div>
+   </section>
+   <div class="clean-section-title"><span>COMECE AQUI</span><small>atalhos principais</small></div>
+   <section class="clean-quick-grid">
+     <button data-go="studio"><i>📝</i><strong>Nova mensagem</strong><small>Comece com texto bíblico ou tema</small></button>
+     <button data-go="projects"><i>📁</i><strong>Meus projetos</strong><small>${s.projects||0} projeto(s) salvo(s)</small></button>
+     <button data-go="library"><i>📚</i><strong>Biblioteca</strong><small>${s.library||0} material(is)</small></button>
+     <button data-go="history"><i>🕘</i><strong>Histórico</strong><small>Reveja conversas e materiais</small></button>
+     <button data-go="pulpit"><i>🎙️</i><strong>Modo Púlpito</strong><small>Preparação final</small></button>
+   </section>
+   <section class="clean-panels">
+     <div class="clean-panel"><div class="clean-panel-head"><span>🔥</span><div><strong>DNA K7</strong><small>Estrutura • intensidade • aplicação</small></div></div><p>O motor organiza o material sem substituir oração, Bíblia, consagração e discernimento.</p><button class="clean-link" data-go="k7">Abrir DNA K7 →</button></div>
+     <div class="clean-panel"><div class="clean-panel-head"><span>🤖</span><div><strong>AI HUB</strong><small>provedores e modelos</small></div></div><p>Acompanhe provedores, roteamento e disponibilidade em um só lugar.</p><button class="clean-link" data-go="aihub">Abrir AI HUB →</button></div>
+     <div class="clean-panel"><div class="clean-panel-head"><span>📖</span><div><strong>Bíblia + Estudo</strong><small>conteúdo organizado</small></div></div><p>Pesquise, prepare e transforme estudo em material de púlpito com clareza.</p><button class="clean-link" data-go="bible">Abrir Bíblia →</button></div>
+   </section>
+ </div>`;
+}
+
 const views={
- dashboard(){const s=projectStats();return `<div class="classic-home exact-reference-home">
+ dashboard(){const s=projectStats();if(activeVisual().layout==="clean")return cleanDashboard();return `<div class="classic-home exact-reference-home">
 <div class="reference-body-wrap desktop-reference-home">
 <img class="reference-body-img" src="/static/brand/classic-reference-body-01ai.png?v=01ai" alt="LOGOS MASTER X DNA K7 — Home clássica">
 <button class="reference-hit reference-hit-studio" data-go="studio" aria-label="Acessar Studio"></button>
@@ -444,7 +482,7 @@ function toggleAppearancePanel(){
 async function render(view){
  App.view=view; $$(".nav button").forEach(b=>b.classList.toggle("active",b.dataset.view===view)); $("#workspace").innerHTML=views[view]?views[view]():"<h2>Módulo</h2>";
  $$("[data-go]").forEach(b=>b.onclick=()=>{if(b.dataset.go==="appearance")openAppearance();else render(b.dataset.go);});
- if(view==="dashboard"){$("#installPwaHome")?.addEventListener("click",installPwa);} $$(".top-nav [data-go]").forEach(b=>b.classList.toggle("active",b.dataset.go===view)); $("#installPwaSide")?.addEventListener("click",installPwa);
+ if(view==="dashboard"){$("#installPwaHome")?.addEventListener("click",installPwa);} $$(".top-nav [data-go]").forEach(b=>b.classList.toggle("active",b.dataset.go===view)); if($("#installPwaSide"))$("#installPwaSide").onclick=installPwa;
  if(view==="appearance"){$("#openAppearanceInside")?.addEventListener("click",openAppearance);}
  if(view==="custompages"){$("#customPageSave")?.addEventListener("click",()=>{const title=$("#customPageTitle").value.trim();if(!title)return;const a=Store.get("customPages",[]);a.push({title,icon:$("#customPageIcon").value||"⭐",content:$("#customPageContent").value});Store.set("customPages",a);render("custompages")});$$('[data-page-delete]').forEach(b=>b.onclick=()=>{const a=Store.get("customPages",[]);a.splice(Number(b.dataset.pageDelete),1);Store.set("customPages",a);render("custompages")});}
  if(view==="studio"){let last="";
@@ -583,7 +621,13 @@ async function checkFrontendVersion(showResult=false){
 }
 
 
-let deferredInstallPrompt=null;window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredInstallPrompt=e;});async function installPwa(){if(deferredInstallPrompt){deferredInstallPrompt.prompt();await deferredInstallPrompt.userChoice;deferredInstallPrompt=null;return}actionModal({icon:'📲',title:'Instalar LOGOS MASTER X',message:'No Android/Chrome ou Edge, abra o menu do navegador e escolha “Instalar aplicativo” ou “Adicionar à tela inicial”. Se já estiver instalado, nenhuma nova instalação é necessária.',actions:[{label:'Entendi',kind:'primary'}]});}
+let deferredInstallPrompt=null;
+function pwaInstalled(){return window.matchMedia?.('(display-mode: standalone)').matches||window.navigator.standalone===true;}
+function installToast(message){document.querySelector('#pwaInstallToast')?.remove();const el=document.createElement('div');el.id='pwaInstallToast';el.className='pwa-install-toast';el.innerHTML=`<span>📲</span><div><strong>Instalar LOGOS MASTER X</strong><small>${escapeHtml(message)}</small></div><button aria-label="Fechar">✕</button>`;document.body.appendChild(el);el.querySelector('button')?.addEventListener('click',()=>el.remove());setTimeout(()=>el?.remove(),9000);}
+function updateInstallSideButton(){const b=$('#installPwaSide');if(!b)return;if(pwaInstalled()){b.classList.add('is-installed');b.querySelector('span').innerHTML='APP instalado<small>LOGOS MASTER X</small>';}else if(deferredInstallPrompt){b.classList.add('is-ready');b.querySelector('span').innerHTML='Instalar como APP<small>Pronto para instalar</small>';}}
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredInstallPrompt=e;updateInstallSideButton();});
+window.addEventListener('appinstalled',()=>{deferredInstallPrompt=null;updateInstallSideButton();installToast('Aplicativo instalado com sucesso.');});
+async function installPwa(){if(pwaInstalled()){installToast('O aplicativo já está instalado neste dispositivo.');return;}if(deferredInstallPrompt){const prompt=deferredInstallPrompt;deferredInstallPrompt=null;await prompt.prompt();const choice=await prompt.userChoice.catch(()=>({outcome:'dismissed'}));if(choice?.outcome!=='accepted')installToast('Instalação cancelada. Você pode tentar novamente pelo botão lateral.');updateInstallSideButton();return;}installToast('O navegador não liberou o prompt automático agora. No Edge/Chrome, use o ícone de instalar na barra de endereço ou o menu ⋯ → Aplicativos → Instalar este site como aplicativo.');}
 let autoPublishTimer=null;
 async function devApi(path,opts={}){const r=await fetch(location.origin+path,{cache:"no-store",...opts});const j=await r.json().catch(()=>({}));if(!r.ok)throw new Error(j.detail||j.message||"Falha");return j;}
 async function getProductionVersion(){try{const r=await fetch(PRODUCTION_VERSION_URL+"?t="+Date.now(),{cache:"no-store"});if(!r.ok)return "—";return String((await r.json()).version||"—")}catch{return "—"}}
@@ -617,7 +661,7 @@ function closeMobileNav(){document.body.classList.remove("mobile-nav-open");$("#
 function toggleMobileNav(){if(document.body.classList.contains("mobile-nav-open")){closeMobileNav();return}document.body.classList.add("mobile-nav-open");if(!$("#mobileNavBackdrop")){const d=document.createElement("div");d.id="mobileNavBackdrop";d.className="mobile-nav-backdrop";d.addEventListener("click",closeMobileNav);document.body.appendChild(d)}}
 function installMobileNav(){const top=document.querySelector(".top");if(top&&!$("#mobileNavToggle")){const b=document.createElement("button");b.id="mobileNavToggle";b.className="mobile-nav-toggle";b.setAttribute("aria-label","Abrir menu");b.innerHTML='<span>☰</span><small>Menu</small>';b.addEventListener("click",toggleMobileNav);top.insertBefore(b,top.firstChild)}document.querySelectorAll(".nav button[data-view]").forEach(b=>b.addEventListener("click",()=>{if(innerWidth<=760)closeMobileNav()}));window.addEventListener("resize",()=>{if(innerWidth>760)closeMobileNav()});}
 installMobileNav();installUpdateControls();
-const top=document.querySelector('.top');if(top&&!document.querySelector('#aboutTopBtn')){const x=document.createElement('button');x.id='aboutTopBtn';x.className='top-mini';x.textContent='ⓘ Sobre';x.onclick=()=>toggleTopView('about');safeTopInsert(x);const i=document.createElement('button');i.id='installTopBtn';i.className='top-mini';i.textContent='📲 Instalar';i.onclick=installPwa;safeTopInsert(i);}
+const top=document.querySelector('.top');if(top&&!document.querySelector('#aboutTopBtn')){const x=document.createElement('button');x.id='aboutTopBtn';x.className='top-mini';x.textContent='ⓘ Sobre';x.onclick=()=>toggleTopView('about');safeTopInsert(x);}updateInstallSideButton();
 const top2=document.querySelector(".top");if(top2&&!document.querySelector("#appearanceBtn")){const b=document.createElement("button");b.id="appearanceBtn";b.className="btn secondary appearance-trigger";b.textContent="🎨 Aparência";b.onclick=toggleAppearancePanel;safeTopInsert(b);}
 render("dashboard");
    await checkApi();
