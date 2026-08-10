@@ -586,17 +586,18 @@ async function clearOldFrontendCache(){
  }catch(e){}
 }
 
-const APP_BUILD_VERSION="3.7.6";
+const APP_BUILD_VERSION="3.7.9";
 function publicAsset(path){return "/"+String(path).replace(/^\/+/,"");}
 const PRODUCTION_VERSION_URL="https://logos-master-x-api.onrender.com/static/version.json";
 function showUpdateBanner(remoteVersion){
+ if(sessionStorage.getItem("logosUpdateDismissed:"+remoteVersion)==="1") return;
  if(document.getElementById("logosUpdateBanner")) return;
  const bar=document.createElement("div");
- bar.id="logosUpdateBanner";
- bar.style.cssText="position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:99999;background:#111827;color:#fff;border:1px solid rgba(255,255,255,.18);box-shadow:0 16px 40px rgba(0,0,0,.35);border-radius:16px;padding:12px 14px;display:flex;gap:12px;align-items:center;max-width:calc(100vw - 24px);font:600 14px system-ui";
- bar.innerHTML='<span>🚀 Nova versão '+escapeHtml(remoteVersion)+' disponível</span><button id="logosUpdateNow" style="border:0;border-radius:10px;padding:9px 12px;font-weight:800;cursor:pointer">Atualizar agora</button>';
+ bar.id="logosUpdateBanner";bar.className="logos-update-banner";
+ bar.innerHTML='<span class="update-rocket">🚀</span><span class="update-copy">Nova versão '+escapeHtml(remoteVersion)+' disponível</span><button id="logosUpdateNow" class="update-now">Atualizar agora</button><button id="logosUpdateClose" class="update-close" aria-label="Fechar aviso">✕</button>';
  document.body.appendChild(bar);
  document.getElementById("logosUpdateNow").onclick=async()=>{await forceFrontendRefresh(remoteVersion)};
+ document.getElementById("logosUpdateClose").onclick=()=>{sessionStorage.setItem("logosUpdateDismissed:"+remoteVersion,"1");bar.remove();};
 }
 async function forceFrontendRefresh(remoteVersion){
  try{
