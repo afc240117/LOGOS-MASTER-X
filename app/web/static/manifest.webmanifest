@@ -2,23 +2,19 @@
   "name": "LOGOS MASTER X — DNA K7",
   "short_name": "LOGOS X",
   "start_url": "/",
-  "scope": "/",
   "display": "standalone",
   "background_color": "#05070b",
   "theme_color": "#05070b",
-  "description": "DNA K7 • Bíblia • Estudo • Pregação",
   "icons": [
     {
-      "src": "/static/brand/app-icons/icon-dna-192.png",
+      "src": "/static/brand/app-icon-fixed-192.png?v=377",
       "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any maskable"
+      "type": "image/png"
     },
     {
-      "src": "/static/brand/app-icons/icon-dna-512.png",
+      "src": "/static/brand/app-icon-fixed-512.png?v=377",
       "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
+      "type": "image/png"
     }
   ]
 }

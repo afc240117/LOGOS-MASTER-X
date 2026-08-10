@@ -1801,3 +1801,55 @@ html[data-layout="classico"] .reference-body-img{
   }
   .mobile-loading-live{left:14%;right:14%;bottom:15%}
 }
+
+
+/* LOGOS MASTER X 3.7.7 — Splash oficial + temas Clássico/Clean */
+.mobile-loading{display:flex;position:fixed;inset:0;z-index:100000;background:#02070d;align-items:center;justify-content:center;opacity:1;transition:opacity .38s ease;overflow:hidden}
+.mobile-loading.is-done{opacity:0;pointer-events:none}
+.mobile-loading-frame{position:relative;width:min(100vw,76vh);aspect-ratio:1204/1584;height:auto;max-height:100vh;display:block;background:#02070d}
+.mobile-loading-frame>img{display:block;width:100%;height:100%;object-fit:contain;object-position:center}
+/* A barra viva fica exatamente sobre o contorno impresso na arte, abaixo dos 4 ícones centrais. */
+.mobile-loading-live{position:absolute;left:14.3%;right:17.1%;bottom:17.1%;height:3.0%;max-height:48px;border-radius:8px;overflow:hidden;background:rgba(3,7,12,.35);box-shadow:inset 0 0 0 2px rgba(223,171,86,.36),0 0 16px rgba(48,168,255,.12)}
+.mobile-loading-live i{display:block;width:8%;height:100%;border-radius:6px;background:linear-gradient(90deg,#0d87e9 0%,#36c1ff 55%,#e4b650 100%);box-shadow:0 0 14px rgba(72,183,255,.7);transition:width .16s linear}
+@media(min-width:900px){.mobile-loading-frame{width:min(560px,72vh)}}
+
+.fixed-icon-card{display:flex;align-items:center;gap:14px;margin-top:16px;padding:12px;border:1px solid var(--line);border-radius:16px;background:var(--panel2)}
+.fixed-icon-card img{width:72px;height:72px;border-radius:15px;object-fit:cover;border:1px solid color-mix(in srgb,var(--accent) 28%,var(--line))}
+.fixed-icon-card div{display:grid;gap:4px}.fixed-icon-card small{color:var(--muted)}
+
+/* Tema Clean: camada separada. Nenhuma regra abaixo altera o Clássico. */
+html[data-layout="clean"]{--bg:#060b10;--panel:#09121b;--panel2:#0c1823;--line:#173444;--text:#edf8fb;--muted:#89a5b1;--accent:#08c6c9;--gold:#08c6c9}
+html[data-layout="clean"] body{background:radial-gradient(circle at 46% -16%,rgba(4,171,184,.13),transparent 33%),linear-gradient(180deg,#03070a,#071019 55%,#03070a);color:var(--text)}
+html[data-layout="clean"] .classic-top{background:rgba(4,11,17,.96);border-bottom:1px solid #153746;box-shadow:0 8px 30px rgba(0,0,0,.22)}
+html[data-layout="clean"] .classic-brand .classic-header-logo{filter:saturate(.9) brightness(1.05)}
+html[data-layout="clean"] .classic-top .top-nav button,html[data-layout="clean"] .classic-top .top-actions button{color:#a7bdc8;border-color:#173440;background:#07111a;box-shadow:none}
+html[data-layout="clean"] .classic-top .top-nav button:hover,html[data-layout="clean"] .classic-top .top-nav button.active,html[data-layout="clean"] .classic-top .top-actions button:hover,html[data-layout="clean"] .classic-top .top-actions button.active{color:#47e3e0;border-color:#0db9bd;background:#0a1822;box-shadow:0 0 14px rgba(7,205,205,.10)}
+html[data-layout="clean"] .classic-layout{grid-template-columns:220px minmax(0,1fr)}
+html[data-layout="clean"] .classic-sidebar{background:linear-gradient(180deg,#06101a,#04090e);border-right:1px solid #15313d;box-shadow:none}
+html[data-layout="clean"] .classic-sidebar::before,html[data-layout="clean"] .classic-sidebar::after{opacity:.15}
+html[data-layout="clean"] .classic-sidebar .side-brand{border-bottom-color:#15313d}
+html[data-layout="clean"] .classic-sidebar .side-brand strong{color:#f1fbfc}html[data-layout="clean"] .classic-sidebar .side-brand small,html[data-layout="clean"] .classic-sidebar .brand-x{color:#18d3d4}
+html[data-layout="clean"] .classic-sidebar .nav button{color:#b9cbd3;border:1px solid transparent;background:transparent;border-radius:9px}
+html[data-layout="clean"] .classic-sidebar .nav button:hover,html[data-layout="clean"] .classic-sidebar .nav button.active{background:#0a1b25;color:#48e4e0;border-color:#174856;box-shadow:none}
+html[data-layout="clean"] .classic-sidebar .nav button .side-ico,html[data-layout="clean"] .modern-nav-icon{color:#25d9d4;stroke:currentColor}
+html[data-layout="clean"] main{background:transparent;padding:14px 16px}
+html[data-layout="clean"] .workspace{background:#071019;border:1px solid #12313e;border-radius:12px;box-shadow:0 12px 34px rgba(0,0,0,.18)}
+html[data-layout="clean"] .card,html[data-layout="clean"] .studio-section,html[data-layout="clean"] .studio-router,html[data-layout="clean"] .generated-section{background:linear-gradient(145deg,#0a1620,#071019);border-color:#173746;border-radius:12px;box-shadow:none}
+html[data-layout="clean"] input,html[data-layout="clean"] textarea,html[data-layout="clean"] select,html[data-layout="clean"] .output{background:#050c12;color:#eef9fb;border-color:#1b3a48;border-radius:9px}
+html[data-layout="clean"] input:focus,html[data-layout="clean"] textarea:focus,html[data-layout="clean"] select:focus{border-color:#13c9c8;box-shadow:0 0 0 2px rgba(19,201,200,.11)}
+html[data-layout="clean"] .btn{border-radius:9px}html[data-layout="clean"] .btn.primary{background:linear-gradient(180deg,#1fc8c7,#11999c);border-color:#37dddd;color:#021012}
+html[data-layout="clean"] .desktop-reference-home{filter:saturate(.82) brightness(.82);border:1px solid #17404e;border-radius:12px;overflow:hidden}
+html[data-layout="clean"] .reference-body-img{opacity:.88}
+
+@media(max-width:760px){
+ html[data-mobile-layout="mobile-clean"] body{background:#05090d!important}
+ html[data-mobile-layout="mobile-clean"] .top{background:#071019!important;border-bottom:1px solid #153541!important;border-radius:0!important;box-shadow:none!important}
+ html[data-mobile-layout="mobile-clean"] .workspace{background:transparent!important;border:0!important;padding:8px!important;box-shadow:none!important}
+ html[data-mobile-layout="mobile-clean"] .studio-section,html[data-mobile-layout="mobile-clean"] .card,html[data-mobile-layout="mobile-clean"] .generated-section{background:#09131c!important;border:1px solid #173441!important;border-radius:14px!important;box-shadow:none!important}
+ html[data-mobile-layout="mobile-clean"] .btn{border-radius:12px!important}
+ html[data-mobile-layout="mobile-pro"] .top{background:linear-gradient(135deg,color-mix(in srgb,var(--accent) 16%,var(--panel)),var(--panel));border-bottom:1px solid color-mix(in srgb,var(--accent) 30%,var(--line))}
+}
+
+html[data-layout="clean"]{--accent:#08c6c9!important;--gold:#08c6c9!important}
+html[data-layout="classico"]{--accent:#d6b25e!important;--gold:#d6b25e!important}
+@media(max-width:760px){html[data-mobile-layout="mobile-clean"]{--accent:#08c6c9!important;--gold:#08c6c9!important}}
