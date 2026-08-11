@@ -23,7 +23,7 @@ class Generate(BaseModel):
 class SyncPayload(BaseModel): payload:dict
 def robj(r):return PromptRequest(r.mode,r.text,r.theme or "",r.duration,r.cult,r.audience,r.intensity,r.objective or "",r.notes or "")
 @app.get("/",include_in_schema=False)
-def home():return FileResponse(STATIC/"index.html",headers={"Cache-Control":"no-store, max-age=0"})
+def home():return FileResponse(STATIC/"index.html",media_type="text/html; charset=utf-8",headers={"Cache-Control":"no-store, max-age=0"})
 @app.get("/version.json",include_in_schema=False)
 def frontend_version():return FileResponse(STATIC/"version.json",media_type="application/json",headers={"Cache-Control":"no-store, max-age=0"})
 @app.get("/api/health")

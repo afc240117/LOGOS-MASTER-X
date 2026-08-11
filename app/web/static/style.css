@@ -2094,3 +2094,284 @@ html[data-startup-palette="electricblue"]{--startup-primary:#279fff;--startup-se
   background:linear-gradient(90deg,var(--startup-primary) 0%,color-mix(in srgb,var(--startup-primary) 55%,var(--startup-secondary) 45%) 55%,var(--startup-secondary) 100%)!important;
   box-shadow:0 0 14px color-mix(in srgb,var(--startup-primary) 72%,transparent)!important;
 }
+
+/* ================================================================
+   HOTFIX MOBILE UI 4.2 — menu sólido, Home alinhada, Aparência opaca
+   ================================================================ */
+@media(max-width:760px){
+  /* Menu lateral: fundo 100% sólido e temático; nada da Home aparece por baixo. */
+  html[data-layout="classico"][data-palette] .classic-sidebar{
+    background-color:var(--theme-bg,#04080d)!important;
+    background-image:
+      radial-gradient(110% 46% at 10% 0%,color-mix(in srgb,var(--theme-primary) 18%,var(--theme-bg)) 0%,var(--theme-bg) 62%),
+      linear-gradient(165deg,color-mix(in srgb,var(--theme-panel2) 92%,#05070b),color-mix(in srgb,var(--theme-bg) 96%,#010203) 58%,color-mix(in srgb,var(--theme-panel) 94%,#020407))!important;
+    opacity:1!important;
+    backdrop-filter:none!important;
+    -webkit-backdrop-filter:none!important;
+    box-shadow:18px 0 50px rgba(0,0,0,.78),inset -1px 0 0 color-mix(in srgb,var(--theme-primary) 38%,transparent)!important;
+    border-right-color:color-mix(in srgb,var(--theme-primary) 48%,#263246)!important;
+  }
+  html[data-layout="classico"][data-palette] .classic-sidebar::before{
+    background:
+      radial-gradient(80% 30% at 50% 0%,color-mix(in srgb,var(--theme-primary) 13%,var(--theme-bg)),transparent 76%),
+      linear-gradient(180deg,color-mix(in srgb,var(--theme-panel2) 88%,var(--theme-bg)),var(--theme-bg))!important;
+    opacity:1!important;
+  }
+  html[data-layout="classico"][data-palette] .classic-sidebar::after{opacity:.85!important}
+  body.mobile-nav-open .mobile-nav-backdrop{
+    background:rgba(0,0,0,.86)!important;
+    backdrop-filter:none!important;
+    -webkit-backdrop-filter:none!important;
+  }
+
+  /* Cabeçalho: Menu, Home e logo obrigatoriamente na mesma linha. */
+  html[data-layout="classico"] .classic-top{
+    grid-template-columns:68px 44px minmax(0,1fr)!important;
+    grid-template-rows:58px!important;
+    grid-auto-rows:0!important;
+    min-height:72px!important;
+    height:72px!important;
+    max-height:72px!important;
+    padding:7px 8px!important;
+    align-items:center!important;
+    overflow:visible!important;
+  }
+  html[data-layout="classico"] .mobile-nav-toggle{
+    grid-column:1!important;grid-row:1!important;
+    width:64px!important;min-width:64px!important;height:40px!important;
+    align-self:center!important;justify-self:start!important;margin:0!important;
+  }
+  html[data-layout="classico"] .mobile-home-button{
+    display:flex!important;position:static!important;
+    grid-column:2!important;grid-row:1!important;
+    width:38px!important;height:38px!important;
+    align-self:center!important;justify-self:center!important;
+    margin:0!important;transform:none!important;
+  }
+  html[data-layout="classico"] .classic-brand{
+    grid-column:3!important;grid-row:1!important;
+    width:min(52vw,184px)!important;max-width:184px!important;height:56px!important;
+    align-self:center!important;justify-self:center!important;
+    margin:0!important;transform:none!important;
+  }
+  html[data-layout="classico"] .classic-brand .classic-header-logo{
+    width:100%!important;height:54px!important;max-width:184px!important;
+    object-fit:contain!important;object-position:center!important;margin:0!important;
+  }
+
+  /* Aparência/Temas: camada sólida temática acima do site. */
+  .appearance-backdrop{
+    position:fixed!important;inset:0!important;z-index:10000!important;
+    background-color:var(--theme-bg,#03070c)!important;
+    background-image:
+      radial-gradient(85% 42% at 8% 0%,color-mix(in srgb,var(--theme-primary) 22%,var(--theme-bg)) 0%,var(--theme-bg) 64%),
+      radial-gradient(78% 45% at 100% 100%,color-mix(in srgb,var(--theme-secondary) 15%,var(--theme-bg)) 0%,var(--theme-bg) 68%),
+      linear-gradient(155deg,color-mix(in srgb,var(--theme-bg2) 94%,#020407),var(--theme-bg) 56%,color-mix(in srgb,var(--theme-panel) 94%,#010204))!important;
+    opacity:1!important;
+    backdrop-filter:none!important;-webkit-backdrop-filter:none!important;
+    isolation:isolate!important;
+  }
+  .appearance-backdrop::before{
+    content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+    background-color:var(--theme-bg,#03070c);
+    background-image:linear-gradient(180deg,color-mix(in srgb,var(--theme-primary) 6%,var(--theme-bg)),var(--theme-bg) 42%,color-mix(in srgb,var(--theme-secondary) 5%,var(--theme-bg)));
+    opacity:1;
+  }
+  .appearance-panel{
+    position:relative!important;z-index:1!important;
+    width:100vw!important;max-width:100vw!important;min-height:100dvh!important;height:100dvh!important;
+    background-color:var(--theme-bg,#03070c)!important;
+    background-image:
+      radial-gradient(80% 34% at 50% 0%,color-mix(in srgb,var(--theme-primary) 16%,var(--theme-bg)) 0%,var(--theme-bg) 70%),
+      linear-gradient(180deg,color-mix(in srgb,var(--theme-panel2) 95%,#030509),var(--theme-bg) 44%,color-mix(in srgb,var(--theme-panel) 96%,#020407))!important;
+    opacity:1!important;
+    border:0!important;border-radius:0!important;
+    box-shadow:none!important;
+    overflow-y:auto!important;overflow-x:hidden!important;
+  }
+  .appearance-panel .theme-category,
+  .appearance-panel .theme-card,
+  .appearance-panel .visual-choice,
+  .appearance-panel .fixed-icon-card{
+    position:relative;z-index:2;
+  }
+}
+
+@media(max-width:390px){
+  html[data-layout="classico"] .classic-top{grid-template-columns:64px 40px minmax(0,1fr)!important}
+  html[data-layout="classico"] .mobile-nav-toggle{width:60px!important;min-width:60px!important}
+  html[data-layout="classico"] .mobile-home-button{width:36px!important;height:36px!important}
+  html[data-layout="classico"] .classic-brand{width:min(50vw,170px)!important;max-width:170px!important}
+  html[data-layout="classico"] .classic-brand .classic-header-logo{max-width:170px!important}
+}
+
+/* ================================================================
+   HOTFIX 4.1.3 — APARÊNCIA 100% OPACA EM TODO VIEWPORT
+   Evita qualquer vazamento visual da Home atrás do seletor de temas,
+   inclusive em desktop estreito, zoom do navegador e WebView/PWA.
+   Sem color-mix no backdrop para compatibilidade máxima.
+   ================================================================ */
+#appearanceBackdrop.appearance-backdrop{
+  position:fixed!important;
+  inset:0!important;
+  top:0!important;right:0!important;bottom:0!important;left:0!important;
+  width:100vw!important;
+  height:100vh!important;
+  min-width:100vw!important;
+  min-height:100vh!important;
+  z-index:2147483000!important;
+  margin:0!important;
+  padding:0!important;
+  opacity:1!important;
+  overflow:hidden!important;
+  display:flex!important;
+  justify-content:flex-end!important;
+  align-items:stretch!important;
+  background-color:#020508!important;
+  background-image:
+    radial-gradient(900px 580px at 8% 3%, rgba(var(--theme-primary-rgb,32,225,223),.24), rgba(var(--theme-primary-rgb,32,225,223),.06) 45%, transparent 72%),
+    radial-gradient(800px 520px at 96% 94%, rgba(var(--theme-secondary-rgb,226,171,54),.18), rgba(var(--theme-secondary-rgb,226,171,54),.04) 46%, transparent 74%),
+    linear-gradient(145deg,#071018 0%,#02070b 48%,#010305 100%)!important;
+  background-attachment:fixed!important;
+  backdrop-filter:none!important;
+  -webkit-backdrop-filter:none!important;
+  isolation:isolate!important;
+}
+#appearanceBackdrop.appearance-backdrop::before{
+  content:""!important;
+  position:absolute!important;
+  inset:0!important;
+  z-index:0!important;
+  pointer-events:none!important;
+  opacity:1!important;
+  background:
+    linear-gradient(90deg,rgba(var(--theme-primary-rgb,32,225,223),.035),transparent 38%,rgba(var(--theme-secondary-rgb,226,171,54),.025)),
+    #020508!important;
+}
+#appearanceBackdrop > #appearancePanel.appearance-panel{
+  position:relative!important;
+  z-index:2!important;
+  flex:0 0 min(540px,100vw)!important;
+  width:min(540px,100vw)!important;
+  max-width:100vw!important;
+  height:100vh!important;
+  min-height:100vh!important;
+  margin:0!important;
+  padding:20px!important;
+  overflow-y:auto!important;
+  overflow-x:hidden!important;
+  opacity:1!important;
+  background-color:#050b11!important;
+  background-image:
+    radial-gradient(620px 280px at 50% 0%,rgba(var(--theme-primary-rgb,32,225,223),.18),transparent 72%),
+    linear-gradient(180deg,#0a141d 0%,#050b11 42%,#020609 100%)!important;
+  border-left:1px solid rgba(var(--theme-primary-rgb,32,225,223),.48)!important;
+  border-radius:0!important;
+  box-shadow:-26px 0 70px rgba(0,0,0,.88),inset 1px 0 rgba(var(--theme-primary-rgb,32,225,223),.16)!important;
+}
+#appearanceBackdrop .theme-card,
+#appearanceBackdrop .visual-choice,
+#appearanceBackdrop .fixed-icon-card{
+  background-color:#0b1420!important;
+  background-image:linear-gradient(155deg,rgba(var(--theme-primary-rgb,32,225,223),.035),rgba(4,9,14,.98))!important;
+  opacity:1!important;
+}
+@media(max-width:760px){
+  #appearanceBackdrop.appearance-backdrop{justify-content:stretch!important;width:100dvw!important;height:100dvh!important;min-width:100dvw!important;min-height:100dvh!important}
+  #appearanceBackdrop > #appearancePanel.appearance-panel{flex:1 1 100%!important;width:100dvw!important;max-width:100dvw!important;height:100dvh!important;min-height:100dvh!important;padding:16px 14px 90px!important;border-left:0!important;box-shadow:none!important}
+}
+
+/* ================================================================
+   HOTFIX 4.1.4 — APARÊNCIA SÓLIDA SOMENTE NO PAINEL
+   Desktop: preserva a Home visível fora do seletor; apenas o painel
+   lateral recebe o fundo temático opaco. Mobile: continua em tela cheia.
+   ================================================================ */
+@media (min-width:761px){
+  #appearanceBackdrop.appearance-backdrop{
+    background:transparent!important;
+    background-image:none!important;
+    background-color:transparent!important;
+    backdrop-filter:none!important;
+    -webkit-backdrop-filter:none!important;
+    justify-content:flex-end!important;
+  }
+  #appearanceBackdrop.appearance-backdrop::before{
+    display:none!important;
+    content:none!important;
+  }
+  #appearanceBackdrop > #appearancePanel.appearance-panel{
+    flex:0 0 min(540px,100vw)!important;
+    width:min(540px,100vw)!important;
+    max-width:540px!important;
+    height:100vh!important;
+    min-height:100vh!important;
+    background-color:#050b11!important;
+    background-image:
+      radial-gradient(620px 300px at 50% 0%,rgba(var(--theme-primary-rgb,32,225,223),.22),transparent 70%),
+      radial-gradient(520px 360px at 100% 100%,rgba(var(--theme-secondary-rgb,226,171,54),.10),transparent 72%),
+      linear-gradient(180deg,#0a141d 0%,#050b11 42%,#020609 100%)!important;
+    border-left:1px solid rgba(var(--theme-primary-rgb,32,225,223),.55)!important;
+    box-shadow:-22px 0 56px rgba(0,0,0,.62),inset 1px 0 rgba(var(--theme-primary-rgb,32,225,223),.18)!important;
+  }
+}
+@media (max-width:760px){
+  #appearanceBackdrop.appearance-backdrop{
+    background-color:#020508!important;
+    background-image:
+      radial-gradient(760px 520px at 10% 0%,rgba(var(--theme-primary-rgb,32,225,223),.22),transparent 70%),
+      radial-gradient(640px 460px at 100% 100%,rgba(var(--theme-secondary-rgb,226,171,54),.14),transparent 72%),
+      linear-gradient(145deg,#071018 0%,#02070b 48%,#010305 100%)!important;
+  }
+  #appearanceBackdrop.appearance-backdrop::before{display:none!important;content:none!important}
+}
+
+
+/* ================================================================
+   LOGOS MASTER X 4.1.6 — CINEMATIC STARTUP
+   Camada visual isolada: não altera o layout da aplicação.
+   As cores seguem automaticamente o tema salvo.
+   ================================================================ */
+.cinematic-startup{
+  --cin-primary:var(--startup-primary,var(--theme-primary,#2896ff));
+  --cin-secondary:var(--startup-secondary,var(--theme-secondary,#f0b632));
+  background:
+    radial-gradient(ellipse at 50% 48%,color-mix(in srgb,var(--cin-primary) 13%,#02050a) 0%,#02050a 44%,#000 100%)!important;
+  isolation:isolate;
+  opacity:1;
+  transition:opacity .58s cubic-bezier(.22,.7,.25,1),filter .58s ease!important;
+}
+.cinematic-startup.is-done{opacity:0!important;filter:brightness(1.16) blur(1.5px);pointer-events:none!important}
+.cinematic-startup .mobile-loading-frame{z-index:3;overflow:visible;transform:scale(.965);opacity:.2;animation:logosStartupReveal 1.25s cubic-bezier(.18,.84,.24,1) forwards}
+.cinematic-startup .mobile-loading-frame>img{position:relative;z-index:2;filter:saturate(.78) brightness(.62);animation:logosStartupImage 1.35s cubic-bezier(.2,.8,.2,1) forwards;will-change:filter,transform}
+.cinematic-startup .startup-ambient{position:absolute;inset:0;z-index:1;overflow:hidden;pointer-events:none}
+.cinematic-startup .startup-ambient::before{content:"";position:absolute;inset:-25%;background:conic-gradient(from 210deg at 50% 50%,transparent 0 23%,color-mix(in srgb,var(--cin-primary) 10%,transparent) 29%,transparent 36% 57%,color-mix(in srgb,var(--cin-secondary) 8%,transparent) 64%,transparent 71%);filter:blur(18px);animation:logosStartupTurn 7s linear infinite}
+.cinematic-startup .startup-orbit{position:absolute;left:50%;top:50%;border:1px solid color-mix(in srgb,var(--cin-primary) 28%,transparent);border-radius:50%;transform:translate(-50%,-50%) scale(.55);opacity:0;box-shadow:0 0 26px color-mix(in srgb,var(--cin-primary) 18%,transparent),inset 0 0 18px color-mix(in srgb,var(--cin-secondary) 8%,transparent);animation:logosStartupOrbit 1.65s cubic-bezier(.16,.82,.24,1) forwards}
+.cinematic-startup .startup-orbit-a{width:min(76vw,760px);aspect-ratio:1;animation-delay:.08s}
+.cinematic-startup .startup-orbit-b{width:min(54vw,540px);aspect-ratio:1;border-color:color-mix(in srgb,var(--cin-secondary) 30%,transparent);animation-delay:.22s}
+.cinematic-startup .startup-ray{position:absolute;left:50%;top:50%;width:min(100vw,1100px);height:2px;transform-origin:0 50%;opacity:0;background:linear-gradient(90deg,color-mix(in srgb,var(--cin-primary) 80%,white) 0%,color-mix(in srgb,var(--cin-primary) 26%,transparent) 22%,transparent 72%);filter:blur(.3px);animation:logosStartupRay 1.15s ease-out forwards}
+.cinematic-startup .startup-ray-a{transform:rotate(-19deg);animation-delay:.22s}
+.cinematic-startup .startup-ray-b{transform:rotate(161deg);background:linear-gradient(90deg,color-mix(in srgb,var(--cin-secondary) 74%,white),color-mix(in srgb,var(--cin-secondary) 22%,transparent) 24%,transparent 70%);animation-delay:.34s}
+.cinematic-startup .startup-flare{position:absolute;left:50%;top:50%;width:22vmin;height:22vmin;border-radius:50%;transform:translate(-50%,-50%) scale(.25);opacity:0;background:radial-gradient(circle,color-mix(in srgb,var(--cin-primary) 75%,white) 0%,color-mix(in srgb,var(--cin-primary) 28%,transparent) 18%,color-mix(in srgb,var(--cin-secondary) 9%,transparent) 44%,transparent 72%);filter:blur(4px);animation:logosStartupFlare 1.45s ease-out forwards}
+.cinematic-startup .startup-scan{position:absolute;left:-12%;right:-12%;height:18%;top:-22%;opacity:.0;background:linear-gradient(180deg,transparent,color-mix(in srgb,var(--cin-primary) 7%,transparent) 42%,color-mix(in srgb,var(--cin-primary) 26%,transparent) 50%,color-mix(in srgb,var(--cin-secondary) 8%,transparent) 58%,transparent);filter:blur(2px);animation:logosStartupScan 1.7s cubic-bezier(.25,.75,.2,1) .05s forwards}
+.cinematic-startup .startup-image-glow{position:absolute;z-index:3;inset:4%;pointer-events:none;border-radius:5%;opacity:0;box-shadow:inset 0 0 46px color-mix(in srgb,var(--cin-primary) 15%,transparent),0 0 48px color-mix(in srgb,var(--cin-primary) 11%,transparent);animation:logosStartupImageGlow 1.45s ease-out .18s forwards}
+.cinematic-startup .mobile-loading-live{z-index:5;opacity:.18;transform:scaleX(.92);animation:logosStartupBarReveal .8s ease-out .48s forwards}
+.cinematic-startup .mobile-loading-live i{position:relative;overflow:visible}
+.cinematic-startup .mobile-loading-live i::after{content:"";position:absolute;right:-7px;top:50%;width:15px;height:15px;border-radius:50%;transform:translateY(-50%);background:color-mix(in srgb,var(--cin-primary) 75%,white);box-shadow:0 0 14px var(--cin-primary),0 0 30px color-mix(in srgb,var(--cin-secondary) 45%,transparent);opacity:.82}
+@keyframes logosStartupReveal{0%{opacity:.1;transform:scale(.93)}55%{opacity:1;transform:scale(1.012)}100%{opacity:1;transform:scale(1)}}
+@keyframes logosStartupImage{0%{filter:saturate(.45) brightness(.42) contrast(1.08);transform:scale(1.02)}60%{filter:saturate(1.16) brightness(1.07) contrast(1.05);transform:scale(1)}100%{filter:saturate(1) brightness(1) contrast(1);transform:scale(1)}}
+@keyframes logosStartupOrbit{0%{opacity:0;transform:translate(-50%,-50%) scale(.45)}42%{opacity:.8}100%{opacity:0;transform:translate(-50%,-50%) scale(1.18)}}
+@keyframes logosStartupRay{0%{opacity:0;width:0}28%{opacity:.95}100%{opacity:0;width:min(100vw,1100px)}}
+@keyframes logosStartupFlare{0%{opacity:0;transform:translate(-50%,-50%) scale(.18)}34%{opacity:.92}100%{opacity:0;transform:translate(-50%,-50%) scale(2.3)}}
+@keyframes logosStartupScan{0%{top:-22%;opacity:0}18%{opacity:.72}82%{opacity:.34}100%{top:108%;opacity:0}}
+@keyframes logosStartupImageGlow{0%{opacity:0}38%{opacity:1}100%{opacity:.18}}
+@keyframes logosStartupBarReveal{to{opacity:1;transform:scaleX(1)}}
+@keyframes logosStartupTurn{to{transform:rotate(360deg)}}
+@media(max-width:760px){
+  .cinematic-startup .startup-orbit-a{width:112vw}.cinematic-startup .startup-orbit-b{width:78vw}
+  .cinematic-startup .startup-ray{width:125vw}
+  .cinematic-startup .startup-image-glow{inset:7% 4%}
+}
+@media(prefers-reduced-motion:reduce){
+  .cinematic-startup .startup-ambient{display:none!important}
+  .cinematic-startup .mobile-loading-frame,.cinematic-startup .mobile-loading-frame>img,.cinematic-startup .mobile-loading-live,.cinematic-startup .startup-image-glow{animation:none!important;opacity:1!important;transform:none!important;filter:none!important}
+}
