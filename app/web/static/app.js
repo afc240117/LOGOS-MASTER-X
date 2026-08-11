@@ -61,7 +61,7 @@ function syncManifestIcon(){let link=document.querySelector('link[rel="manifest"
 let visualPreview=null;
 function visualSettings(){const v={...VISUAL_DEFAULT,...Store.get("visual",{})};if(v.theme==="system")v.theme="dark";if(v.layout==="compacto"||v.layout==="modernox"||v.layout==="moderno"||v.layout==="pulpito")v.layout="clean";if(v.mobileLayout==="auto")v.mobileLayout="mobile-pro";return v;}
 function activeVisual(){const v=visualPreview?{...VISUAL_DEFAULT,...visualPreview}:visualSettings();if(v.theme==="system")v.theme="dark";if(v.layout==="compacto"||v.layout==="modernox"||v.layout==="moderno"||v.layout==="pulpito")v.layout="clean";if(v.mobileLayout==="auto")v.mobileLayout="mobile-pro";return v;}
-function applyVisual(v=activeVisual()){const root=document.documentElement;if(v.theme==="system")v={...v,theme:"dark"};if(v.layout==="compacto"||v.layout==="modernox"||v.layout==="moderno")v={...v,layout:"clean"};const palette=COLOR_THEMES[v.palette]||COLOR_THEMES.bluegold;const accent=v.layout==="clean"?"#08c6c9":palette.accent;root.dataset.layout=v.layout;root.dataset.theme="dark";root.dataset.mobileLayout=v.mobileLayout||"mobile-pro";root.dataset.palette=palette.id;root.style.setProperty("--accent",accent);root.style.setProperty("--gold",accent);root.style.setProperty("--theme-primary",palette.accent);root.style.setProperty("--theme-secondary",palette.secondary||palette.accent);const hexRgb=h=>{h=h.replace("#","");return `${parseInt(h.slice(0,2),16)},${parseInt(h.slice(2,4),16)},${parseInt(h.slice(4,6),16)}`};root.style.setProperty("--theme-primary-rgb",hexRgb(palette.accent));root.style.setProperty("--theme-secondary-rgb",hexRgb(palette.secondary||palette.accent));syncManifestIcon();updateNavIcons(v.layout);const headerLogo=document.querySelector('.classic-header-logo');if(headerLogo)headerLogo.src=`/static/brand/header-logos/${palette.id}.png?v=theme-nav-1`;const homeImg=document.querySelector('.reference-body-img');if(homeImg&&v.layout==="classico")homeImg.src=palette.home+"?v=themes4";document.querySelectorAll(".mobile-home-piece img[data-piece]").forEach(img=>{img.src=palette.mobile+"/"+img.dataset.piece+".jpg?v=themes4"});}
+function applyVisual(v=activeVisual()){const root=document.documentElement;if(v.theme==="system")v={...v,theme:"dark"};if(v.layout==="compacto"||v.layout==="modernox"||v.layout==="moderno")v={...v,layout:"clean"};const palette=COLOR_THEMES[v.palette]||COLOR_THEMES.bluegold;const accent=v.layout==="clean"?"#08c6c9":palette.accent;root.dataset.layout=v.layout;root.dataset.theme="dark";root.dataset.mobileLayout=v.mobileLayout||"mobile-pro";root.dataset.palette=palette.id;root.style.setProperty("--accent",accent);root.style.setProperty("--gold",accent);root.style.setProperty("--theme-primary",palette.accent);root.style.setProperty("--theme-secondary",palette.secondary||palette.accent);const hexRgb=h=>{h=h.replace("#","");return `${parseInt(h.slice(0,2),16)},${parseInt(h.slice(2,4),16)},${parseInt(h.slice(4,6),16)}`};root.style.setProperty("--theme-primary-rgb",hexRgb(palette.accent));root.style.setProperty("--theme-secondary-rgb",hexRgb(palette.secondary||palette.accent));syncManifestIcon();updateNavIcons(v.layout);const headerLogo=document.querySelector('.classic-header-logo');if(headerLogo)headerLogo.src=`/static/brand/header-logos/${palette.id}.png?v=theme-nav-1`;const homeImg=document.querySelector('.reference-body-img');if(homeImg&&v.layout==="classico")homeImg.src=palette.home+"?v=themes4";document.querySelectorAll(".mobile-home-piece img[data-piece]").forEach(img=>{img.src=palette.mobile+"/"+img.dataset.piece+".jpg?v=themes4"});const loadingImg=document.getElementById("mobileLoadingImage");if(loadingImg)loadingImg.src=`/static/brand/startup-themes/${palette.id}.jpg?v=411`;root.dataset.startupPalette=palette.id;}
 const NAV_META={
  dashboard:["◈","Dashboard","grid"],studio:["🎛","Studio","sliders"],bible:["📖","Bíblia","book"],knowledge:["🧠","Biblioteca Viva","brain"],
  k7:["🔥","DNA K7","flame"],editor:["📝","Editor","edit"],pulpit:["🎙","Púlpito","mic"],library:["📚","Biblioteca","library"],projects:["📂","Projetos","folder"],
@@ -500,6 +500,46 @@ function toggleAppearancePanel(){
   openAppearance();
 }
 
+
+function closeMobileNav(){
+  document.body.classList.remove("mobile-nav-open");
+  $("#mobileNavBackdrop")?.remove();
+}
+function toggleMobileNav(){
+  if(document.body.classList.contains("mobile-nav-open")){closeMobileNav();return;}
+  document.body.classList.add("mobile-nav-open");
+  if(!$("#mobileNavBackdrop")){
+    const d=document.createElement("div");
+    d.id="mobileNavBackdrop";
+    d.className="mobile-nav-backdrop";
+    d.addEventListener("click",closeMobileNav);
+    document.body.appendChild(d);
+  }
+}
+function installMobileNav(){
+  const top=document.querySelector(".top");
+  if(top&&!$("#mobileNavToggle")){
+    const b=document.createElement("button");
+    b.id="mobileNavToggle";
+    b.className="mobile-nav-toggle";
+    b.setAttribute("aria-label","Abrir menu");
+    b.innerHTML='<span>☰</span><small>Menu</small>';
+    b.addEventListener("click",toggleMobileNav);
+    top.insertBefore(b,top.firstChild);
+  }
+  if(top&&!$("#mobileHomeBtn")){
+    const h=document.createElement("button");
+    h.id="mobileHomeBtn";
+    h.className="mobile-home-button";
+    h.setAttribute("aria-label","Ir para a Home");
+    h.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 10.5 12 3.8l8.5 6.7"/><path d="M5.8 9.5V20h12.4V9.5"/><path d="M9.4 20v-6.2h5.2V20"/></svg><small>Home</small>';
+    h.addEventListener("click",e=>{e.preventDefault();goHome();});
+    top.appendChild(h);
+  }
+  document.querySelectorAll(".nav button[data-view]").forEach(b=>b.addEventListener("click",()=>{if(innerWidth<=760)closeMobileNav();}));
+  window.addEventListener("resize",()=>{if(innerWidth>760)closeMobileNav();});
+}
+
 let navigationHistoryReady=false;
 function setupNavigationHistory(){
  if(navigationHistoryReady)return;
@@ -511,7 +551,13 @@ function navigateView(view){
  render(view);if(innerWidth<=760)closeMobileNav();
 }
 function goHome(){
- closeMobileNav();if(navigationHistoryReady&&App.view!=="dashboard"&&history.state?.logosInternal){try{history.back();return}catch{}}render("dashboard");if(navigationHistoryReady){try{history.replaceState({logosView:"dashboard",logosGuard:true},"",location.href)}catch{}}
+  closeMobileNav();
+  topViewStack=[];
+  render("dashboard");
+  try{window.scrollTo({top:0,left:0,behavior:"auto"});}catch{}
+  if(navigationHistoryReady){
+    try{history.replaceState({logosView:"dashboard",logosGuard:true},"",location.href);}catch{}
+  }
 }
 function askExitApp(){actionModal({icon:"↩",title:"Deseja sair?",message:"Você quer sair do LOGOS MASTER X?",actions:[{label:"Sair",kind:"danger",run:()=>{try{history.go(-2)}catch{}setTimeout(()=>{try{window.close()}catch{}},350)}},{label:"Continuar no LOGOS",kind:"primary"}]});}
 function handleAppBack(e){const st=e.state||{};closeMobileNav();if(st.logosInternal){render(st.logosView||"dashboard");return;}if(st.logosGuard){render("dashboard");return;}if(st.logosBase){render("dashboard");try{history.pushState({logosView:"dashboard",logosGuard:true},"",location.href)}catch{}setTimeout(askExitApp,0);}}
@@ -604,11 +650,10 @@ function formatVerses(a){return a.map(v=>`${v.ref} — ${v.text}`).join("\n")}
 async function initBibleUI(){let current=[];$("#bImport").onclick=async()=>{const f=$("#bFile").files[0];if(!f)return alert("Escolha um arquivo.");try{$("#bOut").textContent=`Importados ${await importBible(f)} versículos.`}catch(e){$("#bOut").textContent=e.message}};$("#bMeta").onclick=async()=>{const a=await dbAll("verses");$("#bOut").textContent=`Versículos locais: ${a.length}`};$("#bOpen").onclick=async()=>{current=await bibleRef($("#bRef").value);$("#bOut").textContent=formatVerses(current)||"Nada encontrado."};$("#bFind").onclick=async()=>{current=await bibleSearch($("#bSearch").value);$("#bOut").textContent=formatVerses(current)||"Nada encontrado."};$("#bSend").onclick=()=>{if(!current.length)return alert("Abra uma passagem.");Store.set("bibleSelection",current);Store.set("studioPrefill",formatVerses(current));render("studio").then(()=>$("#fText").value=formatVerses(current))};$("#bConcordance").onclick=async()=>{const q=$("#bSearch").value.trim();current=await bibleSearch(q);$("#bOut").textContent=`CONCORDÂNCIA: ${q}\nOcorrências: ${current.length}\n\n${formatVerses(current)}`};}
 
 function bindNav(){
- $$(".nav button").forEach(b=>{
-   b.onclick=()=>{
-     navigateView(b.dataset.view);
-   };
- });
+  $$(".nav button").forEach(b=>{b.onclick=()=>navigateView(b.dataset.view);});
+  $$(".top-nav [data-go], .top-actions [data-go], .side-special [data-go]").forEach(b=>{
+    b.onclick=e=>{e.preventDefault();navigateView(b.dataset.go);};
+  });
 }
 async function clearOldFrontendCache(){
  try{
@@ -619,7 +664,7 @@ async function clearOldFrontendCache(){
  }catch(e){}
 }
 
-const APP_BUILD_VERSION="3.7.9";
+const APP_BUILD_VERSION="3.7.10";
 function publicAsset(path){return "/"+String(path).replace(/^\/+/,"");}
 const PRODUCTION_VERSION_URL="https://logos-master-x-api.onrender.com/static/version.json";
 function showUpdateBanner(remoteVersion){
@@ -691,9 +736,6 @@ window.addEventListener("DOMContentLoaded",async()=>{
    await clearOldFrontendCache();
    await checkFrontendVersion();
    applyVisual();
-function closeMobileNav(){document.body.classList.remove("mobile-nav-open");$("#mobileNavBackdrop")?.remove();}
-function toggleMobileNav(){if(document.body.classList.contains("mobile-nav-open")){closeMobileNav();return}document.body.classList.add("mobile-nav-open");if(!$("#mobileNavBackdrop")){const d=document.createElement("div");d.id="mobileNavBackdrop";d.className="mobile-nav-backdrop";d.addEventListener("click",closeMobileNav);document.body.appendChild(d)}}
-function installMobileNav(){const top=document.querySelector(".top");if(top&&!$("#mobileNavToggle")){const b=document.createElement("button");b.id="mobileNavToggle";b.className="mobile-nav-toggle";b.setAttribute("aria-label","Abrir menu");b.innerHTML='<span>☰</span><small>Menu</small>';b.addEventListener("click",toggleMobileNav);top.insertBefore(b,top.firstChild)}if(top&&!$("#mobileHomeBtn")){const h=document.createElement("button");h.id="mobileHomeBtn";h.className="mobile-home-button";h.setAttribute("aria-label","Ir para a Home");h.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 10.5 12 3.8l8.5 6.7"/><path d="M5.8 9.5V20h12.4V9.5"/><path d="M9.4 20v-6.2h5.2V20"/></svg><small>Home</small>';h.addEventListener("click",goHome);top.appendChild(h)}document.querySelectorAll(".nav button[data-view]").forEach(b=>b.addEventListener("click",()=>{if(innerWidth<=760)closeMobileNav()}));window.addEventListener("resize",()=>{if(innerWidth>760)closeMobileNav()});}
 installMobileNav();installUpdateControls();setupNavigationHistory();
 const top=document.querySelector('.top');if(top&&!document.querySelector('#aboutTopBtn')){const x=document.createElement('button');x.id='aboutTopBtn';x.className='top-mini';x.textContent='ⓘ Sobre';x.onclick=()=>toggleTopView('about');safeTopInsert(x);}updateInstallSideButton();
 const top2=document.querySelector(".top");if(top2&&!document.querySelector("#appearanceBtn")){const b=document.createElement("button");b.id="appearanceBtn";b.className="btn secondary appearance-trigger";b.textContent="🎨 Aparência";b.onclick=toggleAppearancePanel;safeTopInsert(b);}

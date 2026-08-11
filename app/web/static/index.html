@@ -3,11 +3,29 @@
 <meta name="theme-color" content="#05070b"><meta name="description" content="LOGOS MASTER X">
 <title>LOGOS MASTER X</title>
 <link rel="manifest" href="/static/manifest.webmanifest?v=378">
-<link rel="stylesheet" href="/static/style.css?v=themes-401"></head>
+<link rel="stylesheet" href="/static/style.css?v=themes-411"><script>
+(function(){
+  try{
+    var v=JSON.parse(localStorage.getItem("logosx:visual")||"{}");
+    var p=(v&&v.palette)||"bluegold";
+    window.__LOGOS_STARTUP_PALETTE__=p;
+    document.documentElement.setAttribute("data-startup-palette",p);
+  }catch(e){window.__LOGOS_STARTUP_PALETTE__="bluegold";}
+})();
+</script></head>
 <body>
 <div id="mobileLoading" class="mobile-loading" aria-label="Carregando LOGOS MASTER X">
-  <div class="mobile-loading-frame"><img src="/static/brand/startup-loading.jpg?v=378" alt="LOGOS MASTER X DNA K7 — Carregando"><div class="mobile-loading-live"><i id="mobileLoadingBar"></i></div></div>
+  <div class="mobile-loading-frame"><img id="mobileLoadingImage" src="/static/brand/startup-themes/bluegold.jpg?v=411" alt="LOGOS MASTER X DNA K7 — Carregando"><div class="mobile-loading-live"><i id="mobileLoadingBar"></i></div></div>
 </div>
+<script>
+(function(){
+  var p=window.__LOGOS_STARTUP_PALETTE__||"bluegold";
+  var allowed={bluegold:1,cyan:1,greengold:1,purplegold:1,goldblue:1,purplecyan:1,pinkcyan:1,redsilver:1,copperblue:1,orangepink:1,royalblue:1,aqua:1,silver:1,cyangold:1,greenblue:1,iceblue:1,electricblue:1};
+  if(!allowed[p])p="bluegold";
+  var im=document.getElementById("mobileLoadingImage");
+  if(im)im.src="/static/brand/startup-themes/"+p+".jpg?v=411";
+})();
+</script>
 <div class="app classic-shell">
 <header class="top classic-top">
   <div class="brand classic-brand"><img class="classic-header-logo" src="/static/brand/logo-header-classic-transparent.png?v=01l" alt="LOGOS MASTER X — DNA K7"></div>
@@ -50,7 +68,7 @@
 <script>
 (function(){
   window.setTimeout(function(){var x=document.getElementById('mobileLoading');if(x){x.classList.add('is-done');window.setTimeout(function(){x.remove();},500);}},7000);
-  if ('serviceWorker' in navigator) window.addEventListener('load',function(){navigator.serviceWorker.register('/static/sw.js?v=378').catch(function(){});});
+  if ('serviceWorker' in navigator) window.addEventListener('load',function(){navigator.serviceWorker.register('/static/sw.js?v=411').catch(function(){});});
 })();
 </script>
-<script src="/static/prompt-library.js?v=378"></script><script src="/static/app.js?v=themes-400"></script></body></html>
+<script src="/static/prompt-library.js?v=378"></script><script src="/static/app.js?v=themes-411"></script></body></html>
