@@ -8,9 +8,48 @@ const Store={
  export(){const x={};for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k?.startsWith(this.p))x[k]=localStorage.getItem(k)}return x},
  import(x){Object.entries(x||{}).forEach(([k,v])=>{if(k.startsWith(this.p))localStorage.setItem(k,v)})}
 };
-let mobileLoadingProgress=8;let mobileLoadingTimer=null;const mobileLoadingStartedAt=performance.now();
-function startMobileLoading(){const el=document.getElementById('mobileLoadingBar');if(!el)return;mobileLoadingTimer=setInterval(()=>{mobileLoadingProgress=Math.min(92,mobileLoadingProgress+Math.max(1,(92-mobileLoadingProgress)*.08));el.style.width=mobileLoadingProgress+'%';},120);}
-function finishMobileLoading(){if(mobileLoadingTimer){clearInterval(mobileLoadingTimer);mobileLoadingTimer=null}const el=document.getElementById('mobileLoadingBar');if(el)el.style.width='100%';const minVisible=1650;const wait=Math.max(180,minVisible-(performance.now()-mobileLoadingStartedAt));setTimeout(()=>{const splash=document.getElementById('mobileLoading');if(splash){splash.classList.add('is-done');setTimeout(()=>splash.remove(),620)}},wait);}
+let mobileLoadingProgress=0;let mobileLoadingRaf=null;const mobileLoadingStartedAt=performance.now();
+function setMobileLoadingProgress(value){const el=document.getElementById('mobileLoadingBar');if(!el)return;mobileLoadingProgress=Math.max(0,Math.min(100,value));el.style.width=mobileLoadingProgress.toFixed(1)+'%';el.setAttribute('aria-valuenow',String(Math.round(mobileLoadingProgress)));}
+function startMobileLoading(){
+  const el=document.getElementById('mobileLoadingBar');if(!el)return;
+  setMobileLoadingProgress(0);
+  const tick=()=>{
+    const elapsed=performance.now()-mobileLoadingStartedAt;
+    // 0→84% em ~1.25s; depois aproxima lentamente de 94% até o app terminar.
+    let target=elapsed<1250?(elapsed/1250)*84:84+10*(1-Math.exp(-(elapsed-1250)/1150));
+    setMobileLoadingProgress(Math.min(94,target));
+    mobileLoadingRaf=requestAnimationFrame(tick);
+  };
+  mobileLoadingRaf=requestAnimationFrame(tick);
+}
+function triggerHomeCinematicFx(){
+  requestAnimationFrame(()=>{
+    const desktop=document.querySelector('.reference-body-wrap');
+    const mobile=document.querySelector('.mobile-home-hero');
+    [desktop,mobile].forEach(el=>{
+      if(!el)return;
+      el.classList.remove('home-cinematic-run');
+      void el.offsetWidth;
+      el.classList.add('home-cinematic-run');
+      window.setTimeout(()=>el.classList.remove('home-cinematic-run'),2300);
+    });
+  });
+}
+function finishMobileLoading(){
+  if(mobileLoadingRaf){cancelAnimationFrame(mobileLoadingRaf);mobileLoadingRaf=null}
+  setMobileLoadingProgress(100);
+  const minVisible=1650;
+  const wait=Math.max(180,minVisible-(performance.now()-mobileLoadingStartedAt));
+  setTimeout(()=>{
+    const splash=document.getElementById('mobileLoading');
+    if(splash){
+      splash.classList.add('is-done');
+      setTimeout(()=>{splash.remove();triggerHomeCinematicFx()},620);
+    }else{
+      triggerHomeCinematicFx();
+    }
+  },wait);
+}
 startMobileLoading();
 
 const P=window.LOGOS_PROMPTS||{};
@@ -61,7 +100,7 @@ function syncManifestIcon(){let link=document.querySelector('link[rel="manifest"
 let visualPreview=null;
 function visualSettings(){const v={...VISUAL_DEFAULT,...Store.get("visual",{})};if(v.theme==="system")v.theme="dark";if(v.layout==="compacto"||v.layout==="modernox"||v.layout==="moderno"||v.layout==="pulpito")v.layout="clean";if(v.mobileLayout==="auto")v.mobileLayout="mobile-pro";return v;}
 function activeVisual(){const v=visualPreview?{...VISUAL_DEFAULT,...visualPreview}:visualSettings();if(v.theme==="system")v.theme="dark";if(v.layout==="compacto"||v.layout==="modernox"||v.layout==="moderno"||v.layout==="pulpito")v.layout="clean";if(v.mobileLayout==="auto")v.mobileLayout="mobile-pro";return v;}
-function applyVisual(v=activeVisual()){const root=document.documentElement;if(v.theme==="system")v={...v,theme:"dark"};if(v.layout==="compacto"||v.layout==="modernox"||v.layout==="moderno")v={...v,layout:"clean"};const palette=COLOR_THEMES[v.palette]||COLOR_THEMES.bluegold;const accent=v.layout==="clean"?"#08c6c9":palette.accent;root.dataset.layout=v.layout;root.dataset.theme="dark";root.dataset.mobileLayout=v.mobileLayout||"mobile-pro";root.dataset.palette=palette.id;root.style.setProperty("--accent",accent);root.style.setProperty("--gold",accent);root.style.setProperty("--theme-primary",palette.accent);root.style.setProperty("--theme-secondary",palette.secondary||palette.accent);const hexRgb=h=>{h=h.replace("#","");return `${parseInt(h.slice(0,2),16)},${parseInt(h.slice(2,4),16)},${parseInt(h.slice(4,6),16)}`};root.style.setProperty("--theme-primary-rgb",hexRgb(palette.accent));root.style.setProperty("--theme-secondary-rgb",hexRgb(palette.secondary||palette.accent));syncManifestIcon();updateNavIcons(v.layout);const headerLogo=document.querySelector('.classic-header-logo');if(headerLogo)headerLogo.src=`/static/brand/header-logos/${palette.id}.png?v=theme-nav-1`;const homeImg=document.querySelector('.reference-body-img');if(homeImg&&v.layout==="classico")homeImg.src=palette.home+"?v=themes4";document.querySelectorAll(".mobile-home-piece img[data-piece]").forEach(img=>{img.src=palette.mobile+"/"+img.dataset.piece+".jpg?v=themes4"});const loadingImg=document.getElementById("mobileLoadingImage");if(loadingImg)loadingImg.src=`/static/brand/startup-themes/${palette.id}.jpg?v=416`;root.dataset.startupPalette=palette.id;}
+function applyVisual(v=activeVisual()){const root=document.documentElement;if(v.theme==="system")v={...v,theme:"dark"};if(v.layout==="compacto"||v.layout==="modernox"||v.layout==="moderno")v={...v,layout:"clean"};const palette=COLOR_THEMES[v.palette]||COLOR_THEMES.bluegold;const accent=v.layout==="clean"?"#08c6c9":palette.accent;root.dataset.layout=v.layout;root.dataset.theme="dark";root.dataset.mobileLayout=v.mobileLayout||"mobile-pro";root.dataset.palette=palette.id;root.style.setProperty("--accent",accent);root.style.setProperty("--gold",accent);root.style.setProperty("--theme-primary",palette.accent);root.style.setProperty("--theme-secondary",palette.secondary||palette.accent);const hexRgb=h=>{h=h.replace("#","");return `${parseInt(h.slice(0,2),16)},${parseInt(h.slice(2,4),16)},${parseInt(h.slice(4,6),16)}`};root.style.setProperty("--theme-primary-rgb",hexRgb(palette.accent));root.style.setProperty("--theme-secondary-rgb",hexRgb(palette.secondary||palette.accent));syncManifestIcon();updateNavIcons(v.layout);const headerLogo=document.querySelector('.classic-header-logo');if(headerLogo)headerLogo.src=`/static/brand/header-logos/${palette.id}.png?v=theme-nav-1`;const homeImg=document.querySelector('.reference-body-img');if(homeImg&&v.layout==="classico")homeImg.src=palette.home+"?v=themes4";document.querySelectorAll(".mobile-home-piece img[data-piece]").forEach(img=>{img.src=palette.mobile+"/"+img.dataset.piece+".jpg?v=themes4"});const loadingImg=document.getElementById("mobileLoadingImage");if(loadingImg)loadingImg.src=`/static/brand/startup-themes/${palette.id}.jpg?v=418`;root.dataset.startupPalette=palette.id;}
 const NAV_META={
  dashboard:["◈","Dashboard","grid"],studio:["🎛","Studio","sliders"],bible:["📖","Bíblia","book"],knowledge:["🧠","Biblioteca Viva","brain"],
  k7:["🔥","DNA K7","flame"],editor:["📝","Editor","edit"],pulpit:["🎙","Púlpito","mic"],library:["📚","Biblioteca","library"],projects:["📂","Projetos","folder"],
@@ -410,11 +449,12 @@ const views={
  dashboard(){const s=projectStats();if(activeVisual().layout==="clean")return cleanDashboard();return `<div class="classic-home exact-reference-home">
 <div class="reference-body-wrap desktop-reference-home">
 <img class="reference-body-img" src="${themeHomeAsset()}" alt="LOGOS MASTER X DNA K7 — Home temática">
+<div class="home-cinematic-fx" aria-hidden="true"><i class="home-fx-glow"></i><i class="home-fx-scan"></i><i class="home-fx-ring home-fx-ring-a"></i><i class="home-fx-ring home-fx-ring-b"></i><i class="home-fx-ray home-fx-ray-a"></i><i class="home-fx-ray home-fx-ray-b"></i><i class="home-fx-flare"></i></div>
 <button class="reference-hit reference-hit-studio" data-go="studio" aria-label="Acessar Studio"></button>
 <button class="reference-hit reference-hit-about" data-go="about" aria-label="Saiba mais sobre o LOGOS"></button>
 </div>
 <div class="mobile-reference-home" aria-label="LOGOS MASTER X — Home adaptada para celular">
-  <div class="mobile-home-piece mobile-home-hero"><img data-piece="hero" src="${(COLOR_THEMES[activeVisual().palette]||COLOR_THEMES.bluegold).mobile}/hero.jpg?v=themes4" alt="LOGOS MASTER X DNA K7"><button data-go="studio" aria-label="Acessar Studio"></button></div>
+  <div class="mobile-home-piece mobile-home-hero"><img data-piece="hero" src="${(COLOR_THEMES[activeVisual().palette]||COLOR_THEMES.bluegold).mobile}/hero.jpg?v=themes4" alt="LOGOS MASTER X DNA K7"><div class="home-cinematic-fx" aria-hidden="true"><i class="home-fx-glow"></i><i class="home-fx-scan"></i><i class="home-fx-ring home-fx-ring-a"></i><i class="home-fx-ring home-fx-ring-b"></i><i class="home-fx-ray home-fx-ray-a"></i><i class="home-fx-ray home-fx-ray-b"></i><i class="home-fx-flare"></i></div><button data-go="studio" aria-label="Acessar Studio"></button></div>
   <div class="mobile-home-piece mobile-home-info"><img data-piece="info" src="${(COLOR_THEMES[activeVisual().palette]||COLOR_THEMES.bluegold).mobile}/info.jpg?v=themes4" alt="Propósito e resumo do sistema"><button data-go="about" aria-label="Saiba mais sobre o LOGOS"></button></div>
   <div class="mobile-home-piece"><img data-piece="features-a" src="${(COLOR_THEMES[activeVisual().palette]||COLOR_THEMES.bluegold).mobile}/features-a.jpg?v=themes4" alt="DNA K7, Contexto e Exposição, Aplicações Reais"></div>
   <div class="mobile-home-piece"><img data-piece="features-b" src="${(COLOR_THEMES[activeVisual().palette]||COLOR_THEMES.bluegold).mobile}/features-b.jpg?v=themes4" alt="Preparação para o Púlpito, AI HUB, Mobile First"></div>

@@ -1,4 +1,4 @@
-const CACHE_VERSION="logos-master-x-themes-416-cinematic-startup";
+const CACHE_VERSION="logos-master-x-themes-418-postload-home-fx";
 self.addEventListener("install",event=>{self.skipWaiting();});
 self.addEventListener("activate",event=>{event.waitUntil((async()=>{
   const keys=await caches.keys();
