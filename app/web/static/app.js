@@ -61,7 +61,7 @@ function syncManifestIcon(){let link=document.querySelector('link[rel="manifest"
 let visualPreview=null;
 function visualSettings(){const v={...VISUAL_DEFAULT,...Store.get("visual",{})};if(v.theme==="system")v.theme="dark";if(v.layout==="compacto"||v.layout==="modernox"||v.layout==="moderno"||v.layout==="pulpito")v.layout="clean";if(v.mobileLayout==="auto")v.mobileLayout="mobile-pro";return v;}
 function activeVisual(){const v=visualPreview?{...VISUAL_DEFAULT,...visualPreview}:visualSettings();if(v.theme==="system")v.theme="dark";if(v.layout==="compacto"||v.layout==="modernox"||v.layout==="moderno"||v.layout==="pulpito")v.layout="clean";if(v.mobileLayout==="auto")v.mobileLayout="mobile-pro";return v;}
-function applyVisual(v=activeVisual()){const root=document.documentElement;if(v.theme==="system")v={...v,theme:"dark"};if(v.layout==="compacto"||v.layout==="modernox"||v.layout==="moderno")v={...v,layout:"clean"};const palette=COLOR_THEMES[v.palette]||COLOR_THEMES.bluegold;const accent=v.layout==="clean"?"#08c6c9":palette.accent;root.dataset.layout=v.layout;root.dataset.theme="dark";root.dataset.mobileLayout=v.mobileLayout||"mobile-pro";root.dataset.palette=palette.id;root.style.setProperty("--accent",accent);root.style.setProperty("--gold",accent);root.style.setProperty("--theme-primary",palette.accent);root.style.setProperty("--theme-secondary",palette.secondary||palette.accent);const hexRgb=h=>{h=h.replace("#","");return `${parseInt(h.slice(0,2),16)},${parseInt(h.slice(2,4),16)},${parseInt(h.slice(4,6),16)}`};root.style.setProperty("--theme-primary-rgb",hexRgb(palette.accent));root.style.setProperty("--theme-secondary-rgb",hexRgb(palette.secondary||palette.accent));syncManifestIcon();updateNavIcons(v.layout);const homeImg=document.querySelector('.reference-body-img');if(homeImg&&v.layout==="classico")homeImg.src=palette.home+"?v=themes4";document.querySelectorAll(".mobile-home-piece img[data-piece]").forEach(img=>{img.src=palette.mobile+"/"+img.dataset.piece+".jpg?v=themes4"});}
+function applyVisual(v=activeVisual()){const root=document.documentElement;if(v.theme==="system")v={...v,theme:"dark"};if(v.layout==="compacto"||v.layout==="modernox"||v.layout==="moderno")v={...v,layout:"clean"};const palette=COLOR_THEMES[v.palette]||COLOR_THEMES.bluegold;const accent=v.layout==="clean"?"#08c6c9":palette.accent;root.dataset.layout=v.layout;root.dataset.theme="dark";root.dataset.mobileLayout=v.mobileLayout||"mobile-pro";root.dataset.palette=palette.id;root.style.setProperty("--accent",accent);root.style.setProperty("--gold",accent);root.style.setProperty("--theme-primary",palette.accent);root.style.setProperty("--theme-secondary",palette.secondary||palette.accent);const hexRgb=h=>{h=h.replace("#","");return `${parseInt(h.slice(0,2),16)},${parseInt(h.slice(2,4),16)},${parseInt(h.slice(4,6),16)}`};root.style.setProperty("--theme-primary-rgb",hexRgb(palette.accent));root.style.setProperty("--theme-secondary-rgb",hexRgb(palette.secondary||palette.accent));syncManifestIcon();updateNavIcons(v.layout);const headerLogo=document.querySelector('.classic-header-logo');if(headerLogo)headerLogo.src=`/static/brand/header-logos/${palette.id}.png?v=theme-nav-1`;const homeImg=document.querySelector('.reference-body-img');if(homeImg&&v.layout==="classico")homeImg.src=palette.home+"?v=themes4";document.querySelectorAll(".mobile-home-piece img[data-piece]").forEach(img=>{img.src=palette.mobile+"/"+img.dataset.piece+".jpg?v=themes4"});}
 const NAV_META={
  dashboard:["◈","Dashboard","grid"],studio:["🎛","Studio","sliders"],bible:["📖","Bíblia","book"],knowledge:["🧠","Biblioteca Viva","brain"],
  k7:["🔥","DNA K7","flame"],editor:["📝","Editor","edit"],pulpit:["🎙","Púlpito","mic"],library:["📚","Biblioteca","library"],projects:["📂","Projetos","folder"],
@@ -500,9 +500,25 @@ function toggleAppearancePanel(){
   openAppearance();
 }
 
+let navigationHistoryReady=false;
+function setupNavigationHistory(){
+ if(navigationHistoryReady)return;
+ try{history.replaceState({...((history.state&&typeof history.state==="object")?history.state:{}),logosView:"dashboard",logosBase:true},"",location.href);history.pushState({logosView:"dashboard",logosGuard:true},"",location.href);navigationHistoryReady=true;window.addEventListener("popstate",handleAppBack);}catch(e){console.warn("Navegação protegida indisponível",e)}
+}
+function navigateView(view){
+ if(!view)return;if(view==="appearance"){openAppearance();return;}if(view==="updates"){openUpdateCenter();return;}if(view==="dashboard"){goHome();return;}
+ if(navigationHistoryReady){const st={logosView:view,logosInternal:true};try{if(App.view==="dashboard")history.pushState(st,"",location.href);else history.replaceState(st,"",location.href);}catch{}}
+ render(view);if(innerWidth<=760)closeMobileNav();
+}
+function goHome(){
+ closeMobileNav();if(navigationHistoryReady&&App.view!=="dashboard"&&history.state?.logosInternal){try{history.back();return}catch{}}render("dashboard");if(navigationHistoryReady){try{history.replaceState({logosView:"dashboard",logosGuard:true},"",location.href)}catch{}}
+}
+function askExitApp(){actionModal({icon:"↩",title:"Deseja sair?",message:"Você quer sair do LOGOS MASTER X?",actions:[{label:"Sair",kind:"danger",run:()=>{try{history.go(-2)}catch{}setTimeout(()=>{try{window.close()}catch{}},350)}},{label:"Continuar no LOGOS",kind:"primary"}]});}
+function handleAppBack(e){const st=e.state||{};closeMobileNav();if(st.logosInternal){render(st.logosView||"dashboard");return;}if(st.logosGuard){render("dashboard");return;}if(st.logosBase){render("dashboard");try{history.pushState({logosView:"dashboard",logosGuard:true},"",location.href)}catch{}setTimeout(askExitApp,0);}}
+
 async function render(view){
  App.view=view; $$(".nav button").forEach(b=>b.classList.toggle("active",b.dataset.view===view)); $("#workspace").innerHTML=views[view]?views[view]():"<h2>Módulo</h2>";
- $$("[data-go]").forEach(b=>b.onclick=()=>{if(b.dataset.go==="appearance")openAppearance();else render(b.dataset.go);});
+ $$("[data-go]").forEach(b=>b.onclick=()=>navigateView(b.dataset.go));
  if(view==="dashboard"){$("#installPwaHome")?.addEventListener("click",installPwa);} $$(".top-nav [data-go]").forEach(b=>b.classList.toggle("active",b.dataset.go===view)); if($("#installPwaSide"))$("#installPwaSide").onclick=installPwa;
  if(view==="appearance"){$("#openAppearanceInside")?.addEventListener("click",openAppearance);}
  if(view==="custompages"){$("#customPageSave")?.addEventListener("click",()=>{const title=$("#customPageTitle").value.trim();if(!title)return;const a=Store.get("customPages",[]);a.push({title,icon:$("#customPageIcon").value||"⭐",content:$("#customPageContent").value});Store.set("customPages",a);render("custompages")});$$('[data-page-delete]').forEach(b=>b.onclick=()=>{const a=Store.get("customPages",[]);a.splice(Number(b.dataset.pageDelete),1);Store.set("customPages",a);render("custompages")});}
@@ -590,11 +606,7 @@ async function initBibleUI(){let current=[];$("#bImport").onclick=async()=>{cons
 function bindNav(){
  $$(".nav button").forEach(b=>{
    b.onclick=()=>{
-     if(b.dataset.view==="appearance"){openAppearance();return;}
-     // Update Center agora vive somente no menu lateral e abre como popup.
-     // Não troca a página atual e não fica flutuando na tela.
-     if(b.dataset.view==="updates"){openUpdateCenter();return;}
-     render(b.dataset.view);
+     navigateView(b.dataset.view);
    };
  });
 }
@@ -681,8 +693,8 @@ window.addEventListener("DOMContentLoaded",async()=>{
    applyVisual();
 function closeMobileNav(){document.body.classList.remove("mobile-nav-open");$("#mobileNavBackdrop")?.remove();}
 function toggleMobileNav(){if(document.body.classList.contains("mobile-nav-open")){closeMobileNav();return}document.body.classList.add("mobile-nav-open");if(!$("#mobileNavBackdrop")){const d=document.createElement("div");d.id="mobileNavBackdrop";d.className="mobile-nav-backdrop";d.addEventListener("click",closeMobileNav);document.body.appendChild(d)}}
-function installMobileNav(){const top=document.querySelector(".top");if(top&&!$("#mobileNavToggle")){const b=document.createElement("button");b.id="mobileNavToggle";b.className="mobile-nav-toggle";b.setAttribute("aria-label","Abrir menu");b.innerHTML='<span>☰</span><small>Menu</small>';b.addEventListener("click",toggleMobileNav);top.insertBefore(b,top.firstChild)}document.querySelectorAll(".nav button[data-view]").forEach(b=>b.addEventListener("click",()=>{if(innerWidth<=760)closeMobileNav()}));window.addEventListener("resize",()=>{if(innerWidth>760)closeMobileNav()});}
-installMobileNav();installUpdateControls();
+function installMobileNav(){const top=document.querySelector(".top");if(top&&!$("#mobileNavToggle")){const b=document.createElement("button");b.id="mobileNavToggle";b.className="mobile-nav-toggle";b.setAttribute("aria-label","Abrir menu");b.innerHTML='<span>☰</span><small>Menu</small>';b.addEventListener("click",toggleMobileNav);top.insertBefore(b,top.firstChild)}if(top&&!$("#mobileHomeBtn")){const h=document.createElement("button");h.id="mobileHomeBtn";h.className="mobile-home-button";h.setAttribute("aria-label","Ir para a Home");h.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 10.5 12 3.8l8.5 6.7"/><path d="M5.8 9.5V20h12.4V9.5"/><path d="M9.4 20v-6.2h5.2V20"/></svg><small>Home</small>';h.addEventListener("click",goHome);top.appendChild(h)}document.querySelectorAll(".nav button[data-view]").forEach(b=>b.addEventListener("click",()=>{if(innerWidth<=760)closeMobileNav()}));window.addEventListener("resize",()=>{if(innerWidth>760)closeMobileNav()});}
+installMobileNav();installUpdateControls();setupNavigationHistory();
 const top=document.querySelector('.top');if(top&&!document.querySelector('#aboutTopBtn')){const x=document.createElement('button');x.id='aboutTopBtn';x.className='top-mini';x.textContent='ⓘ Sobre';x.onclick=()=>toggleTopView('about');safeTopInsert(x);}updateInstallSideButton();
 const top2=document.querySelector(".top");if(top2&&!document.querySelector("#appearanceBtn")){const b=document.createElement("button");b.id="appearanceBtn";b.className="btn secondary appearance-trigger";b.textContent="🎨 Aparência";b.onclick=toggleAppearancePanel;safeTopInsert(b);}
 render("dashboard");
