@@ -2204,3 +2204,123 @@ html[data-startup-palette="electricblue"]{--startup-primary:#279fff;--startup-se
   html[data-layout="classico"] .classic-brand{width:min(50vw,170px)!important;max-width:170px!important}
   html[data-layout="classico"] .classic-brand .classic-header-logo{max-width:170px!important}
 }
+
+/* ================================================================
+   HOTFIX 4.1.3 — APARÊNCIA 100% OPACA EM TODO VIEWPORT
+   Evita qualquer vazamento visual da Home atrás do seletor de temas,
+   inclusive em desktop estreito, zoom do navegador e WebView/PWA.
+   Sem color-mix no backdrop para compatibilidade máxima.
+   ================================================================ */
+#appearanceBackdrop.appearance-backdrop{
+  position:fixed!important;
+  inset:0!important;
+  top:0!important;right:0!important;bottom:0!important;left:0!important;
+  width:100vw!important;
+  height:100vh!important;
+  min-width:100vw!important;
+  min-height:100vh!important;
+  z-index:2147483000!important;
+  margin:0!important;
+  padding:0!important;
+  opacity:1!important;
+  overflow:hidden!important;
+  display:flex!important;
+  justify-content:flex-end!important;
+  align-items:stretch!important;
+  background-color:#020508!important;
+  background-image:
+    radial-gradient(900px 580px at 8% 3%, rgba(var(--theme-primary-rgb,32,225,223),.24), rgba(var(--theme-primary-rgb,32,225,223),.06) 45%, transparent 72%),
+    radial-gradient(800px 520px at 96% 94%, rgba(var(--theme-secondary-rgb,226,171,54),.18), rgba(var(--theme-secondary-rgb,226,171,54),.04) 46%, transparent 74%),
+    linear-gradient(145deg,#071018 0%,#02070b 48%,#010305 100%)!important;
+  background-attachment:fixed!important;
+  backdrop-filter:none!important;
+  -webkit-backdrop-filter:none!important;
+  isolation:isolate!important;
+}
+#appearanceBackdrop.appearance-backdrop::before{
+  content:""!important;
+  position:absolute!important;
+  inset:0!important;
+  z-index:0!important;
+  pointer-events:none!important;
+  opacity:1!important;
+  background:
+    linear-gradient(90deg,rgba(var(--theme-primary-rgb,32,225,223),.035),transparent 38%,rgba(var(--theme-secondary-rgb,226,171,54),.025)),
+    #020508!important;
+}
+#appearanceBackdrop > #appearancePanel.appearance-panel{
+  position:relative!important;
+  z-index:2!important;
+  flex:0 0 min(540px,100vw)!important;
+  width:min(540px,100vw)!important;
+  max-width:100vw!important;
+  height:100vh!important;
+  min-height:100vh!important;
+  margin:0!important;
+  padding:20px!important;
+  overflow-y:auto!important;
+  overflow-x:hidden!important;
+  opacity:1!important;
+  background-color:#050b11!important;
+  background-image:
+    radial-gradient(620px 280px at 50% 0%,rgba(var(--theme-primary-rgb,32,225,223),.18),transparent 72%),
+    linear-gradient(180deg,#0a141d 0%,#050b11 42%,#020609 100%)!important;
+  border-left:1px solid rgba(var(--theme-primary-rgb,32,225,223),.48)!important;
+  border-radius:0!important;
+  box-shadow:-26px 0 70px rgba(0,0,0,.88),inset 1px 0 rgba(var(--theme-primary-rgb,32,225,223),.16)!important;
+}
+#appearanceBackdrop .theme-card,
+#appearanceBackdrop .visual-choice,
+#appearanceBackdrop .fixed-icon-card{
+  background-color:#0b1420!important;
+  background-image:linear-gradient(155deg,rgba(var(--theme-primary-rgb,32,225,223),.035),rgba(4,9,14,.98))!important;
+  opacity:1!important;
+}
+@media(max-width:760px){
+  #appearanceBackdrop.appearance-backdrop{justify-content:stretch!important;width:100dvw!important;height:100dvh!important;min-width:100dvw!important;min-height:100dvh!important}
+  #appearanceBackdrop > #appearancePanel.appearance-panel{flex:1 1 100%!important;width:100dvw!important;max-width:100dvw!important;height:100dvh!important;min-height:100dvh!important;padding:16px 14px 90px!important;border-left:0!important;box-shadow:none!important}
+}
+
+/* ================================================================
+   HOTFIX 4.1.4 — APARÊNCIA SÓLIDA SOMENTE NO PAINEL
+   Desktop: preserva a Home visível fora do seletor; apenas o painel
+   lateral recebe o fundo temático opaco. Mobile: continua em tela cheia.
+   ================================================================ */
+@media (min-width:761px){
+  #appearanceBackdrop.appearance-backdrop{
+    background:transparent!important;
+    background-image:none!important;
+    background-color:transparent!important;
+    backdrop-filter:none!important;
+    -webkit-backdrop-filter:none!important;
+    justify-content:flex-end!important;
+  }
+  #appearanceBackdrop.appearance-backdrop::before{
+    display:none!important;
+    content:none!important;
+  }
+  #appearanceBackdrop > #appearancePanel.appearance-panel{
+    flex:0 0 min(540px,100vw)!important;
+    width:min(540px,100vw)!important;
+    max-width:540px!important;
+    height:100vh!important;
+    min-height:100vh!important;
+    background-color:#050b11!important;
+    background-image:
+      radial-gradient(620px 300px at 50% 0%,rgba(var(--theme-primary-rgb,32,225,223),.22),transparent 70%),
+      radial-gradient(520px 360px at 100% 100%,rgba(var(--theme-secondary-rgb,226,171,54),.10),transparent 72%),
+      linear-gradient(180deg,#0a141d 0%,#050b11 42%,#020609 100%)!important;
+    border-left:1px solid rgba(var(--theme-primary-rgb,32,225,223),.55)!important;
+    box-shadow:-22px 0 56px rgba(0,0,0,.62),inset 1px 0 rgba(var(--theme-primary-rgb,32,225,223),.18)!important;
+  }
+}
+@media (max-width:760px){
+  #appearanceBackdrop.appearance-backdrop{
+    background-color:#020508!important;
+    background-image:
+      radial-gradient(760px 520px at 10% 0%,rgba(var(--theme-primary-rgb,32,225,223),.22),transparent 70%),
+      radial-gradient(640px 460px at 100% 100%,rgba(var(--theme-secondary-rgb,226,171,54),.14),transparent 72%),
+      linear-gradient(145deg,#071018 0%,#02070b 48%,#010305 100%)!important;
+  }
+  #appearanceBackdrop.appearance-backdrop::before{display:none!important;content:none!important}
+}
