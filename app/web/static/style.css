@@ -2002,3 +2002,24 @@ html[data-layout="classico"][data-palette] .mode-btn em{color:var(--theme-second
 .classic-sidebar .side-brand{display:none!important}
 .theme-category{margin:14px 0 20px}.theme-category h4{margin:0 0 10px;color:var(--accent);font-size:12px;letter-spacing:.08em}.theme-category .theme-card-grid{margin:0}
 @media(max-width:850px){html[data-layout="classico"][data-palette] .mobile-reference-home{background:var(--theme-bg)!important}html[data-layout="classico"][data-palette] .mobile-home-piece{border-color:rgba(var(--theme-primary-rgb),.38)!important;background:var(--theme-bg)!important;box-shadow:0 10px 28px rgba(0,0,0,.28),0 0 14px rgba(var(--theme-primary-rgb),.08)!important}}
+
+/* HOTFIX — Aparência: restaura fundo degradê fechado do seletor de temas.
+   O conteúdo da página não fica visível através do menu/overlay. */
+.appearance-backdrop{
+  background:
+    radial-gradient(circle at 82% 10%, rgba(var(--theme-primary-rgb),.20) 0, rgba(var(--theme-primary-rgb),.07) 24%, transparent 48%),
+    radial-gradient(circle at 18% 88%, rgba(var(--theme-secondary-rgb),.13) 0, transparent 42%),
+    linear-gradient(145deg, color-mix(in srgb,var(--theme-bg2) 96%,#02050a), color-mix(in srgb,var(--theme-bg) 98%,#000) 58%, #020407 100%) !important;
+  backdrop-filter:none!important;
+  -webkit-backdrop-filter:none!important;
+}
+.appearance-panel{
+  background:
+    radial-gradient(circle at 80% 0%,rgba(var(--theme-primary-rgb),.12),transparent 34%),
+    linear-gradient(180deg,color-mix(in srgb,var(--theme-panel2) 96%,#0b111a),color-mix(in srgb,var(--theme-bg) 98%,#020407))!important;
+  box-shadow:-22px 0 70px rgba(0,0,0,.72),inset 1px 0 0 rgba(var(--theme-primary-rgb),.16)!important;
+}
+@media(max-width:760px){
+  .appearance-backdrop{align-items:stretch!important;justify-content:stretch!important;overflow:hidden!important}
+  .appearance-panel{width:100vw!important;max-width:100vw!important;height:100dvh!important;border-left:0!important;overflow-y:auto!important;border-radius:0!important}
+}
