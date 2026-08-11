@@ -1,0 +1,20 @@
+LOGOS MASTER X — HOTFIX 4.1.9 DEFINITIVO
+
+IMPORTANTE: use SOMENTE este ZIP. Não aplique junto com o 4.1.7 ou 4.1.8.
+
+Correções:
+- volta à base 4.1.6 aprovada;
+- remove qualquer segundo efeito sobre a tela de loading;
+- mantém o flash 4.1.6 atrás da arte;
+- reposiciona a barra viva exatamente DENTRO do contorno impresso da arte;
+- remove moldura duplicada e bolha do progresso;
+- novo efeito só começa depois que a splash foi removida;
+- efeito usa pseudo-elementos sobre a imagem central da Home;
+- não altera HTML da Home nem o fluxo do layout;
+- funciona no desktop e no hero mobile;
+- cores seguem o tema.
+
+Depois de extrair sobre a pasta do projeto:
+1) reinicie o servidor;
+2) use Ctrl+F5;
+3) se o PWA estiver aberto, feche e abra novamente.

@@ -1,0 +1,19 @@
+LOGOS MASTER X — HOTFIX 4.3.11 — CINEMATIC ENERGY FLOW
+
+BASE: HOTFIX 4.3.10 aprovada.
+
+- Início continua DIRETO no DNA.
+- Percurso do DNA não foi alterado.
+- DNA recebe apenas reforço luminoso concentrado, inspirado no vídeo de referência.
+- Ida pelas 3 fitas agora usa fluxo cinematográfico contínuo:
+  cabeça de luz intensa + núcleo curto + cauda suave.
+- Reduzida a aparência de bolinhas separadas.
+- Bobinas e pausa aproximada de 1 segundo mantidas.
+- Retorno continua saindo por baixo da K7.
+- Retorno percorre as 3 fitas em sentido inverso com o mesmo fluxo contínuo.
+- Bíblia/clímax mantidos.
+- A animação termina na Bíblia. Sem menu inferior.
+
+ALTERAÇÃO: somente app/web/static/app.js.
+VALIDAÇÃO: node --check = OK — zero erros de sintaxe.
+APLICAR SOBRE: HOTFIX 4.3.10.

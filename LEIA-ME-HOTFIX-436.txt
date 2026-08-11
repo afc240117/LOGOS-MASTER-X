@@ -1,0 +1,12 @@
+HOTFIX 4.3.6 — TRIPLE RETURN
+Base: 4.3.5 enviada.
+- Flash inicial mudou para pulsos entre as letras.
+- DNA aproximadamente 2x mais rápido (acelerado 1x).
+- Ida pelas 3 fitas mantida.
+- Bobinas mantidas.
+- Retorno agora percorre AS 3 FITAS em sentido inverso antes da Bíblia.
+- Bíblia/clímax mantidos.
+- Final somente nos quatro menus abaixo da Bíblia.
+- Somente app.js.
+- node --check: OK, zero erros.
+Aplicar sobre 4.3.5.

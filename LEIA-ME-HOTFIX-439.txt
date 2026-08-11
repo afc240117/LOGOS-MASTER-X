@@ -1,0 +1,31 @@
+LOGOS MASTER X — HOTFIX 4.3.9
+
+BASE: HOTFIX 4.3.8 fornecida pelo usuário.
+
+1. ESCRITAS
+- 360° sobre o X (~0,50 s).
+- LOGOS recebe 2 movimentos completos de 360° (~0,50 s cada),
+  em sentidos alternados.
+- Depois o feixe segue ao topo do DNA.
+
+2. DNA
+- Mesmo movimento da 4.3.8, sem alteração do desenho.
+
+3. K7
+- Ida pelas 3 fitas mantida.
+- Duas bobinas mantidas.
+- Pausa de comunicação mantida (~1 segundo).
+- Retorno sai por baixo da K7.
+- Retorno usa UM feixe sincronizado, percorrendo fita 3 -> 2 -> 1,
+  em sentido inverso, evitando bolinhas desencontradas.
+
+4. BÍBLIA
+- Clímax mantido.
+
+5. FINAL
+- Somente o menu inferior da imagem:
+  BÍBLIA -> ESTUDO -> PREGAÇÃO -> AVIVAMENTO.
+
+ALTERAÇÃO: somente app/web/static/app.js.
+VALIDAÇÃO: node --check = OK — zero erros de sintaxe.
+APLICAR SOBRE: HOTFIX 4.3.8.

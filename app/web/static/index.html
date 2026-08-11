@@ -3,7 +3,7 @@
 <meta name="theme-color" content="#05070b"><meta name="description" content="LOGOS MASTER X">
 <title>LOGOS MASTER X</title>
 <link rel="manifest" href="/static/manifest.webmanifest?v=378">
-<link rel="stylesheet" href="/static/style.css?v=themes-418"><script>
+<link rel="stylesheet" href="/static/style.css?v=themes-4318"><script>
 (function(){
   try{
     var v=JSON.parse(localStorage.getItem("logosx:visual")||"{}");
@@ -15,13 +15,8 @@
 </script></head>
 <body>
 <div id="mobileLoading" class="mobile-loading cinematic-startup" aria-label="Carregando LOGOS MASTER X">
-  <div class="startup-ambient" aria-hidden="true">
-    <i class="startup-orbit startup-orbit-a"></i><i class="startup-orbit startup-orbit-b"></i>
-    <i class="startup-ray startup-ray-a"></i><i class="startup-ray startup-ray-b"></i>
-    <i class="startup-flare"></i><i class="startup-scan"></i>
-  </div>
   <div class="mobile-loading-frame">
-    <img id="mobileLoadingImage" src="/static/brand/startup-themes/bluegold.jpg?v=418" alt="LOGOS MASTER X DNA K7 &#8212; Carregando">
+    <img id="mobileLoadingImage" src="/static/brand/startup-themes/bluegold.jpg?v=430" alt="LOGOS MASTER X DNA K7 &#8212; Carregando">
     <div class="startup-image-glow" aria-hidden="true"></div>
     <div class="mobile-loading-live"><i id="mobileLoadingBar"></i></div>
   </div>
@@ -32,7 +27,7 @@
   var allowed={bluegold:1,cyan:1,greengold:1,purplegold:1,goldblue:1,purplecyan:1,pinkcyan:1,redsilver:1,copperblue:1,orangepink:1,royalblue:1,aqua:1,silver:1,cyangold:1,greenblue:1,iceblue:1,electricblue:1};
   if(!allowed[p])p="bluegold";
   var im=document.getElementById("mobileLoadingImage");
-  if(im)im.src="/static/brand/startup-themes/"+p+".jpg?v=418";
+  if(im)im.src="/static/brand/startup-themes/"+p+".jpg?v=430";
 })();
 </script>
 <div class="app classic-shell">
@@ -74,10 +69,12 @@
   <button data-go="custompages" class="side-add-page"><i class="special-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v16M4 12h16"/></svg></i><span>Adicionar P&#225;gina<small>Criar ou integrar</small></span></button>
 </div>
 </aside><main><section id="workspace" class="workspace"></section></main></div></div>
+
+
 <script>
 (function(){
   window.setTimeout(function(){var x=document.getElementById('mobileLoading');if(x){x.classList.add('is-done');window.setTimeout(function(){x.remove();},500);}},7000);
-  if ('serviceWorker' in navigator) window.addEventListener('load',function(){navigator.serviceWorker.register('/static/sw.js?v=418').catch(function(){});});
+  if ('serviceWorker' in navigator) window.addEventListener('load',function(){navigator.serviceWorker.register('/static/sw.js?v=430').catch(function(){});});
 })();
 </script>
-<script src="/static/prompt-library.js?v=378"></script><script src="/static/app.js?v=themes-418"></script></body></html>
+<script src="/static/prompt-library.js?v=378"></script><script src="/static/app.js?v=themes-4318"></script></body></html>

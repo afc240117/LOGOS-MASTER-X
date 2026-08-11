@@ -1,0 +1,25 @@
+LOGOS MASTER X — HOTFIX 4.3.15
+LOADING FUSION FX — TODOS OS TEMAS
+
+ALTERAÇÕES:
+1. A BARRA DE LOADING FOI PRESERVADA.
+2. Removido somente o círculo/orbit/flare antigo atrás do banner.
+3. Inserida uma varredura de energia estreita, sem círculo, inspirada no flash da Home.
+4. Banner do loading agora se funde visualmente ao fundo:
+   - a própria arte do tema vira atmosfera desfocada atrás;
+   - bordas da imagem são suavizadas por máscara;
+   - desaparece o aspecto de retângulo/quadrado destacado.
+5. Funciona nos 17 temas existentes e acompanha automaticamente o tema escolhido.
+6. Não altera a animação cinematográfica da HOME.
+7. Não altera a lógica da barrinha de carregamento.
+
+ARQUIVOS ALTERADOS:
+- app/web/static/index.html
+- app/web/static/style.css
+
+APLICAR SOBRE:
+- projeto completo atual enviado pelo usuário.
+
+IMPORTANTE:
+- substituir os dois arquivos mantendo os caminhos.
+- depois usar Ctrl+F5 para evitar CSS antigo em cache.

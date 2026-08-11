@@ -1,0 +1,7 @@
+HOTFIX 4.3.17 — LOADING HOME FLOW FAST
+Corrige o conceito do efeito: NÃO é varredura esquerda→direita.
+Percurso acelerado (~4,3s):
+topo DNA → desce DNA → 3 fitas → entra por baixo K7 → 2 bobinas → pausa curta →
+retorna pelas 3 fitas → topo DNA → desce DNA → Bíblia → clímax final.
+Mantém barra real de loading e fusão do wallpaper para todos os temas.
+Aplicar sobre 4.3.15. Depois Ctrl+F5.

@@ -1,0 +1,22 @@
+LOGOS MASTER X — HOTFIX 4.2.4 HELIX ENERGY CINEMATIC
+
+Base limpa 4.1.9, sem vídeo.
+
+Objetivo:
+- energia acompanha visualmente as DUAS hélices do DNA;
+- travessas do DNA acendem em sequência;
+- pulso luminoso percorre a hélice;
+- descarga vai para o K7;
+- bobinas do K7 recebem brilho/rotação;
+- energia segue para a Bíblia;
+- Bíblia culmina MUITO intensa com raios e flare;
+- duração total aproximada: 4,4 segundos;
+- cores seguem automaticamente o tema;
+- efeito começa somente após o loading;
+- não altera layout nem bloqueia botões.
+
+Instalação:
+1. Extraia por cima da pasta atual.
+2. Reinicie o servidor.
+3. Ctrl+F5.
+4. Não use o vídeo 4.2.0.

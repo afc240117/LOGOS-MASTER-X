@@ -1,0 +1,18 @@
+LOGOS MASTER X — HOTFIX 4.2.5 DNA HELIX FLOW
+
+Construído sobre a base limpa 4.1.9.
+
+Ajuste feito após comparação dos dois vídeos:
+- foco principal no DNA;
+- pulso azul e dourado percorre as duas hélices;
+- travessas acendem progressivamente;
+- intensidade cresce no DNA antes de sair dele;
+- descarga alinhada chega ao K7;
+- K7 recebe reflexo forte, mas curto;
+- energia segue para a Bíblia;
+- Bíblia é o clímax mais intenso da sequência;
+- aproximadamente 4,5 segundos;
+- cores seguem o tema;
+- sem vídeo e sem alterar o layout.
+
+Teste com Ctrl+F5 após reiniciar o servidor.

@@ -8,47 +8,384 @@ const Store={
  export(){const x={};for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k?.startsWith(this.p))x[k]=localStorage.getItem(k)}return x},
  import(x){Object.entries(x||{}).forEach(([k,v])=>{if(k.startsWith(this.p))localStorage.setItem(k,v)})}
 };
-let mobileLoadingProgress=0;let mobileLoadingRaf=null;const mobileLoadingStartedAt=performance.now();
-function setMobileLoadingProgress(value){const el=document.getElementById('mobileLoadingBar');if(!el)return;mobileLoadingProgress=Math.max(0,Math.min(100,value));el.style.width=mobileLoadingProgress.toFixed(1)+'%';el.setAttribute('aria-valuenow',String(Math.round(mobileLoadingProgress)));}
-function startMobileLoading(){
-  const el=document.getElementById('mobileLoadingBar');if(!el)return;
-  setMobileLoadingProgress(0);
-  const tick=()=>{
-    const elapsed=performance.now()-mobileLoadingStartedAt;
-    // 0→84% em ~1.25s; depois aproxima lentamente de 94% até o app terminar.
-    let target=elapsed<1250?(elapsed/1250)*84:84+10*(1-Math.exp(-(elapsed-1250)/1150));
-    setMobileLoadingProgress(Math.min(94,target));
-    mobileLoadingRaf=requestAnimationFrame(tick);
-  };
-  mobileLoadingRaf=requestAnimationFrame(tick);
-}
-function triggerHomeCinematicFx(){
-  requestAnimationFrame(()=>{
-    const desktop=document.querySelector('.reference-body-wrap');
-    const mobile=document.querySelector('.mobile-home-hero');
-    [desktop,mobile].forEach(el=>{
-      if(!el)return;
-      el.classList.remove('home-cinematic-run');
-      void el.offsetWidth;
-      el.classList.add('home-cinematic-run');
-      window.setTimeout(()=>el.classList.remove('home-cinematic-run'),2300);
-    });
-  });
-}
+let mobileLoadingProgress=8;let mobileLoadingTimer=null;const mobileLoadingStartedAt=performance.now();
+function startMobileLoading(){const el=document.getElementById('mobileLoadingBar');if(!el)return;mobileLoadingTimer=setInterval(()=>{mobileLoadingProgress=Math.min(92,mobileLoadingProgress+Math.max(1,(92-mobileLoadingProgress)*.08));el.style.width=mobileLoadingProgress+'%';},120);}
 function finishMobileLoading(){
-  if(mobileLoadingRaf){cancelAnimationFrame(mobileLoadingRaf);mobileLoadingRaf=null}
-  setMobileLoadingProgress(100);
-  const minVisible=1650;
-  const wait=Math.max(180,minVisible-(performance.now()-mobileLoadingStartedAt));
-  setTimeout(()=>{
-    const splash=document.getElementById('mobileLoading');
-    if(splash){
-      splash.classList.add('is-done');
-      setTimeout(()=>{splash.remove();triggerHomeCinematicFx()},620);
-    }else{
-      triggerHomeCinematicFx();
-    }
-  },wait);
+ if(mobileLoadingTimer){clearInterval(mobileLoadingTimer);mobileLoadingTimer=null}
+ const el=document.getElementById('mobileLoadingBar');
+ if(el)el.style.width='100%';
+ const minVisible=1650;
+ const wait=Math.max(180,minVisible-(performance.now()-mobileLoadingStartedAt));
+ setTimeout(()=>{
+   const splash=document.getElementById('mobileLoading');
+   const startHomeFx=()=>{
+     const host=window.matchMedia('(max-width:760px)').matches
+       ? document.querySelector('.mobile-home-piece.mobile-home-hero')
+       : document.querySelector('.reference-body-wrap.desktop-reference-home');
+     if(!host || host.querySelector('.dna-canvas-fx-427')) return;
+
+     const canvas=document.createElement('canvas');
+     canvas.className='dna-canvas-fx-427';
+     canvas.width=1313;
+     canvas.height=946;
+     canvas.setAttribute('aria-hidden','true');
+     host.appendChild(canvas);
+
+     const ctx=canvas.getContext('2d');
+     const css=getComputedStyle(document.documentElement);
+     const parseRgb=(name,fallback)=>{
+       const raw=(css.getPropertyValue(name)||'').trim();
+       const parts=raw.split(',').map(v=>parseFloat(v));
+       return parts.length>=3&&parts.every(Number.isFinite)?parts:fallback;
+     };
+     const p=parseRgb('--theme-primary-rgb',[32,225,223]);
+     const s=parseRgb('--theme-secondary-rgb',[226,171,54]);
+     const rgba=(rgb,a)=>`rgba(${rgb[0]},${rgb[1]},${rgb[2]},${a})`;
+
+     const W=1313,H=946;
+     const start=performance.now();
+     const duration=12800;
+
+     const bez=(a,b,c,d,t)=>{
+       const u=1-t;
+       return {
+         x:u*u*u*a.x+3*u*u*t*b.x+3*u*t*t*c.x+t*t*t*d.x,
+         y:u*u*u*a.y+3*u*u*t*b.y+3*u*t*t*c.y+t*t*t*d.y
+       };
+     };
+
+     /* Trajetórias calibradas sobre o DNA REAL da arte 1313x946.
+        Não desenhamos uma nova hélice: só usamos estas curvas como guia de luz. */
+     const green=[
+       [{x:313,y:46},{x:332,y:82},{x:365,y:118},{x:417,y:165}],
+       [{x:417,y:165},{x:457,y:200},{x:430,y:240},{x:367,y:284}],
+       [{x:367,y:284},{x:340,y:306},{x:348,y:339},{x:425,y:373}]
+     ];
+     const gold=[
+       [{x:548,y:45},{x:534,y:84},{x:500,y:122},{x:446,y:166}],
+       [{x:446,y:166},{x:406,y:201},{x:431,y:240},{x:496,y:282}],
+       [{x:496,y:282},{x:524,y:307},{x:514,y:340},{x:430,y:373}]
+     ];
+
+     const pointOn=(segments,t)=>{
+       t=Math.max(0,Math.min(0.9999,t));
+       const q=t*segments.length, i=Math.floor(q), lt=q-i;
+       const seg=segments[Math.min(i,segments.length-1)];
+       return bez(seg[0],seg[1],seg[2],seg[3],lt);
+     };
+
+     const glowDot=(x,y,r,rgb,a)=>{
+       const g=ctx.createRadialGradient(x,y,0,x,y,r);
+       g.addColorStop(0,`rgba(255,255,255,${Math.min(1,a*1.3)})`);
+       g.addColorStop(.12,rgba(rgb,a));
+       g.addColorStop(.42,rgba(rgb,a*.42));
+       g.addColorStop(1,rgba(rgb,0));
+       ctx.fillStyle=g;
+       ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fill();
+     };
+
+     const softEllipse=(x,y,rx,ry,rgb,a)=>{
+       ctx.save();
+       ctx.translate(x,y);ctx.scale(rx,ry);
+       const g=ctx.createRadialGradient(0,0,0,0,0,1);
+       g.addColorStop(0,rgba(rgb,a));
+       g.addColorStop(.38,rgba(rgb,a*.38));
+       g.addColorStop(1,rgba(rgb,0));
+       ctx.fillStyle=g;ctx.beginPath();ctx.arc(0,0,1,0,Math.PI*2);ctx.fill();
+       ctx.restore();
+     };
+
+     const drawTravel=(segments,progress,rgb,intensity)=>{
+       const head=pointOn(segments,progress);
+       for(let k=0;k<11;k++){
+         const tt=Math.max(0,progress-k*.018);
+         const q=pointOn(segments,tt);
+         glowDot(q.x,q.y,18-k*.9,rgb,intensity*(1-k/13));
+       }
+       glowDot(head.x,head.y,34,rgb,intensity);
+     };
+
+     const drawRibbonTrail=(segments,progress,rgb,intensity,reverse=false)=>{
+       if(reverse)segments=segments.slice().reverse();
+       const head=pointOn(segments,progress);
+       ctx.save();
+       ctx.globalCompositeOperation='lighter';
+       for(let k=0;k<15;k++){
+         const tt=Math.max(0,progress-k*.016);
+         const q=pointOn(segments,tt);
+         glowDot(q.x,q.y,14-k*.45,rgb,intensity*(1-k/17));
+       }
+       glowDot(head.x,head.y,25,rgb,intensity);
+       ctx.restore();
+     };
+
+     /* As três fitas douradas reais que saem do conjunto DNA/K7.
+        Os pontos foram calibrados na arte 1313x946. */
+     const ribbon1=[
+       [{x:435,y:314},{x:400,y:292},{x:355,y:286},{x:318,y:272}],
+       [{x:318,y:272},{x:287,y:258},{x:275,y:244},{x:252,y:250}]
+     ];
+     const ribbon2=[
+       [{x:430,y:332},{x:389,y:352},{x:350,y:323},{x:315,y:311}],
+       [{x:315,y:311},{x:281,y:300},{x:264,y:336},{x:230,y:322}],
+       [{x:230,y:322},{x:205,y:312},{x:205,y:286},{x:237,y:273}]
+     ];
+     const ribbon3=[
+       [{x:422,y:347},{x:378,y:326},{x:347,y:352},{x:305,y:340}],
+       [{x:305,y:340},{x:267,y:328},{x:250,y:350},{x:215,y:338}],
+       [{x:215,y:338},{x:176,y:326},{x:170,y:301},{x:198,y:286}],
+       [{x:198,y:286},{x:218,y:272},{x:232,y:266},{x:248,y:260}]
+     ];
+
+     const drawK7=(u)=>{
+       if(u<=0||u>=1)return;
+       const e=Math.sin(Math.PI*u);
+       softEllipse(170,194,150,105,s,e*.34);
+       softEllipse(170,194,120,80,p,e*.18);
+       glowDot(138,185,38,s,e*.85);
+       glowDot(221,196,38,s,e*.85);
+       // HOTFIX 4.2.9: removido o reflexo vertical branco esquerda -> direita.
+       // Mantém somente a intensificação localizada da K7 e das bobinas.
+     };
+
+     const drawTitleGlow=(u,finalPass=false)=>{
+       if(u<=0||u>=1)return;
+
+       const orbit=(cx,cy,rx,ry,q,reverse,rgb)=>{
+         const ang=(reverse?-1:1)*q*Math.PI*2;
+         // um único ponto principal + cauda curta alinhada
+         for(let k=7;k>=0;k--){
+           const aa=ang-(reverse?-1:1)*k*.12;
+           const fade=(1-k/9);
+           glowDot(cx+Math.cos(aa)*rx,cy+Math.sin(aa)*ry,
+                   10+k*.25,rgb,fade*.68);
+         }
+         glowDot(cx+Math.cos(ang)*rx,cy+Math.sin(ang)*ry,17,rgb,.98);
+       };
+
+       // 360° sobre o X — ~0,50 s.
+       if(u<.25){
+         const q=u/.25;
+         orbit(1015,185,42,54,q,false,s);
+         return;
+       }
+
+       // LOGOS — primeiro movimento 360° — ~0,50 s.
+       if(u<.50){
+         const q=(u-.25)/.25;
+         orbit(845,190,150,34,q,true,p);
+         return;
+       }
+
+       // LOGOS — segundo movimento 360° — ~0,50 s, sentido contrário.
+       if(u<.75){
+         const q=(u-.50)/.25;
+         orbit(845,190,150,34,q,false,s);
+         return;
+       }
+
+       // Vai diretamente ao topo do DNA.
+       const q=(u-.75)/.25;
+       const p0={x:695,y:190},p1={x:650,y:145},p2={x:590,y:78},p3={x:525,y:55};
+       const z=bez(p0,p1,p2,p3,q);
+       for(let k=7;k>=0;k--){
+         const qq=Math.max(0,q-k*.035);
+         const zz=bez(p0,p1,p2,p3,qq);
+         glowDot(zz.x,zz.y,11,s,(1-k/9)*.66);
+       }
+       glowDot(z.x,z.y,17,s,.96);
+     };
+
+     const drawMenuFlow=(u)=>{
+       if(u<=0||u>=1)return;
+       const e=Math.sin(Math.PI*u);
+
+       // Somente a faixa inferior mostrada na imagem:
+       // BÍBLIA -> ESTUDO -> PREGAÇÃO -> AVIVAMENTO.
+       const p0={x:260,y:760},p1={x:465,y:760},p2={x:710,y:760},p3={x:950,y:760};
+       for(let k=0;k<13;k++){
+         const tt=Math.max(0,u-k*.024);
+         const q=bez(p0,p1,p2,p3,tt);
+         glowDot(q.x,q.y,15-k*.55,k%2?s:p,e*(1-k/15)*.70);
+       }
+       const q=bez(p0,p1,p2,p3,Math.min(1,u));
+       glowDot(q.x,q.y,26,s,e*.84);
+
+       const centers=[
+         {x:285,y:760},{x:505,y:760},{x:720,y:760},{x:930,y:760}
+       ];
+       centers.forEach((pt,i)=>{
+         const target=.06+i*.30;
+         const hit=Math.max(0,1-Math.abs(u-target)/.10);
+         if(hit>0)glowDot(pt.x,pt.y,30,s,hit*.68);
+       });
+     };
+
+     const drawConnector=(u,a,b,c,d,rgb,intensity)=>{
+       if(u<=0||u>=1)return;
+       const e=Math.sin(Math.PI*u);
+       for(let k=0;k<10;k++){
+         const tt=Math.max(0,u-k*.024);
+         const q=bez(a,b,c,d,tt);
+         glowDot(q.x,q.y,16-k*.6,rgb,e*(1-k/12)*intensity);
+       }
+     };
+
+     const drawBible=(u)=>{
+       if(u<=0||u>=1)return;
+       const e=Math.sin(Math.PI*Math.min(1,u));
+       softEllipse(430,404,180,90,s,e*.55);
+       softEllipse(430,404,135,65,p,e*.28);
+       glowDot(430,386,55,s,e*.95);
+       // raios que nascem no centro das páginas
+       ctx.save();ctx.translate(430,396);
+       ctx.globalCompositeOperation='lighter';
+       for(let i=-4;i<=4;i++){
+         const ang=-Math.PI/2+i*.13;
+         const len=110+Math.abs(i)*18;
+         const g=ctx.createLinearGradient(0,0,Math.cos(ang)*len,Math.sin(ang)*len);
+         g.addColorStop(0,`rgba(255,255,255,${e*.72})`);
+         g.addColorStop(.25,rgba(s,e*.42));
+         g.addColorStop(1,rgba(s,0));
+         ctx.strokeStyle=g;ctx.lineWidth=3.5-Math.abs(i)*.22;
+         ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(Math.cos(ang)*len,Math.sin(ang)*len);ctx.stroke();
+       }
+       ctx.restore();
+       if(u>.58){
+         const c=(u-.58)/.42;
+         glowDot(430,395,105+110*c,s,Math.min(1,c*1.25));
+         glowDot(430,395,72+70*c,p,Math.min(.8,c));
+       }
+     };
+
+     const frame=(now)=>{
+       const t=(now-start)/duration;
+       ctx.clearRect(0,0,W,H);
+       ctx.globalCompositeOperation='lighter';
+
+       // 1 — INÍCIO NO TOPO DO DNA / primeira descida completa.
+       const dnaT=Math.min(1,Math.max(0,t/.16));
+       if(t<.18){
+         const pulse=.24+.46*Math.sin(Math.PI*Math.min(1,dnaT));
+         softEllipse(430,205,190,190,p,pulse*.24);
+         softEllipse(430,205,180,185,s,pulse*.18);
+         drawTravel(green,Math.min(1,dnaT*1.02),p,1.0);
+         drawTravel(gold,Math.min(1,Math.max(0,dnaT-.05)*1.08),s,1.0);
+       }
+       if(t>.035 && t<.18){
+         const u=(t-.035)/.145;
+         drawTravel(green,Math.min(1,u),p,.62);
+         drawTravel(gold,Math.min(1,u),s,.62);
+       }
+
+       // DNA -> entrada das fitas douradas.
+       if(t>.155 && t<.215){
+         const u=(t-.155)/.06;
+         drawConnector(u,{x:430,y:370},{x:425,y:430},{x:360,y:365},{x:315,y:325},s,.88);
+       }
+
+       // 2 — IDA pelas três fitas douradas, suave.
+       if(t>.195 && t<.365){
+         const u=(t-.195)/.17;
+         const sm=u*u*(3-2*u);
+         drawRibbonTrail(ribbon1,Math.min(1,sm*1.06),s,.94);
+         drawRibbonTrail(ribbon2,Math.min(1,Math.max(0,sm-.07)*1.12),s,.92);
+         drawRibbonTrail(ribbon3,Math.min(1,Math.max(0,sm-.14)*1.18),s,.90);
+       }
+
+       // 3 — entra por baixo da K7.
+       if(t>.34 && t<.395){
+         const u=(t-.34)/.055;
+         drawConnector(u,{x:238,y:292},{x:210,y:278},{x:185,y:250},{x:180,y:225},s,.98);
+       }
+
+       // 4 — duas bobinas acendem.
+       drawK7((t-.37)/.07);
+       if(t>.385 && t<.47){
+         const u=(t-.385)/.085;
+         const e=.78+.22*Math.sin(Math.PI*5*u);
+         glowDot(138,185,42,s,e);
+         glowDot(221,196,42,s,e);
+         softEllipse(180,205,122,69,s,.30+.09*Math.sin(Math.PI*3*u));
+       }
+
+       // 5 — breve pausa / comunicação dentro da fita.
+       if(t>=.445 && t<.525){
+         const u=(t-.445)/.08;
+         const breathe=.84+.16*Math.sin(Math.PI*2*u);
+         glowDot(138,185,45,s,breathe);
+         glowDot(221,196,45,s,breathe);
+         softEllipse(180,205,130,73,s,.35*breathe);
+       }
+
+       // 6 — sai por baixo para iniciar a volta.
+       if(t>.505 && t<.555){
+         const u=(t-.505)/.05;
+         drawConnector(u,{x:180,y:225},{x:180,y:250},{x:205,y:276},{x:238,y:292},s,1.0);
+       }
+
+       // 7 — retorna pelas mesmas três fitas em sentido inverso.
+       if(t>.535 && t<.705){
+         const u=(t-.535)/.17;
+         const sm=u*u*(3-2*u);
+         if(sm<.34){
+           drawRibbonTrail(ribbon3,Math.min(1,sm/.34),s,1.0,true);
+         }else if(sm<.67){
+           drawRibbonTrail(ribbon2,Math.min(1,(sm-.34)/.33),s,1.0,true);
+         }else{
+           drawRibbonTrail(ribbon1,Math.min(1,(sm-.67)/.33),s,1.0,true);
+         }
+       }
+
+       // 8 — energia volta ao TOPO do DNA.
+       if(t>.68 && t<.755){
+         const u=(t-.68)/.075;
+         drawConnector(u,{x:315,y:325},{x:355,y:270},{x:410,y:125},{x:430,y:52},s,.98);
+       }
+
+       // 9 — SEGUNDA DESCIDA pelo DNA, agora em direção à Bíblia.
+       if(t>.735 && t<.89){
+         const u=(t-.735)/.155;
+         const sm=u*u*(3-2*u);
+         softEllipse(430,205,176,184,s,.10+.12*Math.sin(Math.PI*sm));
+         drawTravel(green,Math.min(1,sm*1.02),p,1.0);
+         drawTravel(gold,Math.min(1,Math.max(0,sm-.04)*1.08),s,1.0);
+       }
+
+       // DNA -> centro da Bíblia aberta.
+       if(t>.865 && t<.925){
+         const u=(t-.865)/.06;
+         drawConnector(u,{x:430,y:370},{x:432,y:378},{x:432,y:387},{x:430,y:395},s,1.0);
+       }
+
+       // 10 — Bíblia: clímax final forte, com ênfase sustentada.
+       drawBible((t-.90)/.10);
+       if(t>.915 && t<.995){
+         const u=(t-.915)/.08;
+         const rise=Math.min(1,u/.30);
+         const fall=u<.72?1:Math.max(0,(1-u)/.28);
+         const e=rise*fall;
+         softEllipse(430,395,180,100,s,e*.38);
+         softEllipse(430,395,140,78,p,e*.22);
+         glowDot(430,390,64,s,e);
+       }
+
+       if(t<1){
+         requestAnimationFrame(frame);
+       }else{
+         canvas.classList.add('is-ending');
+         setTimeout(()=>canvas.remove(),500);
+       }
+     };
+     requestAnimationFrame(frame);
+   };
+   if(splash){
+     splash.classList.add('is-done');
+     setTimeout(()=>{splash.remove();requestAnimationFrame(()=>requestAnimationFrame(startHomeFx));},620);
+   }else{
+     requestAnimationFrame(()=>requestAnimationFrame(startHomeFx));
+   }
+ },wait);
 }
 startMobileLoading();
 
@@ -100,7 +437,7 @@ function syncManifestIcon(){let link=document.querySelector('link[rel="manifest"
 let visualPreview=null;
 function visualSettings(){const v={...VISUAL_DEFAULT,...Store.get("visual",{})};if(v.theme==="system")v.theme="dark";if(v.layout==="compacto"||v.layout==="modernox"||v.layout==="moderno"||v.layout==="pulpito")v.layout="clean";if(v.mobileLayout==="auto")v.mobileLayout="mobile-pro";return v;}
 function activeVisual(){const v=visualPreview?{...VISUAL_DEFAULT,...visualPreview}:visualSettings();if(v.theme==="system")v.theme="dark";if(v.layout==="compacto"||v.layout==="modernox"||v.layout==="moderno"||v.layout==="pulpito")v.layout="clean";if(v.mobileLayout==="auto")v.mobileLayout="mobile-pro";return v;}
-function applyVisual(v=activeVisual()){const root=document.documentElement;if(v.theme==="system")v={...v,theme:"dark"};if(v.layout==="compacto"||v.layout==="modernox"||v.layout==="moderno")v={...v,layout:"clean"};const palette=COLOR_THEMES[v.palette]||COLOR_THEMES.bluegold;const accent=v.layout==="clean"?"#08c6c9":palette.accent;root.dataset.layout=v.layout;root.dataset.theme="dark";root.dataset.mobileLayout=v.mobileLayout||"mobile-pro";root.dataset.palette=palette.id;root.style.setProperty("--accent",accent);root.style.setProperty("--gold",accent);root.style.setProperty("--theme-primary",palette.accent);root.style.setProperty("--theme-secondary",palette.secondary||palette.accent);const hexRgb=h=>{h=h.replace("#","");return `${parseInt(h.slice(0,2),16)},${parseInt(h.slice(2,4),16)},${parseInt(h.slice(4,6),16)}`};root.style.setProperty("--theme-primary-rgb",hexRgb(palette.accent));root.style.setProperty("--theme-secondary-rgb",hexRgb(palette.secondary||palette.accent));syncManifestIcon();updateNavIcons(v.layout);const headerLogo=document.querySelector('.classic-header-logo');if(headerLogo)headerLogo.src=`/static/brand/header-logos/${palette.id}.png?v=theme-nav-1`;const homeImg=document.querySelector('.reference-body-img');if(homeImg&&v.layout==="classico")homeImg.src=palette.home+"?v=themes4";document.querySelectorAll(".mobile-home-piece img[data-piece]").forEach(img=>{img.src=palette.mobile+"/"+img.dataset.piece+".jpg?v=themes4"});const loadingImg=document.getElementById("mobileLoadingImage");if(loadingImg)loadingImg.src=`/static/brand/startup-themes/${palette.id}.jpg?v=418`;root.dataset.startupPalette=palette.id;}
+function applyVisual(v=activeVisual()){const root=document.documentElement;if(v.theme==="system")v={...v,theme:"dark"};if(v.layout==="compacto"||v.layout==="modernox"||v.layout==="moderno")v={...v,layout:"clean"};const palette=COLOR_THEMES[v.palette]||COLOR_THEMES.bluegold;const accent=v.layout==="clean"?"#08c6c9":palette.accent;root.dataset.layout=v.layout;root.dataset.theme="dark";root.dataset.mobileLayout=v.mobileLayout||"mobile-pro";root.dataset.palette=palette.id;root.style.setProperty("--accent",accent);root.style.setProperty("--gold",accent);root.style.setProperty("--theme-primary",palette.accent);root.style.setProperty("--theme-secondary",palette.secondary||palette.accent);const hexRgb=h=>{h=h.replace("#","");return `${parseInt(h.slice(0,2),16)},${parseInt(h.slice(2,4),16)},${parseInt(h.slice(4,6),16)}`};root.style.setProperty("--theme-primary-rgb",hexRgb(palette.accent));root.style.setProperty("--theme-secondary-rgb",hexRgb(palette.secondary||palette.accent));syncManifestIcon();updateNavIcons(v.layout);const headerLogo=document.querySelector('.classic-header-logo');if(headerLogo)headerLogo.src=`/static/brand/header-logos/${palette.id}.png?v=theme-nav-1`;const homeImg=document.querySelector('.reference-body-img');if(homeImg&&v.layout==="classico")homeImg.src=palette.home+"?v=themes4";document.querySelectorAll(".mobile-home-piece img[data-piece]").forEach(img=>{img.src=palette.mobile+"/"+img.dataset.piece+".jpg?v=themes4"});const loadingImg=document.getElementById("mobileLoadingImage");if(loadingImg)loadingImg.src=`/static/brand/startup-themes/${palette.id}.jpg?v=430`;root.dataset.startupPalette=palette.id;}
 const NAV_META={
  dashboard:["◈","Dashboard","grid"],studio:["🎛","Studio","sliders"],bible:["📖","Bíblia","book"],knowledge:["🧠","Biblioteca Viva","brain"],
  k7:["🔥","DNA K7","flame"],editor:["📝","Editor","edit"],pulpit:["🎙","Púlpito","mic"],library:["📚","Biblioteca","library"],projects:["📂","Projetos","folder"],
@@ -449,12 +786,11 @@ const views={
  dashboard(){const s=projectStats();if(activeVisual().layout==="clean")return cleanDashboard();return `<div class="classic-home exact-reference-home">
 <div class="reference-body-wrap desktop-reference-home">
 <img class="reference-body-img" src="${themeHomeAsset()}" alt="LOGOS MASTER X DNA K7 — Home temática">
-<div class="home-cinematic-fx" aria-hidden="true"><i class="home-fx-glow"></i><i class="home-fx-scan"></i><i class="home-fx-ring home-fx-ring-a"></i><i class="home-fx-ring home-fx-ring-b"></i><i class="home-fx-ray home-fx-ray-a"></i><i class="home-fx-ray home-fx-ray-b"></i><i class="home-fx-flare"></i></div>
 <button class="reference-hit reference-hit-studio" data-go="studio" aria-label="Acessar Studio"></button>
 <button class="reference-hit reference-hit-about" data-go="about" aria-label="Saiba mais sobre o LOGOS"></button>
 </div>
 <div class="mobile-reference-home" aria-label="LOGOS MASTER X — Home adaptada para celular">
-  <div class="mobile-home-piece mobile-home-hero"><img data-piece="hero" src="${(COLOR_THEMES[activeVisual().palette]||COLOR_THEMES.bluegold).mobile}/hero.jpg?v=themes4" alt="LOGOS MASTER X DNA K7"><div class="home-cinematic-fx" aria-hidden="true"><i class="home-fx-glow"></i><i class="home-fx-scan"></i><i class="home-fx-ring home-fx-ring-a"></i><i class="home-fx-ring home-fx-ring-b"></i><i class="home-fx-ray home-fx-ray-a"></i><i class="home-fx-ray home-fx-ray-b"></i><i class="home-fx-flare"></i></div><button data-go="studio" aria-label="Acessar Studio"></button></div>
+  <div class="mobile-home-piece mobile-home-hero"><img data-piece="hero" src="${(COLOR_THEMES[activeVisual().palette]||COLOR_THEMES.bluegold).mobile}/hero.jpg?v=themes4" alt="LOGOS MASTER X DNA K7"><button data-go="studio" aria-label="Acessar Studio"></button></div>
   <div class="mobile-home-piece mobile-home-info"><img data-piece="info" src="${(COLOR_THEMES[activeVisual().palette]||COLOR_THEMES.bluegold).mobile}/info.jpg?v=themes4" alt="Propósito e resumo do sistema"><button data-go="about" aria-label="Saiba mais sobre o LOGOS"></button></div>
   <div class="mobile-home-piece"><img data-piece="features-a" src="${(COLOR_THEMES[activeVisual().palette]||COLOR_THEMES.bluegold).mobile}/features-a.jpg?v=themes4" alt="DNA K7, Contexto e Exposição, Aplicações Reais"></div>
   <div class="mobile-home-piece"><img data-piece="features-b" src="${(COLOR_THEMES[activeVisual().palette]||COLOR_THEMES.bluegold).mobile}/features-b.jpg?v=themes4" alt="Preparação para o Púlpito, AI HUB, Mobile First"></div>
