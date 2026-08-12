@@ -1,0 +1,9 @@
+LOGOS MASTER X — Studio Etapa 01 V7
+
+Correções:
+- DNA Score ajustável de 0 a 110 por slider e botões +/-; persistência em localStorage.
+- Equalizador Neon evolutivo vermelho -> laranja -> amarelo -> verde.
+- Topo com distribuição proporcional/simétrica e proteção responsiva.
+- Loading com uma única imagem e barra real nas cores do tema.
+- Flash da Home com percurso completo em aproximadamente 4 segundos.
+- Versão única do aplicativo: 3.8.1 (não depende do tema).

@@ -1,0 +1,21 @@
+LOGOS MASTER X 3.8.1 — V9.5
+
+Correções:
+- Retirada a limpeza automática de cache durante a inicialização.
+- Retirada a consulta automática de versão durante a inicialização.
+- Retirado registro automático de Service Worker da página principal.
+- A Home é montada uma única vez no DOMContentLoaded.
+- Erros de startup vão apenas ao Console; não substituem a Home por Diagnóstico.
+- Novo arquivo app-381-v95.js para quebrar cache legado studio-v8.
+- Loading visual legado forçado como display:none.
+- Menu superior agrupado em um único cluster central.
+- Espaçamento uniforme de 6px (reduz progressivamente em telas menores).
+- Botão de status reduzido para porte semelhante ao DNA K7.
+- Grupo de botões centralizado, deixando sobras iguais nas extremidades da área útil.
+- Versão unificada em 3.8.1.
+
+Após substituir:
+1) Ctrl+C no Uvicorn.
+2) Reinicie o servidor.
+3) Abra 127.0.0.1:8080.
+4) Faça Ctrl+F5 somente uma vez.

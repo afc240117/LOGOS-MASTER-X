@@ -1,0 +1,21 @@
+LOGOS MASTER X — HOTFIX 4.2.7 EXACT ART CANVAS FLOW
+
+Mudança de técnica:
+- NÃO usa vídeo.
+- NÃO usa SVG visível.
+- NÃO desenha um DNA novo.
+- Usa CANVAS transparente alinhado em 1313x946 exatamente sobre a Home.
+- As curvas de luz foram calibradas usando a própria imagem real do tema.
+- A energia percorre a região do DNA real, em duas cores do tema.
+- Depois intensifica o K7.
+- Termina com a Bíblia muito mais intensa.
+- Duração aproximada 4,7 s.
+- O canvas escala junto com a imagem, sem deformar o layout.
+- Cores vêm de --theme-primary-rgb e --theme-secondary-rgb.
+
+Base: 4.1.9, preservando loading/barra aprovados.
+
+Instalação:
+1) extraia por cima da pasta atual;
+2) reinicie o servidor;
+3) Ctrl+F5.

@@ -1,0 +1,34 @@
+LOGOS MASTER X — VERIFICAÇÃO V9.3
+
+VALIDAÇÕES APROVADAS
+- app/web/static/app.js: sintaxe JavaScript válida (node --check)
+- código Python app/: compilação válida
+- GET /: 200
+- GET /static/app.js: 200
+- GET /static/style.css: 200
+- GET /static/version.json: 200
+- GET /api/health: 200
+- FastAPI: versão 3.8.1
+- VERSION.txt: 3.8.1
+- static/version.json: 3.8.1
+- pyproject.toml: alinhado para 3.8.1
+
+LIMPEZA SEGURA
+- removidos __pycache__, .pyc, .pyo e .pytest_cache
+- não foram apagados .git, HOTFIX antigos, notas antigas, pasta prompts, cópias históricas nem imagens antigas duvidosas
+
+MENU SUPERIOR
+- adicionada camada CSS final V9.3 com grid simétrico
+- 6 botões principais distribuídos igualmente
+- status isolado e limitado para não crescer demais
+- 4 ações finais distribuídas igualmente
+- breakpoints para evitar encavalamento em larguras menores
+
+TESTES LEGADOS
+A suíte canônica foi isolada em tests/. Há 4 testes antigos que ainda não correspondem ao comportamento atual:
+1) tests/test_ai_hub.py espera Gemini primeiro no modo econômico, enquanto o código atual prioriza Groq.
+2) tests/test_api_x.py espera fallback HTTP 200 sem provedor disponível, enquanto o endpoint atual devolve 502.
+3) tests/test_prompt_engine.py espera intensidade no formato 4/5, enquanto o motor atual usa outra escala.
+4) tests/test_prompt_engine.py espera intensidade máxima 5, enquanto o motor atual permite até 10.
+
+Essas quatro regras NÃO foram alteradas automaticamente porque mexem no comportamento funcional de IA/prompt e podem ser decisões de versão, não erros de interface. Foram preservadas para revisão consciente.

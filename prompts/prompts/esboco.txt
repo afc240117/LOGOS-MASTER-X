@@ -1,0 +1,27 @@
+MÓDULO ESBOÇO — PROMPT PROFUNDO
+
+Criar duas versões:
+A) ESBOÇO COMPLETO
+B) ESBOÇO DE BOLSO
+
+Completo:
+- título;
+- texto;
+- tema;
+- grande ideia;
+- objetivo;
+- introdução;
+- pontos;
+- fundamento textual;
+- aplicação;
+- transição;
+- conclusão;
+- apelo.
+
+Bolso:
+- 1 linha de abertura;
+- 3-5 palavras-chave;
+- referências;
+- frase central;
+- clímax;
+- apelo.

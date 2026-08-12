@@ -1,0 +1,22 @@
+LOGOS MASTER X — HOTFIX 4.3.20
+FORÇA NOVA IMAGEM DO LOADING
+
+CORREÇÃO REAL:
+A 4.3.19 mudava o src da imagem no HTML, porém logo em seguida
+um script do projeto sobrescrevia a imagem e voltava para:
+  /static/brand/startup-themes/<tema>.jpg
+
+Por isso visualmente parecia que nada havia mudado.
+
+A 4.3.20 corrige esse script:
+- nova arte loading-integrated-4319.png fica realmente ativa;
+- ela NÃO é mais substituída pela imagem antiga do tema;
+- flash continua removido;
+- barrinha real de loading continua;
+- Home não é alterada.
+
+Aplicar sobre a HOTFIX 4.3.19.
+Depois:
+1. reinicie o servidor;
+2. Ctrl+F5;
+3. se estiver como PWA, feche e abra novamente.

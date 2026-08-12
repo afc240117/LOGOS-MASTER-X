@@ -1,0 +1,43 @@
+[
+  {
+    "id": "escrituras",
+    "name": "Escrituras",
+    "summary": "A interpretação deve respeitar contexto, gênero e fluxo do texto.",
+    "refs": [
+      "2 Timóteo 3:16-17"
+    ]
+  },
+  {
+    "id": "cristo",
+    "name": "Cristo",
+    "summary": "Apontar para Cristo quando o texto e a teologia bíblica permitirem, sem forçar conexões.",
+    "refs": [
+      "Lucas 24:27"
+    ]
+  },
+  {
+    "id": "espirito",
+    "name": "Espírito Santo",
+    "summary": "Tratar sua pessoa e obra com base textual; evitar alegações revelacionais inventadas.",
+    "refs": [
+      "João 14:26",
+      "Atos 1:8"
+    ]
+  },
+  {
+    "id": "igreja",
+    "name": "Igreja",
+    "summary": "Comunidade de fé chamada à adoração, discipulado, comunhão e missão.",
+    "refs": [
+      "Atos 2:42-47"
+    ]
+  },
+  {
+    "id": "salvacao",
+    "name": "Salvação",
+    "summary": "Graça de Deus recebida mediante fé; desenvolver conforme o texto estudado.",
+    "refs": [
+      "Efésios 2:8-10"
+    ]
+  }
+]

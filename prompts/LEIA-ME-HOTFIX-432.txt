@@ -1,0 +1,34 @@
+LOGOS MASTER X — HOTFIX 4.3.2 SAFE FIVE-STAGE FLOW
+
+BASE: HOTFIX 4.3.0 ESTÁVEL.
+
+IMPORTANTE:
+Este hotfix altera SOMENTE:
+  app/web/static/app.js
+
+NÃO altera:
+- index.html
+- style.css
+- sw.js
+- estrutura da Home
+- menus
+- loading
+- barra de loading
+- layout responsivo
+
+Fluxo:
+1. LOGOS MASTER / DNA K7 no lado direito.
+2. Descida pelo DNA.
+3. Percurso pelas 3 fitas douradas e centro da K7.
+4. Chegada/repouso/clímax na Bíblia.
+5. Final pelo menu inferior: BÍBLIA -> ESTUDO -> PREGAÇÃO -> AVIVAMENTO.
+
+Duração aproximada: 7,6 segundos.
+
+INSTALAÇÃO:
+1. Este pacote deve ser aplicado SOBRE a HOTFIX 4.3.0.
+2. Substitua somente app/web/static/app.js.
+3. Reinicie o servidor.
+4. Faça Ctrl+F5.
+
+A HOTFIX 4.3.1 deve permanecer descartada.

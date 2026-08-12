@@ -1,0 +1,24 @@
+LOGOS MASTER X — HOTFIX 4.1.6 CINEMATIC STARTUP
+
+O que foi aplicado:
+- Efeito cinematográfico em toda entrada/recarregamento da página.
+- Cores acompanham automaticamente o tema selecionado.
+- Camada isolada por position/fixed e z-index: não altera o layout principal.
+- Brilho, varredura, flare, raios e anéis de energia.
+- Barra de carregamento continua funcional.
+- Duração mínima visual aproximada: 1,65 s.
+- Fade de saída suave.
+- Versão leve em mobile.
+- Respeita prefers-reduced-motion.
+- Cache/PWA atualizado para 4.1.6.
+
+Arquivos alterados:
+- app/web/static/index.html
+- app/web/static/style.css
+- app/web/static/app.js
+- app/web/static/sw.js
+
+Instalação:
+Extraia este ZIP sobre a pasta atual do LOGOS MASTER X, mantendo a estrutura.
+Não apaga nem substitui a pasta .git do seu projeto local.
+Depois teste com Ctrl+F5.

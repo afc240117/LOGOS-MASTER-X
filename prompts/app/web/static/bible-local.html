@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LOGOS MASTER X — Bíblia Local</title>
+<style>
+body{margin:0;font-family:Arial;background:#080d16;color:#eee}main{max-width:980px;margin:auto;padding:20px}
+h1{color:#d6b25e}section{background:#111827;border:1px solid #27354b;border-radius:16px;padding:16px;margin:12px 0}
+input,select,button{padding:11px;border-radius:9px;border:1px solid #334155;background:#0f172a;color:#fff;margin:4px}
+button{background:#d6b25e;color:#111;font-weight:bold}.out{white-space:pre-wrap;background:#0b1220;padding:12px;border-radius:10px;min-height:60px}
+</style></head><body><main>
+<h1>LOGOS MASTER X — Bíblia Local</h1>
+<section><h2>1. Importar Bíblia</h2><input type="file" id="file" accept=".json,.csv,.txt"><button id="import">Importar</button><div id="meta" class="out"></div></section>
+<section><h2>2. Abrir referência</h2><input id="ref" placeholder="Ex.: João 3:16 ou Romanos 8"><button id="open">Abrir</button><div id="result" class="out"></div></section>
+<section><h2>3. Pesquisar palavra</h2><input id="term" placeholder="Ex.: oração"><button id="search">Pesquisar</button><button id="index">Construir concordância</button><div id="searchOut" class="out"></div></section>
+<section><h2>4. Enviar passagem</h2>
+<select id="target"><option value="sermons">Sermão</option><option value="studies">Estudo</option><option value="ebd">EBD</option><option value="studio">Studio</option></select>
+<button id="send">Enviar seleção atual</button><div id="sendOut" class="out"></div></section>
+<script type="module">
+import { BibleModule } from "../../../src/modules/bible/index.js";
+import { ConcordanceModule } from "../../../src/modules/concordance/index.js";
+let current=[];
+const meta=document.getElementById("meta"),result=document.getElementById("result"),searchOut=document.getElementById("searchOut");
+async function refresh(){const m=await BibleModule.meta();meta.textContent=m?`Bíblia importada: ${m.name}\\nVersículos: ${m.count}`:"Nenhuma Bíblia importada ainda."}
+document.getElementById("import").onclick=async()=>{const f=document.getElementById("file").files[0];if(!f)return alert("Escolha um arquivo");try{const r=await BibleModule.importFile(f);meta.textContent=`Importado: ${r.name}\\n${r.count} versículos`; }catch(e){meta.textContent=e.message}}
+document.getElementById("open").onclick=async()=>{current=await BibleModule.reference(document.getElementById("ref").value);result.textContent=BibleModule.format(current)||"Nada encontrado."}
+document.getElementById("search").onclick=async()=>{current=await BibleModule.search(document.getElementById("term").value);searchOut.textContent=BibleModule.format(current.slice(0,100))||"Nada encontrado."}
+document.getElementById("index").onclick=async()=>{const r=await ConcordanceModule.build();searchOut.textContent=`Concordância criada: ${r.words} palavras / ${r.verses} versículos.`}
+document.getElementById("send").onclick=()=>{if(!current.length)return alert("Abra ou pesquise uma passagem primeiro.");const p=BibleModule.sendTo(document.getElementById("target").value,current);document.getElementById("sendOut").textContent=`Enviado para ${p.moduleId}:\\n${p.passage}`}
+refresh();
+</script></main></body></html>

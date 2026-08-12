@@ -1,0 +1,9 @@
+LOGOS MASTER X — STUDIO ETAPA 1 V3
+
+Ajustes desta revisão:
+- fontes ampliadas para legibilidade;
+- ícones ampliados;
+- gráficos, barras, radar, sliders e indicadores ligados à cor do tema selecionado;
+- radar com malha, média geral, perfil e pontos no padrão da referência;
+- sliders 0–100% com preenchimento na cor do tema;
+- ícone de estrela dos cards substituído pelo ícone DNA (🧬), com destaque quando selecionado.

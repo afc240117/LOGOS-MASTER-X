@@ -1,0 +1,9 @@
+LOGOS MASTER X — V9.6
+
+Adicionado Gerador Rápido ao lado do Studio no topo e no menu lateral.
+Modos: Mensagem Rápida e Dica Rápida.
+Reutiliza o mecanismo real runCommand/API/local do projeto.
+Perfis: Rápido, Econômico, Automático e Qualidade.
+Ações: copiar, editor, biblioteca e projetos.
+Responsivo para Android/mobile.
+Versão mantida em 3.8.1.

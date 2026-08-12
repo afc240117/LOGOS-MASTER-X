@@ -1,0 +1,13 @@
+LOGOS MASTER X — HOTFIX 4.2.0 VÍDEO REAL
+
+- mantém a barra de loading corrigida do 4.1.9;
+- usa o VÍDEO REAL enviado;
+- inicia somente depois que o loading desaparece;
+- roda sobre a imagem central da Home;
+- não altera o layout;
+- não bloqueia botões;
+- fade de entrada/saída;
+- tonalização dinâmica conforme as cores do tema;
+- vídeo já incluído no ZIP.
+
+Instale por cima da versão 4.1.9, reinicie o servidor e use Ctrl+F5.

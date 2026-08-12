@@ -1,0 +1,15 @@
+HOTFIX 4.3.7 — SWEEP + PAUSE + TRIPLE RETURN
+Base: 4.3.6 enviada pelo usuário.
+
+1. Escritas: varredura única, estreita e proporcional à energia do DNA.
+   Percorre X/letras menores/região dos O, estende-se pela escrita e sobe ao DNA.
+2. DNA: mesmo movimento, aproximadamente 2x mais rápido.
+3. K7: ida pelas 3 fitas; entrada/bobinas; pausa real aproximada de 1 segundo;
+   retorno pelas mesmas 3 fitas em sentido inverso; depois Bíblia.
+4. Bíblia/clímax mantido.
+5. Final: somente os 4 menus abaixo da Bíblia.
+
+Duração total aproximada: 8,8s.
+Altera somente app/web/static/app.js.
+node --check: OK — zero erros de sintaxe.
+Aplicar sobre HOTFIX 4.3.6.

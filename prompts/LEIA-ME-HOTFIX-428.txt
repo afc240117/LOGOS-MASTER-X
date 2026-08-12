@@ -1,0 +1,18 @@
+LOGOS MASTER X — HOTFIX 4.2.8 GOLDEN RIBBON FOLLOW
+
+Base: 4.2.7 / loading 4.1.9 preservado.
+
+Ajuste solicitado:
+- o trecho DNA -> K7 deixou de usar uma linha direta;
+- agora a energia desce e percorre as 3 fitas douradas existentes na arte;
+- as três trilhas acendem em sequência, sem criar fitas novas;
+- ao chegarem ao K7, a fita/cassete intensifica;
+- o efeito segue para a Bíblia;
+- o clímax intenso da Bíblia foi mantido;
+- cores continuam seguindo o tema;
+- sem vídeo, sem SVG novo, sem alteração de layout.
+
+Teste:
+1. Extraia por cima da versão atual.
+2. Reinicie o servidor.
+3. Ctrl+F5.

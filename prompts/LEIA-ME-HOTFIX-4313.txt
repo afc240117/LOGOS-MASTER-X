@@ -1,0 +1,25 @@
+LOGOS MASTER X — HOTFIX 4.3.13
+DNA → K7 → RETORNO → DNA → BÍBLIA
+
+BASE: HOTFIX 4.3.12.
+
+NOVO PERCURSO:
+1. Inicia no topo do DNA e desce pela hélice.
+2. Percorre as 3 fitas douradas.
+3. Entra por baixo da K7.
+4. Acende fortemente o centro das duas bobinas.
+5. Faz uma breve pausa dentro da K7.
+6. Sai por baixo e retorna pelas mesmas 3 fitas em sentido inverso.
+7. NOVO: volta até o topo do DNA.
+8. NOVO: desce novamente pelo DNA.
+9. A segunda descida desemboca na Bíblia aberta.
+10. Termina com flash/clímax forte e sustentado sobre a Bíblia.
+
+Sem escrita inicial.
+Sem menu inferior.
+Fluxo cinematográfico contínuo preservado.
+Duração aproximada: 12,8 segundos.
+
+ALTERAÇÃO: somente app/web/static/app.js.
+VALIDAÇÃO: node --check = OK.
+APLICAR SOBRE: HOTFIX 4.3.12.
