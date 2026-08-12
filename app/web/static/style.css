@@ -3358,3 +3358,203 @@ html[data-layout="classico"] .classic-top #status .status-chevron{display:none!i
 .quick-generator-pro .quick-output{min-height:115px!important;text-align:center;display:grid;place-items:center;align-content:center;white-space:pre-line!important;color:#aebdca!important;border-color:#243b49!important}
 @media(max-width:900px){.quick-generator-pro .quick-actions{grid-template-columns:1fr 1fr}.quick-generator-pro .quick-tabs{justify-content:stretch}.quick-generator-pro .quick-tabs button{min-width:0;flex:1}}
 @media(max-width:600px){.quick-generator-pro .quick-hero h2{font-size:24px!important}.quick-generator-pro .quick-actions{grid-template-columns:1fr}.quick-generator-pro .quick-tabs{grid-template-columns:1fr 1fr!important}.quick-generator-pro .quick-tabs button{font-size:11px;padding:8px!important}.quick-generator-pro .studio-section{padding:12px!important}}
+
+
+/* ================================================================
+   LOGOS MASTER X 3.8.2 — HOTFIX MOBILE + GERADOR RÁPIDO + FOUC
+   - remove vazamento dos botões desktop por trás do header mobile
+   - responsividade global sem corte lateral
+   - Studio/DNA em 1 coluna em celulares estreitos
+   - selects escuros/legíveis no Gerador Rápido (Windows/Edge/Chrome)
+   - dois modos de geração: mensagem completa e somente esboço
+   ================================================================ */
+
+/* Gerador Rápido — ações principais */
+.quick-generator-pro .quick-run-grid{
+  display:grid;
+  grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);
+  gap:9px;
+  width:100%;
+  margin-top:10px;
+}
+.quick-generator-pro .quick-run-grid .quick-run{
+  margin-top:0!important;
+  width:100%;
+}
+.quick-generator-pro .quick-run-outline{
+  border-color:color-mix(in srgb,var(--theme-secondary,var(--accent)) 62%,#314254)!important;
+  color:#f4f7fb!important;
+  background:linear-gradient(180deg,#111b26,#08111a)!important;
+  box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--theme-secondary,var(--accent)) 18%,transparent)!important;
+}
+.quick-generator-pro .quick-run-outline:hover{
+  filter:brightness(1.08);
+  border-color:var(--theme-secondary,var(--accent))!important;
+}
+.quick-generator-pro .quick-run-outline:active{transform:translateY(1px);filter:brightness(.96)}
+.quick-generator-pro .quick-run-full:hover{filter:brightness(1.06)}
+.quick-generator-pro .quick-run-full:active{transform:translateY(1px);filter:brightness(.96)}
+
+/* Selects: popup nativo escuro e texto sempre legível. */
+.quick-generator-pro{
+  color-scheme:dark;
+}
+.quick-generator-pro select{
+  background-color:#050b11!important;
+  color:#f4f7fb!important;
+  -webkit-text-fill-color:#f4f7fb;
+}
+.quick-generator-pro select option,
+.quick-generator-pro select optgroup{
+  background:#071019!important;
+  color:#f4f7fb!important;
+}
+.quick-generator-pro select option:checked{
+  background:#112330!important;
+  color:#ffffff!important;
+}
+
+/* Mobile: header mostra apenas Menu + Home + marca.
+   A navegação desktop inteira não participa mais da faixa superior. */
+@media(max-width:760px){
+  html[data-layout="classico"] .classic-top{
+    overflow:hidden!important;
+    isolation:isolate;
+  }
+  html[data-layout="classico"] .classic-top .top-menu-cluster{
+    display:none!important;
+    visibility:hidden!important;
+    pointer-events:none!important;
+  }
+  html[data-layout="classico"] .classic-top .mobile-nav-toggle,
+  html[data-layout="classico"] .classic-top .mobile-home-button,
+  html[data-layout="classico"] .classic-top .classic-brand{
+    position:relative!important;
+    z-index:3!important;
+  }
+
+  /* Proteção global contra páginas desktop vazando para fora da viewport. */
+  html,body,.app,.layout,.classic-layout,main,.workspace{
+    max-width:100%!important;
+    min-width:0!important;
+  }
+  body{overflow-x:hidden!important}
+  main,.workspace{
+    width:100%!important;
+    box-sizing:border-box!important;
+    overflow-x:hidden!important;
+  }
+  .workspace>*,
+  .studio-refined>*,
+  .studio-section>*,
+  .card>*{
+    min-width:0;
+    max-width:100%;
+    box-sizing:border-box;
+  }
+  img,svg,video,canvas{max-width:100%}
+
+  /* Formulários e grids internos */
+  .two,.three,.grid,.mode-picker,
+  .studio-actions,.row{
+    min-width:0!important;
+  }
+  input,textarea,select,button{
+    max-width:100%;
+    box-sizing:border-box;
+  }
+
+  /* Studio X / DNA */
+  .studio-refined{
+    width:100%!important;
+    max-width:100%!important;
+    min-width:0!important;
+    overflow:hidden!important;
+  }
+  .studio-refined .dna-main-layout,
+  .studio-refined .dna-summary-col,
+  .studio-refined .dna-adjust-grid,
+  .studio-refined .dna-nextbar{
+    grid-template-columns:1fr!important;
+    width:100%!important;
+    min-width:0!important;
+  }
+  .studio-refined .dna-panel-head{
+    display:grid!important;
+    grid-template-columns:1fr!important;
+    gap:10px!important;
+    width:100%!important;
+    min-width:0!important;
+  }
+  .studio-refined .dna-panel-tools{
+    display:grid!important;
+    grid-template-columns:1fr 1fr!important;
+    width:100%!important;
+    gap:8px!important;
+    min-width:0!important;
+  }
+  .studio-refined .dna-mini-search{
+    grid-column:1/-1!important;
+    width:100%!important;
+    min-width:0!important;
+    display:flex!important;
+  }
+  .studio-refined .dna-mini-search input{
+    min-width:0!important;
+    width:100%!important;
+  }
+  .studio-refined .dna-graph-switch{
+    min-width:0!important;
+    width:100%!important;
+    display:grid!important;
+    grid-template-columns:1fr 1fr!important;
+  }
+  .studio-refined .dna-graph-switch button{
+    min-width:0!important;
+    padding-inline:6px!important;
+  }
+  .studio-refined #dnaFilterToggle{
+    width:100%!important;
+    min-width:0!important;
+  }
+  .studio-refined .dna-profile-grid{
+    grid-template-columns:1fr!important;
+    width:100%!important;
+    min-width:0!important;
+  }
+  .studio-refined .dna-profile-card{
+    width:100%!important;
+    min-width:0!important;
+    max-width:100%!important;
+  }
+  .studio-refined .studio-steps{
+    width:100%!important;
+    max-width:100%!important;
+    overflow-x:auto!important;
+    overflow-y:hidden!important;
+    overscroll-behavior-inline:contain;
+  }
+
+  /* Gerador Rápido */
+  .quick-generator-pro{
+    width:100%!important;
+    max-width:100%!important;
+    min-width:0!important;
+    overflow:hidden!important;
+  }
+  .quick-generator-pro .quick-run-grid{
+    grid-template-columns:1fr!important;
+  }
+  .quick-generator-pro .quick-run{
+    min-height:58px!important;
+  }
+}
+
+/* Em celulares bem estreitos, os controles do cabeçalho do DNA também
+   ficam em uma coluna para preservar legibilidade. */
+@media(max-width:430px){
+  .studio-refined .dna-panel-tools{
+    grid-template-columns:1fr!important;
+  }
+  .studio-refined .dna-mini-search{grid-column:auto!important}
+}

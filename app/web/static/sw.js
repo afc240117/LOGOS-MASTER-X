@@ -1,4 +1,4 @@
-const CACHE_VERSION="logos-master-x-themes-430-title-sequence";
+const CACHE_VERSION="logos-master-x-382-mobile-quick-fouc";
 self.addEventListener("install",event=>{self.skipWaiting();});
 self.addEventListener("activate",event=>{event.waitUntil((async()=>{
   const keys=await caches.keys();

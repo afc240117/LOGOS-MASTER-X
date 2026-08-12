@@ -17,7 +17,7 @@ from app.think.engine import build_plan
 from app.quality.gate import evaluate
 from app.quality.reviewer import independent_review
 BASE=Path(__file__).resolve().parent;STATIC=BASE/"web"/"static";DB=BASE.parent/"data"/"sync.sqlite3";AI=AIHub();PROMPTS=PromptEngine()
-app=FastAPI(title="LOGOS MASTER X API",version="3.8.1");app.add_middleware(CORSMiddleware,allow_origins=["*"],allow_methods=["*"],allow_headers=["*"]);app.mount("/static",StaticFiles(directory=STATIC),name="static")
+app=FastAPI(title="LOGOS MASTER X API",version="3.8.2");app.add_middleware(CORSMiddleware,allow_origins=["*"],allow_methods=["*"],allow_headers=["*"]);app.mount("/static",StaticFiles(directory=STATIC),name="static")
 class Generate(BaseModel):
  mode:str="SERMÃO";text:str=Field(min_length=1);theme:str|None=None;duration:int=40;cult:str="Avivamento";audience:str="Igreja local";intensity:int=10;objective:str|None=None;notes:str|None=None;provider:str="auto";ai_mode:str="automatico";model:str|None=None
 class SyncPayload(BaseModel): payload:dict

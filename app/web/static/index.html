@@ -3,14 +3,34 @@
 <meta name="theme-color" content="#05070b"><meta name="description" content="LOGOS MASTER X">
 <title>LOGOS MASTER X</title>
 <link rel="manifest" href="/static/manifest.webmanifest?v=378">
-<link rel="stylesheet" href="/static/style.css?v=381-v95"><script>
+<link rel="stylesheet" href="/static/style.css?v=381-v97">
+<style>
+html.logos-booting body{margin:0;background:#05070b}
+html.logos-booting .app{visibility:hidden!important}
+html.logos-ready .app{visibility:visible}
+</style>
+<script>
 (function(){
+  var root=document.documentElement;
+  root.classList.add("logos-booting");
   try{
-    var v=JSON.parse(localStorage.getItem("logosx:visual")||"{}");
-    var p=(v&&v.palette)||"bluegold";
+    var v=JSON.parse(localStorage.getItem("logosx:visual")||"{}")||{};
+    var p=v.palette||"bluegold";
+    var layout=(v.layout==="compacto"||v.layout==="modernox"||v.layout==="moderno")?"clean":(v.layout||"classico");
+    root.setAttribute("data-layout",layout);
+    root.setAttribute("data-theme","dark");
+    root.setAttribute("data-mobile-layout",v.mobileLayout||"mobile-pro");
+    root.setAttribute("data-palette",p);
+    root.setAttribute("data-startup-palette",p);
     window.__LOGOS_STARTUP_PALETTE__=p;
-    document.documentElement.setAttribute("data-startup-palette",p);
-  }catch(e){window.__LOGOS_STARTUP_PALETTE__="bluegold";}
+  }catch(e){
+    root.setAttribute("data-layout","classico");
+    root.setAttribute("data-theme","dark");
+    root.setAttribute("data-mobile-layout","mobile-pro");
+    root.setAttribute("data-palette","bluegold");
+    root.setAttribute("data-startup-palette","bluegold");
+    window.__LOGOS_STARTUP_PALETTE__="bluegold";
+  }
 })();
 </script></head>
 <body>
@@ -59,4 +79,4 @@
 </aside><main><section id="workspace" class="workspace"></section></main></div></div>
 
 
-<script src="/static/prompt-library.js?v=378"></script><script src="/static/app-381-v96.js?v=381-v96"></script></body></html>
+<script src="/static/prompt-library.js?v=378"></script><script src="/static/app-381-v97.js?v=381-v97"></script></body></html>

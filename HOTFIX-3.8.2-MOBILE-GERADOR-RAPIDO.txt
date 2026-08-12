@@ -1,0 +1,16 @@
+LOGOS MASTER X 3.8.2
+
+Correções aplicadas:
+- elimina o "vulto"/FOUC na primeira entrada e atualização da página;
+- mantém a splash/loading visual desativada;
+- remove a navegação desktop vazando por trás do header no celular;
+- header mobile preserva Menu + Home + logotipo;
+- responsividade global reforçada para páginas internas;
+- Studio/DNA passa para 1 coluna no celular e não corta cards;
+- Gerador Rápido recebe:
+  * GERAR MENSAGEM COMPLETA
+  * GERAR SOMENTE ESBOÇO
+  * Dica Rápida preservada;
+- selects do Gerador Rápido recebem fundo escuro e texto claro no desktop;
+- cache-busting atualizado para app-381-v97.js / style v97;
+- versão interna atualizada para 3.8.2.
