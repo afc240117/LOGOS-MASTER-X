@@ -1,0 +1,34 @@
+LOGOS MASTER X — V1.55 BÍBLIA X
+ACUMULATIVA SOBRE V1.54
+
+NOVIDADES:
+1. Seleção visível de versículos:
+   - círculo ao lado do número;
+   - clique seleciona/desmarca;
+   - Shift+clique seleciona intervalo;
+   - seleção fica salva localmente.
+
+2. Barra de seleção:
+   - quantidade selecionada;
+   - Copiar;
+   - Enviar ao Studio X;
+   - Comparar;
+   - Limpar.
+
+3. Hiperlinks contextuais:
+   - pessoas e lugares dourados continuam dentro do texto;
+   - ampliada a lista de pessoas/lugares reconhecidos;
+   - clique não tira mais o leitor imediatamente da passagem;
+   - abre painel contextual por cima da leitura;
+   - Passagens pesquisa ocorrências e permite navegar;
+   - Abrir Personagens/Mapas continua disponível;
+   - Pesquisa X disponível.
+
+ESCOPO:
+- não altera Studio X;
+- não altera Comentários IA;
+- não altera sidebar, temas ou outras páginas;
+- mantém a V1.54 como base.
+
+Inspirado em padrões de seleção contextual e Passage Guide do Logos,
+e Verse List / bookmarks / cross-references do MySword.

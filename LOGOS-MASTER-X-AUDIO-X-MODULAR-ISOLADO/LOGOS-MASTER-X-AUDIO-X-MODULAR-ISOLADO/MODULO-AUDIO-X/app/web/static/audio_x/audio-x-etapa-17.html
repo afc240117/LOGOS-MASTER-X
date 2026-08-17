@@ -1,0 +1,28 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Áudio X · Transcrição Sincronizada</title><link rel="stylesheet" href="./audio-x-etapa-17.css"></head><body>
+<main class="tx">
+<header><div><span class="eyebrow">ÁUDIO X · ETAPA 17</span><h1>📝 Transcrição Sincronizada</h1><p>Clique no texto para ir ao ponto do áudio. Durante a reprodução, o trecho atual é destacado automaticamente.</p></div><div class="tools"><button id="loadAudio">＋ Áudio</button><button id="loadTranscript">＋ Transcrição</button></div></header>
+
+<section class="layout">
+<article class="card player">
+<input id="audioFile" type="file" accept=".mp3,.wav,.m4a,audio/*" hidden>
+<input id="transcriptFile" type="file" accept=".json,application/json" hidden>
+<audio id="audio" preload="metadata"></audio>
+<div class="track"><div><h2 id="audioName">Nenhum áudio carregado</h2><p id="provider">Aguardando transcrição</p></div><strong id="clock">00:00 / 00:00</strong></div>
+<div class="waveWrap"><canvas id="wave" width="1600" height="230"></canvas><div id="playhead" class="playhead"></div></div>
+<div class="transport"><button id="back10">↶ 10s</button><button id="play" class="play">▶</button><button id="fwd10">10s ↷</button><select id="speed"><option>.75</option><option selected>1</option><option>1.25</option><option>1.5</option><option>1.75</option><option>2</option></select><input id="volume" type="range" min="0" max="1" step=".01" value="1"></div>
+</article>
+
+<aside class="card summary"><h2>Sincronização</h2><div class="stats"><div><span>Trechos</span><b id="segCount">0</b></div><div><span>Atual</span><b id="currentIndex">—</b></div><div><span>Idioma</span><b id="lang">—</b></div></div>
+<label>Buscar<input id="search" placeholder="Buscar na transcrição..."></label>
+<div class="switch"><span>Seguir reprodução</span><input id="follow" type="checkbox" checked></div>
+<div class="switch"><span>Auto-scroll</span><input id="autoscroll" type="checkbox" checked></div>
+<button id="useSession">Usar transcrição atual do Áudio X</button></aside>
+</section>
+
+<section class="card transcriptCard">
+<div class="transcriptHead"><div><h2>Transcrição</h2><p>Trechos com timestamp do provedor cloud.</p></div><div class="legend"><span class="now"></span> Trecho atual</div></div>
+<div id="transcript" class="transcript empty">Carregue uma transcrição JSON ou use a transcrição atual do Áudio X.</div>
+</section>
+</main>
+<script src="./audio-x-etapa-17.js"></script></body></html>

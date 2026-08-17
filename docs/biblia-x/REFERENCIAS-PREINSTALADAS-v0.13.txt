@@ -1,0 +1,14 @@
+BÍBLIA X v0.13 — BASE DE REFERÊNCIAS PRÉ-INSTALADA
+
+Fonte de referências:
+CrossReferences.org / bible-cross-references.
+Dataset derivado do Treasury of Scripture Knowledge (TSK).
+Licença do dataset: CC BY 4.0.
+Arquivo de origem usado no build: kjv/crossreferences_kjv.tsv.
+
+O usuário final NÃO precisa baixar nem instalar a base.
+A base é convertida durante o build do LOGOS MASTER X e distribuída dentro de
+app/biblia_x/study_resources.sqlite3.
+
+Nave’s Topical Bible continua incorporado e apresentado em português na interface,
+mantendo a fonte original internamente para rastreabilidade.

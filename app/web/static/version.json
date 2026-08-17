@@ -1,4 +1,6 @@
 {
-  "version": "3.8.2",
-  "channel": "mobile-hotfix-quick-generator-fouc"
+  "version": "3.8.1",
+  "channel": "v133-local-master-clean",
+  "build": "v133",
+  "hotfix": "Studio X anti-travamento integral + botão Destravar na Etapa 6"
 }

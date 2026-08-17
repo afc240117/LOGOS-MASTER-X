@@ -1,0 +1,5 @@
+HOTFIX v0.16.1
+- Remove a superfície inglesa da WEBP da visualização Strong.
+- Mantém o versículo da BLIVRE em português.
+- Botões Strong agora exibem diretamente lema grego/hebraico, transliteração e número Strong.
+- O texto inglês continua apenas como camada técnica interna, sem aparecer na interface.

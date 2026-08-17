@@ -1,0 +1,14 @@
+LOGOS MASTER X — V8.8 RÁPIDO + SELEÇÃO AMARELA + ZOOM + FULL
+
+- Corrige falso positivo que rejeitava respostas válidas.
+- Mantém geração rápida V8.6 em 2 blocos paralelos.
+- Seleções do Studio: amarelo/dourado com contorno.
+- Hover preservado.
+- Voltar à esquerda; Avançar/Gerar à direita.
+- A−, 100%, A+ e TELA CHEIA em todo material gerado.
+- Zoom de 14px a 34px.
+- Gerador Rápido base 21px; Studio base 19px.
+- Corrige objetivo antigo João 3:16 onde houver.
+
+Instalação:
+extrair -> copiar app -> substituir -> reiniciar Uvicorn -> Ctrl+F5.

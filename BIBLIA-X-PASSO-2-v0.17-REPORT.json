@@ -1,0 +1,8 @@
+{
+  "version": "0.17",
+  "mode": "online-first",
+  "manual_download_required_online": false,
+  "offline_optional": true,
+  "fallback_local": true,
+  "bible_routes": "15"
+}

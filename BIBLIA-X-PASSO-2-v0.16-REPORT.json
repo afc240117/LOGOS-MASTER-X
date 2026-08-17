@@ -1,0 +1,184 @@
+{
+  "g2316": [
+    {
+      "strong": "G2316",
+      "language": "Greek",
+      "lemma": "θεός",
+      "transliteration": "theós",
+      "pronunciation": "",
+      "definition": " figuratively, a magistrate; by Hebraism, very",
+      "kjv_definition": "X exceeding, God, god(-ly, -ward)",
+      "derivation": "of uncertain affinity; a deity, especially (with G3588 (ὁ)) the supreme Divinity;",
+      "source": "OpenScriptures Strong's Dictionary"
+    }
+  ],
+  "theos": [
+    {
+      "strong": "G112",
+      "language": "Greek",
+      "lemma": "ἄθεος",
+      "transliteration": "átheos",
+      "pronunciation": "",
+      "definition": " godless",
+      "kjv_definition": "without God",
+      "derivation": "from G1 (Α) (as a negative particle) and G2316 (θεός);",
+      "source": "OpenScriptures Strong's Dictionary"
+    },
+    {
+      "strong": "G2317",
+      "language": "Greek",
+      "lemma": "θεοσέβεια",
+      "transliteration": "theosébeia",
+      "pronunciation": "",
+      "definition": " devoutness, i.e. piety",
+      "kjv_definition": "godliness",
+      "derivation": "from G2318 (θεοσεβής);",
+      "source": "OpenScriptures Strong's Dictionary"
+    },
+    {
+      "strong": "G2318",
+      "language": "Greek",
+      "lemma": "θεοσεβής",
+      "transliteration": "theosebḗs",
+      "pronunciation": "",
+      "definition": " reverent of God, i.e. pious",
+      "kjv_definition": "worshipper of God",
+      "derivation": "from G2316 (θεός) and G4576 (σέβομαι);",
+      "source": "OpenScriptures Strong's Dictionary"
+    },
+    {
+      "strong": "G2319",
+      "language": "Greek",
+      "lemma": "θεοστυγής",
+      "transliteration": "theostygḗs",
+      "pronunciation": "",
+      "definition": " hateful to God, i.e. impious",
+      "kjv_definition": "hater of God",
+      "derivation": "from G2316 (θεός) and the base of G4767 (στυγνητός);",
+      "source": "OpenScriptures Strong's Dictionary"
+    },
+    {
+      "strong": "G5095",
+      "language": "Greek",
+      "lemma": "Τιμόθεος",
+      "transliteration": "Timótheos",
+      "pronunciation": "",
+      "definition": " dear to God; Timotheus, a Christian",
+      "kjv_definition": "Timotheus, Timothy",
+      "derivation": "from G5092 (τιμή) and G2316 (θεός);",
+      "source": "OpenScriptures Strong's Dictionary"
+    }
+  ],
+  "occ_g2316": [
+    {
+      "book_code": "MAT",
+      "chapter": 3,
+      "verse": "9",
+      "surface": "our",
+      "lemma": null,
+      "morph": null,
+      "name_pt": "Mateus",
+      "name_en": "Matthew",
+      "reference_pt": "Mateus 3:9"
+    },
+    {
+      "book_code": "MAT",
+      "chapter": 3,
+      "verse": "9",
+      "surface": "God",
+      "lemma": null,
+      "morph": null,
+      "name_pt": "Mateus",
+      "name_en": "Matthew",
+      "reference_pt": "Mateus 3:9"
+    },
+    {
+      "book_code": "MAT",
+      "chapter": 3,
+      "verse": "16",
+      "surface": "God",
+      "lemma": null,
+      "morph": null,
+      "name_pt": "Mateus",
+      "name_en": "Matthew",
+      "reference_pt": "Mateus 3:16"
+    },
+    {
+      "book_code": "MAT",
+      "chapter": 4,
+      "verse": "3",
+      "surface": "God",
+      "lemma": null,
+      "morph": null,
+      "name_pt": "Mateus",
+      "name_en": "Matthew",
+      "reference_pt": "Mateus 4:3"
+    },
+    {
+      "book_code": "MAT",
+      "chapter": 4,
+      "verse": "4",
+      "surface": "shall",
+      "lemma": null,
+      "morph": null,
+      "name_pt": "Mateus",
+      "name_en": "Matthew",
+      "reference_pt": "Mateus 4:4"
+    },
+    {
+      "book_code": "MAT",
+      "chapter": 4,
+      "verse": "4",
+      "surface": "God",
+      "lemma": null,
+      "morph": null,
+      "name_pt": "Mateus",
+      "name_en": "Matthew",
+      "reference_pt": "Mateus 4:4"
+    },
+    {
+      "book_code": "MAT",
+      "chapter": 4,
+      "verse": "6",
+      "surface": "God",
+      "lemma": null,
+      "morph": null,
+      "name_pt": "Mateus",
+      "name_en": "Matthew",
+      "reference_pt": "Mateus 4:6"
+    },
+    {
+      "book_code": "MAT",
+      "chapter": 4,
+      "verse": "7",
+      "surface": "shall",
+      "lemma": null,
+      "morph": null,
+      "name_pt": "Mateus",
+      "name_en": "Matthew",
+      "reference_pt": "Mateus 4:7"
+    },
+    {
+      "book_code": "MAT",
+      "chapter": 4,
+      "verse": "7",
+      "surface": "God",
+      "lemma": null,
+      "morph": null,
+      "name_pt": "Mateus",
+      "name_en": "Matthew",
+      "reference_pt": "Mateus 4:7"
+    },
+    {
+      "book_code": "MAT",
+      "chapter": 4,
+      "verse": "10",
+      "surface": "God",
+      "lemma": null,
+      "morph": null,
+      "name_pt": "Mateus",
+      "name_en": "Matthew",
+      "reference_pt": "Mateus 4:10"
+    }
+  ]
+}

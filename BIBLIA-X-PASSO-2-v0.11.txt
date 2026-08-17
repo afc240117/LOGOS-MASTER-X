@@ -1,0 +1,8 @@
+PASSO 2 v0.11 — REFERÊNCIAS CRUZADAS FUNCIONAIS
+
+- Botão Referências de cada versículo abre referências relacionadas.
+- Referências clicáveis abrem a passagem diretamente na Bíblia X.
+- Base inicial incluída para referências comuns.
+- Usuário pode adicionar referências próprias.
+- Referências próprias permanecem salvas no IndexedDB já existente.
+- Notas, favoritos, copiar e Studio X continuam funcionando.

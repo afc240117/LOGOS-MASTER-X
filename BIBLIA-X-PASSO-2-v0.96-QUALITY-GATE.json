@@ -1,0 +1,15 @@
+{
+  "version": "v0.96 acumulativo",
+  "base": "v0.90",
+  "javascript_ok": true,
+  "backend_ok": true,
+  "bible_routes": "17",
+  "included": [
+    "v0.91 pesquisa Meu Estudo",
+    "v0.92 backlinks",
+    "v0.93 log sessão",
+    "v0.94 relatório",
+    "v0.95 integração",
+    "v0.96 consolidação"
+  ]
+}

@@ -1,0 +1,1 @@
+V2.15 — Pacote de Estudo X. Exporta texto, pessoas, lugares, palavras, notas e rotas em TXT.

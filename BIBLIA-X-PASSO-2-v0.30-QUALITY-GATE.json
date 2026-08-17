@@ -1,0 +1,15 @@
+{
+  "package": "v0.30 acumulativo",
+  "base": "v0.24",
+  "included": [
+    "v0.25 histórico",
+    "v0.26 arquivo pessoal",
+    "v0.27 DNA K7 funcional",
+    "v0.28 pacote de estudo",
+    "v0.29 pesquisa Strong",
+    "v0.30 consolidação"
+  ],
+  "javascript_ok": true,
+  "backend_ok": true,
+  "bible_routes": "17"
+}

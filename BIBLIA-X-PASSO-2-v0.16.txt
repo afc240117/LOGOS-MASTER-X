@@ -1,0 +1,7 @@
+PASSO 2 v0.16 — LÉXICO FUNCIONAL
+- Botão Léxico agora usa a base Strong real já pré-instalada.
+- Lista entradas Strong presentes na referência.
+- Exibe idioma, lema, transliteração, pronúncia, morfologia, definição, uso e derivação.
+- Mostra ocorrências bíblicas da entrada lexical.
+- Ocorrências são clicáveis e abrem a passagem na Bíblia X.
+- Nenhum download adicional para o usuário.

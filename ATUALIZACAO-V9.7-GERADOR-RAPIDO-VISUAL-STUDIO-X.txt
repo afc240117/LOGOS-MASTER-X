@@ -1,9 +1,0 @@
-LOGOS MASTER X — Atualização V9.7
-
-- Gerador Rápido redesenhado conforme layout aprovado.
-- Mantida a forma clássica de seleção/abertura das opções.
-- Abas Mensagem Rápida e Dica Rápida preservadas.
-- Perfis Rápido, Econômico, Automático e Qualidade em cards modernos.
-- Ações Copiar, Editor, Biblioteca e Projeto preservadas.
-- Responsividade mobile mantida.
-- Motor de geração não foi substituído; alteração focada no layout.

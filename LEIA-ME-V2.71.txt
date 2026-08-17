@@ -1,0 +1,1 @@
+V2.71 — Stable Core X. Núcleo final de estabilidade com integridade, recuperação, lazy loading, backup, suporte e atalhos de proteção.

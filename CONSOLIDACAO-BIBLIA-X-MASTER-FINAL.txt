@@ -1,0 +1,24 @@
+LOGOS MASTER X - CONSOLIDACAO LOCAL
+Data: 2026-08-13
+
+Base: projeto LOGOS-MASTER-X enviado pelo usuario.
+Integracao: Biblia X Master Final cumulativa.
+
+Ajustes realizados:
+- Preservada a estrutura completa do projeto base.
+- Integrados app-381-v114.js e style-v114.css da Biblia X Master Final.
+- Mantidos Studio X, backend FastAPI, prompts, dados, temas e assets da base.
+- Removidos __pycache__, .pyc e documentos antigos de HOTFIX/ATUALIZACAO da raiz.
+- Removida pasta residual LOGOS-MASTER-X-HOTFIX-ETAPA-01B-MENU-LATERAL-DOURADO.
+- Adicionada rota /favicon.ico usando o icone oficial existente.
+- Corrigida identificacao /api/health para LOGOS-MASTER-X-3.8.2.
+- Mantida publicacao automatica desativada pelo comportamento atual da interface.
+
+Execucao local:
+python -m uvicorn app.main:app --reload --port 8080
+
+Acesse:
+http://127.0.0.1:8080/
+
+Observacao:
+Esta e a nova base consolidada. Nao e necessario instalar os ZIPs individuais da Biblia X antes dela.

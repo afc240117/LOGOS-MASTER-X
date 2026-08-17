@@ -1,0 +1,15 @@
+{
+  "version": "v0.84 acumulativo",
+  "base": "v0.78",
+  "javascript_ok": true,
+  "backend_ok": true,
+  "bible_routes": "17",
+  "included": [
+    "v0.79 importar workspace",
+    "v0.80 mesclagem segura",
+    "v0.81 central backup",
+    "v0.82 atividade",
+    "v0.83 sequência leitura",
+    "v0.84 consolidação"
+  ]
+}

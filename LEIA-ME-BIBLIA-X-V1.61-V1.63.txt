@@ -1,0 +1,42 @@
+LOGOS MASTER X — BÍBLIA X — PACOTE ACUMULATIVO V1.61 → V1.63
+
+BASE: V1.60.3 (correções de largura, entidades e fluxo vertical preservadas)
+
+V1.61 — LEITOR DOCK X
+- Move os controles de leitura para dentro do layout da Bíblia X.
+- Clean ON/OFF.
+- Zoom A− / 100% / A+ somente no texto bíblico.
+- Tela cheia com Fullscreen API + fallback visual.
+- Botões Ouvir, Pesquisa e Concordância no próprio leitor.
+- Barra sticky para permanecer acessível durante a leitura.
+
+V1.62 — PESQUISA / CONCORDÂNCIA AUTO
+- Concordância deixa de depender exclusivamente de Bíblia importada no IndexedDB.
+- Usa base local quando disponível e busca do servidor quando necessário.
+- Duplo clique em palavra continua abrindo pesquisa, agora sem evento duplicado conflitante.
+- Top 50 usa base local disponível ou a passagem atual como fallback.
+- Resultados abrem o versículo diretamente no leitor.
+
+V1.63 — TERRA BÍBLICA X
+- Nova faixa dentro de Mapas X.
+- Filtros: Todos / AT / NT / Hoje.
+- Lugares iniciais: Jerusalém, Belém, Hebrom, Jericó, Carmelo, Sinai, Nazaré,
+  Cafarnaum, Mar da Galileia, Cesareia Marítima, Éfeso, Corinto e Roma.
+- Cada cartão oferece: Atlas bíblico interno, mapa atual e imagens de referência.
+- Não inclui mídia proprietária embutida; apenas integra o fluxo local e links externos.
+
+INSTALAÇÃO
+1. Feche o LOGOS MASTER X / servidor Python.
+2. Extraia este ZIP.
+3. Copie a pasta LOGOS-MASTER-X sobre a sua instalação atual.
+4. Confirme SUBSTITUIR os arquivos.
+5. Inicie novamente o servidor.
+6. No navegador use Ctrl+F5 uma vez.
+
+TESTE RÁPIDO
+- Abra Bíblia X.
+- Confira a barra LEITOR BÍBLIA X dentro do painel de leitura.
+- Teste A+ e A−: só o texto bíblico deve mudar.
+- Teste Tela cheia e ESC.
+- Digite "fé" em Pesquisa e use Concordância.
+- Abra Mapas X e veja Terra Bíblica X.

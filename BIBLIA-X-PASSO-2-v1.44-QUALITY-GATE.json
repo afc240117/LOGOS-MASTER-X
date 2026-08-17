@@ -1,0 +1,15 @@
+{
+  "version": "v1.44 acumulativo",
+  "base": "v1.38",
+  "javascript_ok": true,
+  "backend_ok": true,
+  "bible_routes": "17",
+  "included": [
+    "v1.39 coleções",
+    "v1.40 exportar coleções",
+    "v1.41 estudo do dia",
+    "v1.42 painel estudo",
+    "v1.43 markdown",
+    "v1.44 consolidação"
+  ]
+}

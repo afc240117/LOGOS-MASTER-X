@@ -1,0 +1,6 @@
+LOGOS MASTER X — V1.68 BÍBLIA X — DESCOBERTAS
+Acumulativa sobre V1.67.
+
+NOVO: botão 🔭 Descobertas no leitor. Faz um raio-X local da passagem sem IA e sem consumo de API: pessoas, lugares, palavras recorrentes, contadores, atalhos, copiar resumo, salvar localmente e enviar ao Studio X.
+
+Rollback: V1.67.

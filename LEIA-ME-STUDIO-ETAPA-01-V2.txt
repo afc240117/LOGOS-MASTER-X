@@ -1,9 +1,0 @@
-LOGOS MASTER X — STUDIO ETAPA 1 V2
-
-Ajustes desta revisão:
-- Fontes da Página 1 ampliadas para legibilidade.
-- Ícones ampliados.
-- Sliders 0–100 com preenchimento visual até o valor selecionado.
-- Gráfico radar, mini-gráficos, score circular e barras laterais usam automaticamente a cor do tema ativo via --accent.
-- Marcadores e glow dos gráficos também acompanham o tema.
-- Layout e gráfico aproximados do painel de referência DNA K7 Studio X.

@@ -1,0 +1,1 @@
+V1.95 — Comparador de Lugares X. Compara dois lugares lado a lado e calcula distância aproximada quando há coordenadas.

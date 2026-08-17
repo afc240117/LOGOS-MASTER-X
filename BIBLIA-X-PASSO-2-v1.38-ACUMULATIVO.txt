@@ -1,0 +1,9 @@
+BÍBLIA X — PASSO 2 — PACK ACUMULATIVO v1.38
+Base: v1.32.
+
+v1.33 — Perguntas por versículo
+v1.34 — Marcar perguntas resolvidas
+v1.35 — Ligações pessoais entre referências
+v1.36 — Painel de Progresso de Estudo
+v1.37 — Exportação do Estudo Pessoal em JSON
+v1.38 — Consolidação integral

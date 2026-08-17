@@ -1,0 +1,20 @@
+LOGOS MASTER X — V8.25 RECUPERADO
+
+IMPORTANTE:
+- Este hotfix volta para a base V8.23, que estava visualmente íntegra.
+- NÃO usa o V8.24 quebrado.
+- NÃO renomeia classes.
+- NÃO altera JavaScript.
+- NÃO altera IA, comentários, links ou funções.
+
+AJUSTE:
+- remove somente reservas de altura do leitor;
+- mantém botões escuros/dourados originais;
+- mantém ícones;
+- aproxima versículos;
+- + fechado ocupa 0 px;
+- + aberto usa apenas a altura natural das ferramentas extras;
+- preserva PC Full HD e mobile.
+
+Instalação:
+Extrair -> copiar app -> substituir -> reiniciar Uvicorn -> Ctrl+F5.

@@ -1,0 +1,11 @@
+LOGOS MASTER X — HOTFIX V115
+
+CORRIGIDO:
+- Etapa 6 presa em 93% apos recarregar/reabrir a pagina.
+- Botao Voltar agora permanece utilizavel durante processamento.
+- Processamento orfao com mais de 90 segundos e destravado automaticamente.
+- Chamada de IA tem timeout de 45 segundos; em falha/timeout, o pipeline local assume.
+- Respostas atrasadas de uma geracao cancelada sao descartadas.
+- Cache alterado para v115, evitando reutilizar o JavaScript v114.
+
+NAO apaga projetos, DNA, configuracoes das Etapas 1-5 ou biblioteca.

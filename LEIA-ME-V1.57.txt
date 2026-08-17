@@ -1,0 +1,38 @@
+LOGOS MASTER X — V1.57 BÍBLIA X
+NAVEGAÇÃO INTELIGENTE
+ACUMULATIVA SOBRE V1.56
+
+NOVO:
+- Voltar/Avançar no histórico de passagens.
+- Botão Continuar para retomar a leitura.
+- Acesso rápido a Marcadores.
+- Trilho flutuante no PC:
+  ↑ versículo anterior
+  ↓ próximo versículo
+  ☆/★ marcar o versículo atual
+  ⧉ copiar o versículo atual
+  ◎ foco no versículo atual
+- Indicador de posição: ex. 7 / 31.
+- Versículo corrente recebe marcação lateral discreta.
+- Atalhos:
+  Alt+← voltar
+  Alt+→ avançar
+  J próximo verso
+  K verso anterior
+  B marcar
+  C copiar
+  F foco
+  Esc sair do foco
+- Toast discreto confirma ações.
+- No celular o trilho vira uma barra inferior compacta.
+
+PRESERVADO:
+- leitor compacto V1.54;
+- seleção de versículos V1.55;
+- ficha contextual em cadeia V1.56;
+- Comentários IA;
+- Studio X;
+- menus, sidebar e temas.
+
+ROLLBACK:
+Se houver qualquer problema, volte para a V1.56.

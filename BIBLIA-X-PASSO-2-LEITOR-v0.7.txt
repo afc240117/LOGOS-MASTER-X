@@ -1,0 +1,10 @@
+BÍBLIA X — PASSO 2 v0.7
+Leitor bíblico aprimorado.
+
+- Exibição por cartões de versículo.
+- Botões por versículo: Referências, Strong, Léxico, Contexto, Comentários, Mídia, DNA K7 e Studio X.
+- Botão Abrir capítulo.
+- Navegação capítulo anterior / próximo.
+- Pesquisa e concordância usam o mesmo leitor.
+- BLIVRE e WEBP permanecem no banco integrado.
+- Interface geral e demais módulos preservados.

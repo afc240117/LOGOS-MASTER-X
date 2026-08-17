@@ -1,1 +1,0 @@
-Menu superior centralizado; DNA Score ajustável 0-100; escala vermelho-amarelo-verde; flash Home 2,5x; imagens do loading removidas e barra mantida; versão 3.8.0.

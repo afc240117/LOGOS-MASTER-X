@@ -1,0 +1,15 @@
+{
+  "version": "v1.32 acumulativo",
+  "base": "v1.26",
+  "javascript_ok": true,
+  "backend_ok": true,
+  "bible_routes": "17",
+  "included": [
+    "v1.27 snapshots",
+    "v1.28 restaurar snapshot",
+    "v1.29 trilha",
+    "v1.30 status revisão",
+    "v1.31 fila revisões",
+    "v1.32 consolidação"
+  ]
+}

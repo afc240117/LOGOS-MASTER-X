@@ -1,0 +1,21 @@
+BÍBLIA X — PASSO 2 — PACK ACUMULATIVO v0.72
+Base: v0.66.
+
+v0.67 — Leitura paralela
+- Duas versões lado a lado na mesma passagem.
+
+v0.68 — Preferência paralela
+- Guarda a versão secundária escolhida.
+
+v0.69 — Referências pessoais
+- Usuário vincula até 30 referências próprias a cada versículo.
+- Prévia integrada das referências vinculadas.
+
+v0.70 — Ficha de estudo
+- Copia versículo + etiquetas + referências pessoais + nota local.
+
+v0.71 — Integração por versículo
+- Minhas refs e Ficha diretamente na barra contextual.
+
+v0.72 — Consolidação
+- Preserva integralmente todos os recursos anteriores.

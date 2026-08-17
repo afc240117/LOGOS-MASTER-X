@@ -1,0 +1,32 @@
+LOGOS MASTER X — V8.10 LAYOUT FOSCO BÍBLIA X
+
+SOMENTE VISUAL / CSS.
+Nenhuma alteração em:
+- IA
+- prompts
+- roteamento
+- API
+- geração
+- Quality Gate
+- navegação
+
+Padrão aplicado:
+Normal = escuro
+Hover = iluminação dourada discreta
+Selecionado = degradê fosco cinza/dourado + contorno dourado fino
+Texto selecionado permanece branco/claro
+
+Aplicado em:
+- 7 etapas superiores
+- Mensagem completa / Esboço / Ficha técnica
+- perfis Rápido / Econômico / Automático / Qualidade
+- opções/seleções do DNA
+- elementos da mensagem
+- botões inferiores
+- Abrir no Editor
+- barra A− / 100% / A+ / Tela cheia
+
+A coluna direita da Etapa 7 foi preservada.
+
+Instalação:
+Extrair -> copiar app -> substituir -> reiniciar Uvicorn -> Ctrl+F5.

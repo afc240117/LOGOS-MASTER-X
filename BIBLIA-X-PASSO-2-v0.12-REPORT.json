@@ -1,0 +1,7 @@
+{
+  "nave_topics": 6177,
+  "nave_refs": 26741,
+  "crossrefs_bundled": 0,
+  "crossrefs_install_mode": "one-click download of OpenBible/TSK-derived dataset, then offline",
+  "routes": "['/api/bible/books', '/api/bible/chapter', '/api/bible/chapters', '/api/bible/crossrefs', '/api/bible/health', '/api/bible/nave', '/api/bible/reference', '/api/bible/resources/install-crossrefs', '/api/bible/resources/status', '/api/bible/search', '/api/bible/strong', '/api/bible/translations', '/api/bible/verse']"
+}

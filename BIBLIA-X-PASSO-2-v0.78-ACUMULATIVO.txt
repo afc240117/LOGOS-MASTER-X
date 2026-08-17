@@ -1,0 +1,8 @@
+BÍBLIA X — PASSO 2 — PACK ACUMULATIVO v0.78
+Base: v0.72.
+v0.73 Workspace persistente.
+v0.74 Restauração do workspace.
+v0.75 Exportação completa do ambiente pessoal.
+v0.76 Resumo do estudo.
+v0.77 Contador local de leitura.
+v0.78 Consolidação integral dos recursos anteriores.

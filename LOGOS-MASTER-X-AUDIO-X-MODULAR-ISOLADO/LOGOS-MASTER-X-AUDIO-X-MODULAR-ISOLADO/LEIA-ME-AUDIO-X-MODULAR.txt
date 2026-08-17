@@ -1,0 +1,65 @@
+LOGOS MASTER X — ÁUDIO X MODULAR ISOLADO
+
+OBJETIVO
+Refazer o Áudio X no mesmo conceito modular usado pela Bíblia X: código próprio,
+router próprio, serviços próprios e arquivos visuais próprios, reduzindo ao mínimo
+o risco de uma atualização do Áudio X sobrescrever a Bíblia X.
+
+ESTRUTURA
+app/audio_x/
+  router.py
+  routes/
+  services/
+
+app/web/static/audio_x/
+  todas as páginas HTML/CSS/JS do Áudio X
+  audio-x-menu-plugin.js
+
+O QUE O INSTALADOR ALTERA NA BASE PRINCIPAL
+1. app/main.py
+   - adiciona somente:
+     from app.audio_x.router import router as audio_x_router
+     app.include_router(audio_x_router)
+
+2. app/web/static/index.html
+   - adiciona somente um <script> do plugin de menu.
+
+3. requirements.txt
+   - acrescenta httpx e python-multipart se ainda não existirem.
+
+O QUE NÃO É ALTERADO
+- app/biblia_x/
+- banco SQLite da Bíblia X
+- app-381-v133.js
+- style-v133.css
+- sw.js
+- Studio X
+- temas
+- cache da Bíblia X
+- recursos Nave/Strong/comentários
+
+POR QUE É MAIS SEGURO
+O botão Áudio X é injetado dinamicamente pelo plugin e abre o módulo em iframe.
+Assim não precisamos inserir a implementação do Áudio X dentro do app.js gigante.
+A Bíblia X pode continuar evoluindo sem que cada nova versão do Áudio X carregue
+uma cópia antiga de app.js/style/main inteiro.
+
+COMO USAR
+1. NÃO instale enquanto outra operação estiver copiando arquivos.
+2. Quando quiser testar, coloque esta pasta dentro da raiz atual do LOGOS MASTER X.
+3. Execute INSTALAR-AUDIO-X-MODULAR.bat.
+4. Execute: pip install -r requirements.txt
+5. Reinicie o servidor.
+6. O botão 🎧 Áudio X aparecerá após Bíblia X.
+
+CHAVES
+- Reutiliza GROQ_API_KEY existente.
+- Reutiliza OPENAI_API_KEY existente.
+- Adicione DEEPGRAM_API_KEY para ativar Deepgram.
+
+ARQUITETURA
+Groq → Deepgram → OpenAI → Transcrição → Segmentação → DNA K7 → Biblioteca → Studio X.
+
+OBSERVAÇÃO
+Este pacote foi reestruturado a partir do Áudio X Cloud desenvolvido até a Etapa 14.
+A homologação real ponta a ponta ainda requer chaves válidas e uma MP3 de teste.

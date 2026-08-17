@@ -1,0 +1,15 @@
+{
+  "version": "v0.78 acumulativo",
+  "base": "v0.72",
+  "javascript_ok": true,
+  "backend_ok": true,
+  "bible_routes": "17",
+  "included": [
+    "v0.73 workspace",
+    "v0.74 restauração",
+    "v0.75 exportação completa",
+    "v0.76 resumo",
+    "v0.77 contador leitura",
+    "v0.78 consolidação"
+  ]
+}

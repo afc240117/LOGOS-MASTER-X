@@ -1,0 +1,5 @@
+V3.08 — remove de forma forçada os dois controles problemáticos da Bíblia X:
+1) o botão/bolinha ao lado do versículo;
+2) o dock/trilho de rolagem na lateral direita.
+
+Instale extraindo e substituindo os arquivos sobre a versão atual.

@@ -1,0 +1,1 @@
+V1.83 — Central X. Consolida as ferramentas avançadas em um launcher pesquisável e limpa a barra principal do leitor.

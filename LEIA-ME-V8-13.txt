@@ -1,0 +1,27 @@
+LOGOS MASTER X — V8.13
+
+COMENTÁRIOS IA
+- 15 especialistas preservados.
+- Cada especialista agora oferece:
+  ⚡ Resumo curto: 4–6 linhas, máximo 120 palavras.
+  • Tópicos rápidos: 4–6 tópicos, máximo 140 palavras.
+- Pedido explicitamente bloqueia formato de sermão/Studio.
+- Timeout reduzido para 55 s.
+- Objetivo: complemento rápido da leitura, menor tempo e menor consumo.
+
+BÍBLIA X CLEAN
+- Versículo e botões ficam muito próximos.
+- Ferramentas compactadas em poucas linhas.
+- +X Ferramentas: expande/recolhe todas as ferramentas daquele versículo.
+- +Y Verso: amplia/reduz somente o verso para leitura.
+- Nomes permanecem visíveis nos botões.
+- Tela cheia da Bíblia prioriza o texto e as ferramentas do próprio versículo.
+- A− / 100% / A+ / Tela cheia / Sair dedicados à Bíblia.
+
+MENSAGENS
+- Reforço funcional para A− / 100% / A+ / Tela cheia / Sair.
+- Zoom passa a ser aplicado diretamente no conteúdo.
+- Botões mantidos dentro da área de leitura.
+
+INSTALAÇÃO
+Extrair -> copiar app -> substituir -> reiniciar Uvicorn -> Ctrl+F5.

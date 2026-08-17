@@ -1,0 +1,7 @@
+HOTFIX V116 — DESTRAVAMENTO FORÇADO DA ETAPA 6
+
+1. Qualquer estado RUNNING salvo ao abrir a página é considerado órfão e é encerrado antes do app principal carregar.
+2. O Studio retorna automaticamente para a Etapa 5, preservando as configurações das Etapas 1–5.
+3. O botão Voltar da Etapa 6 possui uma trava de emergência independente do JavaScript principal.
+4. Chamadas da IA têm timeout de 45 segundos e caem para o pipeline local.
+5. Cache alterado para V116.

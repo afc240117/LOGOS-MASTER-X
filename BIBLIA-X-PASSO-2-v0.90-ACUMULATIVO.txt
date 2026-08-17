@@ -1,0 +1,23 @@
+BÍBLIA X — PASSO 2 — PACK ACUMULATIVO v0.90
+Base: v0.84.
+
+v0.85 — Fila de Estudo
+- Adiciona versículos para estudar depois.
+- Abrir, concluir/reabrir e remover.
+
+v0.86 — Fila por versículo
+- Botão direto em cada versículo.
+
+v0.87 — Meta diária
+- Meta configurável de 1 a 50 leituras por dia.
+- Progresso visual usando atividade local.
+
+v0.88 — Bloco de Estudo
+- Anotação geral persistente da sessão.
+- Salvar e copiar.
+
+v0.89 — Integração da barra
+- Fila, Meta e Bloco acessíveis no leitor.
+
+v0.90 — Consolidação
+- Preserva integralmente todos os recursos anteriores.

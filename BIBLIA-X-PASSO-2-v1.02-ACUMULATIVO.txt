@@ -1,0 +1,22 @@
+BÍBLIA X — PASSO 2 — PACK ACUMULATIVO v1.02
+Base: v0.96.
+
+v0.97 — Seleção múltipla de versículos
+- Seleciona até 120 versículos e mantém a seleção localmente.
+
+v0.98 — Cesta de seleção
+- Copiar, enviar ao Studio X, adicionar à Fila e exportar Markdown em lote.
+
+v0.99 — Atalhos de teclado
+- Ctrl+K: pesquisa.
+- Alt+Seta esquerda/direita: capítulo anterior/próximo.
+- Esc: fecha painéis da Bíblia X.
+
+v1.00 — Acessibilidade
+- Alto contraste e redução de animações.
+
+v1.01 — Ferramentas compactas
+- Modo opcional para reduzir botões no desktop/mobile.
+
+v1.02 — Consolidação
+- Preserva integralmente todos os recursos acumulados anteriores.

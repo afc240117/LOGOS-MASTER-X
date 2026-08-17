@@ -1,0 +1,12 @@
+LOGOS MASTER X — FIX AI ROUTER V3
+
+Alteracoes:
+1. Ordem padrao: Groq -> OpenRouter -> OpenAI -> HuggingFace -> Gemini.
+2. Gemini fica por ultimo enquanto estiver sem creditos.
+3. Groq limita a saida solicitada a 8000 tokens por padrao para evitar o erro TPM 12000 / Requested 13016.
+4. O limite pode ser alterado no .env com GROQ_MAX_OUTPUT_TOKENS=8000.
+5. Fallback V2 permanece ativo: falha em um provedor continua para o proximo.
+
+Instalacao:
+- Copie a pasta app sobre a pasta app do LOGOS MASTER X e substitua os arquivos.
+- Reinicie o Uvicorn.

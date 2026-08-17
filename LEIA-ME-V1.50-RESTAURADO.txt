@@ -1,0 +1,14 @@
+LOGOS MASTER X — V1.50 RESTAURADO SOBRE V1.44
+
+Base restaurada para voltar ao visual estável mostrado no print:
+- cartões escuros por versículo;
+- botões organizados em linhas;
+- ícones preservados;
+- hover e contorno escuro/dourado;
+- todas as funções mantidas;
+- PC Full HD e mobile preservados.
+
+Nesta etapa restauramos a aparência. Depois refinamos em cima desta base.
+
+Instalação:
+extrair -> copiar sobre sua instalação -> substituir -> reiniciar Uvicorn -> Ctrl+F5.

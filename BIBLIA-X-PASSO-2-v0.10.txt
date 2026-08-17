@@ -1,0 +1,7 @@
+PASSO 2 v0.10 — WORKSPACE POR VERSÍCULO
+- Nota local vinculada à referência
+- Favorito persistente no navegador
+- Copiar versículo
+- Enviar versículo selecionado ao Studio X
+- Painel contextual continua sem substituir a leitura
+- Ajustes responsivos para mobile

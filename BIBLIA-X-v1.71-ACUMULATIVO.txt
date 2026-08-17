@@ -1,0 +1,9 @@
+LOGOS MASTER X — BÍBLIA X v1.71 ACUMULATIVO
+Base recebida: v1.65
+
+v1.66 — Índice pessoal de pesquisa por passagem
+v1.67 — Etiquetas temáticas por versículo
+v1.68 — Central de Pesquisa Bíblia X
+v1.69 — Índice Temático Pessoal
+v1.70 — Exportação do índice de pesquisa em JSON
+v1.71 — Consolidação acumulativa preservando a base v1.65

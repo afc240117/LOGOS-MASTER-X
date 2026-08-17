@@ -1,0 +1,15 @@
+{
+  "version": "v0.90 acumulativo",
+  "base": "v0.84",
+  "javascript_ok": true,
+  "backend_ok": true,
+  "bible_routes": "17",
+  "included": [
+    "v0.85 fila estudo",
+    "v0.86 fila por versículo",
+    "v0.87 meta diária",
+    "v0.88 bloco estudo",
+    "v0.89 integração",
+    "v0.90 consolidação"
+  ]
+}

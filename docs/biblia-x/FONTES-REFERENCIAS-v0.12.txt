@@ -1,0 +1,14 @@
+BÍBLIA X v0.12 — FONTES DE REFERÊNCIAS
+
+1) Treasury of Scripture Knowledge (TSK)
+CrossWire informa: Public Domain; aproximadamente 500.000 referências e passagens paralelas.
+A base máquina usada pelo instalador é o dataset OpenBible.info de referências cruzadas,
+que declara cerca de 340.000 relações e informa que deriva principalmente do TSK.
+OpenBible.info: conteúdo do dataset sob Creative Commons Attribution, salvo indicação em contrário.
+
+2) Nave's Topical Bible
+CrossWire informa: Public Domain; 20.000+ tópicos/subtópicos e 100.000 referências.
+O texto incorporado nesta versão foi obtido do CCEL em formato Unicode Text e é processado localmente
+para tópicos e referências temáticas.
+
+Atribuições devem permanecer no pacote/distribuição.

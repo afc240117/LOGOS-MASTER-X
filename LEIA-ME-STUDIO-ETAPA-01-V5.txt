@@ -1,8 +1,0 @@
-LOGOS MASTER X — STUDIO ETAPA 1 V5
-
-Correções aplicadas:
-1. Topo reorganizado para evitar encavalamento dos botões em diferentes larguras.
-2. Loading substituído pela imagem fornecida pelo usuário, mantendo a barra real de progresso.
-3. Botão "Próximo passo" com texto escuro para contraste em fundos claros/dourados.
-4. Mini-gráficos, resumo, radar, sliders e pontos com efeito neon e cor derivada do tema ativo.
-5. Mantidas todas as correções anteriores da Etapa 1.

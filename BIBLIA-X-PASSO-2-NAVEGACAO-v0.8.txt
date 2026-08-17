@@ -1,0 +1,10 @@
+BÍBLIA X — PASSO 2 v0.8
+
+Correções e melhorias:
+- Corrigido bug de referências com capítulo NaN em respostas de capítulo.
+- Seletor de Livro.
+- Seletor de Capítulo.
+- Troca de versão atualiza livros/capítulos.
+- Capítulo anterior/próximo respeita limites e atravessa livros.
+- Campo de referência manual continua funcionando.
+- Cards e ferramentas por versículo preservados.

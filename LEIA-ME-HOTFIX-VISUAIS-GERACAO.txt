@@ -1,0 +1,12 @@
+LOGOS MASTER X — HOTFIX VISUAIS DE GERAÇÃO
+
+Inclui:
+- Gerador Rápido: seletor Clássico / DNA → K7 → Bíblia.
+- Gerador Rápido: animação de processamento durante geração completa ou esboço.
+- Studio X Etapa 6: as mesmas duas opções visuais.
+- Studio X Etapa 7: alternância/replay visual sem alterar o resultado.
+- Escolha visual compartilhada e salva localmente.
+- Botão de informação da Intensidade DNA K7 clicável com explicação dos níveis.
+
+Instalação: copiar a pasta LOGOS-MASTER-X sobre a MASTER atual e substituir os 2 arquivos indicados.
+Depois reiniciar Uvicorn e usar Ctrl+F5 uma vez.

@@ -1,0 +1,29 @@
+LOGOS MASTER X — V8.19 BÍBLIA X LEITOR V3 HARD RESET
+
+MOTIVO
+O leitor anterior continuava herdando estilos antigos do projeto.
+Por isso apenas reduzir padding não resolvia a altura dos blocos.
+
+O QUE FOI FEITO
+- O Leitor V2 foi substituído por um Leitor V3 com classes exclusivas.
+- Os versículos NÃO usam mais a classe visual antiga bx-reader-verse.
+- O layout de cada versículo agora tem somente 3 linhas reais:
+  1. número + texto;
+  2. ferramentas principais;
+  3. ferramentas extras somente quando o + estiver aberto.
+- Quando o + está fechado, a terceira linha ocupa ZERO pixels.
+- Altura do verso é automática e restrita ao próprio conteúdo.
+- Eliminados conflitos de grid, card, min-height e estilos acumulados.
+
+PRESERVADO
+- Referências, Strong, Léxico, Contexto, Comentários, Mídia, DNA K7 e Studio X.
+- Botão + e todas as ferramentas extras.
+- Links inteligentes de pessoas/lugares.
+- Duplo clique para Concordância.
+- Comentários IA curtos.
+- Zoom e tela cheia.
+
+INSTALAÇÃO
+Extrair -> copiar app -> substituir -> reiniciar:
+python -m uvicorn app.main:app --reload --port 8080
+Depois Ctrl+F5.

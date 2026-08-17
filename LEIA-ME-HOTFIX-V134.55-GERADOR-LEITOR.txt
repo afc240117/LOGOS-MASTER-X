@@ -1,0 +1,10 @@
+LOGOS MASTER X — HOTFIX V134.55
+
+1. Gerador Rápido em localhost tenta a API real mesmo se o health-check transitório marcar App.server=false.
+2. Em localhost, falha total da IA não é mais apresentada como estudo/mensagem local concluída de poucas palavras.
+3. Adicionados controles no material gerado: A−, 100%, A+ e Tela cheia.
+4. Zoom afeta somente o corpo da mensagem gerada; menus, topo, lateral, Quality Gate e resumo permanecem no tamanho normal.
+5. Tela cheia entra em modo leitura e oculta Quality Gate/resumo durante a leitura.
+6. Cache-bust atualizado no index ativo.
+
+Instalação: extrair, copiar a pasta LOGOS-MASTER-X sobre a instalação atual e substituir os arquivos.

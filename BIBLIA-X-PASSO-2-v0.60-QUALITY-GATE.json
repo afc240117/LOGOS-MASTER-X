@@ -1,0 +1,15 @@
+{
+  "version": "v0.60 acumulativo",
+  "base": "v0.54",
+  "javascript_ok": true,
+  "backend_ok": true,
+  "bible_routes": "17",
+  "included": [
+    "v0.55 etiquetas",
+    "v0.56 coleções",
+    "v0.57 organizador",
+    "v0.58 painel estudo",
+    "v0.59 navegação coleções",
+    "v0.60 consolidação"
+  ]
+}

@@ -1,0 +1,28 @@
+LOGOS MASTER X — V8.17
+
+CORREÇÃO PRINCIPAL
+- Recolocados os ícones nos botões do Leitor V2.
+- Leitura Bíblica / Clean / A− / 100% / A+ / Tela cheia / Sair agora usam chamadas DIRETAS.
+- Esses botões não dependem mais dos listeners antigos que estavam interferindo.
+- ESC sai da tela cheia.
+- O zoom fica salvo automaticamente.
+- Clean permanece salvo automaticamente.
+
+LEITOR
+- Versículos mantidos próximos.
+- Botões primários com ícones:
+  🔗 Referências
+  GRL Strong
+  📚 Léxico
+  🧭 Contexto
+  💬 Comentários
+  🎞️ Mídia
+  🧬 DNA K7
+  ⚡ Studio X
+- + continua abrindo as demais ferramentas.
+- Ferramentas secundárias também recuperaram ícones.
+
+Não altera IA ou endpoint de comentários curtos do V8.16.
+
+INSTALAÇÃO
+Extrair -> copiar app -> substituir -> reiniciar Uvicorn -> Ctrl+F5.

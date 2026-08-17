@@ -1,0 +1,8 @@
+BÍBLIA X — PASSO 2 — PACK ACUMULATIVO v1.26
+Base: v1.20.
+v1.21 Sessões de leitura.
+v1.22 Retomar sessão anterior.
+v1.23 Palavras de Estudo.
+v1.24 Pesquisa por palavra salva.
+v1.25 Impressão limpa (usa o motor de impressão já existente na base).
+v1.26 Consolidação integral.

@@ -1,0 +1,12 @@
+LOGOS MASTER X — HOTFIX VISUAIS DE GERAÇÃO TRIPLO + LEGIBILIDADE
+
+Inclui:
+- 3 visuais de geração: Clássico, DNA → K7 → Bíblia e Pulso K7.
+- Ícone/logo da opção DNA → K7 → Bíblia alterado para ✦.
+- As 3 opções disponíveis no Gerador Rápido, Studio X Aba 6 e Aba 7.
+- Apenas um visual é usado por vez e a escolha continua salva localmente.
+- Botão de informação da Intensidade DNA K7 maior e perfeitamente circular.
+- Fontes, campos e botões das páginas internas aumentados para melhor leitura.
+- Home preservada.
+
+Instalação: copie a pasta LOGOS-MASTER-X deste hotfix sobre a MASTER atual e aceite substituir os arquivos. Reinicie o Uvicorn e use Ctrl+F5 uma vez.

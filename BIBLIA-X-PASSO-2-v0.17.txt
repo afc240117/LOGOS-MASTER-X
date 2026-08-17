@@ -1,0 +1,16 @@
+PASSO 2 v0.17 — ONLINE FIRST
+
+Arquitetura oficial:
+1. Conectado à internet, o usuário abre a Bíblia X e usa os recursos do servidor imediatamente.
+2. Nenhum download/importação manual é exigido para Bíblia, referências, Strong e Léxico.
+3. Se a rede cair, o sistema tenta usar os recursos locais já disponíveis.
+4. Download/offline passa a ser opcional e gerenciado separadamente.
+5. A interface mostra claramente:
+   - Online / servidor
+   - Offline / fallback local
+   - Uso offline opcional
+
+Observação:
+Nesta versão, o painel "Uso offline" já registra as preferências de módulos offline.
+A sincronização/download físico completo de cada módulo será implementada por módulo,
+sem alterar o funcionamento online principal.

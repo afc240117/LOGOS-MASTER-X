@@ -1,0 +1,1 @@
+V1.93 — Galeria Bíblica X. Exibe miniaturas públicas relacionadas aos lugares da passagem, sem gerar imagens.

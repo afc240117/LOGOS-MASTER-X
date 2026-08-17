@@ -1,0 +1,23 @@
+BÍBLIA X — PASSO 2 — PACK ACUMULATIVO v0.42
+Base: v0.36.
+
+v0.37 — Navegação de capítulos
+- Anterior/próximo diretamente acima da leitura.
+
+v0.38 — Controle de fonte
+- A− / A+ com preferência salva localmente.
+
+v0.39 — Compartilhamento
+- Usa compartilhamento nativo quando disponível; fallback copia a passagem.
+
+v0.40 — Citação e impressão
+- Copia passagem com referência/tradução.
+- Gera visual limpo para impressão.
+
+v0.41 — Foco em versículo
+- Duplo clique destaca e centraliza o versículo.
+
+v0.42 — Consolidação
+- Preserva todos os recursos acumulados da v0.24 até v0.36.
+- Mantém Online First, Bíblia, TSK, Nave PT-BR, Strong, Léxico,
+  Contexto, Comentários, DNA K7, Meu Estudo, comparação e exportações.

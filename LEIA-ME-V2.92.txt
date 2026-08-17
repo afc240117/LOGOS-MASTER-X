@@ -1,0 +1,21 @@
+LOGOS MASTER X — Bíblia X v2.92
+Hotfix: barra flutuante da leitura bíblica (lado direito)
+
+O que foi ajustado:
+- reposicionamento da barra lateral da Bíblia X;
+- barra agora fica recolhível para não atrapalhar a leitura;
+- botão flutuante compacto (☰) para abrir/fechar os atalhos;
+- melhor distância da borda direita / scroll do navegador;
+- preservados os atalhos úteis: subir, descer, marcar, copiar e foco;
+- comportamento mais limpo em PC e telas menores.
+
+Arquivos incluídos no patch:
+- LOGOS-MASTER-X/app/web/static/app-381-v133.js
+- LOGOS-MASTER-X/app/web/static/style-v133.css
+- LOGOS-MASTER-X/app/web/static/index.html
+
+Aplicação:
+1. Extraia.
+2. Cole na pasta do projeto.
+3. Substitua os arquivos.
+4. Recarregue com Ctrl+F5.

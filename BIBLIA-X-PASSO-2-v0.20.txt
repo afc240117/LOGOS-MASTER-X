@@ -1,0 +1,6 @@
+PASSO 2 v0.20 — NAVE PT-BR AMPLIADO
+- Amplia fortemente a normalização dos tópicos Nave para português.
+- Corrige João 12:1: Bethany -> Betânia; Hospitality -> Hospitalidade; Lazarus -> Lázaro.
+- Inclui nomes bíblicos, lugares, doutrinas e temas frequentes.
+- Preserva termos ainda não mapeados em sua forma original para não inventar traduções.
+- Mantém TSK, Strong, Léxico, Contexto e arquitetura Online First.

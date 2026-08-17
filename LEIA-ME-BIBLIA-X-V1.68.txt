@@ -1,0 +1,17 @@
+LOGOS MASTER X — BÍBLIA X V1.68
+
+ACUMULATIVO SOBRE A V1.67 — MÍDIA BÍBLICA PÚBLICA X
+
+Mantém tudo da V1.65, V1.66 e V1.67.
+Novo:
+- painel Mídia Bíblica Pública dentro da Mídia X;
+- usar automaticamente a passagem atual como pesquisa;
+- pesquisa local da Mídia X preservada;
+- atalhos externos para Wikimedia Commons: imagens, vídeos e áudios;
+- pesquisa no Internet Archive;
+- pesquisa no YouTube;
+- nenhum download automático;
+- aviso permanente para conferir licença/créditos antes de incorporar arquivos;
+- sem alteração no backend Python.
+
+Instalação: extrair, copiar LOGOS-MASTER-X sobre a instalação atual, substituir, reiniciar Python e Ctrl+F5.

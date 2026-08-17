@@ -1,0 +1,9 @@
+LOGOS MASTER X — V132 CORRETIVO + PREVENTIVO
+
+Novo painel: Configurações > Recuperação e Reinício.
+
+1. Reiniciar LOGOS — cancela processamento temporário, corrige cache e reinicia sem apagar projetos/Bíblia/DNA/preferências.
+2. Resetar Studio X — limpa somente estado temporário da geração e retorna à Etapa 5.
+3. Corrigir cache — remove Service Worker/cache antigo e recarrega a versão atual.
+
+Proteções anti-travamento da V131 foram preservadas.

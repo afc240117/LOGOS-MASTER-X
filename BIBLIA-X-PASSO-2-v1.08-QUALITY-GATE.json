@@ -1,0 +1,15 @@
+{
+  "version": "v1.08 acumulativo",
+  "base": "v1.02",
+  "javascript_ok": true,
+  "backend_ok": true,
+  "bible_routes": "17",
+  "included": [
+    "v1.03 comparador",
+    "v1.04 ações comparador",
+    "v1.05 insight",
+    "v1.06 capítulos recentes",
+    "v1.07 integração",
+    "v1.08 consolidação"
+  ]
+}

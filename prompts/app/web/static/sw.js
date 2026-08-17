@@ -1,4 +1,4 @@
-const CACHE_VERSION="logos-master-x-themes-430-title-sequence";
+const CACHE_VERSION="logos-master-x-biblia-v171";
 self.addEventListener("install",event=>{self.skipWaiting();});
 self.addEventListener("activate",event=>{event.waitUntil((async()=>{
   const keys=await caches.keys();

@@ -1,0 +1,20 @@
+LOGOS MASTER X — V8.4 RÁPIDO + QUALIDADE
+
+Objetivo:
+Reduzir o tempo da geração longa mantendo a qualidade editorial do V8.3.
+
+Mudanças:
+- 3 chamadas principais:
+  1) mapa editorial curto
+  2) corpo principal completo
+  3) DNA K7 + clímax + resposta + apelo + revisão
+- Depois da primeira resposta, o provedor fica "preso" na mesma mensagem.
+- Só volta ao roteador se esse provedor realmente falhar.
+- Evita misturar OpenAI/Groq/HuggingFace sem necessidade.
+- Uma única expansão curta apenas se o material ficar abaixo de 76% do alvo.
+- Timeout do frontend: 300 s.
+- Preserva referência robusta, organização editorial, fonte maior, QG e fallback local reprovado.
+
+Expectativa:
+Em vez de ~80–90 s com 4 chamadas longas, a meta é cair para ~40–60 s em condições normais,
+sem voltar ao problema de mensagens curtas.

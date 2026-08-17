@@ -1,0 +1,30 @@
+LOGOS MASTER X — V8.7 ESTÁVEL + LEITURA + BOTÕES
+
+ESTABILIDADE
+- Remove geração paralela do V8.6.
+- Usa 3 blocos sequenciais menores.
+- Long-form prioriza OpenAI; OpenRouter é fallback direto.
+- Não usa HuggingFace para remendar sermão longo.
+- Timeout visual de segurança: 240 s.
+- Fallback local continua QG 0%.
+
+CORREÇÕES
+- Protege Studio contra objetivo antigo João 3:16 salvo quando a passagem atual é outra.
+- Mantém normalização bíblica das versões anteriores.
+
+LEITURA
+- A−, 100%, A+ e ⛶ Tela cheia em todo material gerado.
+- Gerador Rápido: base 21px.
+- Studio X: base 19px.
+- Zoom de 14px a 34px.
+
+STUDIO X
+- Botões escuros do fluxo passam a preenchimento amarelo.
+- Voltar fica à esquerda.
+- Continuar/Avançar fica à direita.
+- Na Etapa 5, GERAR AGORA fica à direita.
+- As 7 etapas superiores ficam clicáveis e abrem a etapa correspondente.
+- Hover e etapa ativa em destaque dourado.
+
+INSTALAÇÃO
+Extrair -> copiar a pasta app sobre a atual -> substituir -> reiniciar Uvicorn -> Ctrl+F5.

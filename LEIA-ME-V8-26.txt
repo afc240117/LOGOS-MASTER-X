@@ -1,0 +1,26 @@
+LOGOS MASTER X — V8.26 VARREDURA + BÍBLIA X
+
+Diagnóstico feito na base completa enviada:
+- o CSS principal tem muitas gerações acumuladas do leitor Bíblia X;
+- a mesma classe V3 aparece em dezenas de regras sucessivas;
+- por isso novos hotfixes CSS podiam ser sobrescritos ou produzir resultados inconsistentes;
+- há __pycache__, .pyc, prompts/app duplicado e diretórios temporários que aumentam ruído do --reload.
+
+Correção desta versão:
+1. NÃO troca o visual aprovado dos botões.
+2. NÃO renomeia o DOM.
+3. A geometria crítica do leitor é aplicada por JavaScript como inline !important,
+   vencendo as regras CSS históricas.
+4. Verso fechado = texto + barra principal + pequeno respiro.
+5. + aberto = somente as linhas extras necessárias.
+6. O BAT passa a observar apenas app/, reduzindo reloads provocados por prompts/tests/cache.
+7. Cache do JS/CSS atualizado.
+
+Instalação:
+- extrair;
+- copiar os arquivos por cima da instalação atual;
+- substituir;
+- iniciar preferencialmente pelo INICIAR-LOGOS-MASTER-X-8080.bat;
+- Ctrl+F5 uma vez.
+
+Este pacote NÃO contém .env nem suas chaves.

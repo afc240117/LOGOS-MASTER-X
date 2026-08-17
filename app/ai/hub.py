@@ -6,22 +6,22 @@ KEYS={"gemini":"GEMINI_API_KEY","groq":"GROQ_API_KEY","openrouter":"OPENROUTER_A
 PUBLIC_PROVIDERS=["gemini","groq","openrouter","openai","huggingface"]
 FUTURE_PROVIDERS=["cerebras","together","fireworks"]
 ORDERS={
- "rapido":["gemini","groq","openrouter","openai","huggingface"],
- "economico":["groq","gemini","openrouter","huggingface","openai"],
- "automatico":["gemini","groq","openrouter","openai","huggingface"],
- "qualidade":["gemini","openai","groq","openrouter","huggingface"]
+ "rapido":["groq","openrouter","openai","huggingface","gemini"],
+ "economico":["groq","openrouter","huggingface","openai","gemini"],
+ "automatico":["groq","openrouter","openai","huggingface","gemini"],
+ "qualidade":["openai","groq","openrouter","huggingface","gemini"]
 }
 
 class AIHub:
  def __init__(self):
   self._lock=threading.Lock(); self._stats=defaultdict(lambda:{"requests":0,"success":0,"errors":0,"rate_limits":0,"seconds_total":0.0,"last_error":"","last_status":"idle","last_at":0.0})
-  self._recent=defaultdict(lambda:deque(maxlen=20)); self._started=time.time()
+  self._recent=defaultdict(lambda:deque(maxlen=20)); self._started=time.time(); self._cooldown_until=defaultdict(float)
  def is_public_server(self): return bool(os.getenv("RENDER") or os.getenv("RENDER_SERVICE_ID") or os.getenv("LOGOS_PUBLIC_SERVER","false").lower() in ("1","true","yes","on"))
  def configured(self):
   out={p:bool(os.getenv(k)) for p,k in KEYS.items()}
   if self.is_public_server(): out["9router"]=False
   return out
- def models(self): return {"openai":os.getenv("OPENAI_MODEL","gpt-5-mini"),"gemini":os.getenv("GEMINI_MODEL","gemini-3.6-flash"),"groq":os.getenv("GROQ_MODEL","llama-3.3-70b-versatile"),"openrouter":os.getenv("OPENROUTER_MODEL","openrouter/auto"),"huggingface":os.getenv("HUGGINGFACE_DEFAULT_MODEL") or os.getenv("HUGGINGFACE_MODEL","Qwen/Qwen2.5-7B-Instruct"),"9router":os.getenv("NINEROUTER_MODEL") or os.getenv("9ROUTER_MODEL","oc/deepseek-v4-flash-free")}
+ def models(self): return {"openai":os.getenv("OPENAI_MODEL","gpt-5-mini"),"gemini":os.getenv("GEMINI_MODEL","gemini-2.5-flash"),"groq":os.getenv("GROQ_MODEL","llama-3.3-70b-versatile"),"openrouter":os.getenv("OPENROUTER_MODEL","openrouter/auto"),"huggingface":os.getenv("HUGGINGFACE_DEFAULT_MODEL") or os.getenv("HUGGINGFACE_MODEL","Qwen/Qwen2.5-7B-Instruct"),"9router":os.getenv("NINEROUTER_MODEL") or os.getenv("9ROUTER_MODEL","oc/deepseek-v4-flash-free")}
  def _smart_score(self,p,mode):
   s=self._stats[p]; recent=list(self._recent[p]); avg=(sum(x[1] for x in recent if x[0])/max(1,sum(1 for x in recent if x[0]))) if recent else 15.0
   error_rate=(sum(1 for x in recent if not x[0])/len(recent)) if recent else 0
@@ -35,7 +35,8 @@ class AIHub:
   raw=os.getenv(env_name,"").strip() if env_name else ""
   configured=self.configured()
   base=[x.strip().lower() for x in raw.split(",") if x.strip().lower() in PROVIDERS] if raw else list(ORDERS.get(mode,ORDERS["automatico"]))
-  available=[p for p in base if configured.get(p)]
+  now=time.time()
+  available=[p for p in base if configured.get(p) and self._cooldown_until[p] <= now]
   # Smart Router: usa saúde/latência recente para reordenar os provedores online.
   if os.getenv("LOGOS_SMART_ROUTER","true").lower() not in ("0","false","no","off"):
    available=sorted(available,key=lambda p:self._smart_score(p,mode))
@@ -69,15 +70,40 @@ class AIHub:
   else: load="normal"
   return {"smart_router":True,"environment":"public" if self.is_public_server() else "local","online_providers":sum(1 for p in PUBLIC_PROVIDERS if cfg.get(p)),"public_provider_total":len(PUBLIC_PROVIDERS),"providers":rows,"totals":{"requests":success+errors,"success":success,"errors":errors,"rate_limits":limits},"recent":{"window_minutes":5,"requests":recent_total,"errors":recent_errors,"slow":recent_slow},"load":load,"capacity_note":"Carga atual usa somente os últimos 5 minutos; totais históricos ficam separados. Cotas oficiais continuam sendo definidas por cada provedor.","future_slots":FUTURE_PROVIDERS,"local_reserve":{"provider":"9router","available":bool(cfg.get("9router")) and not self.is_public_server(),"label":"Reserva local"},"uptime_seconds":round(time.time()-self._started)}
  def generate(self,prompt,instructions,provider="auto",mode="automatico",model=None,max_tokens=12000):
-  cfg=self.configured(); candidates=[provider] if provider not in ("auto","automatico","") else self.order(mode); errors=[]
+  cfg=self.configured(); errors=[]
+  requested=(provider or "auto").strip().lower()
+  if requested not in ("auto","automatico",""):
+   if mode=="manual":
+    candidates=[requested]
+   else:
+    # Provedor escolhido vira prioridade, mas nunca bloqueia o fallback.
+    # Ex.: Gemini 429 -> Groq -> OpenRouter -> OpenAI -> HuggingFace.
+    candidates=[requested]+[p for p in self.order(mode) if p!=requested]
+  else:
+   candidates=self.order(mode)
   if self.is_public_server() and provider=="9router": candidates=[]; errors.append("9router: reserva local; indisponível no servidor público")
+  if mode!="manual":
+   now=time.time()
+   cooled=[p for p in candidates if self._cooldown_until[p] > now]
+   for p in cooled:
+    errors.append(f"{p}: cooldown ativo")
+    print(f"[AI] Pulando {p}: cooldown ativo")
+   candidates=[p for p in candidates if self._cooldown_until[p] <= now]
   for p in candidates:
    if p not in PROVIDERS: errors.append(f"{p}: desconhecido"); continue
    if not cfg.get(p): errors.append(f"{p}: não configurado"); continue
    start=time.perf_counter()
    try:
+    print(f"[AI] Tentando {p}...")
     mod=importlib.import_module(PROVIDERS[p]);r=mod.generate(prompt,instructions,model=model if len(candidates)==1 else None,max_tokens=max_tokens);elapsed=round(time.perf_counter()-start,3);self._record(p,True,elapsed)
+    print(f"[AI] {p} OK ({elapsed}s) - modelo: {getattr(r, 'model', '?')}")
     return {"provider":r.provider,"model":r.model,"text":r.text,"seconds":elapsed,"fallback_errors":errors,"smart_route":candidates}
    except Exception as e:
-    elapsed=round(time.perf_counter()-start,3);err=f"{type(e).__name__}: {str(e)[:300]}";self._record(p,False,elapsed,err);errors.append(f"{p}: {err}")
+    elapsed=round(time.perf_counter()-start,3);err=f"{type(e).__name__}: {str(e)[:300]}";self._record(p,False,elapsed,err);errors.append(f"{p}: {err}");print(f"[AI] {p} FALHOU ({elapsed}s): {err}")
+    # Cooldown: evita repetir imediatamente provedores sabidamente indisponiveis/limitados.
+    low=err.lower()
+    if "429" in low or "resource_exhausted" in low or "credits are depleted" in low or "rate limit" in low:
+     cooldown=int(os.getenv("LOGOS_AI_COOLDOWN_SECONDS","900"))
+     self._cooldown_until[p]=time.time()+cooldown
+     print(f"[AI] {p} em cooldown por {cooldown}s")
   raise RuntimeError("Todos os provedores falharam. "+" | ".join(errors))

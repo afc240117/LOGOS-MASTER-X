@@ -1,0 +1,141 @@
+{
+  "version": "0.13",
+  "crossrefs_preinstalled": 336883,
+  "nave_topics": 5315,
+  "nave_relations": 26741,
+  "download_required_for_user": false,
+  "source": "CrossReferences.org / TSK-derived dataset",
+  "license": "CC BY 4.0",
+  "sample_counts_raw": {
+    "JHN 3:16": 15,
+    "JHN 4:1": 12,
+    "ROM 8:28": 41,
+    "GEN 1:1": 62,
+    "MAT 28:19": 33
+  },
+  "sample_joao_3_16": [
+    {
+      "reference": "Lucas 2:14",
+      "anchor": "God",
+      "source": "CrossReferences.org / TSK"
+    },
+    {
+      "reference": "Romanos 5:8",
+      "anchor": "God",
+      "source": "CrossReferences.org / TSK"
+    },
+    {
+      "reference": "2 Coríntios 5:19-21",
+      "anchor": "God",
+      "source": "CrossReferences.org / TSK"
+    },
+    {
+      "reference": "Tito 3:4",
+      "anchor": "God",
+      "source": "CrossReferences.org / TSK"
+    },
+    {
+      "reference": "1 João 4:9-10",
+      "anchor": "God",
+      "source": "CrossReferences.org / TSK"
+    },
+    {
+      "reference": "1 João 4:19",
+      "anchor": "God",
+      "source": "CrossReferences.org / TSK"
+    },
+    {
+      "reference": "João 1:14",
+      "anchor": "gave",
+      "source": "CrossReferences.org / TSK"
+    },
+    {
+      "reference": "João 1:18",
+      "anchor": "gave",
+      "source": "CrossReferences.org / TSK"
+    },
+    {
+      "reference": "Gênesis 22:12",
+      "anchor": "gave",
+      "source": "CrossReferences.org / TSK"
+    },
+    {
+      "reference": "Marcos 12:6",
+      "anchor": "gave",
+      "source": "CrossReferences.org / TSK"
+    }
+  ],
+  "sample_joao_4_1": [
+    {
+      "reference": "Lucas 1:76",
+      "anchor": "the Lord",
+      "source": "CrossReferences.org / TSK"
+    },
+    {
+      "reference": "Lucas 2:11",
+      "anchor": "the Lord",
+      "source": "CrossReferences.org / TSK"
+    },
+    {
+      "reference": "Lucas 19:31",
+      "anchor": "the Lord",
+      "source": "CrossReferences.org / TSK"
+    },
+    {
+      "reference": "Lucas 19:34",
+      "anchor": "the Lord",
+      "source": "CrossReferences.org / TSK"
+    },
+    {
+      "reference": "Atos 10:36",
+      "anchor": "the Lord",
+      "source": "CrossReferences.org / TSK"
+    },
+    {
+      "reference": "1 Coríntios 2:8",
+      "anchor": "the Lord",
+      "source": "CrossReferences.org / TSK"
+    },
+    {
+      "reference": "1 Coríntios 15:47",
+      "anchor": "the Lord",
+      "source": "CrossReferences.org / TSK"
+    },
+    {
+      "reference": "2 Coríntios 4:5",
+      "anchor": "the Lord",
+      "source": "CrossReferences.org / TSK"
+    },
+    {
+      "reference": "Tiago 2:1",
+      "anchor": "the Lord",
+      "source": "CrossReferences.org / TSK"
+    },
+    {
+      "reference": "Apocalipse 19:16",
+      "anchor": "the Lord",
+      "source": "CrossReferences.org / TSK"
+    }
+  ],
+  "sample_tematicas_joao_4_1": [
+    {
+      "topic": "Jesus, o Cristo",
+      "topic_original": "JESUS, THE CHRIST",
+      "section": "história de",
+      "summary": "Tema bíblico relacionado a esta passagem. Explore as referências associadas a Jesus, o Cristo."
+    },
+    {
+      "topic": "Samaria",
+      "topic_original": "SAMARIA",
+      "section": "",
+      "summary": "Tema bíblico relacionado a esta passagem. Explore as referências associadas a Samaria."
+    },
+    {
+      "topic": "Siquém",
+      "topic_original": "SHECHEM",
+      "section": "",
+      "summary": "Tema bíblico relacionado a esta passagem. Explore as referências associadas a Siquém."
+    }
+  ],
+  "routes": "['/api/bible/books', '/api/bible/chapter', '/api/bible/chapters', '/api/bible/crossrefs', '/api/bible/health', '/api/bible/nave', '/api/bible/reference', '/api/bible/resources/status', '/api/bible/search', '/api/bible/strong', '/api/bible/translations', '/api/bible/verse']"
+}

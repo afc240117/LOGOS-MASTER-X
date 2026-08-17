@@ -1,0 +1,19 @@
+LOGOS MASTER X — V8.14 BÍBLIA X CLEAN
+
+FOCO DESTA VERSÃO: LEITURA DA BÍBLIA X
+
+- Botão “📖 Leitura Bíblica” abre/retorna ao leitor principal.
+- Botão “✨ Clean” aproxima os versículos e reduz poluição visual.
+- A− / 100% / A+ funcionam no leitor da Bíblia.
+- Tela cheia abre a Bíblia X em modo leitura.
+- Botão dedicado “✕ Sair” aparece em tela cheia.
+- Versículos ficam acumulados e bem próximos.
+- Ferramentas ficam em duas linhas curtas logo abaixo do verso.
+- +X Ferramentas expande/recolhe a área de ferramentas.
+- +Y Verso aumenta/reduz somente aquele verso.
+- Tela cheia oculta sidebar e áreas não essenciais, preservando leitura e ferramentas do versículo.
+
+Nenhuma função foi removida.
+
+Instalação:
+Extrair -> copiar app -> substituir -> reiniciar Uvicorn -> Ctrl+F5.

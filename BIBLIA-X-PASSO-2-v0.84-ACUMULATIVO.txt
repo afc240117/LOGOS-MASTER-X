@@ -1,0 +1,21 @@
+BÍBLIA X — PASSO 2 — PACK ACUMULATIVO v0.84
+Base: v0.78.
+
+v0.79 — Importação de Workspace
+- Importa arquivo JSON exportado pela própria Bíblia X.
+
+v0.80 — Mesclagem segura
+- Mescla histórico, notas, favoritos, marcadores, coleções, etiquetas,
+  planos e demais dados sem apagar o ambiente atual.
+
+v0.81 — Central de Backup
+- Exportar, importar e restaurar sessão em um único painel.
+
+v0.82 — Atividade local
+- Registra dias de uso e número de aberturas da Bíblia X.
+
+v0.83 — Sequência de leitura
+- Mostra dias seguidos de atividade e minutos locais acumulados.
+
+v0.84 — Consolidação
+- Preserva integralmente todos os recursos acumulados anteriores.

@@ -1,0 +1,15 @@
+{
+  "version": "v0.48 acumulativo",
+  "base": "v0.42 APROVADA",
+  "javascript_ok": true,
+  "backend_ok": true,
+  "bible_routes": "17",
+  "included": [
+    "v0.43 progresso",
+    "v0.44 marcadores",
+    "v0.45 backup Meu Estudo",
+    "v0.46 limpar histórico",
+    "v0.47 integração leitor",
+    "v0.48 consolidação"
+  ]
+}

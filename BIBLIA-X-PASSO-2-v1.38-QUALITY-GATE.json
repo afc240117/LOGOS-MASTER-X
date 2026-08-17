@@ -1,0 +1,15 @@
+{
+  "version": "v1.38 acumulativo",
+  "base": "v1.32",
+  "javascript_ok": true,
+  "backend_ok": true,
+  "bible_routes": "17",
+  "included": [
+    "v1.33 perguntas",
+    "v1.34 perguntas resolvidas",
+    "v1.35 ligações pessoais",
+    "v1.36 progresso",
+    "v1.37 exportação estudo",
+    "v1.38 consolidação"
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "version": "v0.66 acumulativo",
+  "base": "v0.60",
+  "javascript_ok": true,
+  "backend_ok": true,
+  "bible_routes": "17",
+  "included": [
+    "v0.61 planos",
+    "v0.62 modelos",
+    "v0.63 personalizados",
+    "v0.64 marca-texto",
+    "v0.65 integração",
+    "v0.66 consolidação"
+  ]
+}

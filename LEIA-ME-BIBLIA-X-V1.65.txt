@@ -1,0 +1,16 @@
+LOGOS MASTER X — BÍBLIA X V1.65
+
+HOTFIX FUNCIONAL DOS CONTROLES DO LEITOR
+
+Corrigido:
+- Clean ON/OFF
+- A−, 100%, A+
+- Tela cheia e ESC / Sair
+- Ouvir (com fallback para voz do navegador)
+- Pesquisa
+- Concordância
+
+A causa principal era a barra nova depender de um controlador registrado muito tarde no JavaScript.
+A V1.65 registra um controlador resiliente no começo do app e mantém fallback de tela cheia por CSS.
+
+Instalação: extrair, copiar LOGOS-MASTER-X sobre a instalação atual, substituir, reiniciar Python e Ctrl+F5.

@@ -1,0 +1,13 @@
+LOGOS MASTER X — V8.21 BÍBLIA X
+
+Correção visual focada no problema mostrado:
+- remove a linha divisória horizontal entre versículos;
+- remove qualquer min-height/height herdado do leitor antigo;
+- força o leitor V3 para fluxo vertical compacto;
+- cada versículo passa a ocupar somente a altura do próprio texto + ferramentas;
+- ferramentas recolhidas ocupam zero pixels;
+- mantém todas as funções e botões existentes;
+- ajuste otimizado para PC Full HD.
+
+Instalação:
+Extrair -> copiar app -> substituir -> reiniciar Uvicorn -> Ctrl+F5.

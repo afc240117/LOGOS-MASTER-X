@@ -1,0 +1,25 @@
+LOGOS MASTER X — V8.6 RÁPIDO REAL
+
+FOCO: sair da faixa de 2–4 minutos e aproximar a geração de dezenas de segundos.
+
+Mudanças:
+- Apenas 2 chamadas longas.
+- As 2 chamadas rodam EM PARALELO.
+- Não existe mais chamada de mapa.
+- Long-form prioriza OpenAI quando a chave estiver configurada.
+- Fallback direto: OpenAI/OpenRouter, sem varrer Gemini/Groq/HuggingFace no meio da mensagem.
+- OpenAI: max_retries=0; timeout padrão 55s.
+- OpenRouter: max_retries=0; timeout padrão 55s.
+- OpenAI não força mais 16.000 tokens de saída em todo bloco; usa orçamento proporcional.
+- Sem expansão extra automática.
+- Mantém estrutura editorial V8.5.
+- Fonte do Gerador Rápido aumentada para 21px no PC e 19px no celular.
+- Studio: 19px no corpo.
+- Frontend espera até 180s como margem de segurança.
+
+Observação:
+As duas chamadas paralelas podem consumir créditos simultaneamente, mas o total de tokens é semelhante
+ao conteúdo gerado; o ganho principal é no TEMPO de espera.
+
+Instalação:
+Extrair -> copiar app -> substituir -> reiniciar Uvicorn -> Ctrl+F5.

@@ -1,0 +1,11 @@
+BÍBLIA X — PASSO 2 v0.6
+Correção: a interface antiga dependia apenas de IndexedDB/importação manual.
+Agora a Leitura Principal usa o banco SQLite integrado via /api/bible.
+
+- BLIVRE carregada automaticamente.
+- WEBP selecionável.
+- João 3:16 abre automaticamente ao entrar.
+- Abrir referência usa /api/bible/reference.
+- Pesquisa/concordância usam /api/bible/search.
+- Fallback IndexedDB preservado.
+- cache/versionamento do frontend atualizado.

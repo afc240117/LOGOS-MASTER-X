@@ -1,0 +1,1 @@
+V1.72 — Audio Reader X acumulativo sobre V1.71. Leitura em voz alta local via navegador, velocidade, escopo e destaque do versículo em reprodução.

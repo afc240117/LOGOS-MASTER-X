@@ -1,0 +1,15 @@
+{
+  "version": "v1.02 acumulativo",
+  "base": "v0.96",
+  "javascript_ok": true,
+  "backend_ok": true,
+  "bible_routes": "17",
+  "included": [
+    "v0.97 seleção múltipla",
+    "v0.98 cesta seleção",
+    "v0.99 atalhos",
+    "v1.00 acessibilidade",
+    "v1.01 compacto",
+    "v1.02 consolidação"
+  ]
+}

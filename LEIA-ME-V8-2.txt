@@ -1,0 +1,7 @@
+V8.2
+- Lm normalizado para Lamentações antes da IA.
+- Quality Gate de duração usa minutos estimados e cobertura máxima de 100%.
+- Reforço anti-repetição.
+- Fonte do material gerado aumentada: 18px desktop, 17px mobile; títulos 23px.
+- Preserva V8.1/Home e V8 organizado.
+Instalação: copiar app, substituir, reiniciar Uvicorn, Ctrl+F5.

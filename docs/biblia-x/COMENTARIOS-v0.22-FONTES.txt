@@ -1,0 +1,21 @@
+BÍBLIA X v0.22 — COMENTÁRIOS FUNCIONAIS
+
+Fonte clássica:
+Matthew Henry's Concise Commentary — edição Markdown do projeto LyteWord.
+Licença do repositório: CC0-1.0.
+O projeto informa que preserva o conteúdo original e altera somente a formatação.
+
+Arquitetura:
+- Online First: a fonte clássica é buscada automaticamente pelo servidor por livro/capítulo.
+- Cache local automático: após o primeiro acesso, o capítulo fica disponível no cache do servidor.
+- Nenhum download manual é exigido do usuário.
+- João 4 foi incluído como cache de teste para validação local.
+
+Cinco leituras:
+1. Exegético — Strong + TSK + fonte clássica.
+2. Hermenêutico — contexto imediato + estrutura de capítulo + fonte clássica.
+3. Apologético — relações bíblicas TSK, sem inventar argumentos.
+4. Temático — tópicos Nave + referências.
+5. Pastoral — fonte clássica + envio ao Studio X.
+
+A fonte clássica original permanece identificada e não recebe autoria falsa.

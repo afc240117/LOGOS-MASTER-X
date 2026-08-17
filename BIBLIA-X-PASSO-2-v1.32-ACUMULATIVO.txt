@@ -1,0 +1,20 @@
+BÍBLIA X — PASSO 2 — PACK ACUMULATIVO v1.32
+Base: v1.26.
+
+v1.27 — Snapshots de Estudo
+- Salva passagem, tradução, fonte, modo de leitura e seleção atual.
+
+v1.28 — Restaurar Snapshot
+- Retoma rapidamente um ambiente salvo.
+
+v1.29 — Trilha de Navegação
+- Guarda até 25 referências recentes em sequência.
+
+v1.30 — Status de Revisão
+- Marca versículo como Estudado ou Revisar Depois.
+
+v1.31 — Fila de Revisões
+- Painel com versículos marcados para revisão/estudo.
+
+v1.32 — Consolidação
+- Preserva integralmente todos os recursos acumulados anteriores.

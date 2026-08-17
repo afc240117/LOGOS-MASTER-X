@@ -1,0 +1,15 @@
+{
+  "version": "v1.20 acumulativo",
+  "base": "v1.14",
+  "javascript_ok": true,
+  "backend_ok": true,
+  "bible_routes": "17",
+  "included": [
+    "v1.15 tópicos pessoais",
+    "v1.16 navegação tópicos",
+    "v1.17 ler depois",
+    "v1.18 apresentação",
+    "v1.19 controles apresentação",
+    "v1.20 consolidação"
+  ]
+}

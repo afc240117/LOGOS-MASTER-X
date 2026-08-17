@@ -1,0 +1,13 @@
+LOGOS MASTER X — BÍBLIA X — HOTFIX V1.60.1
+
+CORREÇÕES APLICADAS
+1. Corrigida a grade do versículo: o HTML possui 3 elementos (seleção, número e texto), mas o hotfix V1.60 declarava apenas 2 colunas. Isso criava uma terceira coluna implícita estreita e quebrava o texto letra/palavra por linha.
+2. Corrigido o gerador de links contextuais. O código anterior processava novamente o HTML já criado; nomes duplicados como “Israel” (pessoa e lugar) podiam gerar marcação aninhada/corrompida. Agora os nomes são deduplicados e transformados em links em uma única passagem.
+3. Adicionadas proteções de largura e quebra normal no corpo do versículo e nos links de entidades.
+4. Atualizados query string dos arquivos estáticos e CACHE_VERSION do Service Worker para forçar o navegador a carregar a correção.
+
+INSTALAÇÃO
+Extrair e substituir a pasta LOGOS-MASTER-X atual. Iniciar normalmente com o mesmo comando/atalho usado atualmente.
+
+ESCOPO
+Somente leitura/renderização da Bíblia X e cache dos estáticos. Nenhuma chave de API foi alterada.

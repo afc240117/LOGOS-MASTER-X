@@ -1,0 +1,20 @@
+BÍBLIA X — PASSO 2 — PACK ACUMULATIVO v1.08
+Base: v1.02.
+
+v1.03 — Comparador de versículos
+- Junta até 12 versículos escolhidos pelo usuário em um painel lado a lado.
+
+v1.04 — Ações do comparador
+- Copiar todos, abrir passagem e remover itens.
+
+v1.05 — Insight pessoal
+- Campo persistente separado das notas formais por versículo.
+
+v1.06 — Capítulos recentes
+- Acesso rápido aos últimos capítulos visitados.
+
+v1.07 — Integração por versículo
+- Botões Comparar e Insight diretamente no leitor.
+
+v1.08 — Consolidação
+- Preserva integralmente todos os recursos acumulados anteriores.

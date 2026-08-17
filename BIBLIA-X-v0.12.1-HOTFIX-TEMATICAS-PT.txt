@@ -1,0 +1,7 @@
+HOTFIX v0.12.1 — TEMÁTICAS EM PORTUGUÊS
+
+- O texto-fonte Nave permanece original internamente para rastreabilidade.
+- A interface exibe títulos temáticos em português.
+- Subtítulos ingleses deixaram de virar tópicos independentes.
+- O parser Nave foi refeito respeitando tópico principal e seção.
+- Descrições exibidas ao usuário são em português.

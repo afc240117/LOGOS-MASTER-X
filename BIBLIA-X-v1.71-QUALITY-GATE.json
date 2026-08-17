@@ -1,0 +1,15 @@
+{
+  "version": "v1.71 acumulativo",
+  "base": "ZIP v1.65 enviado pelo usuário",
+  "javascript_ok": true,
+  "backend_ok": true,
+  "bible_routes": "18",
+  "included": [
+    "v1.66 índice pesquisa",
+    "v1.67 etiquetas temáticas",
+    "v1.68 central pesquisa",
+    "v1.69 índice temático pessoal",
+    "v1.70 exportação JSON",
+    "v1.71 consolidação"
+  ]
+}

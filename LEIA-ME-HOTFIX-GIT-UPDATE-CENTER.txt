@@ -1,0 +1,33 @@
+LOGOS MASTER X — HOTFIX UPDATE CENTER / GIT
+
+OBJETIVO
+Corrigir:
+  GET  /api/dev/status  -> 500
+  POST /api/dev/publish -> 500
+  fatal: not a git repository
+
+O QUE ESTE HOTFIX FAZ
+- Se .git existir: usa normalmente.
+- Se .git estiver ausente: /api/dev/status deixa de gerar erro 500.
+- Ao clicar em Publicar, reconecta o projeto ao GitHub automaticamente.
+- Repositório padrão: https://github.com/afc240117/LOGOS-MASTER-X.git
+- Faz fetch de origin/main.
+- Usa git reset --mixed origin/main para recuperar o histórico SEM substituir os arquivos locais.
+- Não usa reset --hard, force push nem clone por cima da pasta.
+- Mantém .env fora do commit.
+- Recria identidade Git local somente se ela estiver ausente.
+- Pode usar outro remoto definindo LOGOS_GIT_REMOTE no ambiente.
+
+INSTALAÇÃO
+1. Feche o servidor (Ctrl+C).
+2. Extraia este ZIP.
+3. Copie a pasta LOGOS-MASTER-X sobre sua pasta atual.
+4. Confirme Substituir app\\main.py.
+5. Inicie:
+   python -m uvicorn app.main:app --reload --port 8080
+6. Abra o Update Center.
+7. Primeiro teste "Git status". Ele não deve mais retornar 500.
+8. Clique "Publicar no Render". Se o .git estiver ausente, a reconexão será feita automaticamente.
+
+IMPORTANTE
+O primeiro Publicar depois de perder o .git pode listar muitas diferenças locais em relação ao GitHub. Isso é esperado: o histórico remoto foi restaurado e seus arquivos locais foram preservados como alterações.

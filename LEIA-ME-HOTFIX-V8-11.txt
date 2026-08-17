@@ -1,0 +1,25 @@
+LOGOS MASTER X — HOTFIX V8.11 LEITURA + NAVEGAÇÃO
+
+Aplicar sobre a base enviada pelo usuário.
+
+ALTERAÇÕES:
+- Studio X: etapas superiores clicáveis (1–7) e feedback visual.
+- Seleção: borda dourada arredondada, degradê fosco cinza/dourado e texto branco.
+- Leitura gerada: A− / 100% / A+ funcionais.
+- Tela cheia funcional + botão dedicado Sair.
+- Navegação rápida à direita: subir / rolagem automática / descer.
+- Bíblia X: controles de leitura universais adicionados ao painel principal.
+- Púlpito: controles de leitura universais adicionados ao texto.
+- Sermões/Studio: controles já integrados ao corpo da mensagem.
+- Hover dourado discreto preservado.
+- Cache bust atualizado para v134.61-v8-11-reader-nav-hotfix.
+
+NÃO ALTERADO:
+- IA, prompts, providers, roteamento, Quality Gate ou backend.
+
+INSTALAÇÃO:
+1. Pare o servidor (CTRL+C).
+2. Extraia este ZIP na raiz LOGOS-MASTER-X.
+3. Confirme substituir os 3 arquivos.
+4. Inicie: python -m uvicorn app.main:app --reload --port 8080
+5. No navegador use CTRL+F5.

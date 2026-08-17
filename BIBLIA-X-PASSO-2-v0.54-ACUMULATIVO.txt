@@ -1,0 +1,23 @@
+BÍBLIA X — PASSO 2 — PACK ACUMULATIVO v0.54
+Base: v0.48.
+
+v0.49 — Sessão persistente
+- Reabre automaticamente a última passagem/tradução ao retornar à Bíblia X.
+
+v0.50 — Acesso Rápido
+- Até 24 referências nomeadas pelo usuário.
+- Abrir/remover em painel próprio.
+
+v0.51 — Histórico de pesquisa
+- Guarda até 30 buscas recentes.
+- Reexecuta a pesquisa com um clique.
+
+v0.52 — Pesquisa rápida por seleção
+- Duplo clique sobre texto selecionado (até 3 palavras) envia à pesquisa.
+- Sem seleção, mantém foco do versículo.
+
+v0.53 — Continuidade do estudo
+- Integra sessão, progresso, marcadores, favoritos, notas e buscas.
+
+v0.54 — Consolidação
+- Preserva integralmente tudo da v0.42/v0.48 e módulos anteriores.

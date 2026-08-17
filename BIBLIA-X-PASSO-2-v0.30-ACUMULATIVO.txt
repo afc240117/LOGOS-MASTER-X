@@ -1,0 +1,32 @@
+BÍBLIA X — PASSO 2 — PACOTE ACUMULATIVO v0.30
+
+Base: v0.24 Comentários PT-BR.
+
+v0.25 — Histórico inteligente
+- Registra automaticamente as últimas passagens abertas.
+- Reabre referências diretamente pelo painel "Meu Estudo".
+
+v0.26 — Arquivo pessoal
+- Centraliza favoritos e notas já salvos por versículo.
+- Não altera o formato anterior das notas/favoritos.
+
+v0.27 — DNA K7 funcional
+- Analisa passagem usando Contexto + TSK + Nave + Strong.
+- Exibe etapas estruturais e indicador de densidade.
+- Envia a passagem diretamente ao Studio X.
+
+v0.28 — Pacote de Estudo
+- Gera arquivo Markdown com texto, contexto, temas, referências e Strong.
+- Funciona por passagem sem serviço externo.
+
+v0.29 — Pesquisa Strong
+- Campo de pesquisa aceita Gxxxx/Hxxxx.
+- Mostra lema, transliteração, idioma e definição.
+
+v0.30 — Consolidação / Qualidade
+- Barra de ações do leitor: copiar, Meu Estudo, pacote, Studio X.
+- Responsividade mobile.
+- Preserva Online First, Bíblia, TSK, Nave PT-BR, Strong, Léxico,
+  Contexto e Comentários da base v0.24.
+
+Nenhuma função principal exige download manual quando conectado.

@@ -1,0 +1,26 @@
+LOGOS MASTER X — V1.56 BÍBLIA X
+ACUMULATIVA SOBRE V1.55
+
+NOVO:
+- Ficha contextual de pessoas/lugares sem sair da leitura.
+- Abas:
+  Visão geral
+  Passagens
+  Relacionados
+  Abrir módulo
+- Histórico curto de entidades exploradas.
+- Relações automáticas em cadeia:
+  pessoa -> lugar -> passagem -> outra pessoa/lugar.
+- Clique em item relacionado abre nova ficha sem perder o leitor.
+- Passagens continuam abrindo diretamente no capítulo.
+- Acesso direto a Personagens, Mapas e Pesquisa X.
+
+PRESERVADO:
+- seleção de versículos da V1.55;
+- Comentários IA;
+- Studio X;
+- sidebar;
+- temas;
+- leitor compacto da V1.54.
+
+Se der problema, basta voltar para a V1.55.

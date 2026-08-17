@@ -1,0 +1,1 @@
+V2.61 — Cobertura X. Diagnóstico local do estudo atual mostrando quais dimensões já possuem material e abrindo a ferramenta correspondente.

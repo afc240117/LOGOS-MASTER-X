@@ -1,0 +1,28 @@
+LOGOS MASTER X — BÍBLIA X v2.95 REAL FIX
+
+A causa real encontrada no vídeo:
+A linha do versículo possui 3 elementos:
+1. botão de seleção
+2. número do versículo
+3. texto
+
+Uma regra CSS posterior estava criando apenas 2 colunas.
+O texto era empurrado para uma coluna de aproximadamente 32px,
+por isso aparecia quebrado verticalmente.
+
+CORREÇÕES:
+- grid do versículo corrigido para 3 colunas;
+- texto volta a ocupar toda a largura disponível;
+- word-break/writing-mode normalizados;
+- o antigo controle flutuante da direita foi removido do layout;
+- os mesmos comandos continuam disponíveis em uma toolbar horizontal normal;
+- toolbar não cobre mais os versículos nem a barra de rolagem;
+- ajustes anteriores do Studio X (Aba anterior / Próxima aba) preservados.
+
+INSTALAÇÃO:
+1. Extraia o ZIP.
+2. Cole LOGOS-MASTER-X por cima da instalação atual.
+3. Substitua os arquivos.
+4. Pare e inicie novamente o Uvicorn.
+5. Abra 127.0.0.1:8080.
+6. Use Ctrl+F5 uma vez.

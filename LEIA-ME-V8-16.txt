@@ -1,0 +1,41 @@
+LOGOS MASTER X — V8.16 BÍBLIA X LEITOR V2
+
+RECONSTRUÇÃO DO LEITOR
+- Remove visual de cartões gigantes por versículo.
+- Fluxo contínuo: versículos próximos e compactos.
+- Ferramentas principais em uma linha curta:
+  Referências, Strong, Léxico, Contexto, Comentários, Mídia, DNA K7, Studio X e +.
+- O botão + abre as ferramentas secundárias sem remover nenhuma função.
+- Barra de ações da passagem também fica compacta e possui + Mais.
+
+LINKS INTELIGENTES
+- Pessoas reconhecidas ficam clicáveis e abrem Personagens.
+- Lugares reconhecidos ficam clicáveis e abrem Mapas.
+- Navegação preparada para cadeia de conhecimento.
+- Duplo clique em qualquer palavra abre a Concordância e pesquisa a palavra.
+
+CONCORDÂNCIA / PESQUISA
+- Resultado da concordância volta a abrir o novo leitor real, não texto simples.
+- Pesquisa de palavras integrada ao fluxo do leitor.
+
+COMENTÁRIOS IA
+- Novo endpoint /api/bible-comment-ai.
+- Não usa pipeline do Studio, segmentação, Quality Gate nem Smart Router geral.
+- OpenAI direto e curto; fallback direto para OpenRouter.
+- Resumo: até ~110 palavras.
+- Tópicos: até ~130 palavras.
+- Timeout reduzido.
+- Persistência e Reler/Gerar outro permanecem.
+
+ZOOM / TELA CHEIA
+- Mantidos controles A− / 100% / A+ / Tela cheia / Sair.
+- Tela cheia oculta áreas de configuração e prioriza somente a leitura.
+
+ARQUIVOS
+- Não inclui .env nem chaves.
+- Alterados somente main.py, JS, CSS e index.html.
+
+INSTALAÇÃO
+Extrair -> copiar app -> substituir -> reiniciar:
+python -m uvicorn app.main:app --reload --port 8080
+Depois Ctrl+F5.

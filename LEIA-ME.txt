@@ -1,0 +1,5 @@
+HOTFIX BÍBLIA X MENU
+Base: LOGOS-MASTER-X-UNICO-COMPLETO-BIBLIA-X-FINAL
+Correção: adiciona Bíblia X como módulo principal separado do Studio X no menu superior e lateral.
+Copie a pasta LOGOS-MASTER-X sobre a pasta principal da instalação, substituindo o index.html.
+Depois reinicie o Uvicorn e atualize o navegador com Ctrl+F5.

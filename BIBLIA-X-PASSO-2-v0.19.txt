@@ -1,0 +1,7 @@
+PASSO 2 v0.19 — CONTEXTO PT-BR
+- Corrige resíduos visíveis em inglês nos tópicos Nave.
+- Exemplo confirmado: Catholicity -> Universalidade da Igreja.
+- Acrescenta normalização de tópicos bíblicos frequentes para PT-BR.
+- Mantém o rótulo original internamente (tooltip) para rastreabilidade.
+- Termos desconhecidos não são traduzidos por adivinhação.
+- Mantém Contexto, TSK, Strong, Léxico e arquitetura Online First da v0.18.

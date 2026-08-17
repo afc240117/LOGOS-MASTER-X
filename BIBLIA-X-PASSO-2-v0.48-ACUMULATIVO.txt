@@ -1,0 +1,22 @@
+BÍBLIA X — PASSO 2 — PACK ACUMULATIVO v0.48
+Base homologada: v0.42.
+
+v0.43 — Progresso de leitura
+- Guarda automaticamente a última passagem/capítulo.
+- Botão Continuar retorna ao ponto salvo.
+
+v0.44 — Marcadores
+- Marcador independente de Favoritos/Notas.
+- Até 100 referências com painel próprio.
+
+v0.45 — Backup do Meu Estudo
+- Exporta histórico, notas, favoritos, marcadores e progresso em JSON.
+
+v0.46 — Gestão de histórico
+- Limpa somente o histórico sem apagar notas/favoritos/marcadores.
+
+v0.47 — Integração do leitor
+- Marcador por versículo + acesso rápido na barra.
+
+v0.48 — Consolidação
+- Preserva integralmente a base aprovada v0.42 e todos os módulos anteriores.

@@ -1,0 +1,26 @@
+LOGOS MASTER X — V8.12
+
+CORREÇÕES
+- A− / 100% / A+ agora usam eventos exclusivos e não conflitam com a Bíblia X.
+- Tela cheia e botão dedicado Sair funcionam por classe interna, sem depender da API Fullscreen do navegador.
+- ↑ / rolagem automática / ↓ agora controlam a página da mensagem, em vez de tentar rolar um elemento que não tinha scroll.
+- Os controles permanecem dentro da área de leitura; a coluna de navegação fica alinhada à direita.
+- As 7 etapas superiores recebem onclick direto + delegação; clicar realmente troca a página abaixo.
+
+BÍBLIA X — LEITURA CLEAN
+- Novo botão “📖 Leitura Clean”.
+- Não remove nenhum recurso.
+- Quando ativado, aproxima os versículos e esconde ferramentas visuais, mantendo o texto completo.
+- A− / A+ e tela cheia próprios da Bíblia X.
+
+COMENTÁRIOS
+- Mantidos os comentários/fonte clássica atuais.
+- Acrescentados 15 especialistas IA sob demanda:
+  Textual, Exegético, Teológico, Histórico-Cultural, Apologético,
+  Bíblico-Comparativo, Aplicação, Homilético, Pentecostal, DNA K7,
+  Hermenêutico, Cristocêntrico, Geográfico-Arqueológico, Doutrinário e Didático.
+- Cada especialista mostra a descrição do objetivo antes da geração.
+- Só consome IA quando clicar em “Gerar análise IA”.
+
+INSTALAÇÃO
+Extrair -> copiar app -> substituir -> reiniciar Uvicorn -> Ctrl+F5.

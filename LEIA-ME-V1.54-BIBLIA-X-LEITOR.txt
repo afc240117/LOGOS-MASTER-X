@@ -1,0 +1,20 @@
+LOGOS MASTER X — V1.54 — BÍBLIA X LEITOR COMPACTO
+
+ALTERADO SOMENTE NO CORPO/LEITOR DA BÍBLIA X:
+- versículos mais próximos;
+- texto confortável para leitura;
+- linha principal com botões/ícones maiores e legíveis;
+- botão + permanece no fim da linha principal;
+- segunda linha fechada ocupa zero espaço;
+- segunda linha aberta empurra o próximo verso sem sobreposição;
+- ajustes responsivos para PC e celular.
+
+PROTEGIDO / NÃO ALTERADO:
+- 15 Comentários IA e modos de geração;
+- cache/offline dos comentários;
+- Studio X;
+- menu lateral Bíblia X;
+- temas e demais módulos.
+
+INSTALAÇÃO:
+Extrair e copiar a pasta LOGOS-MASTER-X sobre a instalação atual, substituindo os arquivos solicitados.

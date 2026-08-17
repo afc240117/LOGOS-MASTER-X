@@ -1,0 +1,22 @@
+LOGOS MASTER X — HOTFIX V131 ANTI-TRAVAMENTO INTEGRAL
+
+Objetivo: proteger todas as etapas do Studio X contra estados órfãos, chamadas de IA presas, cache antigo e bloqueio de navegação.
+
+Proteções incluídas:
+1. Timeout de 45s no navegador para /api/generate-ai.
+2. Timeout de 45s nos provedores Python.
+3. Fallback automático para geração local quando a API falhar/expirar.
+4. ID único por geração; respostas antigas são ignoradas.
+5. AbortController para cancelar requisições ao voltar/tentar novamente.
+6. Watchdog de 90s na Etapa 6.
+7. Detecção de processamento órfão após F5/fechar/reabrir.
+8. Botão Voltar permanece funcional durante geração e cancela com segurança.
+9. Reset restrito ao estado temporário da geração; Etapas 1–5 são preservadas.
+10. Recuperação de Promise/erro assíncrono sem bloquear a interface.
+11. Contador limitado visualmente e nunca usado para manter a UI presa.
+12. Cache/Service Worker atualizado para v131.
+13. Arquivos JS/CSS versionados v131 para impedir reutilização do v114.
+14. __pycache__ antigo removido.
+15. Provedores com retries limitados para evitar espera excessiva.
+
+Uso: extraia este ZIP como uma nova base e execute normalmente. Não aplique por cima de outros hotfixes 11–20.

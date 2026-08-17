@@ -1,0 +1,23 @@
+BÍBLIA X — PASSO 2 — PACK ACUMULATIVO v0.36
+Base: v0.30.
+
+v0.31 — Prévia de referências
+- Ctrl/Alt/Cmd + clique em referência abre prévia sem sair da leitura.
+- Permite abrir ou copiar a passagem.
+
+v0.32 — Comparar traduções
+- Compara BLIVRE e WEBP lado a lado para a mesma referência.
+
+v0.33 — Modo leitura
+- Oculta elementos de navegação para leitura concentrada.
+- Preferência fica salva no navegador.
+
+v0.34 — Exportação JSON
+- Exporta o mesmo pacote de estudo estruturado em JSON.
+
+v0.35 — Ações de leitura ampliadas
+- Copiar, comparar, Meu Estudo, Markdown, JSON, modo leitura, Studio X.
+
+v0.36 — Consolidação
+- Mantém histórico, favoritos, notas, DNA K7, pacote Markdown, pesquisa Strong,
+  TSK, Nave PT-BR, Strong, Léxico, Contexto, Comentários PT-BR e Online First.

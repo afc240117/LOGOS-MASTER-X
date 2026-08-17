@@ -1,0 +1,10 @@
+PASSO 2 v0.18 — CONTEXTO FUNCIONAL
+
+- Botão Contexto agora é funcional.
+- Mostra livro, testamento, ordem canônica, quantidade de capítulos e versículos do capítulo.
+- Mostra contexto imediato (versículo anterior e próximo), clicáveis.
+- Agrega temas Nave em português.
+- Agrega referências TSK.
+- Mostra densidade Strong da referência.
+- Não inventa autoria/data/cultura: contexto histórico avançado será incorporado apenas com fonte verificável.
+- Mantém arquitetura Online First e fallback local.

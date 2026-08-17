@@ -1,0 +1,19 @@
+LOGOS MASTER X — FIX V8.1 RESTORE HOME
+
+Correção crítica:
+- Restaura a rota GET / que serve a interface principal index.html.
+- Restaura também as rotas /version.json, /favicon.ico, /api/health,
+  diagnósticos, think-plan, prompt-preview, quality e provider-test
+  que foram removidas acidentalmente no pacote V8 anterior.
+- Mantém as melhorias do V8:
+  organização editorial, geração segmentada, expansão por déficit,
+  Quality Gate por duração e Quality Gate no Gerador Rápido.
+
+Instalação:
+1. Extraia.
+2. Copie a pasta app sobre a pasta app atual.
+3. Aceite substituir.
+4. Reinicie:
+   python -m uvicorn app.main:app --reload --port 8080
+5. Abra http://127.0.0.1:8080/
+6. Ctrl+F5.

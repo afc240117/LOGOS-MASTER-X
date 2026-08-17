@@ -1,0 +1,8 @@
+BÍBLIA X — PASSO 2 — PACK ACUMULATIVO v1.44
+Base: v1.38
+v1.39 Coleções de estudo
+v1.40 Exportação de coleções
+v1.41 Estudo do Dia
+v1.42 Painel do Estudo
+v1.43 Exportação Markdown com notas, insights e perguntas
+v1.44 Consolidação integral

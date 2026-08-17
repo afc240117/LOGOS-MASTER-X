@@ -1,0 +1,1 @@
+V1.71 — Comparador X acumulativo sobre V1.70. Compara BLIVRE e WEBP lado a lado, verso por verso, com cópia e navegação sincronizada.

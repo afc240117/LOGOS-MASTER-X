@@ -1,0 +1,22 @@
+LOGOS MASTER X — V1.60 BÍBLIA X
+HOTFIX LEITURA / VERSÍCULO / RAIL
+ACUMULATIVA SOBRE V1.59
+
+CORRIGIDO:
+- clique no número do versículo agora sincroniza Livro + Capítulo + Versículo visíveis e abre corretamente o verso;
+- removido o botão duplicado “Capítulo” da barra principal;
+- botões por versículo voltam a ficar em linha, sem encavalar nem empilhar errado;
+- segunda linha extra continua abrindo só quando clicar no + e fechando sem ocupar espaço;
+- trilho flutuante de subir/descer/foco foi reduzido e movido para baixo à direita para não atrapalhar o centro da página;
+- cache atualizado para forçar carregar os arquivos novos.
+
+PRESERVADO:
+- V1.54 leitor compacto
+- V1.55 seleção + hiperlinks
+- V1.56 ficha contextual
+- V1.57 navegação inteligente
+- V1.58 livro + capítulo + versículo
+- V1.59 pesquisa pro
+
+ROLLBACK:
+Se algo falhar, volte para a V1.59.

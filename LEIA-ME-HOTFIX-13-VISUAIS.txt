@@ -1,0 +1,24 @@
+LOGOS MASTER X — HOTFIX 13 VISUAIS DE GERAÇÃO
+
+PADRÃO:
+- DNA → K7 → Bíblia (cinematográfico)
+
+ALTERNATIVAS CLÁSSICAS / DNA:
+1. Órbitas Dinâmicas
+2. Pulso Tecnológico
+3. Anel Fluido
+4. Hexagonal Moderno
+5. Círculo Duplo Premium
+6. Radar K7
+
+ALTERNATIVAS K7 MODERNAS:
+7. Órbitas Dinâmicas K7
+8. Pulso Tecnológico K7
+9. Anel Fluido K7
+10. Hexagonal Moderno K7
+11. Círculo Duplo Premium K7
+12. Radar K7
+
+TOTAL: 13 VISUAIS, sendo 1 padrão + 12 opcionais.
+Aplicado ao Gerador Rápido, Studio X Aba 6 e revisão da Aba 7.
+A escolha é salva localmente e apenas um visual é executado por vez.

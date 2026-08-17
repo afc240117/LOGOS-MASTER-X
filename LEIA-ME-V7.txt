@@ -1,0 +1,40 @@
+LOGOS MASTER X — GERADOR LONGO V7 + QUALITY GATE GERADOR RÁPIDO
+
+V7 — Geração longa segmentada
+- Sermões completos com 30 minutos ou mais deixam de depender de uma única resposta.
+- O backend cria um plano mestre curto.
+- Depois gera 3 a 5 blocos coerentes, conforme a duração.
+- Os blocos são unidos automaticamente em UMA mensagem.
+- Se o total ficar muito abaixo do alvo, há uma expansão complementar automática.
+- Timeout do navegador para gerações passa a 420 s.
+- Alvos aproximados:
+  20 min: 1.800–2.400 palavras
+  30 min: 2.600–3.400
+  35 min: 3.000–3.900
+  40 min: 3.800–5.000
+  50 min: 4.500–5.800
+  60 min: 5.400–7.000
+  70 min: 6.200–8.000
+
+Quality Gate por duração
+- Para SERMÃO, o QG agora mede a cobertura real de palavras em relação ao tempo planejado.
+- Se uma mensagem de 35 min vier com ~778 palavras, o QG não poderá continuar mostrando "Boa" só pela estrutura.
+- O score final é limitado pela cobertura de duração e o material é reprovado quando não atinge 80% do mínimo.
+
+Quality Gate no Gerador Rápido
+- O Gerador Rápido agora usa o mesmo painel visual de resultado do Studio.
+- Exibe QG, estrelas, palavras, caracteres, referências, leitura, duração planejada e DNA K7.
+- Copiar/Editor/Biblioteca/Projeto continuam usando somente o texto original da IA, sem copiar o painel visual.
+
+Instalação
+1. Extraia este ZIP.
+2. Copie a pasta app sobre a pasta app atual do LOGOS MASTER X.
+3. Aceite substituir.
+4. Reinicie:
+   python -m uvicorn app.main:app --reload --port 8080
+5. No navegador pressione Ctrl+F5.
+
+Teste recomendado
+- Gerador Rápido: SERMÃO, João 3, 35 min, DNA K7 10.
+- Studio X: repetir o mesmo teste.
+- Conferir se o painel Quality Gate aparece nos dois.

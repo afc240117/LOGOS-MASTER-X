@@ -1,0 +1,16 @@
+LOGOS MASTER X — V8.5 QUALIDADE PROTEGIDA
+
+Mantém a organização editorial do V8.4.
+
+NOVO:
+- Validação local de blocos claramente corrompidos.
+- Se o provedor principal falhar/corromper, faz somente uma nova tentativa nele.
+- HuggingFace/Qwen 7B não é aceito para remendar uma mensagem longa iniciada por outro motor.
+- Fallback só é aceito se o bloco passar na validação.
+- Fechamento ligeiramente mais compacto para reduzir risco de timeout.
+- Expansão extra só ocorre abaixo de 70% do alvo, reduzindo chamadas e consumo.
+- Mantém Ideia Central, Cristo na Mensagem, DNA K7, Clímax, Resposta, Apelo/Oração e Revisão.
+- Mantém fonte maior, referências normalizadas e Quality Gate.
+
+INSTALAÇÃO:
+Extrair -> copiar app -> substituir -> reiniciar Uvicorn -> Ctrl+F5.

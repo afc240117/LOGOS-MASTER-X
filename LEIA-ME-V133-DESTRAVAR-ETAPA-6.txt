@@ -1,0 +1,18 @@
+LOGOS MASTER X — V133
+
+NOVO NA ETAPA 6
+- Botão permanente: ⚠ Travou? ↻ DESTRAVAR
+- Fica no canto superior direito do painel de processamento.
+- Cancela somente a geração/processamento da Etapa 6.
+- Zera progresso e contador temporários.
+- Remove estado de processamento bloqueado.
+- Reativa controles.
+- Retorna para a Etapa 5 para revisar e tentar novamente.
+- NÃO apaga DNA, configurações das etapas anteriores, Bíblia, projetos, temas ou biblioteca.
+
+PROTEÇÃO DUPLA
+1. onclick direto no botão (independente do bind normal de eventos).
+2. listener JavaScript normal como segunda rota.
+3. Se render falhar, recarrega a página já com Etapa 5 salva.
+
+A V132 corretiva/preventiva e o Reset Seguro continuam preservados.

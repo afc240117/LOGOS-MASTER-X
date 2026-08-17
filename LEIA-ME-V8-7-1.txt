@@ -1,0 +1,20 @@
+LOGOS MASTER X — V8.7.1 PÁGINA CORRIGIDA
+
+Correção crítica:
+- Remove a quebra de JavaScript do V8.7 que fazia a página não renderizar.
+- Mantém a base funcional do V8.6 no backend.
+
+UI:
+- A− / 100% / A+ / ⛶ Tela cheia.
+- Fonte maior no Gerador Rápido e Studio.
+- Botões do Studio preenchidos em amarelo/dourado.
+- Voltar à esquerda; Avançar/Gerar à direita.
+- 7 etapas superiores clicáveis.
+- Remove texto local fixo "Expor João 3:16..." onde houver.
+
+Instalação:
+1. Extraia.
+2. Copie a pasta app sobre a app atual.
+3. Substitua os arquivos.
+4. Reinicie Uvicorn.
+5. Ctrl+F5.

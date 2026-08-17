@@ -1,0 +1,60 @@
+LOGOS MASTER X — V1.59 BÍBLIA X — PESQUISA PRO
+ACUMULATIVA SOBRE V1.58
+
+PESQUISA POR:
+- Bíblia inteira
+- Antigo Testamento
+- Novo Testamento
+- Livro atual
+- Capítulo atual
+- Pentateuco
+- Históricos
+- Poéticos / Sabedoria
+- Profetas
+- Evangelhos
+- Cartas Paulinas
+- Cartas Gerais
+- Livros escolhidos manualmente
+
+MODOS:
+- Frase exata
+- Todas as palavras
+- Qualquer palavra
+- Palavra inteira
+
+ORDENAÇÃO:
+- Ordem bíblica
+- Relevância
+- Por livro
+
+EXTRAS:
+- seletor visual de livros
+- presets Todos / AT / NT / Limpar
+- chips de pesquisa rápida
+- resultados compactos com palavra destacada
+- estatísticas por livro
+- filtro rápido por livro
+- abrir verso
+- abrir capítulo
+- copiar verso
+- selecionar resultados
+- copiar resultados
+- enviar seleção/resultados ao Studio X
+- voltar à leitura
+- preferências salvas localmente
+- usa índice offline completo quando disponível
+- fallback para servidor quando necessário
+
+PRESERVADO:
+V1.54 leitor compacto
+V1.55 seleção + hiperlinks
+V1.56 ficha contextual
+V1.57 navegação inteligente
+V1.58 Livro + Capítulo + Versículo
+Comentários IA
+Studio X
+Sidebar
+Temas
+
+ROLLBACK:
+Se houver problema, volte para a V1.58.

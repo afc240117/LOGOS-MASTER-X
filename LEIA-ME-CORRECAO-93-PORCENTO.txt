@@ -1,0 +1,7 @@
+CORREÇÃO DO VISUAL HÍBRIDO
+- removido o flash animado;
+- removida a barra duplicada que aparecia logo abaixo da imagem;
+- mantida somente a barra inferior já existente no fluxo do Studio/Gerador Rápido;
+- imagem padrão recortada levemente na lateral direita para eliminar a rebarba;
+- adicionado fail-safe visual: quando a geração já está concluída e a interface ficou em 90–99%, o visual é sincronizado para 100%/concluído.
+- preservados Círculo DNA e K7 Premium.

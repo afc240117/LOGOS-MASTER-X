@@ -1,0 +1,19 @@
+BÍBLIA X — PASSO 2 / integração v0.5
+Motor integrado ao backend real do LOGOS MASTER X.
+
+Rotas:
+ /api/bible/health
+ /api/bible/translations
+ /api/bible/books
+ /api/bible/chapters
+ /api/bible/chapter
+ /api/bible/verse
+ /api/bible/reference
+ /api/bible/strong
+ /api/bible/search
+
+Banco: app/biblia_x/biblia_x.sqlite3
+Backup automático desta alteração: app/main.py.PRE-BIBLIA-X-PASSO2.bak
+
+BLIVRE e WEBP estão ativas.
+Almeida 1819 permanece pending_import até transcrição histórica estruturada confiável.

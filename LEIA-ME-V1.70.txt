@@ -1,0 +1,12 @@
+LOGOS MASTER X — V1.70 BÍBLIA X — MODOS POR CAMADAS
+Acumulativa sobre V1.69.
+
+NOVO: uma barra Modo no leitor com cinco experiências salvas localmente:
+- 📖 Leitura: texto limpo;
+- 🔎 Estudo: ferramentas completas;
+- 🇬🇷 Originais: Referências + Strong + Léxico;
+- 🗺️ Geografia: Contexto + Atlas + Mídia;
+- 🔥 Pregação: Comentários + Contexto + DNA K7 + Studio X.
+
+O usuário escolhe o jeito de trabalhar sem trocar de página.
+Rollback: V1.69.

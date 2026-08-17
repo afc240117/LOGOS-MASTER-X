@@ -1,0 +1,19 @@
+LOGOS MASTER X — v2.94
+HOTFIX 2 — Barra flutuante da Bíblia X
+
+CORREÇÃO:
+- remove definitivamente o trilho vertical da lateral direita;
+- transforma os mesmos comandos úteis em um dock horizontal no rodapé;
+- dock inicia recolhido após instalar este hotfix;
+- botão ⇅ abre os comandos;
+- botão ✕ recolhe novamente;
+- mantém: verso anterior, posição, próximo verso, favorito, copiar e foco;
+- funciona no PC, mobile e modo leitura;
+- inclui também os ajustes anteriores da v2.92 e v2.93.
+
+APLICAÇÃO:
+1. Extraia este ZIP.
+2. Cole a pasta LOGOS-MASTER-X por cima da atual.
+3. Substitua os arquivos.
+4. Reinicie o servidor.
+5. No navegador use Ctrl+F5.

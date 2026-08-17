@@ -1,0 +1,33 @@
+{
+  "compile": {
+    "app/main.py": "OK",
+    "app/biblia_x/bible_service.py": "OK",
+    "app/biblia_x/router.py": "OK",
+    "app/biblia_x/almeida1819_importer.py": "OK"
+  },
+  "startup": {
+    "returncode": 0,
+    "stdout": "[\"/api/bible/books\", \"/api/bible/chapter\", \"/api/bible/chapters\", \"/api/bible/health\", \"/api/bible/reference\", \"/api/bible/search\", \"/api/bible/strong\", \"/api/bible/translations\", \"/api/bible/verse\"]\n",
+    "stderr": "Spreadsheet runtime warmup failed during python startup\nTraceback (most recent call last):\n  File \"/tmp/tmp.L2TH2Y5coc/artifact_tool_v2-2.8.22/artifact_tool/patches/warm_spreadsheet_runtime_on_startup.py\", line 26, in warm_spreadsheet_runtime_on_startup\n  File \"/tmp/tmp.L2TH2Y5coc/artifact_tool_v2-2.8.22/artifact_tool/spreadsheet_warmup.py\", line 772, in warm_spreadsheet_runtime\n  File \"/tmp/tmp.L2TH2Y5coc/artifact_tool_v2-2.8.22/artifact_tool/rpc/connection.py\", line 37, in get_or_create_client\n  File \"/tmp/tmp.L2TH2Y5coc/artifact_tool_v2-2.8.22/artifact_tool/rpc/daemon.py\", line 124, in start_daemon\nTimeoutError: Timed out waiting for artifact tool daemon socket. Set ARTIFACT_TOOL_RPC_DAEMON_STARTUP_TIMEOUT_S=<seconds> to increase the limit.\n"
+  },
+  "db": {
+    "translations": [
+      [
+        "almeida1819",
+        "pending_import"
+      ],
+      [
+        "engwebp",
+        "active"
+      ],
+      [
+        "porbr2018",
+        "active"
+      ]
+    ],
+    "blivre_books": 66,
+    "webp_books": 66,
+    "fts_rows": 62200,
+    "strong_rows": 599017
+  }
+}

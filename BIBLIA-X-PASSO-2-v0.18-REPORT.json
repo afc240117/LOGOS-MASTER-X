@@ -1,0 +1,32 @@
+{
+  "version": "0.18",
+  "context_functional": true,
+  "online_first": true,
+  "sample_Joao_4_1": {
+    "book": {
+      "code": "JHN",
+      "name_pt": "João",
+      "name_en": "John",
+      "canonical_order": 43,
+      "testament": "Novo Testamento",
+      "chapters": 21
+    },
+    "passage": {
+      "chapter": 4,
+      "verse": "1",
+      "text": "Quando, pois, o Senhor entendeu que os fariseus ouviram que Jesus fazia e batizava mais discípulos que João",
+      "chapter_verse_count": 54
+    },
+    "neighbors": {
+      "previous": null,
+      "next": {
+        "verse": "2",
+        "text": "(ainda que Jesus mesmo não batizava, mas sim seus discípulos),"
+      }
+    },
+    "strong": {
+      "word_markers": 19,
+      "unique_entries": 13
+    }
+  }
+}

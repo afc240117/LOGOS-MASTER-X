@@ -1,0 +1,21 @@
+LOGOS MASTER X — v2.93
+Patch: navegação rápida das 7 abas no DNA K7 Studio X
+
+O que foi feito:
+- removido o botão "Biblioteca DNA" do topo do Studio;
+- removido o botão "Voltar ao Studio" do topo do Studio;
+- adicionado botão "← Aba anterior";
+- adicionado botão "Próxima aba →";
+- cada clique avança ou retrocede 1 etapa entre as 7 abas do fluxo;
+- mantidos os botões "Tutoriais" e "Meus Perfis".
+
+Arquivos alterados:
+- LOGOS-MASTER-X/app/web/static/app-381-v133.js
+- LOGOS-MASTER-X/app/web/static/style-v133.css
+- LOGOS-MASTER-X/app/web/static/index.html
+
+Como aplicar:
+1. Extraia o ZIP.
+2. Cole na pasta do projeto.
+3. Substitua os arquivos.
+4. Recarregue com Ctrl+F5.

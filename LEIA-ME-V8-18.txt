@@ -1,0 +1,12 @@
+LOGOS MASTER X — V8.18 BÍBLIA X MAIS COMPACTA
+
+- Reduz muito o espaço vertical entre versículos.
+- Aproxima a barra principal de ferramentas do texto.
+- Aproxima as ferramentas secundárias da barra principal.
+- Ferramentas recolhidas não reservam espaço.
+- Botões levemente menores no PC Full HD.
+- Nenhuma função removida.
+- Ajuste somente visual/CSS.
+
+Instalação:
+Extrair -> copiar app -> substituir -> reiniciar Uvicorn -> Ctrl+F5.

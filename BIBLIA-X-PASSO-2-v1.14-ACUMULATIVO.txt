@@ -1,0 +1,20 @@
+BÍBLIA X — PASSO 2 — PACK ACUMULATIVO v1.14
+Base: v1.08.
+
+v1.09 — Passagens Fixadas
+- Fixa até 40 versículos para acesso rápido.
+
+v1.10 — Versículo em Foco
+- Define um versículo principal de estudo, com abrir/copiar/remover.
+
+v1.11 — Central Rápida
+- Painel único para principais ferramentas da Bíblia X.
+
+v1.12 — Atalho Central
+- Ctrl+Shift+P abre a Central Rápida.
+
+v1.13 — Integração por versículo
+- Botões Fixar e Foco diretamente no leitor.
+
+v1.14 — Consolidação
+- Preserva integralmente todos os recursos acumulados anteriores.

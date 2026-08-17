@@ -1,0 +1,17 @@
+LOGOS MASTER X — FIX TIMEOUT V5
+
+Correções:
+- Timeout padrão de geração: 45s -> 180s.
+- ESTUDAR passa a aguardar até 180s antes do fallback local.
+- Studio X: timeout da chamada 45s -> 180s.
+- Watchdog do Studio: 90s -> 240s.
+- Timeout não marca mais o servidor como offline.
+- Cache-busting atualizado para carregar o JavaScript novo.
+
+Instalação:
+1. Feche/reinicie o servidor LOGOS.
+2. Copie a pasta app deste FIX sobre a pasta app do projeto.
+3. Aceite substituir os arquivos.
+4. Inicie:
+   python -m uvicorn app.main:app --reload --port 8080
+5. No navegador use Ctrl+F5.

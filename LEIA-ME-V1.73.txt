@@ -1,0 +1,1 @@
+V1.73 — Mesa X acumulativa sobre V1.72. Dock de estudo com versículo ativo, notas automáticas, cesta de seleção, atalhos para comentários/Strong/léxico/contexto/DNA e envio ao Studio X.

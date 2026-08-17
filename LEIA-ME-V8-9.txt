@@ -1,0 +1,35 @@
+LOGOS MASTER X — V8.9 NAVEGAÇÃO + HOVER + ZOOM + BÍBLIA X
+
+STUDIO X
+- As 7 etapas superiores são clicáveis e realmente mudam para a etapa escolhida.
+- Suporte também a Enter/Espaço nas etapas.
+- Hover restaurado em todos os botões do Studio.
+- Ao clicar, o botão recebe preenchimento amarelo/dourado.
+- Aba selecionada recebe amarelo/dourado preenchido.
+- Voltar permanece à esquerda; avançar/gerar à direita.
+- Botões laterais e inferiores seguem o mesmo padrão visual.
+
+LEITURA
+- A−, 100%, A+ agora alteram também textos simples do fallback local.
+- Tela cheia usa modo fixo confiável, sem depender da permissão Fullscreen do navegador.
+- ESC sai da tela cheia.
+
+ETAPA 7
+- Remove grandes áreas vazias da coluna direita.
+- Cartões ficam compactos.
+- Adiciona contexto: texto, ocasião, público, foco, modelo, tempo, leitura e QG.
+- Ações rápidas menores em grade.
+
+BÍBLIA X
+- Menu lateral sobe e fica mais próximo do topo.
+- Scrollbar fina, escura e dourada.
+- Hover e seleção com acabamento dourado.
+- Menu mais compacto e profissional.
+
+INSTALAÇÃO
+1. Extraia este ZIP.
+2. Copie a pasta app por cima da app atual.
+3. Aceite substituir os 3 arquivos.
+4. Reinicie:
+   python -m uvicorn app.main:app --reload --port 8080
+5. No navegador: Ctrl+F5.

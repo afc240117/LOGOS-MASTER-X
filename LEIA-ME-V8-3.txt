@@ -1,0 +1,26 @@
+LOGOS MASTER X — V8.3 ECONÔMICO + EDITORIAL
+
+Principais mudanças:
+- Geração longa reduzida para 4 chamadas principais: mapa + 3 blocos grandes.
+- Apenas 1 expansão extra se o material ficar abaixo de 80% do alvo.
+- Timeout frontend ampliado para até 420 s.
+- Referência aceita formatos como Lm 5:21 :22, Lm 5:21-22 e Lm 5 21 22.
+- Remove objetivo fixo de João 3:16 do fallback local.
+- Fallback local deve ser tratado como geração incompleta/Quality Gate reprovado.
+- Organização editorial:
+  📖 Identificação
+  🎯 Ideia Central
+  🧭 Introdução/Contexto
+  📖 3 Movimentos
+  ✝️ Cristo na Mensagem
+  🔥 DNA K7
+  ⚡ Clímax
+  📣 Resposta da Igreja
+  🙏 Apelo/Oração
+  ✅ Revisão
+- Ícones funcionais e menos poluição visual.
+- DNA K7, Cristo na Mensagem, clímax e ideia central ficam separados.
+- Mantém fonte maior do V8.2 e Home/rotas do V8.1.
+
+Instalação:
+Extrair -> copiar app -> substituir -> reiniciar Uvicorn -> Ctrl+F5.

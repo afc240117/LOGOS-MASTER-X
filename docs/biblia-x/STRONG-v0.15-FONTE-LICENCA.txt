@@ -1,0 +1,18 @@
+BÍBLIA X v0.15 — STRONG REAL / OFFLINE
+
+Dicionário lexical:
+OpenScriptures — Strong's Dictionaries of Hebrew and Greek.
+A versão JavaScript usada no build declara CC-BY-SA e deriva do texto de
+Strong's Exhaustive Concordance (James Strong, 1890).
+
+Referências de licença adicionais verificadas:
+- CrossWire distribui Strong's Hebrew e Strong's Greek como Public Domain.
+- morphgnt/strongs-dictionary-xml declara a versão XML grega com grego real sob CC0.
+
+Implementação:
+- banco lexical pré-instalado em app/biblia_x/biblia_x.sqlite3;
+- marcação por versículo usa a camada WEBP Strong já importada;
+- para BLIVRE, usa a mesma referência canônica, sem alegar alinhamento automático
+  de cada palavra portuguesa ao original;
+- definições originais são preservadas em inglês nesta versão para evitar
+  tradução automática imprecisa.

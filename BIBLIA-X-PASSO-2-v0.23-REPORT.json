@@ -1,0 +1,11 @@
+{
+  "version": "0.23",
+  "base": "0.22",
+  "feature": "Comentarios classicos exibidos em PT-BR",
+  "original_source_preserved": true,
+  "original_language": "en",
+  "display_language": "pt-BR",
+  "server_translation_cache": true,
+  "manual_download_required": false,
+  "online_first": true
+}

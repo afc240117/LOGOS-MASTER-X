@@ -1,0 +1,15 @@
+{
+  "version": "v1.26 acumulativo",
+  "base": "v1.20",
+  "javascript_ok": true,
+  "backend_ok": true,
+  "bible_routes": "17",
+  "included": [
+    "v1.21 sessões leitura",
+    "v1.22 retomar sessão",
+    "v1.23 palavras estudo",
+    "v1.24 pesquisa palavra",
+    "v1.25 impressão limpa",
+    "v1.26 consolidação"
+  ]
+}

@@ -1,0 +1,6 @@
+LOGOS MASTER X — V1.69 BÍBLIA X — TRILHA CONTEXTUAL
+Acumulativa sobre V1.68.
+
+NOVO: botão 🧭 Trilha. Cria uma cadeia visual da passagem com personagens e lugares reconhecidos e atalhos para Pesquisa X, Atlas e histórico da leitura, sem abandonar a passagem atual.
+
+Rollback: V1.68.

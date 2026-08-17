@@ -1,0 +1,20 @@
+BÍBLIA X — PASSO 2 — PACK ACUMULATIVO v0.66
+Base: v0.60.
+
+v0.61 — Planos de leitura
+- Planos persistentes com progresso e abertura direta das passagens.
+
+v0.62 — Modelos prontos
+- Evangelhos 14 dias, Salmos 10 dias e Missões 7 dias.
+
+v0.63 — Planos personalizados
+- Nome + lista livre de referências, uma por linha.
+
+v0.64 — Marca-texto bíblico
+- Dourado, verde, azul e rosa por versículo; persistente.
+
+v0.65 — Integração de leitura
+- Botão Planos na barra e Marcar em cada versículo.
+
+v0.66 — Consolidação
+- Preserva todos os recursos acumulados da v0.42 até v0.60.

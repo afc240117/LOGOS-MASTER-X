@@ -1,0 +1,6 @@
+LOGOS MASTER X — HOTFIX VISUAIS
+Padrão oficial: imagem DNA → K7 → Bíblia fornecida pelo usuário.
+Alternativas: 6 temas modernos premium, todos com DNA + K7 + Bíblia.
+Aplicação: Gerador Rápido + Studio X (Aba 6 / visualização Aba 7).
+A seleção é opcional e apenas um visual é usado por vez.
+Após copiar sobre a MASTER: reinicie o Uvicorn e use Ctrl+F5.

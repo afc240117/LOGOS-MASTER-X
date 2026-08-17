@@ -1,0 +1,11 @@
+LOGOS MASTER X — V1.61 BÍBLIA X
+ACUMULATIVA SOBRE V1.60
+
+- Versículo agora é um seletor como Livro e Capítulo.
+- “Todos” abre o capítulo inteiro.
+- Selecionar um número abre diretamente o versículo.
+- Lista de versículos se atualiza ao trocar livro/capítulo/versão.
+- Clique no número do texto sincroniza os 3 seletores.
+- Mantém pesquisa, comentários, Studio X e demais recursos.
+
+Rollback: V1.60.

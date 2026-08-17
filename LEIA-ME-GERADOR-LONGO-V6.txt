@@ -1,0 +1,31 @@
+LOGOS MASTER X — GERADOR LONGO V6
+
+Objetivo
+Corrigir mensagens que estavam vindo curtas no Groq/OpenAI mesmo com 40, 50, 60 ou 70 minutos selecionados.
+
+O que muda
+- A duração agora vira uma meta concreta de desenvolvimento.
+- 20 min: ~1.800–2.400 palavras
+- 30 min: ~2.600–3.400 palavras
+- 35 min: ~3.000–3.900 palavras
+- 40 min: ~3.800–5.000 palavras
+- 50 min: ~4.500–5.800 palavras
+- 60 min: ~5.400–7.000 palavras
+- 70 min: ~6.200–8.000 palavras
+- O prompt proíbe resumo/sinopse quando o pedido é mensagem completa.
+- Cada movimento deve ser desenvolvido com exposição, interpretação, aplicação e transições.
+- Não força repetição vazia para atingir tamanho.
+- ESBOÇO continua conciso e estrutural.
+- Preserva Router V4 e Timeout V5.
+
+Instalação
+1. Extraia este ZIP.
+2. Copie a pasta app sobre a pasta app atual do LOGOS MASTER X.
+3. Aceite substituir.
+4. Reinicie:
+   python -m uvicorn app.main:app --reload --port 8080
+5. No navegador: Ctrl+F5.
+
+Teste recomendado
+SERMÃO / João 3 / 40 minutos / DNA K7 10.
+No resumo do material, confira a contagem de palavras.

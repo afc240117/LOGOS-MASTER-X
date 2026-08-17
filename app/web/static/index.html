@@ -1,14 +1,22 @@
 <!doctype html><html lang="pt-BR"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#05070b"><meta name="description" content="LOGOS MASTER X">
-<title>LOGOS MASTER X</title>
+<title>LOGOS MASTER X</title><link rel="icon" href="/favicon.ico" type="image/x-icon">
 <link rel="manifest" href="/static/manifest.webmanifest?v=378">
-<link rel="stylesheet" href="/static/style.css?v=381-v97">
+<link rel="stylesheet" href="/static/style-v133.css?v=v1.60.3-vertical-flow-hardfix">
 <style>
 html.logos-booting body{margin:0;background:#05070b}
 html.logos-booting .app{visibility:hidden!important}
 html.logos-ready .app{visibility:visible}
 </style>
+<script>
+(function(){
+ try{
+  var raw=localStorage.getItem("logosx:studioProcessing");
+  if(raw){var p=JSON.parse(raw);if(p&&p.status==="running"){var age=p.started?(Date.now()-Date.parse(p.started)):Infinity;if(!isFinite(age)||age>120000){p.status="error";p.progress=0;p.phase=0;p.started=null;p.finished=new Date().toISOString();p.message="Sessão anterior destravada antes da inicialização.";p.error="Processamento órfão recuperado.";p.generationId="";localStorage.setItem("logosx:studioProcessing",JSON.stringify(p));if(Number(JSON.parse(localStorage.getItem("logosx:studioStep")||"1"))===6)localStorage.setItem("logosx:studioStep","5");}}}
+ }catch(e){}
+})();
+</script>
 <script>
 (function(){
   var root=document.documentElement;
@@ -32,7 +40,32 @@ html.logos-ready .app{visibility:visible}
     window.__LOGOS_STARTUP_PALETTE__="bluegold";
   }
 })();
-</script></head>
+</script>
+<style id="v82-reading-font">
+.generated-body,.generated-body p,.generated-body li,#quickOut,#studioResult{font-size:18px!important;line-height:1.72!important}
+.generated-body h3,#quickOut h3,#studioResult h3{font-size:23px!important;line-height:1.35!important}
+.generated-body h4,#quickOut h4,#studioResult h4{font-size:20px!important}
+@media(max-width:700px){.generated-body,.generated-body p,.generated-body li,#quickOut,#studioResult{font-size:17px!important;line-height:1.68!important}}
+</style>
+
+
+<style id="v83-editorial-clean">
+.generated-body ul,.generated-body ol,#quickOut ul,#quickOut ol,#studioResult ul,#studioResult ol{
+  padding-left:1.25rem!important;
+}
+.generated-body li::marker,#quickOut li::marker,#studioResult li::marker{
+  color:currentColor!important;
+  font-size:.78em!important;
+}
+.generated-body h3,#quickOut h3,#studioResult h3{
+  margin-top:1.65rem!important;
+  margin-bottom:.75rem!important;
+  font-weight:800!important;
+}
+.generated-body hr,#quickOut hr,#studioResult hr{opacity:.22!important;margin:1.35rem 0!important}
+</style>
+
+</head>
 <body>
 <div class="app classic-shell">
 <header class="top classic-top">
@@ -65,6 +98,7 @@ html.logos-ready .app{visibility:visible}
     <button data-view="projects"><i class="side-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 7h6.2l2-2h8.8a1 1 0 0 1 1 1v12.5a1 1 0 0 1-1 1h-17V7Z"/><path d="M3.5 8.5h18"/></svg></i><span>Projetos<small>Organizar e planejar</small></span></button>
     <button data-view="history"><i class="side-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7.8A8.6 8.6 0 1 1 4.7 17"/><path d="M3.8 3.8v4.4h4.4"/><path d="M12 7.2v5.2l3.6 2"/></svg></i><span>Hist&#243;rico<small>Conversas e materiais</small></span></button>
     <button data-view="pulpit"><i class="side-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.8 17.8h10.4"/><path d="M8.4 17.8v-2.1c-1.8-1-2.9-2.9-2.9-5.1a6.5 6.5 0 0 1 13 0c0 2.2-1.1 4.1-2.9 5.1v2.1"/><path d="M12 2.6v2.1"/><path d="M7.2 21h9.6"/></svg></i><span>Modo P&#250;lpito<small>Prepara&#231;&#227;o final</small></span></button>
+    <button data-view="bible" class="bible-x-menu-btn" aria-label="Bíblia X"><i class="side-ico" aria-hidden="true">📖</i><span>Bíblia X<small>Leitura • Estudo • Mídia</small></span></button>
     <div class="section">Ferramentas</div>
     <button data-view="aihub"><i class="side-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="2.1"/><path d="M12 3.2c2.1 0 3.7 4 3.7 8.8S14.1 20.8 12 20.8 8.3 16.8 8.3 12 9.9 3.2 12 3.2Z"/><path d="M4.4 7.6c1-1.8 5.2-.9 9.3 1.5s6.8 5.8 5.8 7.6-5.2.9-9.3-1.5S3.4 9.4 4.4 7.6Z"/><path d="M19.6 7.6c1 1.8-1.7 5.2-5.8 7.6s-8.3 3.3-9.3 1.5 1.7-5.2 5.8-7.6 8.3-3.3 9.3-1.5Z"/></svg></i><span>AI Hub<small>Provedores e modelos</small></span></button>
     <button data-view="updates"><i class="side-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2.2"/><path d="M12 6.5v8"/><path d="m8.8 11.8 3.2 3.2 3.2-3.2"/><path d="M8 18h8"/></svg></i><span>Update Center<small>Atualiza&#231;&#245;es e novidades</small></span></button>
@@ -79,4 +113,4 @@ html.logos-ready .app{visibility:visible}
 </aside><main><section id="workspace" class="workspace"></section></main></div></div>
 
 
-<script src="/static/prompt-library.js?v=378"></script><script src="/static/app-381-v97.js?v=381-v97"></script></body></html>
+<script src="/static/prompt-library.js?v=378"></script><script src="/static/app-381-v133.js?v=v1.60.3-vertical-flow-hardfix"></script></body></html>

@@ -1,0 +1,7 @@
+PASSO 2 v0.21 — COMENTÁRIOS FUNCIONAIS
+- Cria camada de comentário estrutural vinculada ao versículo.
+- Usa somente dados já integrados: Bíblia X, contexto imediato, TSK, Nave e Strong.
+- Não inventa autoria, data, arqueologia ou interpretação histórica.
+- Preparado para receber posteriormente comentários públicos/livres ou licenciados.
+- Responsivo para desktop/mobile.
+- Mantém arquitetura Online First.

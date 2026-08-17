@@ -1,0 +1,1 @@
+V1.85 — Contexto 7x7. Mostra até sete versos antes e sete depois do verso em foco e permite abrir o capítulo inteiro.

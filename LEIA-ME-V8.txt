@@ -1,0 +1,51 @@
+LOGOS MASTER X — GERADOR LONGO V8 ORGANIZADO
+
+Correções principais
+1. Organização editorial semelhante ao padrão aprovado:
+   1. Identificação Geral
+   2. Introdução
+   3+. Movimentos expositivos
+   DNA K7
+   Clímax
+   Conclusão
+   Apelo e oração
+   Revisão de alinhamento
+
+2. Cada movimento usa:
+   📖 Texto de Apoio
+   🔎 Observação do Texto
+   🧠 Interpretação
+   🎯 Aplicações
+
+3. Numeração sequencial e sem duplicações.
+4. Remove ofertas do tipo "Se desejar, posso..." do material final.
+5. Geração segmentada também para ESTUDAR e AULA com 30 min ou mais.
+6. Expansão por déficit real:
+   - conta palavras após montar o material;
+   - se ficar abaixo de 88% do alvo mínimo, faz até 3 expansões dirigidas;
+   - preserva a estrutura em vez de simplesmente anexar conteúdo aleatório.
+7. Quality Gate por duração agora também vale para ESTUDAR/AULA.
+8. O painel visual mostra:
+   - cobertura de duração em %;
+   - REPROVADO POR DURAÇÃO quando necessário.
+9. Preserva o Quality Gate no Gerador Rápido.
+
+Faixas de referência
+20 min: 1.800–2.400 palavras
+30 min: 2.600–3.400
+35 min: 3.000–3.900
+40 min: 3.800–5.000
+50 min: 4.500–5.800
+60 min: 5.400–7.000
+70 min: 6.200–8.000
+
+Instalação
+1. Extraia.
+2. Copie a pasta app sobre a app atual.
+3. Substitua os arquivos.
+4. Reinicie:
+   python -m uvicorn app.main:app --reload --port 8080
+5. Ctrl+F5 no navegador.
+
+Teste recomendado
+João 10:1-30 / 40 min / Avivamento / Igreja local / DNA K7 10.

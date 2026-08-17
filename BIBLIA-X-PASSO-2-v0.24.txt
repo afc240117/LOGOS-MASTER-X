@@ -1,0 +1,11 @@
+LOGOS MASTER X — BÍBLIA X PASSO 2 v0.24
+
+- Consolida a camada de Comentários Bíblicos em PT-BR.
+- Exegético: Bíblia + Strong + TSK + apoio da fonte clássica.
+- Hermenêutico: contexto imediato + estrutura do capítulo + fonte clássica em PT-BR.
+- Apologético: relações bíblicas TSK para comparação interna das Escrituras.
+- Temático: tópicos Nave apresentados em português e referências relacionadas.
+- Pastoral: leitura da fonte clássica exibida em português e envio ao Studio X.
+- “Fonte clássica original” permanece recolhida e preservada em inglês para conferência.
+- Traduções ficam em cache no servidor; nenhum download de módulo é exigido do usuário no uso online inicial.
+- Mantém Bíblia, Strong, Léxico, TSK, Nave, Contexto e demais funções da v0.23.

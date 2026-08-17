@@ -1,0 +1,36 @@
+LOGOS MASTER X — V1.58 BÍBLIA X
+LIVRO + CAPÍTULO + VERSÍCULO
+ACUMULATIVA SOBRE V1.57
+
+MELHORIA PRINCIPAL:
+O campo visível "Referência" foi substituído por "Versículo".
+
+Agora o fluxo é:
+VERSÃO | LIVRO | CAPÍTULO | VERSÍCULO | ABRIR | CAPÍTULO | ENVIAR AO STUDIO
+
+COMPORTAMENTO:
+- Versículo vazio + Abrir = capítulo inteiro.
+- Versículo 16 + Abrir = versículo 16.
+- Versículo 16-18 + Abrir = intervalo 16 a 18.
+- Botão 📖 Capítulo sempre abre o capítulo inteiro e limpa o campo Versículo.
+- Enter no campo Versículo abre imediatamente.
+- Indicador discreto mostra:
+  📖 Capítulo inteiro
+  🔎 Versículo 16
+  🔎 Versículo 16-18
+- Validação evita números e intervalos inválidos.
+- O antigo bRef continua oculto internamente para preservar compatibilidade
+  com Comentários, Favoritos, Marcadores, Studio X, histórico e demais módulos.
+
+PRESERVADO:
+V1.54 leitor compacto
+V1.55 seleção e hiperlinks
+V1.56 ficha contextual em cadeia
+V1.57 navegação inteligente
+15 Comentários IA
+Studio X
+Sidebar
+Temas
+
+ROLLBACK:
+Se houver problema, volte para a V1.57.

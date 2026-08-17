@@ -1,0 +1,19 @@
+{
+  "version": "0.24",
+  "base": "0.23",
+  "feature": "Consolidacao dos 5 Comentarios Biblicos PT-BR",
+  "readings": [
+    "exegetico",
+    "hermeneutico",
+    "apologetico",
+    "tematico",
+    "pastoral"
+  ],
+  "original_source_preserved": true,
+  "original_source_collapsed": true,
+  "display_language": "pt-BR",
+  "server_translation_cache": true,
+  "manual_download_required": false,
+  "online_first": true,
+  "compatibility": "preserva recursos v0.23"
+}

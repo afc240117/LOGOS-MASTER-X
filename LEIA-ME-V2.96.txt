@@ -1,0 +1,27 @@
+LOGOS MASTER X — v2.96
+HOTFIX — FORM LABELS + SESSION HISTORY
+
+O que foi corrigido:
+
+1) "No label associated with a form field"
+- associa automaticamente labels existentes aos campos;
+- campos sem label recebem um label acessível invisível;
+- garante ID e NAME nos campos que não possuíam;
+- não altera o visual da interface.
+
+2) "Session History Item Has Been Marked Skippable"
+- removido o pushState automático no carregamento inicial;
+- a navegação interna continua funcionando;
+- o histórico passa a ser criado somente quando houver navegação real do usuário.
+
+IMPORTANTE:
+Esses dois itens do Edge DevTools eram avisos, não erros fatais e não eram a causa
+do texto estreito da Bíblia X. A correção real da leitura continua preservada da v2.95.
+
+INSTALAÇÃO:
+1. Extraia o ZIP.
+2. Cole LOGOS-MASTER-X por cima da pasta atual.
+3. Substitua os arquivos.
+4. Reinicie o servidor Uvicorn.
+5. Use Ctrl+F5.
+6. Feche e abra novamente a aba "Problemas" do DevTools para atualizar a auditoria.

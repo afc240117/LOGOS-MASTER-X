@@ -1,0 +1,1 @@
+V1.86 — Cadeia X. Permite seguir referências cruzadas em sequência e voltar pelo caminho percorrido.

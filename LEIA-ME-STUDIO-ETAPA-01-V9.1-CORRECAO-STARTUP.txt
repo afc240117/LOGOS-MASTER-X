@@ -1,9 +1,0 @@
-LOGOS MASTER X — STUDIO ETAPA 1 V9.1
-
-Correção crítica:
-- restaura activeVisual(), visualSettings(), VISUAL_DEFAULT e COLOR_THEMES;
-- mantém a versão 3.8.1;
-- preserva os ajustes visuais da V9;
-- altera cache-busting do app.js para studio-v9fix1.
-
-Após substituir os arquivos, reinicie o servidor local e abra novamente.

@@ -1,0 +1,7 @@
+LOGOS MASTER X — BÍBLIA X PASSO 2 v0.23
+
+- Comentários Exegético, Hermenêutico e Pastoral passam a exibir em PT-BR o conteúdo clássico usado como apoio.
+- Estrutura do capítulo exibida em PT-BR.
+- A seção “Fonte clássica original” preserva o texto original em inglês para conferência.
+- Tradução é feita no servidor quando conectado e armazenada em cache; o usuário não precisa instalar nem baixar módulos para o uso online inicial.
+- Se a tradução online falhar, o comentário continua funcional com fallback seguro.

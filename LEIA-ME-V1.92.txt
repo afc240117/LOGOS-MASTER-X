@@ -1,0 +1,1 @@
+V1.92 — Rota da Passagem X. Detecta lugares na ordem do texto e permite explorar ou salvar como rota pessoal.

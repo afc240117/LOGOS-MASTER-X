@@ -1,0 +1,24 @@
+BÍBLIA X — PASSO 2 — PACK ACUMULATIVO v0.60
+Base: v0.54.
+
+v0.55 — Etiquetas por versículo
+- Até 20 etiquetas por referência.
+- Ex.: fé, missão, oração, escatologia.
+
+v0.56 — Coleções de estudo
+- Crie coleções nomeadas e adicione versículos.
+- Coleções persistentes no navegador.
+
+v0.57 — Organizador por versículo
+- Botão Organizar em cada versículo.
+- Gerencia etiquetas e coleções sem sair da leitura.
+
+v0.58 — Painel do Estudo
+- Métricas de histórico, favoritos, notas, marcadores, coleções e etiquetas.
+- Atalhos para recursos pessoais.
+
+v0.59 — Navegação de coleções
+- Abre qualquer referência salva diretamente na Bíblia X.
+
+v0.60 — Consolidação
+- Preserva integralmente todos os packs anteriores e a base homologada.

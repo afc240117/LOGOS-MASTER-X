@@ -1,0 +1,6 @@
+PASSO 2 v0.14 — STRONG WORKSPACE
+- Clique em Strong em qualquer versículo.
+- O versículo é segmentado em palavras clicáveis.
+- Painel individual preparado para: número Strong, lema, transliteração, morfologia, definição e ocorrências.
+- Nesta versão nenhum dado grego/hebraico é inventado: os campos aguardam a base lexical real.
+- TSK pré-instalado, Nave em português, notas, favoritos e Studio X permanecem.

@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LOGOS MASTER X · Áudio X Cloud · Etapa 5</title>
+<link rel="stylesheet" href="./audio-x-cloud-etapa-05.css"></head>
+<body><main class="shell">
+<header class="top"><div><h1>🎧 Áudio X</h1><p>Etapa 5 · Segmentação Inteligente da Pregação</p></div><button id="runBtn" class="btn primary" disabled>🧠 Analisar Estrutura</button></header>
+
+<section class="stepbar">
+<div class="step done"><span>1</span><b>Router</b></div>
+<div class="step done"><span>2</span><b>Upload</b></div>
+<div class="step done"><span>3</span><b>Transcrição</b></div>
+<div class="step done"><span>4</span><b>Job Async</b></div>
+<div class="step active"><span>5</span><b>Segmentar</b></div>
+</section>
+
+<section class="layout">
+<article class="card main">
+<div class="head"><div><span class="eyebrow">JOB CLOUD</span><h2 id="title">Aguardando transcrição</h2><p id="meta">Conclua as etapas anteriores.</p></div><span id="badge" class="badge">PENDENTE</span></div>
+
+<section class="summary">
+<div><span>Seções</span><b id="sectionsCount">0</b></div>
+<div><span>Transições</span><b id="transitionsCount">0</b></div>
+<div><span>Clímax</span><b id="climaxTime">—</b></div>
+<div><span>Duração</span><b id="duration">—</b></div>
+</section>
+
+<section class="panel">
+<div class="panel-head"><div><h3>Estrutura detectada</h3><p>Introdução, texto, contexto, desenvolvimento, aplicação, clímax e apelo.</p></div></div>
+<div id="timeline" class="timeline empty">Nenhuma estrutura analisada.</div>
+</section>
+
+<section class="panel">
+<div class="panel-head"><div><h3>Curva de intensidade</h3><p>Estimativa linguística por segmento.</p></div></div>
+<canvas id="chart" width="1200" height="260"></canvas>
+</section>
+
+<section class="panel">
+<div class="panel-head"><div><h3>Transições encontradas</h3><p>Palavras e frases que indicam mudança de bloco ou progressão.</p></div></div>
+<div id="transitions" class="transitions empty">Nenhuma transição analisada.</div>
+</section>
+
+<div id="status" class="status">Aguardando dados.</div>
+</article>
+
+<aside class="card side">
+<h2>Preparação do DNA K7</h2>
+<div class="checklist">
+<div>✓ Separar blocos da mensagem</div>
+<div>✓ Medir duração de cada seção</div>
+<div>✓ Detectar transições</div>
+<div>✓ Estimar intensidade</div>
+<div>✓ Localizar clímax</div>
+<div>✓ Identificar apelo</div>
+</div>
+<div class="tip"><b>Próxima etapa</b><p>A Etapa 6 transformará estes sinais em características numéricas do DNA K7.</p></div>
+</aside>
+</section>
+</main>
+<script src="./audio-x-cloud-segmentation-client.js"></script>
+<script src="./audio-x-cloud-etapa-05.js"></script>
+</body></html>

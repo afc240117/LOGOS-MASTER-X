@@ -1,0 +1,22 @@
+LOGOS MASTER X — Bíblia X v2.97
+
+REMOÇÃO SOLICITADA:
+1. removido o botão circular ao lado do versículo;
+2. removido completamente o controle de rolagem/navegação da Bíblia X.
+
+O que foi preservado:
+- número do versículo;
+- texto;
+- botões grandes de Bíblia, Paralelas, Referências, Strong, Léxico,
+  Comentários, Contexto, Atlas, Mídia, DNA K7 e Studio X;
+- seleção ainda existe dentro do botão + / ferramentas extras;
+- atalhos de teclado permanecem;
+- correção de largura da leitura da v2.95;
+- ajustes do Studio X.
+
+INSTALAÇÃO:
+1. Extraia.
+2. Cole LOGOS-MASTER-X sobre a pasta atual.
+3. Substitua os arquivos.
+4. Reinicie o Uvicorn.
+5. Use Ctrl+F5.

@@ -1,0 +1,1 @@
+V1.87 — Duas Passagens X. Compara duas referências diferentes lado a lado e copia a comparação completa.

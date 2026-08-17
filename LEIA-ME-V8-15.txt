@@ -1,0 +1,29 @@
+LOGOS MASTER X — V8.15 BÍBLIA X
+
+PADRÕES AUTOMÁTICOS
+- Leitura Clean passa a ser ON por padrão.
+- Zoom da Bíblia é salvo automaticamente.
+- Preferências ficam em localStorage; não existe botão Salvar.
+- Ao voltar à Bíblia X, o estado é reaplicado automaticamente.
+
+CONTROLES
+- Leitura Bíblica usa o botão real data-bible-section="reader".
+- Clean, A−, 100%, A+, Tela cheia e Sair possuem controlador direto e resiliente.
+- ESC sai da tela cheia.
+
+COMENTÁRIOS IA
+- Resultado salvo automaticamente por:
+  versículo + especialista + formato (Resumo/Tópicos).
+- Ao abrir o mesmo especialista novamente, o resultado salvo reaparece.
+- Botões:
+  👁 Reler salvo
+  ✨ Gerar outro
+- Ao gerar outro, o anterior entra em histórico local (até 5 versões).
+- Não precisa clicar em Salvar.
+
+FULL HD
+- Leitura Clean otimizada para PC 1920×1080.
+- Versículos mais próximos e largura confortável.
+
+INSTALAÇÃO
+Extrair -> copiar app -> substituir -> reiniciar Uvicorn -> Ctrl+F5.

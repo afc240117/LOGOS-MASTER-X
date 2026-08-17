@@ -1,0 +1,20 @@
+BÍBLIA X — PASSO 2 — PACK ACUMULATIVO v1.20
+Base: v1.14.
+
+v1.15 — Tópicos pessoais de estudo
+- Cria tópicos e vincula versículos.
+
+v1.16 — Navegação por tópicos
+- Abre referências diretamente pelos tópicos pessoais.
+
+v1.17 — Ler Depois
+- Lista persistente de passagens para leitura posterior.
+
+v1.18 — Modo Apresentação
+- Exibe a passagem em tela cheia com tipografia ampliada.
+
+v1.19 — Controles de apresentação
+- Aumentar/reduzir fonte e mostrar/ocultar referências.
+
+v1.20 — Consolidação
+- Preserva integralmente todos os recursos acumulados anteriores.

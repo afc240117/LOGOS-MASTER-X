@@ -1,0 +1,18 @@
+LOGOS MASTER X — V8.24 BÍBLIA X — LEITOR V4
+
+Este hotfix não tenta mais corrigir o leitor V3 com margens.
+O bloco visual dos versículos foi isolado em novas classes V4.
+
+Resultado esperado:
+- texto -> ferramentas principais -> próximo versículo;
+- sem caixa/divisor/altura fantasma entre versículos;
+- + abre somente as ferramentas extras;
+- ícones permanecem;
+- nomes dourados continuam clicáveis;
+- duplo clique continua pesquisando na Concordância;
+- PC Full HD e mobile;
+- funções existentes preservadas.
+
+Instalação:
+copie a pasta app por cima da atual e substitua.
+Reinicie o Uvicorn e use Ctrl+F5.

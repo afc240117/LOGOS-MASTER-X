@@ -1,0 +1,15 @@
+LOGOS MASTER X — V8.23 BÍBLIA X
+
+- Versículos mais próximos.
+- O container pai não reserva altura extra.
+- Primeira linha de ferramentas fica colada ao versículo.
+- Ferramentas extras fechadas ocupam 0 px.
+- Ao abrir o + entra somente uma linha adicional.
+- A frase:
+  “Duplo clique em uma palavra para pesquisar na Concordância. Nomes dourados abrem conteúdo relacionado.”
+  fica discreta e não cria bloco vazio.
+- PC Full HD e mobile preservados.
+- Nenhuma função removida.
+
+Instalação:
+Extrair -> copiar app -> substituir -> reiniciar Uvicorn -> Ctrl+F5.

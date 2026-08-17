@@ -1,0 +1,1 @@
+V2.13 — Comparador de Rotas X. Compara duas rotas salvas, pontos comuns e diferenças.
