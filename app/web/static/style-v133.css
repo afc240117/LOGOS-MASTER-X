@@ -15301,3 +15301,65 @@ body > .bx-v157-more-panel button{min-height:44px!important;font-size:14.5px!imp
   body:has(.bible-x-shell.bx-reading-full) #bxMobileBottomNav,
   body:has(.bible-x-shell.bx-page-full) #bxMobileBottomNav{display:none!important}
 }
+
+/* ============================================================
+   5.4.157 — TELA CHEIA no celular SEM depender de CSS :has().
+   JS marca o <body> com .lmx-bx-full quando um full da Bíblia está
+   ativo. Aqui: some a barra do topo (.top), a toolbar da Bíblia
+   (.bible-x-topbar/.bible-x-toolbar), a engrenagem offline
+   (.bible-x-import), o menu ▲◉▼ (#lmx150-topstack) e a barra de
+   navegação de baixo; o trilho cinza (.bx-v157-rail) vira a barra
+   HORIZONTAL FIXA NA BASE com auto-hide (some no meio, volta quando
+   o dedo passa na base). ===== */
+@media(max-width:760px){
+  body.lmx-bx-full .top,
+  body.lmx-bx-full .bible-x-topbar,
+  body.lmx-bx-full .bible-x-toolbar,
+  body.lmx-bx-full #workspace .bible-x-toolbar.bx-v158-toolbar,
+  body.lmx-bx-full #lmx150-topstack{display:none!important}
+  body.lmx-bx-full .bible-x-import{display:none!important}
+  body.lmx-bx-full #bxMobileBottomNav{display:none!important}
+  body.lmx-bx-full .bx-v157-rail{
+    display:flex!important;flex-direction:row!important;align-items:center!important;
+    position:fixed!important;left:50%!important;right:auto!important;top:auto!important;
+    bottom:calc(env(safe-area-inset-bottom,0px) + 14px)!important;
+    transform:translate(-50%,170%)!important;
+    opacity:0!important;pointer-events:none!important;
+    z-index:1000100!important;gap:5px!important;
+    padding:6px 10px!important;border-radius:999px!important;
+    max-width:calc(100vw - 16px)!important;flex-wrap:nowrap!important;
+    transition:opacity .22s ease,transform .22s ease!important;
+    box-shadow:0 10px 30px rgba(0,0,0,.45)!important;
+  }
+  body.lmx-bx-full .bx-v157-rail.bx-v157-touch{
+    transform:translate(-50%,0)!important;opacity:1!important;pointer-events:auto!important;
+  }
+  body.lmx-bx-full.bx-v157-fullhide .bx-v157-rail,
+  body.lmx-bx-full.bx-v157-fullhide .bx-v157-rail.bx-v157-touch{
+    transform:translate(-50%,170%)!important;opacity:0!important;pointer-events:none!important;
+  }
+  body.lmx-bx-full .bx-v157-rail > i{display:none!important}
+  body.lmx-bx-full .bx-v157-rail > span{
+    display:inline-flex!important;color:#8fa5b5!important;font-size:10px!important;
+    font-weight:600!important;margin:0 2px!important;line-height:1!important;
+  }
+  body.lmx-bx-full .bx-v157-rail button{
+    width:34px!important;min-width:34px!important;height:34px!important;min-height:34px!important;
+    padding:0!important;font-size:15px!important;border-radius:8px!important;
+  }
+  body.lmx-bx-full #bOut{padding-bottom:96px!important}
+}
+
+/* ============================================================
+   5.4.157 — reforço do FIM DA TREMIDA das letras dos versículos.
+   Além do content-visibility/contain já neutralizado em #bOut,
+   trava o scroll-anchor nativo (a ancoragem de rolagem micro-ajusta
+   a posição quando o conteúdo reflui e as letras "dançam") e DESLIGA
+   as animações infinitas dentro do texto (o pulso do versículo ativo
+   .lmx150-active e o shimmer de carregamento). ===== */
+@media(max-width:760px){
+  .bible-x-shell,#bOut{overflow-anchor:none}
+  .bible-x-shell,#bOut{scroll-behavior:auto!important}
+  #bOut .lmx-bible-v3-verse.lmx150-active{animation:none!important}
+  #bOut .lmx150-skeleton{animation:none!important}
+}

@@ -13419,3 +13419,31 @@ window.BibleXPolimento=Object.assign(window.BibleXPolimento||{},{lote528:"concor
   window.addEventListener("resize",function(){if(fan&&!fan.hidden)anchor()},{passive:true});
   setInterval(function(){if(fan&&!fan.hidden&&!pagesBtn())hideFan()},600);
 })();
+
+/* ============================================================
+   5.4.157 — marcador de TELA CHEIA da Bíblia no <body> (.lmx-bx-full).
+   Motivo: os efeitos de tela cheia do celular eram todos via
+   body:has(.bible-x-shell.bx-reading-full/.bx-page-full). Alguns
+   WebViews/navegadores de celular NÃO suportam :has(), então essas
+   regras eram ignoradas (topo ficava, engrenagem offline ficava e o
+   trilho cinza não virava a barra da base). Este módulo marca o body
+   quando QUALQUER full da Bíblia está ativo e remove ao sair; o CSS
+   5.4.157 (abaixo no style) usa só esta classe — funciona em qualquer
+   navegador, com ou sem :has. ==================================== */
+(function () {
+  function bibleFull() {
+    return !!document.querySelector('.bible-x-shell.bx-reading-full, .bible-x-shell.bx-page-full, #bOut.bx-global-full');
+  }
+  function sync() {
+    var b = document.body; if (!b) return;
+    var on = bibleFull();
+    if (b.classList.contains('lmx-bx-full') !== on) {
+      if (on) b.classList.add('lmx-bx-full'); else b.classList.remove('lmx-bx-full');
+    }
+  }
+  sync();
+  if (window.MutationObserver) {
+    new MutationObserver(sync).observe(document.body, { subtree: true, attributes: true, attributeFilter: ['class'] });
+  }
+  setInterval(sync, 500);
+})();
