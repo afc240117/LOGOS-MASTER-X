@@ -15188,3 +15188,39 @@ body > .bx-v157-more-panel button{min-height:44px!important;font-size:14.5px!imp
   .bible-x-shell.bx-reading-full .bible-x-section,
   .bible-x-shell.bx-page-full .bible-x-section{overflow-anchor:none!important}
 }
+
+/* ===== 5.4.152 — Barra de MODOS no topo do celular (tela comum), auto-hide. ===== */
+#bxV170TopModes{
+  position:fixed!important;top:6px!important;left:50%!important;
+  transform:translate(-50%,calc(-140% - 12px))!important;
+  opacity:0!important;pointer-events:none!important;
+  display:flex!important;align-items:center!important;gap:6px!important;
+  max-width:96vw!important;overflow-x:auto!important;
+  padding:6px!important;border:1px solid rgba(120,145,170,.22)!important;
+  border-radius:13px!important;background:rgba(10,20,30,.92)!important;
+  box-shadow:0 10px 30px rgba(0,0,0,.45)!important;
+  z-index:96000!important;
+  -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);
+  transition:transform .32s ease,opacity .32s ease!important;
+}
+#bxV170TopModes.bx170-active{
+  transform:translate(-50%,0)!important;opacity:1!important;pointer-events:auto!important;
+}
+#bxV170TopModes.bx170-active.bx170-hidden{
+  transform:translate(-50%,calc(-140% - 12px))!important;opacity:0!important;pointer-events:none!important;
+}
+#bxV170TopModes::-webkit-scrollbar{display:none}
+#bxV170TopModes button{
+  flex:0 0 auto!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;
+  height:30px!important;min-height:30px!important;padding:0 10px!important;
+  border:1px solid rgba(120,150,175,.35)!important;border-radius:999px!important;
+  background:rgba(16,30,44,.95)!important;color:#cfdbe4!important;
+  font-size:10px!important;font-weight:600!important;white-space:nowrap!important;cursor:pointer!important;
+}
+#bxV170TopModes button.active,
+#bxV170TopModes button[data-v170-mode].active{
+  border-color:#d6ad4f!important;color:#ffe9ad!important;
+  background:linear-gradient(100deg,rgba(214,173,79,.22),rgba(16,30,44,.95))!important;
+}
+#bxV170TopModes button[data-v170-cfg-top],
+#bxV170TopModes button[data-v170-off-top]{padding:0 9px!important;font-size:14px!important}

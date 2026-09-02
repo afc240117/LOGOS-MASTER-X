@@ -13305,3 +13305,103 @@ window.BibleXPolimento=Object.assign(window.BibleXPolimento||{},{lote528:"concor
     applyVis();
   }catch(err){if(window.console)console.error("bxVis:",err)}
 })();
+
+/* ============================================================
+   5.4.152 — Barra de MODOS no topo do celular (tela comum).
+   Os chips Leitura/Estudo/Originais/Geografia/Pregação/Tudo (+ ⚙️
+   das ferramentas do versículo e ⬇️ Bíblia local/offline) ficam numa
+   barra flutuante no topo com auto-hide: some ao rolar para baixo,
+   volta ao rolar para cima (mesma filosofia do trilho cinza aprovado).
+   A barra é um MIRROR: os toques chamam window.__bxV170Apply(mode),
+   então nenhum DOM original é movido. Só no celular e fora do full.
+   ============================================================ */
+(function(){
+  "use strict";
+  if(typeof matchMedia!=="function"||!matchMedia("(max-width:760px)").matches)return;
+  var LABELS=[["reading","📖 Leitura"],["study","🔎 Estudo"],["originals","🇬🇷 Originais"],["geography","🗺️ Geografia"],["sermon","🔥 Pregação"],["all","🌐 Tudo"]];
+  var host=null;
+  function isBible(){var o=document.querySelector("#bOut");return !!o&&!!o.innerHTML.trim()}
+  function isFull(){return !!document.querySelector(".bible-x-shell.bx-reading-full, .bible-x-shell.bx-page-full")}
+  function openOffline(){
+    try{
+      var imp=document.querySelector(".bible-x-import");
+      if(imp){imp.setAttribute("open","");try{imp.scrollIntoView({behavior:"smooth",block:"center"})}catch(e1){}return}
+    }catch(e){}
+    try{
+      var m=document.querySelector("#bxOfflineManage");
+      if(m){m.click();return}
+    }catch(e){}
+    try{
+      var mo=document.getElementById("bxOfflineModal");
+      if(mo&&mo.hidden)mo.hidden=false;
+    }catch(e){}
+  }
+  function build(){
+    if(host)return;
+    host=document.createElement("div");host.id="bxV170TopModes";
+    LABELS.forEach(function(pair){
+      var b=document.createElement("button");b.type="button";
+      b.setAttribute("data-v170-mode",pair[0]);b.setAttribute("title",pair[1]);b.textContent=pair[1];
+      b.addEventListener("click",function(){try{window.__bxV170Apply&&window.__bxV170Apply(pair[0])}catch(e){}});
+      host.appendChild(b);
+    });
+    var g=document.createElement("button");g.type="button";
+    g.setAttribute("data-v170-cfg-top","1");g.title="Ferramentas do versículo (engrenagem)";g.textContent="⚙️";
+    g.addEventListener("click",function(){var c=document.querySelector("[data-v170-cfg]");if(c){try{c.click()}catch(e){}}});
+    host.appendChild(g);
+    var off=document.createElement("button");off.type="button";
+    off.setAttribute("data-v170-off-top","1");off.title="Bíblia local / módulos offline";off.textContent="⬇️";
+    off.addEventListener("click",openOffline);
+    host.appendChild(off);
+    document.body.appendChild(host);
+  }
+  function syncMode(){
+    if(!host)return;
+    var mode="";
+    try{var o=document.querySelector("#bOut");if(o&&o.dataset)mode=o.dataset.v170Mode||""}catch(e){}
+    Array.prototype.forEach.call(host.querySelectorAll("[data-v170-mode]"),function(b){
+      b.classList.toggle("active",b.getAttribute("data-v170-mode")===mode);
+    });
+  }
+  function ensure(){
+    if(!host)build();
+    if(!host)return;
+    if(isBible()&&!isFull()){
+      host.classList.add("bx170-active");
+      syncMode();
+    }else{
+      host.classList.remove("bx170-active");
+    }
+  }
+  var lastY=0,ticking=false;
+  function onScroll(){
+    ticking=false;
+    if(!host||!host.classList.contains("bx170-active")){lastY=0;return}
+    var y=window.scrollY||document.documentElement.scrollTop||0;
+    if(y>lastY&&y>8)host.classList.add("bx170-hidden");
+    else host.classList.remove("bx170-hidden");
+    lastY=y;
+  }
+  window.addEventListener("scroll",function(){if(!ticking){ticking=true;requestAnimationFrame(onScroll)}},{passive:true});
+  document.addEventListener("touchstart",function(e){
+    if(!host||!e.touches||!e.touches.length)return;
+    if(e.touches[0].clientY<60&&host.classList.contains("bx170-active"))host.classList.remove("bx170-hidden");
+  },{passive:true});
+  window.addEventListener("resize",ensure,{passive:true});
+  document.addEventListener("biblex:pagechange",function(){setTimeout(ensure,50)});
+  /* Reage a mudancas de MODO sem o loop do observer amplo: observa apenas o
+     atributo data-v170-mode no proprio #bOut (nao propaga classe, nao recria).
+     Se o no for recriado, watchTick() re-observa no proximo tick (600ms). */
+  var observed=null,watched=null;
+  function watchMode(){
+    var o=document.querySelector("#bOut");
+    if(o===watched)return;
+    if(observed){try{observed.disconnect()}catch(e){}}observed=null;
+    watched=o;
+    if(o){try{observed=new MutationObserver(function(){syncMode();ensure()});
+      observed.observe(o,{attributes:true,attributeFilter:["data-v170-mode"]})}catch(e){}}
+  }
+  function watchTick(){watchMode();ensure();syncMode()}
+  watchTick();
+  setInterval(watchTick,600);
+})();
