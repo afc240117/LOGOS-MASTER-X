@@ -12914,3 +12914,32 @@ window.BibleXPolimento=Object.assign(window.BibleXPolimento||{},{lote528:"concor
     if(t.closest("#bPrevChapter")||t.closest("#bNextChapter"))window.__bxScrollTopNext=1;
   },true);
 })();
+
+/* 5.4.147 — barra cinza no TOPO da tela cheia mobile (.bx-v157-rail horizontal):
+   some ao rolar para baixo, reaparece ao rolar para cima (igual lateral na web).
+   Toggla .bx-v157-fullhide no <body>; o CSS 5.4.146 anima opacity/transform. */
+(function () {
+  if (typeof window.matchMedia !== 'function' || !window.matchMedia('(max-width:760px)').matches) return;
+  var lastY = 0, ticking = false;
+  function isFull() {
+    return !!document.querySelector('.bible-x-shell.bx-reading-full, .bible-x-shell.bx-page-full');
+  }
+  function scroller() {
+    /* o proprio shell .bible-x-shell e o container que rola em tela cheia
+       (overflow-y:auto; #bOut nao rola sozinho) */
+    return document.querySelector('.bible-x-shell.bx-reading-full, .bible-x-shell.bx-page-full') || null;
+  }
+  function onScroll() {
+    ticking = false;
+    if (!isFull()) { document.body.classList.remove('bx-v157-fullhide'); lastY = 0; return; }
+    var sc = scroller();
+    if (!sc) return;
+    var y = sc.scrollTop;
+    if (y > lastY && y > 4) document.body.classList.add('bx-v157-fullhide');
+    else document.body.classList.remove('bx-v157-fullhide');
+    lastY = y;
+  }
+  document.addEventListener('scroll', function () {
+    if (!ticking) { ticking = true; requestAnimationFrame(onScroll); }
+  }, { passive: true, capture: true });
+})();

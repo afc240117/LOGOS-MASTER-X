@@ -14866,7 +14866,7 @@ body:has(.bible-x-shell.bx-page-full) #lmx150-topstack{display:none!important}
     position:fixed!important;
     left:50%!important;
     right:auto!important;
-    top:calc(env(safe-area-inset-top,0px) + 32px)!important;
+    top:calc(env(safe-area-inset-top,0px) + 38px)!important; /* ~1cm do topo */
     transform:translateX(-50%)!important;
     opacity:1!important;
     pointer-events:auto!important;
@@ -14876,6 +14876,15 @@ body:has(.bible-x-shell.bx-page-full) #lmx150-topstack{display:none!important}
     border-radius:999px!important;
     max-width:calc(100vw - 24px)!important;
     flex-wrap:nowrap!important;
+    transition:opacity .25s ease,transform .25s ease!important;
+  }
+  /* some ao rolar para baixo / volta ao rolar para cima (.bx-v157-fullhide via JS).
+     especificidade igual a da regra de mostrar (0,3,1) para vencer o opacity:1 */
+  body.bx-v157-fullhide:has(.bible-x-shell.bx-reading-full) .bx-v157-rail,
+  body.bx-v157-fullhide:has(.bible-x-shell.bx-page-full) .bx-v157-rail{
+    opacity:0!important;
+    pointer-events:none!important;
+    transform:translate(-50%,-14px)!important;
   }
   /* esconde o contador "1 / N" e o separador (pill compacta) */
   body:has(.bible-x-shell.bx-reading-full) .bx-v157-rail > span,
@@ -14893,6 +14902,6 @@ body:has(.bible-x-shell.bx-page-full) #lmx150-topstack{display:none!important}
   }
   /* reserva espaco no topo do conteudo para a pill nao cobrir o texto */
   body:has(.bible-x-shell.bx-reading-full) #bOut{
-    padding-top:50px!important;
+    padding-top:56px!important;
   }
 }
