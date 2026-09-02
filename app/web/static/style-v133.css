@@ -14929,9 +14929,11 @@ body:has(.bible-x-shell.bx-page-full) #lmx150-topstack{display:none!important}
 /* ===== 5.4.148 — PAINEL DE CAIXINHAS (mostrar/ocultar itens do topo) ===== */
 .bx-vis-hide{display:none!important}
 .bx-v159-quick.bx-vis-quick-empty{display:none!important}
-.bx-v158-visbtn{
-  width:36px!important;min-width:36px!important;padding:0!important;
-  font-size:15px!important;
+#workspace .bible-x-toolbar.bx-v158-toolbar .bx-v158-visbtn{
+  width:36px!important;min-width:36px!important;max-width:36px!important;
+  padding:0!important;font-size:15px!important;line-height:1!important;
+  justify-self:start!important;align-self:center!important;
+  flex:0 0 auto!important;margin:0!important;border-radius:9px!important;
 }
 .bx-vis-panel{
   position:fixed!important;inset:0!important;z-index:1000600!important;
@@ -14945,7 +14947,7 @@ body:has(.bible-x-shell.bx-page-full) #lmx150-topstack{display:none!important}
 }
 .bx-vis-card{
   position:relative!important;z-index:2!important;
-  width:min(600px,96vw)!important;max-height:86vh!important;overflow:auto!important;
+  width:min(600px,calc(100vw - 32px))!important;max-height:86vh!important;overflow:auto!important;
   border:1px solid #365164!important;border-radius:16px!important;
   background:linear-gradient(180deg,#0d1b27,#07111a)!important;
   color:#e9eff2!important;
