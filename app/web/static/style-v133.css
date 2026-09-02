@@ -15060,29 +15060,6 @@ body > .bx-v157-more-panel button{min-height:44px!important;font-size:14.5px!imp
 .bx-vis-hint{font-size:11.5px!important}
 .bx-vis-card header h3{font-size:21px!important}
 .bx-vis-card footer .btn{min-height:40px!important;font-size:13.5px!important}
-/* ===== 5.4.150 — LINHA RÁPIDA no modo NORMAL: botões e letras maiores
-   (mesmo padrão do leque ＋). Vence as compactações desktop/mobile por vir
-   depois, com a MESMA especificidade (#workspace ...). Não toca tela cheia. ===== */
-#workspace .bible-x-shell:not(.bx-reading-full) .bx-v159-quick button,
-.bible-x-shell:not(.bx-reading-full) .bx-v159-quick button{
-  min-height:40px!important;height:auto!important;padding:7px 12px!important;
-  font-size:13px!important;border-radius:12px!important;
-}
-#workspace .bible-x-shell:not(.bx-reading-full) .bx-v159-quick [data-v159-quick-scope],
-.bible-x-shell:not(.bx-reading-full) .bx-v159-quick [data-v159-quick-scope]{
-  font-size:13px!important;padding:7px 10px!important;
-}
-#workspace .bible-x-shell:not(.bx-reading-full) .bx-v159-quick .bx-v170-layers button,
-.bible-x-shell:not(.bx-reading-full) .bx-v159-quick .bx-v170-layers button{
-  min-height:40px!important;font-size:13px!important;padding:7px 12px!important;border-radius:12px!important;
-}
-#workspace .bible-x-shell:not(.bx-reading-full) .bx-v159-quick .bx-page-painel-btn,
-#workspace .bible-x-shell:not(.bx-reading-full) .bx-v159-quick .bx-page-extra-btn{
-  min-height:40px!important;font-size:13px!important;padding:7px 12px!important;
-}
-#workspace .bible-x-shell:not(.bx-reading-full) .bx-v159-quick>span{
-  font-size:11px!important;
-}
 /* ===== 5.4.150 — CELULAR: a toolbar Bíblia X deixa de rolar de lado e passa a
    QUEBRAR em linhas, para nenhum controle ficar fora da tela (antes o ⚙️ e os
    botões Abrir/Enviar ficavam ocultos atrás do scroll horizontal). ===== */
