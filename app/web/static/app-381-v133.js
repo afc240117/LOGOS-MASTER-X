@@ -1501,8 +1501,8 @@ ${homeDesktopControls(actions)}
       <select id="bVerse" aria-label="Versículo"><option value="">Todos</option></select>
     </div>
     <input id="bRef" type="hidden" value="João 3:16">
-    <button class="btn primary bx-v158-open" id="bOpen">Abrir</button>
-    <button class="btn secondary" id="bSend">⚡ Enviar ao Studio</button>
+    <button class="btn primary bx-v158-open" id="bOpen" data-bx-vis="open">Abrir</button>
+    <button class="btn secondary" id="bSend" data-bx-vis="send">⚡ Enviar ao Studio</button>
     <div class="bx-v158-mode-pill" id="bxV158Mode" aria-live="polite">📖 Capítulo inteiro</div>
     <button type="button" class="btn secondary bx-v158-visbtn" data-bx-vis-trigger title="Mostrar ou ocultar itens do topo (Bíblia X, Pesquisa bíblica e linha Rápido)">⚙️</button>
    </div>
@@ -2552,19 +2552,29 @@ async function initBibleUI(){let current=[];
   local.forEach(x=>{if(!rows.some(y=>normalizeBibleRef(y.target).toLowerCase()===normalizeBibleRef(x.target).toLowerCase()))rows.push(x)});
   const body=$("#bxVcBody");if(!body)return;
   const hasFull=(status?.counts?.crossrefs||0)>100000;
+  /* 5.4.150 — REFERÊNCIAS CRUZADAS +: mostra até 50 diretas (antes 20) e adiciona
+     abas "🔤 Palavras" e "🗺️ Lugares" da passagem. Palavra → pesquisa na Bíblia
+     inteira (Concordância); Lugar → abre Atlas/mapa. */
+  const bxCrossStop=new Set("a o e de da do das dos em no na nos nas por para com sem um uma uns umas que se ao aos à às é são foi foram ser como mas ou já não sim sua seu seus suas ele ela eles elas lhe lhes isto isso aquilo este esta estes estas meu minha teu tua nós vós eu tu deus senhor sobre contra então pois também mais".split(/\s+/));
+  const words=[...new Set(String(v.text||"").normalize("NFD").replace(/[̀-ͯ]/g,"").toLocaleLowerCase("pt-BR").match(/[a-zà-ÿ0-9]+/g)||[])].filter(w=>w.length>=4&&!bxCrossStop.has(w)).slice(0,10);
+  const places=[...bxEntityPlaces].filter(n=>String(v.text||"").toLocaleLowerCase("pt-BR").includes(String(n).toLocaleLowerCase("pt-BR"))).slice(0,10);
   body.innerHTML=`<div class="bx-vc-verse"><b>${escapeHtml(v.ref)}</b><span>${escapeHtml(v.text)}</span></div>
-  <div class="bx-ref-tabs"><button class="active" data-ref-tab="direct">Diretas <b>${rows.length}</b></button><button data-ref-tab="topics">Temáticas <b>${nave.length}</b></button><button data-ref-tab="all">Ver todas</button></div>
+  <div class="bx-ref-tabs"><button class="active" data-ref-tab="direct">Diretas <b>${rows.length}</b></button><button data-ref-tab="topics">Temáticas <b>${nave.length}</b></button>${words.length?`<button data-ref-tab="words">🔤 Palavras <b>${words.length}</b></button>`:""}${places.length?`<button data-ref-tab="places">🗺️ Lugares <b>${places.length}</b></button>`:""}<button data-ref-tab="all">Ver todas</button></div>
   <div data-ref-pane="direct">
-    
+
     <div class="bx-cross-reading-guide"><span>1</span><b>Clique em “Ler em pop-up”</b><i>→</i><span>2</span><b>Leia a referência</b><i>→</i><span>3</span><b>Feche e volte à Bíblia</b></div>
-    <div class="bx-cross-functional-list">${rows.length?rows.slice(0,hasFull?100:20).map((x,index)=>`<article><button class="bx-cross-functional-open" data-cross-ref="${escapeHtml(x.target)}" data-cross-index="${index}" aria-label="Ler ${escapeHtml(x.target)} em pop-up sem sair da Bíblia"><span>👁</span><span class="bx-cross-functional-copy"><b>${escapeHtml(x.target)}</b><em>Ler em pop-up sem trocar o versículo principal</em></span></button><small>${x.tsk?`TSK${x.anchor?` • ${escapeHtml(x.anchor)}`:""}`:(x.seed?"base inicial":"adicionada por você")}</small></article>`).join(""):'<p class="muted">Nenhuma referência cadastrada.</p>'}</div>
+    <div class="bx-cross-functional-list">${rows.length?rows.slice(0,hasFull?200:50).map((x,index)=>`<article><button class="bx-cross-functional-open" data-cross-ref="${escapeHtml(x.target)}" data-cross-index="${index}" aria-label="Ler ${escapeHtml(x.target)} em pop-up sem sair da Bíblia"><span>👁</span><span class="bx-cross-functional-copy"><b>${escapeHtml(x.target)}</b><em>Ler em pop-up sem trocar o versículo principal</em></span></button><small>${x.tsk?`TSK${x.anchor?` • ${escapeHtml(x.anchor)}`:""}`:(x.seed?"base inicial":"adicionada por você")}</small></article>`).join(""):'<p class="muted">Nenhuma referência cadastrada.</p>'}</div>
     <div class="bx-cross-add-row"><input id="bxVcCrossAdd" placeholder="Ex.: Romanos 5:8"><button id="bxVcCrossSave">+ Adicionar</button></div>
   </div>
   <div data-ref-pane="topics" hidden><div class="bx-nave-list">${nave.length?nave.map(x=>`<article><button type="button" class="bx-nave-topic-open" data-nave-topic="${escapeHtml(x.topic_id)}" data-nave-title="${escapeHtml(x.topic)}"><b>🏷️ ${escapeHtml(x.topic)}</b>${x.section?`<em>${escapeHtml(x.section)}</em>`:""}<small>${escapeHtml(x.summary||"Tema bíblico relacionado a esta passagem.")}</small><span>Ver referências →</span></button></article>`).join(""):'<p class="muted">Nenhum tema relacionado encontrado para este versículo.</p>'}</div></div>
-  <div data-ref-pane="all" hidden><div class="bx-ref-summary"><b>Base de estudo</b><p>Referências diretas: ${rows.length} • Tópicos Nave: ${nave.length}</p><p>${hasFull?"TSK: pré-instalado e offline.":"TSK: pré-instalado no sistema."} Nave: incorporado ao pacote.</p></div></div>`;
+  <div data-ref-pane="words" hidden>${words.length?`<div class="bx-v168-chips" style="margin-top:6px">${words.map(w=>`<button type="button" data-cross-word="${escapeHtml(w)}">🔤 ${escapeHtml(w)}</button>`).join("")}</div><p class="muted" style="margin-top:8px">Clique numa palavra para pesquisá-la em toda a Bíblia (Concordância).</p>`:'<p class="muted">Nenhuma palavra significativa reconhecida.</p>'}</div>
+  <div data-ref-pane="places" hidden>${places.length?`<div class="bx-v168-chips" style="margin-top:6px">${places.map(n=>`<button type="button" data-cross-place="${escapeHtml(n)}">⌖ ${escapeHtml(n)}</button>`).join("")}</div><p class="muted" style="margin-top:8px">Clique num lugar para abrir o Atlas, mapa e rotas da região.</p>`:'<p class="muted">Nenhum lugar reconhecido nesta passagem.</p>'}</div>
+  <div data-ref-pane="all" hidden><div class="bx-ref-summary"><b>Base de estudo</b><p>Referências diretas: ${rows.length} • Tópicos Nave: ${nave.length} • Palavras-chave: ${words.length} • Lugares: ${places.length}</p><p>${hasFull?"TSK: pré-instalado e offline.":"TSK: pré-instalado no sistema."} Nave: incorporado ao pacote.</p></div></div>`;
   body.querySelectorAll("[data-ref-tab]").forEach(b=>b.onclick=()=>{body.querySelectorAll("[data-ref-tab]").forEach(x=>x.classList.toggle("active",x===b));body.querySelectorAll("[data-ref-pane]").forEach(p=>p.hidden=p.dataset.refPane!==b.dataset.refTab)});
   body.querySelectorAll("[data-cross-ref]").forEach((button,index)=>button.onclick=()=>bxOpenCrossReferenceReader(v,rows,Number(button.dataset.crossIndex||index)));
   body.querySelectorAll("[data-nave-topic]").forEach(b=>b.onclick=()=>bxOpenNaveTopic(b.dataset.naveTopic,b.dataset.naveTitle));
+  body.querySelectorAll("[data-cross-word]").forEach(b=>b.onclick=()=>{const q=b.dataset.crossWord;bxCloseVerseContext();if($("#bSearch"))$("#bSearch").value=q;const f=$("#bFind");if(f)f.click();else activate("search")});
+  body.querySelectorAll("[data-cross-place]").forEach(b=>b.onclick=()=>{const n=b.dataset.crossPlace;bxCloseVerseContext();activate("maps");if($("#bxMapQuery"))$("#bxMapQuery").value=n;setTimeout(()=>renderMaps(n),0)});
   $("#bxVcCrossSave")?.addEventListener("click",async()=>{const target=normalizeBibleRef($("#bxVcCrossAdd")?.value);if(!target)return;await crossPut(v.ref,target);$("#bxVcStatus").textContent="✓ Referência adicionada";await bxRenderCrossPanel(v)});
  };
  /* V5.4.17 — ☀️ RAIO-X VIVO: conecta as 5 cadeias em um único painel por versículo
@@ -12958,7 +12968,7 @@ window.BibleXPolimento=Object.assign(window.BibleXPolimento||{},{lote528:"concor
   try{
     var KEY="bibleXTopVis";
     var DEFAULTS={
-      toolbar:{version:1,book:1,chapter:1,verse:1},
+      toolbar:{version:1,book:1,chapter:1,verse:1,open:1,send:1},
       search:{query:1,scope:1,mode:1,sort:1,books:1,find:1,concordance:1,clear:1},
       quick:{all:1,items:{}}
     };
@@ -12999,10 +13009,19 @@ window.BibleXPolimento=Object.assign(window.BibleXPolimento||{},{lote528:"concor
       applyQuick();
     }
 
+    /* 5.4.150 — Coleciona os botões de visibilidade da "linha rápida" tanto do
+       .bx-v159-quick quanto do .bx-v170-layers (modos Leitura/Estudo/...), que o
+       JS pode estar movendo entre containers a cada render (timing). Deduplica. */
+    function allQuickButtons(){
+      var out=[],seen={};
+      document.querySelectorAll(".bx-v159-quick button[data-bx-vis-quick], .bx-v170-layers button[data-bx-vis-quick]").forEach(function(b){
+        var k=b.dataset.bxVisQuick;
+        if(seen[k])return;seen[k]=1;out.push(b);
+      });
+      return out;
+    }
     function applyQuick(){
-      var quick=document.querySelector(".bx-v159-quick");
-      if(!quick)return;
-      var btns=quick.querySelectorAll("button[data-bx-vis-quick]");
+      var btns=allQuickButtons();
       var visible=0;
       btns.forEach(function(b){
         var k=b.dataset.bxVisQuick;
@@ -13010,7 +13029,8 @@ window.BibleXPolimento=Object.assign(window.BibleXPolimento||{},{lote528:"concor
         b.classList.toggle("bx-vis-hide",!show);
         if(show)visible++;
       });
-      quick.classList.toggle("bx-vis-quick-empty",visible===0);
+      var quick=document.querySelector(".bx-v159-quick");
+      if(quick)quick.classList.toggle("bx-vis-quick-empty",visible===0);
     }
 
     var panel=null;
@@ -13033,6 +13053,7 @@ window.BibleXPolimento=Object.assign(window.BibleXPolimento||{},{lote528:"concor
             '<h4>1 · Barra da Bíblia X</h4>'+
             '<div class="bx-vis-grid">'+
               mkCb("toolbar.version","Versão")+mkCb("toolbar.book","Livro")+mkCb("toolbar.chapter","Capítulo")+mkCb("toolbar.verse","Versículo")+
+              mkCb("toolbar.open","Abrir")+mkCb("toolbar.send","⚡ Enviar ao Studio")+
             '</div>'+
           '</section>'+
           '<section>'+
@@ -13048,7 +13069,7 @@ window.BibleXPolimento=Object.assign(window.BibleXPolimento||{},{lote528:"concor
             '<p class="bx-vis-hint">Desmarque "Todos os botões" para escolher um por um.</p>'+
             '<div class="bx-vis-grid" data-bx-vis-quick-grid></div>'+
           '</section>'+
-          '<footer><button type="button" class="btn secondary" data-bx-vis-reset>Restaurar padrão</button></footer>'+
+          '<footer><button type="button" class="btn bx-vis-sair" data-bx-vis-close>Sair</button><button type="button" class="btn primary" data-bx-vis-reset>Restaurar padrão</button></footer>'+
         '</div>';
       document.body.appendChild(p);
       panel=p;
@@ -13059,9 +13080,7 @@ window.BibleXPolimento=Object.assign(window.BibleXPolimento||{},{lote528:"concor
       var grid=p.querySelector("[data-bx-vis-quick-grid]");
       if(!grid)return;
       grid.innerHTML="";
-      var quick=document.querySelector(".bx-v159-quick");
-      if(quick){
-        quick.querySelectorAll("button[data-bx-vis-quick]").forEach(function(b){
+      allQuickButtons().forEach(function(b){
           var k=b.dataset.bxVisQuick;
           var label=(b.textContent||"").trim()||QUICK_LABELS[k]||k;
           var el=document.createElement("label");
@@ -13069,7 +13088,6 @@ window.BibleXPolimento=Object.assign(window.BibleXPolimento||{},{lote528:"concor
           el.innerHTML='<input type="checkbox" data-bx-vis-cb="quick.items.'+k+'" data-bx-vis-qk="'+k+'"> <span>'+label+'</span>';
           grid.appendChild(el);
         });
-      }
     }
     function syncPanel(){
       var p=buildPanel();
@@ -13078,7 +13096,6 @@ window.BibleXPolimento=Object.assign(window.BibleXPolimento||{},{lote528:"concor
         var val;
         if(parts[0]==="quick"&&parts[1]==="items"){
           val=cfg.quick.all?true:(cfg.quick.items[parts[2]]===1);
-          cb.disabled=cfg.quick.all===1;
         }else if(parts[0]==="quick"&&parts[1]==="all"){
           val=cfg.quick.all===1;
         }else{
@@ -13102,13 +13119,19 @@ window.BibleXPolimento=Object.assign(window.BibleXPolimento||{},{lote528:"concor
       if(!cb)return;
       var parts=cb.dataset.bxVisCb.split(".");
       if(parts[0]==="quick"&&parts[1]==="items"){
+        /* se o mestre estava ligado, o usuário está mexendo num item: desliga o
+           mestre e pré-preenche os demais como visíveis, para que a marcação/
+           desmarcação individual tenha efeito real. */
+        if(cfg.quick.all===1){
+          cfg.quick.all=0;
+          allQuickButtons().forEach(function(b){cfg.quick.items[b.dataset.bxVisQuick]=1});
+        }
         if(cb.checked)cfg.quick.items[parts[2]]=1;else delete cfg.quick.items[parts[2]];
       }else if(parts[0]==="quick"&&parts[1]==="all"){
         cfg.quick.all=cb.checked?1:0;
         if(!cb.checked){
           /* desligou o mestre: comeca com todos marcados para nao esvaziar */
-          var quick=document.querySelector(".bx-v159-quick");
-          if(quick)quick.querySelectorAll("button[data-bx-vis-quick]").forEach(function(b){cfg.quick.items[b.dataset.bxVisQuick]=1});
+          allQuickButtons().forEach(function(b){cfg.quick.items[b.dataset.bxVisQuick]=1});
         }
       }else{
         cfg[parts[0]][parts[1]]=cb.checked?1:0;
