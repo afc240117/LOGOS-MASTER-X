@@ -1493,10 +1493,10 @@ ${homeDesktopControls(actions)}
   </section>
   <section class="bible-x-section active" data-bible-panel="reader">
    <div class="bible-x-toolbar bx-v158-toolbar">
-    <div><label>Versão</label><select id="bVersion"><option value="porbr2018">Bíblia Livre (BLIVRE)</option><option value="engwebp">World English Bible (WEBP)</option></select></div>
-    <div><label>Livro</label><select id="bBook"><option>Carregando...</option></select></div>
-    <div><label>Capítulo</label><select id="bChapter"><option value="3">3</option></select></div>
-    <div class="bx-v158-verse-field bx-v161-verse-field">
+    <div data-bx-vis="version"><label>Versão</label><select id="bVersion"><option value="porbr2018">Bíblia Livre (BLIVRE)</option><option value="engwebp">World English Bible (WEBP)</option></select></div>
+    <div data-bx-vis="book"><label>Livro</label><select id="bBook"><option>Carregando...</option></select></div>
+    <div data-bx-vis="chapter"><label>Capítulo</label><select id="bChapter"><option value="3">3</option></select></div>
+    <div class="bx-v158-verse-field bx-v161-verse-field" data-bx-vis="verse">
       <label>Versículo <small>Todos = capítulo inteiro</small></label>
       <select id="bVerse" aria-label="Versículo"><option value="">Todos</option></select>
     </div>
@@ -1504,6 +1504,7 @@ ${homeDesktopControls(actions)}
     <button class="btn primary bx-v158-open" id="bOpen">Abrir</button>
     <button class="btn secondary" id="bSend">⚡ Enviar ao Studio</button>
     <div class="bx-v158-mode-pill" id="bxV158Mode" aria-live="polite">📖 Capítulo inteiro</div>
+    <button type="button" class="btn secondary bx-v158-visbtn" data-bx-vis-trigger title="Mostrar ou ocultar itens do topo (Bíblia X, Pesquisa bíblica e linha Rápido)">⚙️</button>
    </div>
    <div class="bible-x-chapter-nav">
     <button class="btn secondary" id="bPrevChapter">← Capítulo anterior</button>
@@ -1511,11 +1512,11 @@ ${homeDesktopControls(actions)}
     <button class="btn secondary" id="bNextChapter">Próximo capítulo →</button>
    </div>
    <div class="bible-x-search-row bx-v159-search">
-    <div class="bx-v159-query">
+    <div class="bx-v159-query" data-bx-vis="query">
       <label>Pesquisa bíblica <small>palavra, frase ou tema</small></label>
       <input id="bSearch" placeholder="Ex.: fé, Espírito Santo, não temas..." autocomplete="off">
     </div>
-    <div>
+    <div data-bx-vis="scope">
       <label>Onde pesquisar</label>
       <select id="bxV159Scope">
         <option value="all">📖 Bíblia inteira</option>
@@ -1533,7 +1534,7 @@ ${homeDesktopControls(actions)}
         <option value="selected">☑ Livros escolhidos</option>
       </select>
     </div>
-    <div>
+    <div data-bx-vis="mode">
       <label>Correspondência</label>
       <select id="bxV159Mode">
         <option value="phrase">“ ” Frase exata</option>
@@ -1542,7 +1543,7 @@ ${homeDesktopControls(actions)}
         <option value="word">Aa Palavra inteira</option>
       </select>
     </div>
-    <div>
+    <div data-bx-vis="sort">
       <label>Ordenar</label>
       <select id="bxV159Sort">
         <option value="canon">Ordem bíblica</option>
@@ -1550,21 +1551,21 @@ ${homeDesktopControls(actions)}
         <option value="book">Por livro</option>
       </select>
     </div>
-    <button class="btn secondary bx-v159-books" id="bxV159Books">☑ Livros <span id="bxV159BooksCount">0</span></button>
-    <button class="btn blue" id="bFind">🔎 Pesquisar</button>
-    <button class="btn secondary" id="bConcordance">Concordância</button>
-    <button class="btn secondary bx-v159-clear" id="bxV159Clear">Limpar</button>
-    <div class="bx-v159-quick" aria-label="Pesquisas rápidas">
+    <button class="btn secondary bx-v159-books" id="bxV159Books" data-bx-vis="books">☑ Livros <span id="bxV159BooksCount">0</span></button>
+    <button class="btn blue" id="bFind" data-bx-vis="find">🔎 Pesquisar</button>
+    <button class="btn secondary" id="bConcordance" data-bx-vis="concordance">Concordância</button>
+    <button class="btn secondary bx-v159-clear" id="bxV159Clear" data-bx-vis="clear">Limpar</button>
+    <div class="bx-v159-quick" aria-label="Pesquisas rápidas" data-bx-vis="quick">
       <span>Rápido:</span>
-      <button type="button" data-v159-quick-scope="all">Toda Bíblia</button>
-      <button type="button" data-v159-quick-scope="nt">NT</button>
-      <button type="button" data-v159-quick-scope="ot">AT</button>
+      <button type="button" data-v159-quick-scope="all" data-bx-vis-quick="scope-all">Toda Bíblia</button>
+      <button type="button" data-v159-quick-scope="nt" data-bx-vis-quick="scope-nt">NT</button>
+      <button type="button" data-v159-quick-scope="ot" data-bx-vis-quick="scope-ot">AT</button>
       <span class="bx-v159-zoom-sep" aria-hidden="true"></span>
-      <button type="button" data-bx-read="larger" title="Aumentar zoom">A+</button>
-      <button type="button" data-bx-read="smaller" title="Diminuir zoom">A−</button>
-      <button type="button" data-bx-read="reset" title="Zoom 100%">Zoom 100</button>
-      <button type="button" data-bx-read="fullscreen" title="Tela cheia">⛶ Tela cheia</button>
-      <button type="button" data-bx-read="exit" title="Sair da tela cheia" hidden>✕ Sair tela cheia</button>
+      <button type="button" data-bx-read="larger" data-bx-vis-quick="larger" title="Aumentar zoom">A+</button>
+      <button type="button" data-bx-read="smaller" data-bx-vis-quick="smaller" title="Diminuir zoom">A−</button>
+      <button type="button" data-bx-read="reset" data-bx-vis-quick="reset" title="Zoom 100%">Zoom 100</button>
+      <button type="button" data-bx-read="fullscreen" data-bx-vis-quick="fullscreen" title="Tela cheia">⛶ Tela cheia</button>
+      <button type="button" data-bx-read="exit" data-bx-vis-quick="exit" title="Sair da tela cheia" hidden>✕ Sair tela cheia</button>
     </div>
    </div>
    <div class="bible-x-resource-strip">
@@ -5194,12 +5195,12 @@ Gerado em ${new Date().toLocaleString("pt-BR")}
 
   <div class="bx-v170-layers" data-v170-layers>
     <span>Modo:</span>
-    <button type="button" data-v170-mode="reading">📖 Leitura</button>
-    <button type="button" data-v170-mode="study">🔎 Estudo</button>
-    <button type="button" data-v170-mode="originals">🇬🇷 Originais</button>
-    <button type="button" data-v170-mode="geography">🗺️ Geografia</button>
-    <button type="button" data-v170-mode="sermon">🔥 Pregação</button>
-    <button type="button" data-v170-mode="all">🌐 Tudo</button>
+    <button type="button" data-v170-mode="reading" data-bx-vis-quick="mode-reading">📖 Leitura</button>
+    <button type="button" data-v170-mode="study" data-bx-vis-quick="mode-study">🔎 Estudo</button>
+    <button type="button" data-v170-mode="originals" data-bx-vis-quick="mode-originals">🇬🇷 Originais</button>
+    <button type="button" data-v170-mode="geography" data-bx-vis-quick="mode-geography">🗺️ Geografia</button>
+    <button type="button" data-v170-mode="sermon" data-bx-vis-quick="mode-sermon">🔥 Pregação</button>
+    <button type="button" data-v170-mode="all" data-bx-vis-quick="mode-all">🌐 Tudo</button>
   </div>
   <div class="lmx-bible-v3-note">Duplo clique em uma palavra para pesquisar na Concordância. Nomes dourados abrem conteúdo relacionado.</div>
   <div class="bx-v155-selection-bar" data-v155-selection-bar hidden>
@@ -12942,4 +12943,200 @@ window.BibleXPolimento=Object.assign(window.BibleXPolimento||{},{lote528:"concor
   document.addEventListener('scroll', function () {
     if (!ticking) { ticking = true; requestAnimationFrame(onScroll); }
   }, { passive: true, capture: true });
+})();
+
+/* ===== 5.4.148 — PAINEL DE CAIXINHAS: mostrar/ocultar itens do topo =====
+   Botao ⚙️ na barra da Biblia (bible-x-toolbar). Abre um painel com tres
+   secoes de caixas de selecao:
+     1) Barra da Biblia X .... Versao, Livro, Capitulo, Versiculo
+     2) Pesquisa biblica ..... Frase, Onde pesquisar, Correspondencia,
+        Ordenar, Livros, Pesquisar, Concordancia, Limpar
+     3) Linha Rapido ......... "Todos os botoes" (mestre) + cada botao.
+   Persiste em logosx:bibleXTopVis. Reaplica a cada re-render
+   (MutationObserver) e tambem ao carregar. */
+(function(){
+  try{
+    var KEY="bibleXTopVis";
+    var DEFAULTS={
+      toolbar:{version:1,book:1,chapter:1,verse:1},
+      search:{query:1,scope:1,mode:1,sort:1,books:1,find:1,concordance:1,clear:1},
+      quick:{all:1,items:{}}
+    };
+    var QUICK_LABELS={
+      "scope-all":"Toda Bíblia","scope-nt":"NT","scope-ot":"AT",
+      "larger":"A+","smaller":"A−","reset":"Zoom 100","fullscreen":"⛶ Tela cheia","exit":"✕ Sair (tela cheia)",
+      "mode-reading":"📖 Leitura","mode-study":"🔎 Estudo","mode-originals":"🇬🇷 Originais",
+      "mode-geography":"🗺️ Geografia","mode-sermon":"🔥 Pregação","mode-all":"🌐 Tudo"
+    };
+    var cfg=Store.get(KEY,DEFAULTS);
+    function norm(c){
+      /* default é TUDO VISÍVEL (1). Só vira 0 se o salvo for explicitamente 0. */
+      var out={toolbar:{},search:{},quick:{all:1,items:{}}};
+      Object.keys(DEFAULTS.toolbar).forEach(function(k){out.toolbar[k]=(c&&c.toolbar&&c.toolbar[k]===0)?0:1});
+      Object.keys(DEFAULTS.search).forEach(function(k){out.search[k]=(c&&c.search&&c.search[k]===0)?0:1});
+      out.quick.all=(c&&c.quick&&c.quick.all===0)?0:1;
+      out.quick.items=(c&&c.quick&&c.quick.items)||{};
+      return out;
+    }
+    cfg=norm(cfg);
+
+    function applyVis(){
+      var tb=document.querySelector(".bible-x-toolbar.bx-v158-toolbar");
+      if(tb){
+        tb.querySelectorAll("[data-bx-vis]").forEach(function(el){
+          var on=cfg.toolbar[el.dataset.bxVis]!==0;
+          el.classList.toggle("bx-vis-hide",!on);
+        });
+      }
+      var sr=document.querySelector(".bible-x-search-row.bx-v159-search");
+      if(sr){
+        sr.querySelectorAll("[data-bx-vis]").forEach(function(el){
+          if(el.dataset.bxVis==="quick")return;
+          var on=cfg.search[el.dataset.bxVis]!==0;
+          el.classList.toggle("bx-vis-hide",!on);
+        });
+      }
+      applyQuick();
+    }
+
+    function applyQuick(){
+      var quick=document.querySelector(".bx-v159-quick");
+      if(!quick)return;
+      var btns=quick.querySelectorAll("button[data-bx-vis-quick]");
+      var visible=0;
+      btns.forEach(function(b){
+        var k=b.dataset.bxVisQuick;
+        var show=cfg.quick.all?true:(cfg.quick.items[k]===1);
+        b.classList.toggle("bx-vis-hide",!show);
+        if(show)visible++;
+      });
+      quick.classList.toggle("bx-vis-quick-empty",visible===0);
+    }
+
+    var panel=null;
+    function mkCb(key,label){
+      return '<label class="bx-vis-cb"><input type="checkbox" data-bx-vis-cb="'+key+'"> <span>'+label+'</span></label>';
+    }
+    function buildPanel(){
+      if(panel&&!panel.isConnected)panel=null;
+      if(panel)return panel;
+      var p=document.createElement("div");
+      p.className="bx-vis-panel";p.id="bxV158VisPanel";p.hidden=true;
+      p.innerHTML=
+        '<div class="bx-vis-backdrop" data-bx-vis-close></div>'+
+        '<div class="bx-vis-card" role="dialog" aria-modal="true" aria-label="Itens do topo">'+
+          '<header>'+
+            '<div><small>BÍBLIA X</small><h3>Itens do topo</h3><p>Escolha o que aparece e o que fica oculto. Guardado no seu navegador.</p></div>'+
+            '<button type="button" data-bx-vis-close title="Fechar (Esc)">✕</button>'+
+          '</header>'+
+          '<section>'+
+            '<h4>1 · Barra da Bíblia X</h4>'+
+            '<div class="bx-vis-grid">'+
+              mkCb("toolbar.version","Versão")+mkCb("toolbar.book","Livro")+mkCb("toolbar.chapter","Capítulo")+mkCb("toolbar.verse","Versículo")+
+            '</div>'+
+          '</section>'+
+          '<section>'+
+            '<h4>2 · Pesquisa bíblica</h4>'+
+            '<div class="bx-vis-grid">'+
+              mkCb("search.query","🔎 Frase / tema")+mkCb("search.scope","📖 Onde pesquisar")+mkCb("search.mode","“ ” Correspondência")+mkCb("search.sort","↕ Ordenar")+
+              mkCb("search.books","☑ Livros")+mkCb("search.find","🔎 Pesquisar")+mkCb("search.concordance","Concordância")+mkCb("search.clear","Limpar")+
+            '</div>'+
+          '</section>'+
+          '<section>'+
+            '<h4>3 · Linha Rápido</h4>'+
+            '<label class="bx-vis-master"><input type="checkbox" data-bx-vis-cb="quick.all"> <b>Todos os botões</b></label>'+
+            '<p class="bx-vis-hint">Desmarque "Todos os botões" para escolher um por um.</p>'+
+            '<div class="bx-vis-grid" data-bx-vis-quick-grid></div>'+
+          '</section>'+
+          '<footer><button type="button" class="btn secondary" data-bx-vis-reset>Restaurar padrão</button></footer>'+
+        '</div>';
+      document.body.appendChild(p);
+      panel=p;
+      return p;
+    }
+    function fillQuickGrid(){
+      var p=buildPanel();
+      var grid=p.querySelector("[data-bx-vis-quick-grid]");
+      if(!grid)return;
+      grid.innerHTML="";
+      var quick=document.querySelector(".bx-v159-quick");
+      if(quick){
+        quick.querySelectorAll("button[data-bx-vis-quick]").forEach(function(b){
+          var k=b.dataset.bxVisQuick;
+          var label=(b.textContent||"").trim()||QUICK_LABELS[k]||k;
+          var el=document.createElement("label");
+          el.className="bx-vis-cb";
+          el.innerHTML='<input type="checkbox" data-bx-vis-cb="quick.items.'+k+'" data-bx-vis-qk="'+k+'"> <span>'+label+'</span>';
+          grid.appendChild(el);
+        });
+      }
+    }
+    function syncPanel(){
+      var p=buildPanel();
+      p.querySelectorAll("[data-bx-vis-cb]").forEach(function(cb){
+        var parts=cb.dataset.bxVisCb.split(".");
+        var val;
+        if(parts[0]==="quick"&&parts[1]==="items"){
+          val=cfg.quick.all?true:(cfg.quick.items[parts[2]]===1);
+          cb.disabled=cfg.quick.all===1;
+        }else if(parts[0]==="quick"&&parts[1]==="all"){
+          val=cfg.quick.all===1;
+        }else{
+          val=cfg[parts[0]][parts[1]]!==0;
+        }
+        cb.checked=val;
+      });
+    }
+    function openPanel(){
+      var p=buildPanel();
+      fillQuickGrid();
+      syncPanel();
+      p.hidden=false;
+    }
+    function closePanel(){
+      if(panel)panel.hidden=true;
+    }
+
+    document.addEventListener("change",function(e){
+      var cb=(e.target&&e.target.closest)?e.target.closest("[data-bx-vis-cb]"):null;
+      if(!cb)return;
+      var parts=cb.dataset.bxVisCb.split(".");
+      if(parts[0]==="quick"&&parts[1]==="items"){
+        if(cb.checked)cfg.quick.items[parts[2]]=1;else delete cfg.quick.items[parts[2]];
+      }else if(parts[0]==="quick"&&parts[1]==="all"){
+        cfg.quick.all=cb.checked?1:0;
+        if(!cb.checked){
+          /* desligou o mestre: comeca com todos marcados para nao esvaziar */
+          var quick=document.querySelector(".bx-v159-quick");
+          if(quick)quick.querySelectorAll("button[data-bx-vis-quick]").forEach(function(b){cfg.quick.items[b.dataset.bxVisQuick]=1});
+        }
+      }else{
+        cfg[parts[0]][parts[1]]=cb.checked?1:0;
+      }
+      Store.set(KEY,cfg);
+      applyVis();
+      syncPanel();
+    },true);
+
+    document.addEventListener("click",function(e){
+      var t=e.target;
+      if(t&&t.closest){
+        if(t.closest("[data-bx-vis-trigger]")){e.preventDefault();openPanel();return;}
+        if(t.closest("[data-bx-vis-close]")){closePanel();return;}
+        if(t.closest("[data-bx-vis-reset]")){cfg=norm(null);Store.set(KEY,cfg);applyVis();syncPanel();return;}
+      }
+    },true);
+
+    document.addEventListener("keydown",function(e){
+      if(e.key==="Escape"&&panel&&!panel.hidden)closePanel();
+    },true);
+
+    var ticking=false;
+    var mo=new MutationObserver(function(){
+      if(ticking)return;ticking=true;
+      requestAnimationFrame(function(){ticking=false;applyVis();});
+    });
+    mo.observe(document.body,{childList:true,subtree:true});
+    applyVis();
+  }catch(err){if(window.console)console.error("bxVis:",err)}
 })();

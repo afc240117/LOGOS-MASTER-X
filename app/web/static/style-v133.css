@@ -14905,3 +14905,90 @@ body:has(.bible-x-shell.bx-page-full) #lmx150-topstack{display:none!important}
     padding-top:56px!important;
   }
 }
+
+/* ===== 5.4.148 — FIM DO TREMOR DOS VERSÍCULOS AO ROLAR NO CELULAR =====
+   O 5.4.134 já desligou o content-visibility nos versículos (altura estimada
+   140px fazia cada um "pular" ao entrar na tela). Ficou de fora o contêiner
+   #bOut — o capítulo inteiro — que ainda estava com content-visibility:auto
+   + contain-intrinsic-size:480px. Com isso o navegador renderiza o capítulo
+   aos pedaços enquanto rola e a posição "dá espaço e volta" (o scroll-anchor
+   corrige depois de cada re-layout). Renderizar #bOut de uma vez elimina o
+   tremor; capítulo tem poucos versículos, não pesa. */
+#bOut{
+  content-visibility:visible!important;
+  contain-intrinsic-size:none!important;
+}
+
+/* trava de ancoragem no shell da tela cheia: o navegador não tenta mais
+   "segurar" um versículo e reajustar a rolagem sozinho durante o movimento */
+.bible-x-shell.bx-reading-full,
+.bible-x-shell.bx-page-full{
+  overflow-anchor:none!important;
+}
+
+/* ===== 5.4.148 — PAINEL DE CAIXINHAS (mostrar/ocultar itens do topo) ===== */
+.bx-vis-hide{display:none!important}
+.bx-v159-quick.bx-vis-quick-empty{display:none!important}
+.bx-v158-visbtn{
+  width:36px!important;min-width:36px!important;padding:0!important;
+  font-size:15px!important;
+}
+.bx-vis-panel{
+  position:fixed!important;inset:0!important;z-index:1000600!important;
+  display:grid!important;place-items:center!important;padding:16px!important;
+}
+.bx-vis-panel[hidden]{display:none!important}
+.bx-vis-backdrop{
+  position:absolute!important;inset:0!important;
+  background:rgba(2,6,10,.66)!important;
+  backdrop-filter:blur(4px)!important;-webkit-backdrop-filter:blur(4px)!important;
+}
+.bx-vis-card{
+  position:relative!important;z-index:2!important;
+  width:min(600px,96vw)!important;max-height:86vh!important;overflow:auto!important;
+  border:1px solid #365164!important;border-radius:16px!important;
+  background:linear-gradient(180deg,#0d1b27,#07111a)!important;
+  color:#e9eff2!important;
+  box-shadow:0 26px 80px rgba(0,0,0,.6)!important;
+  padding:16px!important;
+}
+.bx-vis-card header{
+  display:flex!important;justify-content:space-between!important;align-items:flex-start!important;
+  gap:10px!important;padding-bottom:12px!important;border-bottom:1px solid #273d4d!important;
+}
+.bx-vis-card header small{color:#718998!important;font-size:8px!important;font-weight:900!important;letter-spacing:.14em!important}
+.bx-vis-card header h3{margin:2px 0 0!important;font-size:19px!important}
+.bx-vis-card header p{margin:3px 0 0!important;color:#7f95a4!important;font-size:10px!important}
+.bx-vis-card header>button{
+  width:32px!important;height:32px!important;flex:0 0 32px!important;
+  border:1px solid #345064!important;border-radius:9px!important;
+  background:#08131d!important;color:#e6edf1!important;cursor:pointer!important;font-size:15px!important;
+}
+.bx-vis-card section{margin-top:14px!important}
+.bx-vis-card h4{
+  margin:0 0 8px!important;font-size:10.5px!important;text-transform:uppercase!important;
+  letter-spacing:.12em!important;color:#d9b35c!important;
+}
+.bx-vis-grid{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:6px!important}
+.bx-vis-cb{
+  display:flex!important;align-items:center!important;gap:8px!important;
+  padding:8px 10px!important;border:1px solid #293f50!important;border-radius:9px!important;
+  background:#08131d!important;color:#cdd9e1!important;font-size:11.5px!important;
+  cursor:pointer!important;min-height:38px!important;
+}
+.bx-vis-cb input{width:17px!important;height:17px!important;flex:0 0 17px!important;accent-color:#f4cc75!important;cursor:pointer!important}
+.bx-vis-cb span{display:flex!important;align-items:center!important;gap:4px!important}
+.bx-vis-cb input:disabled{cursor:default!important;opacity:.55!important}
+.bx-vis-master{
+  display:flex!important;align-items:center!important;gap:9px!important;
+  padding:10px 12px!important;border:1px solid #b59449!important;border-radius:10px!important;
+  background:linear-gradient(135deg,rgba(202,169,83,.14),#091620)!important;
+  color:#f0d37b!important;font-size:12.5px!important;cursor:pointer!important;
+}
+.bx-vis-master input{width:18px!important;height:18px!important;accent-color:#f4cc75!important;cursor:pointer!important}
+.bx-vis-hint{margin:4px 0 8px!important;color:#718998!important;font-size:9px!important}
+.bx-vis-card footer{display:flex!important;justify-content:flex-end!important;margin-top:16px!important;padding-top:12px!important;border-top:1px solid #273d4d!important}
+@media(max-width:560px){
+  .bx-vis-grid{grid-template-columns:1fr!important}
+  .bx-vis-card{padding:14px!important}
+}
