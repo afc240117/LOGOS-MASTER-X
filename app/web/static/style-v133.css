@@ -15189,38 +15189,115 @@ body > .bx-v157-more-panel button{min-height:44px!important;font-size:14.5px!imp
   .bible-x-shell.bx-page-full .bible-x-section{overflow-anchor:none!important}
 }
 
-/* ===== 5.4.152 — Barra de MODOS no topo do celular (tela comum), auto-hide. ===== */
-#bxV170TopModes{
-  position:fixed!important;top:6px!important;left:50%!important;
-  transform:translate(-50%,calc(-140% - 12px))!important;
-  opacity:0!important;pointer-events:none!important;
-  display:flex!important;align-items:center!important;gap:6px!important;
-  max-width:96vw!important;overflow-x:auto!important;
-  padding:6px!important;border:1px solid rgba(120,145,170,.22)!important;
-  border-radius:13px!important;background:rgba(10,20,30,.92)!important;
-  box-shadow:0 10px 30px rgba(0,0,0,.45)!important;
-  z-index:96000!important;
-  -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);
-  transition:transform .32s ease,opacity .32s ease!important;
+/* ============================================================
+   5.4.155 — ☰ Modos: LEQUE que sobe do 5º botão da barra de
+   baixo do celular (Modos de leitura + Ferramentas + Offline).
+   A antiga barra de modos do topo foi removida (pedido). ===== */
+#bxV170ModeFan{
+  position:fixed!important;
+  z-index:1000300!important;
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:6px!important;
+  padding:8px!important;
+  min-width:224px!important;
+  max-width:min(320px,calc(100vw - 16px))!important;
+  border:1px solid rgba(120,145,170,.26)!important;
+  border-radius:14px!important;
+  background:rgba(6,15,24,.97)!important;
+  box-shadow:0 18px 46px rgba(0,0,0,.55)!important;
+  -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
+  transform-origin:bottom right!important;
+  animation:bxMfanPop .14s ease-out!important;
 }
-#bxV170TopModes.bx170-active{
-  transform:translate(-50%,0)!important;opacity:1!important;pointer-events:auto!important;
+#bxV170ModeFan[hidden]{display:none!important}
+@keyframes bxMfanPop{from{opacity:0;transform:translateY(10px) scale(.95)}to{opacity:1;transform:none}}
+#bxV170ModeFan button{
+  display:inline-flex!important;align-items:center!important;justify-content:center!important;
+  min-height:34px!important;padding:6px 10px!important;
+  border:1px solid rgba(120,150,175,.32)!important;border-radius:9px!important;
+  background:rgba(17,32,47,.97)!important;color:#d6e1ea!important;
+  font-size:11px!important;font-weight:600!important;white-space:nowrap!important;cursor:pointer!important;
 }
-#bxV170TopModes.bx170-active.bx170-hidden{
-  transform:translate(-50%,calc(-140% - 12px))!important;opacity:0!important;pointer-events:none!important;
-}
-#bxV170TopModes::-webkit-scrollbar{display:none}
-#bxV170TopModes button{
-  flex:0 0 auto!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;
-  height:30px!important;min-height:30px!important;padding:0 10px!important;
-  border:1px solid rgba(120,150,175,.35)!important;border-radius:999px!important;
-  background:rgba(16,30,44,.95)!important;color:#cfdbe4!important;
-  font-size:10px!important;font-weight:600!important;white-space:nowrap!important;cursor:pointer!important;
-}
-#bxV170TopModes button.active,
-#bxV170TopModes button[data-v170-mode].active{
+#bxV170ModeFan button.active{
   border-color:#d6ad4f!important;color:#ffe9ad!important;
-  background:linear-gradient(100deg,rgba(214,173,79,.22),rgba(16,30,44,.95))!important;
+  background:linear-gradient(100deg,rgba(214,173,79,.22),rgba(17,32,47,.97))!important;
 }
-#bxV170TopModes button[data-v170-cfg-top],
-#bxV170TopModes button[data-v170-off-top]{padding:0 9px!important;font-size:14px!important}
+#bxV170ModeFan button[data-mfan-gear],
+#bxV170ModeFan button[data-mfan-off]{font-size:10.5px!important}
+/* ============================================================
+   5.4.155 — TELA CHEIA CELULAR: o trilho cinza (.bx-v157-rail)
+   sai do topo e vira barra HORIZONTAL FIXA NA BASE (livro/cap,
+   ouvir, favoritos, copiar, tela cheia, +). Auto-hide: some no
+   meio da leitura e volta quando o dedo passa na base. Some
+   também a engrenagem ⚙️ Bíblia local/offline e o menu do topo.
+   ============================================================ */
+@media(max-width:760px){
+  body:has(.bible-x-shell.bx-reading-full) .top,
+  body:has(.bible-x-shell.bx-page-full) .top{display:none!important}
+  body:has(.bible-x-shell.bx-reading-full) .bible-x-import,
+  body:has(.bible-x-shell.bx-page-full) .bible-x-import{display:none!important}
+  body:has(.bible-x-shell.bx-reading-full) .bx-v157-rail,
+  body:has(.bible-x-shell.bx-page-full) .bx-v157-rail{
+    display:flex!important;flex-direction:row!important;align-items:center!important;
+    position:fixed!important;left:50%!important;right:auto!important;top:auto!important;
+    bottom:calc(env(safe-area-inset-bottom,0px) + 14px)!important;
+    transform:translate(-50%,170%)!important;
+    opacity:0!important;pointer-events:none!important;
+    z-index:1000100!important;gap:5px!important;
+    padding:6px 10px!important;border-radius:999px!important;
+    max-width:calc(100vw - 16px)!important;flex-wrap:nowrap!important;
+    transition:opacity .22s ease,transform .22s ease!important;
+    box-shadow:0 10px 30px rgba(0,0,0,.45)!important;
+  }
+  body:has(.bible-x-shell.bx-reading-full) .bx-v157-rail.bx-v157-touch,
+  body:has(.bible-x-shell.bx-page-full) .bx-v157-rail.bx-v157-touch{
+    transform:translate(-50%,0)!important;opacity:1!important;pointer-events:auto!important;
+  }
+  body.bx-v157-fullhide:has(.bible-x-shell.bx-reading-full) .bx-v157-rail,
+  body.bx-v157-fullhide:has(.bible-x-shell.bx-page-full) .bx-v157-rail,
+  body.bx-v157-fullhide:has(.bible-x-shell.bx-reading-full) .bx-v157-rail.bx-v157-touch,
+  body.bx-v157-fullhide:has(.bible-x-shell.bx-page-full) .bx-v157-rail.bx-v157-touch{
+    transform:translate(-50%,170%)!important;opacity:0!important;pointer-events:none!important;
+  }
+  body:has(.bible-x-shell.bx-reading-full) .bx-v157-rail > i,
+  body:has(.bible-x-shell.bx-page-full) .bx-v157-rail > i{display:none!important}
+  body:has(.bible-x-shell.bx-reading-full) .bx-v157-rail > span,
+  body:has(.bible-x-shell.bx-page-full) .bx-v157-rail > span{
+    display:inline-flex!important;color:#8fa5b5!important;font-size:10px!important;
+    font-weight:600!important;margin:0 2px!important;line-height:1!important;
+  }
+  body:has(.bible-x-shell.bx-reading-full) .bx-v157-rail button,
+  body:has(.bible-x-shell.bx-page-full) .bx-v157-rail button{
+    width:34px!important;min-width:34px!important;height:34px!important;min-height:34px!important;
+    padding:0!important;font-size:15px!important;border-radius:8px!important;
+  }
+  body:has(.bible-x-shell.bx-reading-full) #bOut,
+  body:has(.bible-x-shell.bx-page-full) #bOut{padding-bottom:96px!important}
+}
+/* ============================================================
+   5.4.155 — fim DEFINITIVO da tremida das letras dos versículos
+   ao rolar no celular. Além do content-visibility já desligado
+   (5.4.148), neutralizamos TODA estimativa/contenção e reancoragem
+   dentro do leitor e forçamos rolagem nativa. O Chrome/Android
+   re-rasteriza o glifo quando um filho guarda content-visibility ou
+   contain residual; sem eles a letra não "dança" na rolagem.
+   ============================================================ */
+@media(max-width:760px){
+  #bOut,#bOut *{
+    content-visibility:visible!important;
+    contain-intrinsic-size:none!important;
+    contain:none!important;
+  }
+  #bOut{scroll-behavior:auto!important}
+  .bible-x-shell.bx-reading-full,
+  .bible-x-shell.bx-page-full{scroll-behavior:auto!important}
+}
+
+/* ============================================================
+   5.4.155 — em tela cheia a barra de baixo do celular SOME (o trilho
+   cinza vira a barra de baixo, com os mesmos botões). ===== */
+@media(max-width:760px){
+  body:has(.bible-x-shell.bx-reading-full) #bxMobileBottomNav,
+  body:has(.bible-x-shell.bx-page-full) #bxMobileBottomNav{display:none!important}
+}

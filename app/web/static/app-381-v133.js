@@ -477,79 +477,48 @@ function finishMobileLoading(){
          drawConnector(u,{x:249,y:336},{x:234,y:308},{x:219,y:266},{x:210,y:240},s,.98);
        }
 
-       // 4 — K7 acende por dentro, de forma elegante.
-       drawK7((t-.50)/.14);
-       if(t>.50 && t<.64){
-         const u=(t-.50)/.14;
-         // pulso ÚNICO e suave (0→1→0) — elegante, sem tremulação
-         const e=.76+.24*Math.sin(Math.PI*u);
-         glowDot(138,185,42,s,e);
-         glowDot(221,196,42,s,e);
-         softEllipse(180,205,122,69,s,.30+.10*Math.sin(Math.PI*u));
-       }
+       // 4 — K7 acende por dentro, de forma elegante (pulso único e suave).
+      drawK7((t-.50)/.24);
+      if(t>.50 && t<.74){
+        const u=(t-.50)/.24;
+        const e=.82+.18*Math.sin(Math.PI*u);
+        glowDot(138,185,42,s,e);
+        glowDot(221,196,42,s,e);
+        softEllipse(180,205,124,70,s,.30+.10*Math.sin(Math.PI*u));
+      }
 
-       // 5 — a luz atravessa o interior da K7, entre as bobinas.
-       if(t>.58 && t<.67){
-         const u=(t-.58)/.09;
-         const breathe=.84+.16*Math.sin(Math.PI*2*u);
-         glowDot(138,185,45,s,breathe);
-         glowDot(221,196,45,s,breathe);
-         softEllipse(180,205,130,73,s,.35*breathe);
-       }
+      // 5 — (5.4.155) SEM o vai-e-volta pela fita dourada: a luz NÃO refaz o
+      //     caminho de volta. Depois de acesa, a K7 sustenta o brilho enquanto
+      //     UM único fio contínuo desce dela direto ao miolo do livro aberto —
+      //     um só sentido, ritmo uniforme (pedido: efeito mais elegante).
+      if(t>.64 && t<.90){
+        const u=(t-.64)/.26;
+        const sm=u*u*(3-2*u);
+        const e=Math.sin(Math.PI*Math.min(1,sm*1.10));
+        const K0={x:198,y:236},K1={x:258,y:330},K2={x:330,y:404},K3={x:438,y:445};
+        for(let k=0;k<20;k++){
+          const tt=Math.max(0,sm-k*.020);
+          const q=bez(K0,K1,K2,K3,Math.min(1,tt));
+          glowDot(q.x,q.y,15-k*.42,s,e*(1-k/22));
+        }
+        const q=bez(K0,K1,K2,K3,Math.min(1,sm));
+        glowDot(q.x,q.y,28,s,e);
+        glowDot(q.x,q.y,46,s,e*.30);
+      }
 
-       // 5.4.12 — SAÍDA: a luz desce do interior da K7 ao fim da fita de baixo,
-       // conectando o brilho interno ao início da volta (sem "teleporte").
-       if(t>.65 && t<.69){
-         const u=(t-.65)/.04;
-         // 5.4.15 — sai também POR BAIXO: o mesmo mergulho em sentido inverso,
-         // da base da K7 (210,240) de volta à base da haste (249,336).
-         drawConnector(u,{x:210,y:240},{x:219,y:266},{x:234,y:308},{x:249,y:336},s,.96);
-       }
+      // 6 — Bíblia: clímax final, ênfase sustentada (sem voltar à fita).
+      drawBible((t-.84)/.16);
+      if(t>.88 && t<1){
+        const u=(t-.88)/.12;
+        const e=Math.min(1,u/.22);
+        softEllipse(443,438,170,98,s,e*.60);
+        softEllipse(443,438,120,66,p,e*.34);
+        glowDot(443,438,90,s,e);
+        glowDot(443,438,54,s,e*1.18);
+        glowDot(443,438,26,p,e*.88);
+      }
 
-       // 6 — VOLTA pela MESMA fita, como FLUXO DE ENERGIA: após brilhar dentro
-       //     da K7, a luz RETORNA SOBRE a faixa dourada (literalmente no ouro),
-       //     percorrendo como uma rua, refazendo o caminho até a base e a Bíblia.
-       if(t>.67 && t<.83){
-         const u=(t-.67)/.16;
-         const sm=u*u*(3-2*u);
-         const prog=Math.min(1,sm*1.04);
-         const boost=.78+.22*Math.sin(Math.PI*Math.min(1,(1-prog)*1.7));
-         drawRibbonTrail(ribbon3,prog,s,.95,true,boost);
-       }
-
-       // 7 — a luz termina a volta na fita de baixo e desce suavemente ao
-       //     centro da Bíblia, onde o brilho culmina.
-       if(t>.81 && t<.91){
-         const u=(t-.81)/.10;
-         const e=Math.sin(Math.PI*u);
-         // 5.4.15 — desce do fim da fita (442,310) ao miolo do livro (438,445).
-         const K0={x:442,y:310},K1={x:440,y:380},K2={x:438,y:420},K3={x:438,y:445};
-         for(let k=0;k<18;k++){
-           const tt=Math.max(0,u-k*.022);
-           const q=bez(K0,K1,K2,K3,Math.min(1,tt));
-           glowDot(q.x,q.y,16-k*.45,s,e*(1-k/20));
-         }
-         const q=bez(K0,K1,K2,K3,Math.min(1,u));
-         glowDot(q.x,q.y,30,s,e);
-       }
-
-       // 8 — Bíblia: clímax final, com ênfase sustentada.
-       drawBible((t-.86)/.14);
-       if(t>.90 && t<1){
-         const u=(t-.90)/.10;
-         // SOBE rápido e SEGURA no pico até o fim: o fade final é feito pelo
-         // CSS (.is-ending → canvas427Out) — brilho magnífico que desvanece.
-         const e=Math.min(1,u/.22);
-         // 5.4.15 — BRILHO FINAL contido e intenso no miolo do livro (443,438):
-         // halo dourado menor, núcleo forte e coração branco-quente nas páginas.
-         softEllipse(443,438,170,98,s,e*.60);
-         softEllipse(443,438,120,66,p,e*.34);
-         glowDot(443,438,90,s,e);
-         glowDot(443,438,54,s,e*1.18);
-         glowDot(443,438,26,p,e*.88);
-       }
-
-       if(t<1){
+      if(t<1){
          requestAnimationFrame(frame);
        }else{
          canvas.classList.add('is-ending');
@@ -6452,8 +6421,16 @@ Gerado em ${new Date().toLocaleString("pt-BR")}
     T.start();
   });
   out.querySelector("[data-v157-fullscreen]")?.addEventListener("click",()=>{
-    const on=!document.querySelector(".bible-x-shell.bx-page-full");
-    if(window.LMXBXPages?.full){window.LMXBXPages.full(on);}
+    /* 5.4.156 — ⛶ do trilho virou um TOGGLE de tela cheia: dentro do full SAi
+       (roteia certo entre bx-reading-full e bx-page-full, igual ao "✕ Sair"
+       5.4.134); fora, entra no full universal das páginas (comportamento
+       histórico do trilho). Antes, dentro do bx-reading-full o ⛶ chamava
+       LMXBXPages.full(true) e TROCAVA para o outro full em vez de sair. */
+    const rd=document.querySelector(".bible-x-shell.bx-reading-full");
+    const pg=document.querySelector(".bible-x-shell.bx-page-full");
+    if(rd){ if(window.LMXBibleReader)window.LMXBibleReader.full(false); else if(window.LMXBX)window.LMXBX.full(false); }
+    else if(pg){ if(window.LMXBXPages?.full)window.LMXBXPages.full(false); else bxV157Toast("✕ Já fora da tela cheia"); }
+    else if(window.LMXBXPages?.full){ window.LMXBXPages.full(true); }
     else bxV157Toast("⛶ Tela cheia indisponível");
   });
   /* 5.4.73 — 📖 trocar livro/capítulo/versículo direto do trilho flutuante */
@@ -9231,13 +9208,13 @@ window.BibliaXLocal = window.BibliaXLocal || {
         <button type="button" data-bxm="cross"><span>🔗</span><b>Referências</b></button>
         <button type="button" data-bxm="strong"><span>🇬🇷</span><b>Strong</b></button>
         <button type="button" data-bxm="maps"><span>🗺️</span><b>Mapas</b></button>
-        <button type="button" data-bxm="pages"><span>☰</span><b>Páginas</b></button>`;
+        <button type="button" data-bxm="pages" title="Modos de leitura e ferramentas"><span>☰</span><b>Modos</b></button>`;
       document.body.appendChild(nav);
       nav.querySelector('[data-bxm="reader"]')?.addEventListener("click",openReader);
       nav.querySelector('[data-bxm="cross"]')?.addEventListener("click",()=>activateSection("cross"));
       nav.querySelector('[data-bxm="strong"]')?.addEventListener("click",()=>activateSection("strong"));
       nav.querySelector('[data-bxm="maps"]')?.addEventListener("click",()=>activateSection("maps"));
-      nav.querySelector('[data-bxm="pages"]')?.addEventListener("click",()=>window.LMXBXPages?.openPageMenu?.());
+      nav.querySelector('[data-bxm="pages"]')?.addEventListener("click",()=>{(window.__bxV170ModeFanToggle&&window.__bxV170ModeFanToggle())||window.LMXBXPages?.openPageMenu?.();});
     }
     nav.hidden=false;
     const current=bibleShell()?.dataset.bxPage||"reader";
@@ -13001,12 +12978,26 @@ window.BibleXPolimento=Object.assign(window.BibleXPolimento||{},{lote528:"concor
   var timer = null;
   /* 5.4.142 — gatilho apertado: antes aparecia a 70px da borda (dedo
      rolando solta a barra o tempo todo). Agora só num cantinho de ~20px. */
-  var near = function (t) { return t && typeof t.clientX === 'number' && t.clientX > window.innerWidth - 20; };
+  var isFullNow = function () { return !!document.querySelector('.bible-x-shell.bx-reading-full, .bible-x-shell.bx-page-full'); };
+  var near = function (t) {
+    if (!t || typeof t.clientX !== 'number') return false;
+    if (isFullNow()) return t.clientY > (window.innerHeight - 46); /* tela cheia: dedo na base */
+    return t.clientX > window.innerWidth - 20; /* normal: dedo na borda direita */
+  };
   var apply = function (on) { var r = document.querySelector('.bx-v157-rail'); if (r) r.classList.toggle('bx-v157-touch', on); };
-  var show = function () { apply(true); clearTimeout(timer); timer = setTimeout(function () { apply(false); }, 1800); };
+  var show = function () { apply(true); clearTimeout(timer); timer = setTimeout(function () { apply(false); }, isFullNow() ? 2800 : 1800); };
   var hide = function () { clearTimeout(timer); apply(false); };
   document.addEventListener('touchstart', function (e) { var t = e.touches && e.touches[0]; if (near(t)) show(); }, true);
   document.addEventListener('touchmove', function (e) { var t = e.touches && e.touches[0]; if (near(t)) show(); else hide(); }, { passive: true, capture: true });
+  /* mostra o trilho por ~2s ao ENTRAR na tela cheia (para descobrir que ele fica na base) */
+  var wasFull = isFullNow();
+  setInterval(function () {
+    var now = isFullNow();
+    if (now === wasFull) return;
+    wasFull = now;
+    if (now) { apply(true); clearTimeout(timer); timer = setTimeout(function () { apply(false); }, 2200); }
+    else { apply(false); }
+  }, 500);
 })();
 
 /* 5.4.134 — botão flutuante "✕ Sair" + Esc para sair da tela cheia.
@@ -13306,22 +13297,26 @@ window.BibleXPolimento=Object.assign(window.BibleXPolimento||{},{lote528:"concor
   }catch(err){if(window.console)console.error("bxVis:",err)}
 })();
 
+
+
 /* ============================================================
-   5.4.152 — Barra de MODOS no topo do celular (tela comum).
-   Os chips Leitura/Estudo/Originais/Geografia/Pregação/Tudo (+ ⚙️
-   das ferramentas do versículo e ⬇️ Bíblia local/offline) ficam numa
-   barra flutuante no topo com auto-hide: some ao rolar para baixo,
-   volta ao rolar para cima (mesma filosofia do trilho cinza aprovado).
-   A barra é um MIRROR: os toques chamam window.__bxV170Apply(mode),
-   então nenhum DOM original é movido. Só no celular e fora do full.
+   5.4.155 — ☰ "Modos": o 5º botão da barra de baixo do celular
+   (antes "Páginas" → Central dos 31 módulos) agora abre um LEQUE
+   para CIMA com os modos Leitura/Estudo/Originais/Geografia/Pregação/
+   Tudo + ⚙️ Ferramentas do versículo + ⬇️ Bíblia local/offline.
+   O painel Central dos 31 módulos segue acessível pelo seletor e
+   menuzinho do meio. A barra de modos do topo foi REMOVIDA (pedido).
+   Só atua no celular; os toques chamam window.__bxV170Apply.
    ============================================================ */
 (function(){
   "use strict";
-  if(typeof matchMedia!=="function"||!matchMedia("(max-width:760px)").matches)return;
-  var LABELS=[["reading","📖 Leitura"],["study","🔎 Estudo"],["originals","🇬🇷 Originais"],["geography","🗺️ Geografia"],["sermon","🔥 Pregação"],["all","🌐 Tudo"]];
-  var host=null;
-  function isBible(){var o=document.querySelector("#bOut");return !!o&&!!o.innerHTML.trim()}
-  function isFull(){return !!document.querySelector(".bible-x-shell.bx-reading-full, .bible-x-shell.bx-page-full")}
+  var fan=null;
+  var MODES=[["reading","📖 Leitura"],["study","🔎 Estudo"],["originals","🇬🇷 Originais"],["geography","🗺️ Geografia"],["sermon","🔥 Pregação"],["all","🌐 Tudo"]];
+  function pagesBtn(){
+    var nav=document.getElementById("bxMobileBottomNav");
+    if(!nav)return null;
+    return nav.querySelector('[data-bxm="pages"]');
+  }
   function openOffline(){
     try{
       var imp=document.querySelector(".bible-x-import");
@@ -13336,72 +13331,91 @@ window.BibleXPolimento=Object.assign(window.BibleXPolimento||{},{lote528:"concor
       if(mo&&mo.hidden)mo.hidden=false;
     }catch(e){}
   }
+  function modeNow(){
+    try{var o=document.querySelector("#bOut");if(o&&o.dataset)return o.dataset.v170Mode||"reading"}catch(e){}
+    return "reading";
+  }
+  function syncActive(){
+    if(!fan)return;
+    var m=modeNow();
+    fan.querySelectorAll("[data-mfan-mode]").forEach(function(b){
+      b.classList.toggle("active",b.getAttribute("data-mfan-mode")===m);
+    });
+  }
   function build(){
-    if(host)return;
-    host=document.createElement("div");host.id="bxV170TopModes";
-    LABELS.forEach(function(pair){
-      var b=document.createElement("button");b.type="button";
-      b.setAttribute("data-v170-mode",pair[0]);b.setAttribute("title",pair[1]);b.textContent=pair[1];
-      b.addEventListener("click",function(){try{window.__bxV170Apply&&window.__bxV170Apply(pair[0])}catch(e){}});
-      host.appendChild(b);
+    if(fan)return fan;
+    fan=document.createElement("div");
+    fan.id="bxV170ModeFan";
+    fan.setAttribute("role","menu");
+    fan.hidden=true;
+    MODES.forEach(function(pair){
+      var b=document.createElement("button");
+      b.type="button";
+      b.setAttribute("data-mfan-mode",pair[0]);
+      b.title=pair[1];
+      b.textContent=pair[1];
+      b.addEventListener("click",function(){
+        try{window.__bxV170Apply&&window.__bxV170Apply(pair[0])}catch(e){}
+        hideFan();
+      });
+      fan.appendChild(b);
     });
-    var g=document.createElement("button");g.type="button";
-    g.setAttribute("data-v170-cfg-top","1");g.title="Ferramentas do versículo (engrenagem)";g.textContent="⚙️";
-    g.addEventListener("click",function(){var c=document.querySelector("[data-v170-cfg]");if(c){try{c.click()}catch(e){}}});
-    host.appendChild(g);
-    var off=document.createElement("button");off.type="button";
-    off.setAttribute("data-v170-off-top","1");off.title="Bíblia local / módulos offline";off.textContent="⬇️";
+    var g=document.createElement("button");
+    g.type="button";
+    g.setAttribute("data-mfan-gear","1");
+    g.title="Ferramentas do versículo (engrenagem)";
+    g.textContent="⚙️ Ferramentas";
+    g.addEventListener("click",function(){
+      var c=document.querySelector("[data-v170-cfg]");
+      if(c){try{c.click()}catch(e){}}
+      hideFan();
+    });
+    fan.appendChild(g);
+    var off=document.createElement("button");
+    off.type="button";
+    off.setAttribute("data-mfan-off","1");
+    off.title="Bíblia local / módulos offline";
+    off.textContent="⬇️ Offline";
     off.addEventListener("click",openOffline);
-    host.appendChild(off);
-    document.body.appendChild(host);
+    fan.appendChild(off);
+    document.body.appendChild(fan);
+    return fan;
   }
-  function syncMode(){
-    if(!host)return;
-    var mode="";
-    try{var o=document.querySelector("#bOut");if(o&&o.dataset)mode=o.dataset.v170Mode||""}catch(e){}
-    Array.prototype.forEach.call(host.querySelectorAll("[data-v170-mode]"),function(b){
-      b.classList.toggle("active",b.getAttribute("data-v170-mode")===mode);
-    });
+  function anchor(){
+    var b=pagesBtn();if(!b)return;
+    var r=b.getBoundingClientRect();
+    var right=window.innerWidth-r.right;
+    var bottom=window.innerHeight-r.top+8;
+    fan.style.right=Math.max(4,Math.round(right))+"px";
+    fan.style.bottom=Math.max(4,Math.round(bottom))+"px";
   }
-  function ensure(){
-    if(!host)build();
-    if(!host)return;
-    if(isBible()&&!isFull()){
-      host.classList.add("bx170-active");
-      syncMode();
-    }else{
-      host.classList.remove("bx170-active");
-    }
+  function showFan(){
+    if(!pagesBtn())return;
+    build();
+    if(!fan)return;
+    anchor();
+    fan.hidden=false;
+    syncActive();
+    var b=pagesBtn();if(b)b.classList.add("mfan-open");
   }
-  var lastY=0,ticking=false;
-  function onScroll(){
-    ticking=false;
-    if(!host||!host.classList.contains("bx170-active")){lastY=0;return}
-    var y=window.scrollY||document.documentElement.scrollTop||0;
-    if(y>lastY&&y>8)host.classList.add("bx170-hidden");
-    else host.classList.remove("bx170-hidden");
-    lastY=y;
+  function hideFan(){
+    if(!fan)return;
+    fan.hidden=true;
+    var b=pagesBtn();if(b)b.classList.remove("mfan-open");
   }
-  window.addEventListener("scroll",function(){if(!ticking){ticking=true;requestAnimationFrame(onScroll)}},{passive:true});
-  document.addEventListener("touchstart",function(e){
-    if(!host||!e.touches||!e.touches.length)return;
-    if(e.touches[0].clientY<60&&host.classList.contains("bx170-active"))host.classList.remove("bx170-hidden");
-  },{passive:true});
-  window.addEventListener("resize",ensure,{passive:true});
-  document.addEventListener("biblex:pagechange",function(){setTimeout(ensure,50)});
-  /* Reage a mudancas de MODO sem o loop do observer amplo: observa apenas o
-     atributo data-v170-mode no proprio #bOut (nao propaga classe, nao recria).
-     Se o no for recriado, watchTick() re-observa no proximo tick (600ms). */
-  var observed=null,watched=null;
-  function watchMode(){
-    var o=document.querySelector("#bOut");
-    if(o===watched)return;
-    if(observed){try{observed.disconnect()}catch(e){}}observed=null;
-    watched=o;
-    if(o){try{observed=new MutationObserver(function(){syncMode();ensure()});
-      observed.observe(o,{attributes:true,attributeFilter:["data-v170-mode"]})}catch(e){}}
+  function toggleFan(){
+    if(!fan||fan.hidden)showFan();else hideFan();
   }
-  function watchTick(){watchMode();ensure();syncMode()}
-  watchTick();
-  setInterval(watchTick,600);
+  window.__bxV170ModeFanToggle=toggleFan;
+  window.__bxV170ModeFanHide=hideFan;
+  document.addEventListener("pointerdown",function(e){
+    if(!fan||fan.hidden)return;
+    var t=e.target;
+    if(t&&t.closest&&(t.closest("#bxV170ModeFan")||t.closest('[data-bxm="pages"]')))return;
+    hideFan();
+  },true);
+  window.addEventListener("scroll",function(){hideFan()},{capture:true,passive:true});
+  document.addEventListener("keydown",function(e){if(e.key==="Escape")hideFan()},true);
+  window.addEventListener("resize",function(){if(fan&&!fan.hidden)anchor()},{passive:true});
+  setInterval(function(){if(fan&&!fan.hidden&&!pagesBtn())hideFan()},600);
 })();
