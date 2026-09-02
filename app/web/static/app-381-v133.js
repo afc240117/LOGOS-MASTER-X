@@ -5211,6 +5211,7 @@ Gerado em ${new Date().toLocaleString("pt-BR")}
     <button type="button" data-v170-mode="geography" data-bx-vis-quick="mode-geography">🗺️ Geografia</button>
     <button type="button" data-v170-mode="sermon" data-bx-vis-quick="mode-sermon">🔥 Pregação</button>
     <button type="button" data-v170-mode="all" data-bx-vis-quick="mode-all">🌐 Tudo</button>
+    <button type="button" data-v170-cfg data-bx-vis-quick="mode-cfg" title="Configurar quais ferramentas aparecem abaixo de cada versículo (vale para todos os Modos e o 🌐 Tudo)">⚙️</button>
   </div>
   <div class="lmx-bible-v3-note">Duplo clique em uma palavra para pesquisar na Concordância. Nomes dourados abrem conteúdo relacionado.</div>
   <div class="bx-v155-selection-bar" data-v155-selection-bar hidden>
@@ -5346,6 +5347,97 @@ Gerado em ${new Date().toLocaleString("pt-BR")}
 
   // V1.70 — Modo de leitura/estudo por camadas
   const BX_V170_MODE_KEY='logos-bx:v170-mode';
+  /* ===== 5.4.151 — ⚙️ Engrenagem das ferramentas do versículo =====
+     Lista-mestra GLOBAL: as caixas marcadas definem o que PODE aparecer abaixo
+     de cada versículo. Cada Modo (Estudo, Originais, Geografia, Pregação) mostra
+     a interseção do conjunto dele com o marcado; 🌐 Tudo mostra exatamente o
+     marcado. Persistência logosx:v170verseTools. Sem chave = tudo ligado
+     (comportamento antigo preservado). São 13 atalhos diretos + 21 ações do
+     leque "＋" do versículo. */
+  const BX170_TOOLS={
+    bible:['📖','Bíblia'],parallel:['⇄','Paralelas'],ray:['☀️','Raio-X Vivo'],cross:['🔗','Referências'],
+    strong:['🇬🇷','Strong'],lexicon:['📚','Léxico'],comments:['💬','Comentários'],context:['🔎','Contexto'],
+    atlas:['🗺️','Atlas'],media:['🎞','Mídia'],dna:['🧬','DNA K7'],live:['🪩','Bíblia Viva'],studio:['⚡','Studio X']
+  };
+  const BX170_LEC={
+    organize:['🏷','Organizar'],highlight:['🖍','Marcar'],'personal-links':['🔗','Minhas refs'],card:['▣','Ficha'],
+    queue:['☑','Fila'],backlinks:['↩','Voltas'],select:['☑','Selecionar'],compare:['▦','Comparar'],
+    insight:['💡','Insight'],pin:['📌','Fixar'],focus:['🎯','Foco'],topic:['📁','Tópico'],
+    readlater:['🔖','Depois'],word:['🔤','Palavra'],review:['✅','Revisão'],v171index:['🏷️','Indexar'],
+    question:['❓','Pergunta'],studylink:['🔗','Ligar'],v144set:['🗃','Coleção'],v144daily:['☀','Hoje'],visual:['🌍','Explorar visual']
+  };
+  const BX170_CFG_KEY='v170verseTools';
+  const bxV170CfgRaw=()=>{try{const v=localStorage.getItem(Store.p+BX170_CFG_KEY);return v===null?null:JSON.parse(v)}catch{return null}};
+  /* retorna Set das chaves ligadas; null = sem config (tudo ligado) */
+  const bxV170CfgGet=()=>{const r=bxV170CfgRaw();return Array.isArray(r)?new Set(r):null};
+  const bxV170CfgSave=set=>localStorage.setItem(Store.p+BX170_CFG_KEY,JSON.stringify(set?[...set]:[]));
+  /* chave de um botão de atalho direto (.lmx-bible-v3-tools) */
+  const bxV170KeyOf=b=>{
+    if(b.hasAttribute('data-verse-bible'))return 'bible';
+    if(b.hasAttribute('data-verse-parallel'))return 'parallel';
+    if(b.hasAttribute('data-verse-studio'))return 'studio';
+    if(b.hasAttribute('data-verse-atlas'))return 'atlas';
+    if(b.hasAttribute('data-bx-verse-more'))return 'more';
+    return b.dataset.verseTool||'';
+  };
+  /* chave de um botão de ação do leque "＋" (.lmx-bible-v3-extra): o sufixo do
+     atributo data-verse-* (ex.: data-verse-personal-links → 'personal-links'). */
+  const bxV170LecKey=b=>{for(const a of b.attributes)if(a.name&&a.name.slice(0,11)==='data-verse-')return a.name.slice(11);return ''};
+  const bxV170Reapply=()=>{try{const cur=document.querySelector('#bOut')?.dataset.v170Mode;window.__bxV170Apply?.(cur||'all')}catch(_){}};
+  const bxV170OpenCfg=()=>{
+    const host=document.querySelector('.bible-x-shell.bx-reading-full,.bible-x-shell.bx-page-full')||document.body;
+    const oldEl=document.getElementById('lmxV170Cfg');if(oldEl)try{oldEl.remove()}catch(_){}
+    const cfg=bxV170CfgGet();
+    const checked=k=>!cfg||cfg.has(k);
+    const rows=(reg,idp)=>Object.keys(reg).map(k=>{
+      const e=reg[k][0],l=reg[k][1];
+      return '<label class="bx170-cb"><input type="checkbox" data-bx170-key="'+idp+':'+k+'"'+(checked(k)?' checked':'')+'> <span>'+e+' <b>'+l+'</b></span></label>';
+    }).join('');
+    const total=Object.keys(BX170_TOOLS).length+Object.keys(BX170_LEC).length;
+    const onCount=()=>{
+      const c=p.querySelectorAll('.bx170-card [data-bx170-key]:checked').length;
+      const t=p.querySelector('[data-bx170-count]');if(t)t.textContent=c+' / '+total+' ferramentas ativas';
+    };
+    const p=document.createElement('div');
+    p.id='lmxV170Cfg';p.className='bx170cfg';
+    p.innerHTML=
+      '<div class="bx170-backdrop" data-bx170-close></div>'+
+      '<div class="bx170-card" role="dialog" aria-modal="true" aria-label="Ferramentas do versículo">'+
+        '<header><div><small>BÍBLIA X</small><h3>Ferramentas do versículo ⚙️</h3>'+
+        '<p>Marque o que <b>pode</b> aparecer abaixo de cada versículo. Cada Modo (Estudo, Originais, Geografia, Pregação) mostra o conjunto dele dentro do que estiver marcado; <b>🌐 Tudo</b> mostra exatamente o que estiver marcado. Aplicado na hora e guardado no navegador.</p></div>'+
+        '<button type="button" data-bx170-close title="Fechar (Esc)">✕</button></header>'+
+        '<section><h4>1 · Atalhos diretos abaixo do versículo</h4><div class="bx170-grid">'+rows(BX170_TOOLS,'tool')+'</div></section>'+
+        '<section><h4>2 · Ações do leque (＋)</h4><div class="bx170-grid">'+rows(BX170_LEC,'lec')+'</div></section>'+
+        '<footer><span class="bx170-count" data-bx170-count></span>'+
+        '<button type="button" data-bx170-reset>↺ Restaurar padrão (todos)</button>'+
+        '<button type="button" class="btn primary" data-bx170-close>Concluir</button></footer>'+
+      '</div>';
+    host.appendChild(p);
+    const onClose=()=>{try{p.remove()}catch(_){}};
+    p.addEventListener('click',e=>{
+      if(e.target.closest('[data-bx170-close]')){onClose();return}
+      if(e.target.closest('.bx170-backdrop')){onClose();return}
+      if(e.target.closest('[data-bx170-reset]')){
+        Store.del(BX170_CFG_KEY);
+        p.querySelectorAll('[data-bx170-key]').forEach(b=>b.checked=true);
+        onCount();bxV170Reapply();return;
+      }
+    });
+    p.addEventListener('change',e=>{
+      const cb=e.target.closest('[data-bx170-key]');if(!cb)return;
+      const next=new Set(Object.keys(BX170_TOOLS).concat(Object.keys(BX170_LEC)).filter(k=>{
+        const el=p.querySelector('[data-bx170-key="tool:'+k+'"]')||p.querySelector('[data-bx170-key="lec:'+k+'"]');
+        return el&&el.checked;
+      }));
+      bxV170CfgSave(next);onCount();bxV170Reapply();
+    });
+    /* Esc fecha (no máx. um handler da engrenagem vivo por vez). */
+    const escH=e=>{if(e.key==='Escape')onClose()};
+    if(bxV170OpenCfg._esc)document.removeEventListener('keydown',bxV170OpenCfg._esc);
+    document.addEventListener('keydown',escH);
+    bxV170OpenCfg._esc=escH;
+    onCount();
+  };
   const bxV170Apply=mode=>{
     mode=['reading','study','originals','geography','sermon','all'].includes(mode)?mode:'study';
     out.dataset.v170Mode=mode;Store.set(BX_V170_MODE_KEY,mode);
@@ -5361,14 +5453,25 @@ Gerado em ${new Date().toLocaleString("pt-BR")}
       geography:['context','media','atlas','visual'],
       sermon:['comments','context','dna','studio']
     }[mode]||[];
+    /* 5.4.151 — lista-mestra da engrenagem: null = tudo ligado (comportamento antigo). */
+    const cfg=bxV170CfgGet();
+    const has=k=>!cfg||cfg.has(k);
     out.querySelectorAll('.lmx-bible-v3-tools button').forEach(b=>{
-      /* 5.4.108 — modo "Tudo": TODOS os atalhos do versículo ficam visíveis. */
-      if(mode==='all'){b.hidden=false;return;}
-      let key=b.dataset.verseTool||'';
-      if(b.hasAttribute('data-verse-studio'))key='studio';
-      if(b.hasAttribute('data-verse-atlas'))key='atlas';
-      if(b.hasAttribute('data-bx-verse-more'))key='more';
-      b.hidden=mode==='reading'?key!=='more':(key==='more'?false:!allowed.includes(key));
+      const key=bxV170KeyOf(b);
+      /* 5.4.151 — botões fora do registro (injetados por outros módulos) e o
+         "＋" do versículo não são controlados pela engrenagem: não mexe. */
+      if(!BX170_TOOLS[key]&&key!=='more')return;
+      /* 5.4.108/5.4.151 — modo "Tudo": mostra exatamente o marcado na engrenagem. */
+      if(mode==='all'){b.hidden=!(key==='more'||has(key));return;}
+      b.hidden=mode==='reading'?key!=='more':(key==='more'?false:!(allowed.includes(key)&&has(key)));
+    });
+    /* 5.4.151 — ações do leque "＋" respeitam a lista-mestra em QUALQUER modo
+       (ao abrir o leque, só o marcado aparece). Só as chaves do registro são
+       controladas; itens injetados por plugins ficam intactos. */
+    out.querySelectorAll('.lmx-bible-v3-extra button').forEach(b=>{
+      const key=bxV170LecKey(b);
+      if(!key||!BX170_LEC[key])return;
+      b.hidden=!(!cfg||cfg.has(key));
     });
     if(mode==='reading')out.querySelectorAll('.lmx-bible-v3-extra:not([hidden])').forEach(x=>x.setAttribute('hidden',''));
     /* 5.4.108 — modo "Tudo": o "＋ Mais" do topo fica SEMPRE expandido, com todos
@@ -5383,9 +5486,17 @@ Gerado em ${new Date().toLocaleString("pt-BR")}
       if(topMoreBtn)topMoreBtn.textContent='− Menos';
       /* 5.4.116 — modo Tudo: o "＋" debaixo de CADA versículo também fica ATIVO
          (leque .lmx-bible-v3-extra aberto), pedido do usuário. Rolar/tocar fora
-         não fecha (guard no bxCloseVerseExtras). Saiu do Tudo, fecha e restaura. */
-      out.querySelectorAll('.lmx-bible-v3-extra').forEach(x=>{x.dataset.bx116Forced='1';x.removeAttribute('hidden')});
-      out.querySelectorAll('[data-bx-verse-more]').forEach(b=>b.textContent='−');
+         não fecha (guard no bxCloseVerseExtras). Saiu do Tudo, fecha e restaura.
+         5.4.151 — só força abrir se houver ao menos UMA ação marcada na
+         engrenagem; senão o leque ficaria aberto e vazio. */
+      const lecAny=!cfg||Object.keys(BX170_LEC).some(k=>cfg.has(k));
+      if(lecAny){
+        out.querySelectorAll('.lmx-bible-v3-extra').forEach(x=>{x.dataset.bx116Forced='1';x.removeAttribute('hidden')});
+        out.querySelectorAll('[data-bx-verse-more]').forEach(b=>b.textContent='−');
+      }else{
+        out.querySelectorAll('.lmx-bible-v3-extra[data-bx116-forced]').forEach(x=>{delete x.dataset.bx116Forced;x.setAttribute('hidden','')});
+        out.querySelectorAll('[data-bx-verse-more]').forEach(b=>b.textContent='＋');
+      }
     }else{
       if(topMore)delete topMore.dataset.bx108Forced;
       /* 5.4.116 — sai do Tudo: fecha só os leques que o Tudo abriu e restaura "＋". */
@@ -5395,6 +5506,8 @@ Gerado em ${new Date().toLocaleString("pt-BR")}
     bxV157Toast({reading:'Modo leitura limpa',study:'Modo estudo completo',originals:'Modo originais',geography:'Modo geografia',sermon:'Modo pregação',all:'Modo tudo aberto'}[mode]);
   };
   out.querySelectorAll('[data-v170-mode]').forEach(b=>b.addEventListener('click',()=>bxV170Apply(b.dataset.v170Mode)));
+  /* 5.4.151 — engrenagem abre a configuração das ferramentas do versículo. */
+  out.querySelectorAll('[data-v170-cfg]').forEach(b=>b.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();bxV170OpenCfg()}));
   /* 5.4.138 — no celular, SEM modo salvo, abre em Leitura Limpa (só "＋" por
      versículo) — o usuário pediu Bíblia limpa em tela cheia (o estudo com os
      10 atalhos sempre abertos deixava cada versículo num muro de botões).
