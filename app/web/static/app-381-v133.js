@@ -5438,6 +5438,34 @@ Gerado em ${new Date().toLocaleString("pt-BR")}
     bxV170OpenCfg._esc=escH;
     onCount();
   };
+  /* 5.4.152 — Leitura limpa no celular: quando embaixo do versículo só sobrou o
+     "＋" (todos os atalhos ocultos), o "＋" não deve ocupar a própria fileira
+     (isso abria um vão entre o versículo 1 e o 2). Ele passa a ser o último
+     item INLINE da linha do texto (final da linha), como num livro — os
+     versículos ficam colados. Se outro botão visível aparecer na fileira
+     (mudou de modo / plugin injetou), o "＋" volta para o seu lugar. */
+  const bxV170CompactMores=()=>{
+    try{
+      if(!matchMedia("(max-width:760px)").matches)return;
+      const mode=out.dataset.v170Mode;
+      out.querySelectorAll('.lmx-bible-v3-verse').forEach(v=>{
+        const tools=v.querySelector('.lmx-bible-v3-tools'); if(!tools)return;
+        const text=v.querySelector('.lmx-bible-v3-text');
+        /* o "＋" pode já ter sido movido para dentro do texto: procura no versículo todo */
+        const more=v.querySelector('[data-bx-verse-more]'); if(!more||!text)return;
+        const otherVisible=[...tools.querySelectorAll('button')].some(b=>b!==more&&!b.hidden&&getComputedStyle(b).display!=='none');
+        if(mode==='reading'&&!otherVisible){
+          if(more.parentElement!==text){more.setAttribute('data-bx-more-inline','1');text.appendChild(more)}
+          tools.setAttribute('hidden','');
+          tools.style.setProperty('display','none','important');
+          return;
+        }
+        if(more.parentElement!==tools){more.removeAttribute('data-bx-more-inline');tools.appendChild(more)}
+        tools.removeAttribute('hidden');
+        tools.style.removeProperty('display');
+      });
+    }catch(e){}
+  };
   const bxV170Apply=mode=>{
     mode=['reading','study','originals','geography','sermon','all'].includes(mode)?mode:'study';
     out.dataset.v170Mode=mode;Store.set(BX_V170_MODE_KEY,mode);
@@ -5504,6 +5532,7 @@ Gerado em ${new Date().toLocaleString("pt-BR")}
       out.querySelectorAll('[data-bx-verse-more]').forEach(b=>b.textContent='＋');
     }
     bxV157Toast({reading:'Modo leitura limpa',study:'Modo estudo completo',originals:'Modo originais',geography:'Modo geografia',sermon:'Modo pregação',all:'Modo tudo aberto'}[mode]);
+    bxV170CompactMores();
   };
   out.querySelectorAll('[data-v170-mode]').forEach(b=>b.addEventListener('click',()=>bxV170Apply(b.dataset.v170Mode)));
   /* 5.4.151 — engrenagem abre a configuração das ferramentas do versículo. */

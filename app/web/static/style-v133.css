@@ -15131,3 +15131,60 @@ body > .bx-v157-more-panel button{min-height:44px!important;font-size:14.5px!imp
  .bx170cfg .bx170-card section{padding:2px 14px 12px}
  .bx170cfg .bx170-card footer{padding:10px 14px}
 }
+
+
+/* ============================================================
+   5.4.152 — Leitura limpa mobile: versículos colados e “＋” no fim da linha.
+   1) Quando embaixo do versículo só resta o “＋” (modo Leitura), a fileira
+      .tools deixa de reservar altura (o “＋” vira o último item inline do
+      texto — versículo 1 colado no 2). 2) Fileira sempre-visível e leque
+      expandido passam a dividir o MESMO grid 4 colunas no celular.
+   3) overflow-anchor:none no rolamento do full/lista evita o “treme” de
+      reancoragem do navegador ao rolar. ============================ */
+#bOut .lmx-bible-v3-tools[hidden]{display:none!important}
+#bOut .lmx-bible-v3-tools button[hidden],
+#bOut .lmx-bible-v3-extra button[hidden]{display:none!important}
+@media(max-width:760px){
+  #bOut .lmx-bible-v3-tools,
+  #bOut .lmx-bible-v3-extra:not([hidden]){
+    grid-template-columns:repeat(4,minmax(0,1fr))!important;
+    gap:5px!important;
+  }
+  #bOut .lmx-bible-v3-tools button,
+  #bOut .lmx-bible-v3-extra:not([hidden]) button{
+    width:100%!important;
+    height:30px!important;min-height:30px!important;max-height:30px!important;
+    padding:2px 4px!important;
+    border-radius:8px!important;
+    font-size:9px!important;font-weight:600!important;
+    white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;
+  }
+  #bOut .lmx-bible-v3-tools{display:grid!important;align-content:start!important}
+  #bOut .lmx-bible-v3-more{
+    width:100%!important;min-width:0!important;max-width:none!important;
+    color:#e7c96f!important;font-size:15px!important;background:rgba(224,182,79,.06)!important;
+  }
+  /* “＋” inline no fim da linha do texto (só no modo em que ele sobra sozinho) */
+  #bOut .lmx-bible-v3-text [data-bx-verse-more][data-bx-more-inline]{
+    display:inline-flex!important;
+    align-items:center!important;justify-content:center!important;
+    width:22px!important;min-width:22px!important;max-width:none!important;
+    height:20px!important;min-height:20px!important;max-height:20px!important;
+    margin:0 0 0 8px!important;padding:0 1px!important;
+    border:0!important;border-radius:6px!important;
+    background:transparent!important;box-shadow:none!important;
+    color:#e7c96f!important;font-size:18px!important;line-height:1!important;
+    vertical-align:middle!important;cursor:pointer!important;
+  }
+  #bOut .lmx-bible-v3-text [data-bx-verse-more][data-bx-more-inline]:active{color:#f8e19c!important;transform:scale(1.12)}
+  #bOut .lmx-bible-v3-text{display:block!important;overflow-wrap:break-word!important}
+}
+.bible-x-shell.bx-reading-full,
+.bible-x-shell.bx-page-full,
+.bible-x-shell.bx-reading-full .lmx-bible-v3-list,
+.bible-x-shell.bx-page-full .lmx-bible-v3-list,
+#bOut .lmx-bible-v3-list{overflow-anchor:none!important}
+@media(max-width:760px){
+  .bible-x-shell.bx-reading-full .bible-x-section,
+  .bible-x-shell.bx-page-full .bible-x-section{overflow-anchor:none!important}
+}
