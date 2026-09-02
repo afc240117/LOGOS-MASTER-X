@@ -1,0 +1,398 @@
+{
+  "job_id": "f647f0da73c5483680dc6010b13014ae",
+  "provider": "groq",
+  "fallback_used": false,
+  "provider_attempts": [
+    {
+      "provider": "groq",
+      "status": "completed",
+      "started_at": 1786947190.1941352,
+      "finished_at": 1786947191.4947963
+    }
+  ],
+  "text": "Capítulo 5, fica bem juntinho ao livro de Jeremias, que é um pouquinho maior e mais fácil de encontrar na Bíblia. O livro das Lamentações, capítulo 5, versículo 21, versículo 22, que diz-nos aí a palavra do Senhor. restaura-nos ó Senhor a ti para que retornemos renova os nossos dias como dantes a menos que nos tenha rejeitado totalmente e está sobremaneira irado contra nós, quero repetir a leitura restaura-nos ó Senhor a ti para que retornemos, renova os nossos dias como dantes a menos que nos tenhas rejeitado totalmente e está sobremaneira irado contra nós. Queridos irmãos em Cristo Jesus, se vocês me pedissem um tema para esta noite, eu tenho para lhes dar. Quero aqui hoje falar sobre restauração espiritual e acredito que é um tema palpitante e muito importante para nós esta noite. Todas as vezes que eu leio a B Sagrada eu encontro em cada cap em cada livro uma manifesta diferente de Deus Cada culto que participo nas igrejas por onde vou cada culto uma experi E cada dia encontro uma manifestação de Deus. Às vezes Deus se manifesta com um vento forte e impetuoso, às vezes Ele vem como um terremoto, às vezes Ele vem em forma de fogo, e às vezes Ele vem com uma brisa suave. e em todas essas manifestações tenho visto a operação de Deus. Porém, há uma tristeza muito grande no meu coração que por muitos lugares onde tenho ido, parece que nós, a nossa igreja, perdemos a identidade espiritual que um dia nos fora confiada. Precisamos urgentemente de uma restauração, não de uma inovação, mas de uma restauração nas nossas vidas, principalmente na vida espiritual e quando eu abro a minha bíblia no livro das lamentações de Jeremias eu não encontro aqui apenas mais um livro mas eu encontro o livro um livro sagrado um livro inspirado um livro escrito por um homem que sabia chorar e muito at quem o chamo de profeta chor o seu nome era Jeremias E quando li estes dois vers deste livro muito me chamou a aten porque parece que ouço o profeta falar essas palavras com lágrimas nos seus olhos. Parece que ouço o profeta dizer, do fundo do seu coração, um pedido a Deus, dizendo, Deus, restaura-nos, ó Senhor, a Ti, para que voltemos a ser como Dantes. E este versículo me fez uma curiosidade muito grande ao coração, e fui estudá-lo, fui analisá-lo, e descobri coisas tão lindas a respeito do livro das Lamentações, e quero aqui hoje compartilhar com todos os irmãos. Quando eu abro a minha Bíblia aqui, e leio primeiramente o nome de Lamentações, fui procurar saber o significado. O título Lamentações vem de um verbo grego que significa, entre outras coisas, chorar em voz alta. E eu descobri que existem pelo menos dois choros que o homem pode fornecer e pode produzir. Primeiro o choro da alegria o choro do gozo que n temos e aquele que eu quero ver Jesus derramar sobre n aqui nessa noite O segundo o choro de lamenta mesmo o choro de ang o choro que atormenta a alma um choro que nos faz nos sentimos os mais miser homens e mulheres poss E é exatamente esse segundo choro que deu o nome ao livro aqui de Lamentações. Quando você ler, quando abri-se a tua Bíblia, quando você ler aí Lamentações, você pode ler aí de uma maneira diferente assim, choro em voz alta. E quando eu fui analisando, procurando saber qual o motivo do choro deste homem, eu descobri que o livro de Lamentações teve um significado muito lindo para todo o povo de Deus, para todo Israel de Deus. No ano 586 a.C., Jerusalém fora destruída pelos caldeus. E uma vez destruída, não foi destruída apenas as suas casas, as moradias, não foram destruídas apenas os muros, mas também foram destruídas ali o templo de adoração a Deus. E o profeta que escreveu este livro era um homem que tinha experiência com Deus. Era um homem que passava muitos dias caminhando por Jerusalém e buscando inspiração ali onde Deus habitava para poder profetizar a todo o povo. E agora imagina o Jeremias Dois anos",
+  "language": "Portuguese",
+  "duration": 299.878997632,
+  "segments": [
+    {
+      "id": 0,
+      "start": 0.0,
+      "end": 7.3999996,
+      "text": "Capítulo 5, fica bem juntinho ao livro de Jeremias, que é um pouquinho maior e mais fácil de encontrar na Bíblia."
+    },
+    {
+      "id": 1,
+      "start": 8.88,
+      "end": 19.359999,
+      "text": "O livro das Lamentações, capítulo 5, versículo 21, versículo 22, que diz-nos aí a palavra do Senhor."
+    },
+    {
+      "id": 2,
+      "start": 19.359999,
+      "end": 21.659998,
+      "text": "restaura-nos ó Senhor"
+    },
+    {
+      "id": 3,
+      "start": 21.659998,
+      "end": 24.419998,
+      "text": "a ti para que retornemos"
+    },
+    {
+      "id": 4,
+      "start": 24.419998,
+      "end": 26.739998,
+      "text": "renova os nossos dias"
+    },
+    {
+      "id": 5,
+      "start": 26.739998,
+      "end": 27.839998,
+      "text": "como dantes"
+    },
+    {
+      "id": 6,
+      "start": 27.839998,
+      "end": 30.419998,
+      "text": "a menos que nos tenha rejeitado"
+    },
+    {
+      "id": 7,
+      "start": 30.419998,
+      "end": 32.18,
+      "text": "totalmente e está"
+    },
+    {
+      "id": 8,
+      "start": 32.18,
+      "end": 34.359997,
+      "text": "sobremaneira irado contra"
+    },
+    {
+      "id": 9,
+      "start": 34.359997,
+      "end": 36.5,
+      "text": "nós, quero repetir a leitura"
+    },
+    {
+      "id": 10,
+      "start": 36.5,
+      "end": 38.5,
+      "text": "restaura-nos"
+    },
+    {
+      "id": 11,
+      "start": 38.5,
+      "end": 40.42,
+      "text": "ó Senhor a ti para que"
+    },
+    {
+      "id": 12,
+      "start": 40.42,
+      "end": 42.46,
+      "text": "retornemos, renova"
+    },
+    {
+      "id": 13,
+      "start": 42.46,
+      "end": 44.339996,
+      "text": "os nossos dias como dantes"
+    },
+    {
+      "id": 14,
+      "start": 44.339996,
+      "end": 46.239998,
+      "text": "a menos que nos tenhas"
+    },
+    {
+      "id": 15,
+      "start": 46.239998,
+      "end": 47.8,
+      "text": "rejeitado totalmente"
+    },
+    {
+      "id": 16,
+      "start": 47.8,
+      "end": 51.64,
+      "text": "e está sobremaneira irado contra nós."
+    },
+    {
+      "id": 17,
+      "start": 52.52,
+      "end": 54.14,
+      "text": "Queridos irmãos em Cristo Jesus,"
+    },
+    {
+      "id": 18,
+      "start": 54.92,
+      "end": 58.219997,
+      "text": "se vocês me pedissem um tema para esta noite, eu tenho para lhes dar."
+    },
+    {
+      "id": 19,
+      "start": 58.899998,
+      "end": 61.7,
+      "text": "Quero aqui hoje falar sobre restauração espiritual"
+    },
+    {
+      "id": 20,
+      "start": 61.7,
+      "end": 67.159996,
+      "text": "e acredito que é um tema palpitante e muito importante para nós esta noite."
+    },
+    {
+      "id": 21,
+      "start": 67.72,
+      "end": 82.082,
+      "text": "Todas as vezes que eu leio a B Sagrada eu encontro em cada cap em cada livro uma manifesta diferente de Deus Cada culto que participo nas igrejas por onde vou cada culto uma experi"
+    },
+    {
+      "id": 22,
+      "start": 82.722,
+      "end": 85.562004,
+      "text": "E cada dia encontro uma manifestação de Deus."
+    },
+    {
+      "id": 23,
+      "start": 86.202,
+      "end": 90.042,
+      "text": "Às vezes Deus se manifesta com um vento forte e impetuoso,"
+    },
+    {
+      "id": 24,
+      "start": 90.502,
+      "end": 95.382,
+      "text": "às vezes Ele vem como um terremoto, às vezes Ele vem em forma de fogo,"
+    },
+    {
+      "id": 25,
+      "start": 95.702,
+      "end": 97.702,
+      "text": "e às vezes Ele vem com uma brisa suave."
+    },
+    {
+      "id": 26,
+      "start": 97.702,
+      "end": 102.462006,
+      "text": "e em todas essas manifestações tenho visto a operação de Deus."
+    },
+    {
+      "id": 27,
+      "start": 103.062,
+      "end": 106.142,
+      "text": "Porém, há uma tristeza muito grande no meu coração"
+    },
+    {
+      "id": 28,
+      "start": 106.142,
+      "end": 109.422,
+      "text": "que por muitos lugares onde tenho ido,"
+    },
+    {
+      "id": 29,
+      "start": 110.201996,
+      "end": 112.462006,
+      "text": "parece que nós, a nossa igreja,"
+    },
+    {
+      "id": 30,
+      "start": 112.962006,
+      "end": 117.082,
+      "text": "perdemos a identidade espiritual que um dia nos fora confiada."
+    },
+    {
+      "id": 31,
+      "start": 117.862,
+      "end": 121.442,
+      "text": "Precisamos urgentemente de uma restauração,"
+    },
+    {
+      "id": 32,
+      "start": 121.442,
+      "end": 123.742004,
+      "text": "não de uma inovação,"
+    },
+    {
+      "id": 33,
+      "start": 124.162,
+      "end": 127.222,
+      "text": "mas de uma restauração nas nossas vidas,"
+    },
+    {
+      "id": 34,
+      "start": 127.222,
+      "end": 129.642,
+      "text": "principalmente na vida espiritual"
+    },
+    {
+      "id": 35,
+      "start": 129.642,
+      "end": 131.802,
+      "text": "e quando eu abro a minha bíblia"
+    },
+    {
+      "id": 36,
+      "start": 131.802,
+      "end": 134.302,
+      "text": "no livro das lamentações de Jeremias"
+    },
+    {
+      "id": 37,
+      "start": 134.302,
+      "end": 137.802,
+      "text": "eu não encontro aqui apenas mais um livro"
+    },
+    {
+      "id": 38,
+      "start": 137.802,
+      "end": 139.88199,
+      "text": "mas eu encontro o livro"
+    },
+    {
+      "id": 39,
+      "start": 139.88199,
+      "end": 141.442,
+      "text": "um livro sagrado"
+    },
+    {
+      "id": 40,
+      "start": 141.442,
+      "end": 143.362,
+      "text": "um livro inspirado"
+    },
+    {
+      "id": 41,
+      "start": 143.362,
+      "end": 158.264,
+      "text": "um livro escrito por um homem que sabia chorar e muito at quem o chamo de profeta chor o seu nome era Jeremias E quando li estes dois vers deste livro muito me chamou a aten"
+    },
+    {
+      "id": 42,
+      "start": 158.84401,
+      "end": 164.884,
+      "text": "porque parece que ouço o profeta falar essas palavras com lágrimas nos seus olhos."
+    },
+    {
+      "id": 43,
+      "start": 165.464,
+      "end": 171.20401,
+      "text": "Parece que ouço o profeta dizer, do fundo do seu coração, um pedido a Deus, dizendo,"
+    },
+    {
+      "id": 44,
+      "start": 171.20401,
+      "end": 176.84401,
+      "text": "Deus, restaura-nos, ó Senhor, a Ti, para que voltemos a ser como Dantes."
+    },
+    {
+      "id": 45,
+      "start": 177.34401,
+      "end": 181.904,
+      "text": "E este versículo me fez uma curiosidade muito grande ao coração,"
+    },
+    {
+      "id": 46,
+      "start": 182.364,
+      "end": 188.564,
+      "text": "e fui estudá-lo, fui analisá-lo, e descobri coisas tão lindas a respeito do livro das Lamentações,"
+    },
+    {
+      "id": 47,
+      "start": 188.864,
+      "end": 191.98401,
+      "text": "e quero aqui hoje compartilhar com todos os irmãos."
+    },
+    {
+      "id": 48,
+      "start": 192.404,
+      "end": 197.104,
+      "text": "Quando eu abro a minha Bíblia aqui, e leio primeiramente o nome de Lamentações,"
+    },
+    {
+      "id": 49,
+      "start": 197.104,
+      "end": 199.444,
+      "text": "fui procurar saber o significado."
+    },
+    {
+      "id": 50,
+      "start": 199.444,
+      "end": 206.764,
+      "text": "O título Lamentações vem de um verbo grego que significa, entre outras coisas, chorar em voz alta."
+    },
+    {
+      "id": 51,
+      "start": 207.20401,
+      "end": 212.604,
+      "text": "E eu descobri que existem pelo menos dois choros que o homem pode fornecer e pode produzir."
+    },
+    {
+      "id": 52,
+      "start": 212.86401,
+      "end": 232.966,
+      "text": "Primeiro o choro da alegria o choro do gozo que n temos e aquele que eu quero ver Jesus derramar sobre n aqui nessa noite O segundo o choro de lamenta mesmo o choro de ang o choro que atormenta a alma um choro que nos faz nos sentimos os mais miser homens e mulheres poss"
+    },
+    {
+      "id": 53,
+      "start": 233.306,
+      "end": 243.446,
+      "text": "E é exatamente esse segundo choro que deu o nome ao livro aqui de Lamentações. Quando você ler, quando abri-se a tua Bíblia, quando você ler aí Lamentações,"
+    },
+    {
+      "id": 54,
+      "start": 243.446,
+      "end": 248.446,
+      "text": "você pode ler aí de uma maneira diferente assim, choro em voz alta."
+    },
+    {
+      "id": 55,
+      "start": 248.946,
+      "end": 254.146,
+      "text": "E quando eu fui analisando, procurando saber qual o motivo do choro deste homem,"
+    },
+    {
+      "id": 56,
+      "start": 254.486,
+      "end": 263.046,
+      "text": "eu descobri que o livro de Lamentações teve um significado muito lindo para todo o povo de Deus, para todo Israel de Deus."
+    },
+    {
+      "id": 57,
+      "start": 263.386,
+      "end": 268.886,
+      "text": "No ano 586 a.C., Jerusalém fora destruída pelos caldeus."
+    },
+    {
+      "id": 58,
+      "start": 268.886,
+      "end": 280.766,
+      "text": "E uma vez destruída, não foi destruída apenas as suas casas, as moradias, não foram destruídas apenas os muros, mas também foram destruídas ali o templo de adoração a Deus."
+    },
+    {
+      "id": 59,
+      "start": 281.00598,
+      "end": 285.94598,
+      "text": "E o profeta que escreveu este livro era um homem que tinha experiência com Deus."
+    },
+    {
+      "id": 60,
+      "start": 286.306,
+      "end": 296.926,
+      "text": "Era um homem que passava muitos dias caminhando por Jerusalém e buscando inspiração ali onde Deus habitava para poder profetizar a todo o povo."
+    },
+    {
+      "id": 61,
+      "start": 296.926,
+      "end": 298.986,
+      "text": "E agora imagina o Jeremias"
+    },
+    {
+      "id": 62,
+      "start": 298.986,
+      "end": 299.846,
+      "text": "Dois anos"
+    }
+  ],
+  "words": [],
+  "completed_at": 1786947191.4948
+}

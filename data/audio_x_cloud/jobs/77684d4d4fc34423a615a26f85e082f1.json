@@ -1,0 +1,35 @@
+{
+  "id": "77684d4d4fc34423a615a26f85e082f1",
+  "status": "transcribed",
+  "stage": "completed",
+  "progress": 100,
+  "filename": "06 - Canção & Louvor - Você É Meu.mp3",
+  "title": "06 - Canção & Louvor - Você É Meu",
+  "language": "pt",
+  "size_bytes": 4982587,
+  "extension": ".mp3",
+  "file_path": "data\\audio_x_cloud\\uploads\\77684d4d4fc34423a615a26f85e082f1.mp3",
+  "created_at": 1788052198.878272,
+  "updated_at": 1788052199.901951,
+  "provider_order": [
+    "groq",
+    "deepgram",
+    "openai"
+  ],
+  "selected_provider": "groq",
+  "fallback_enabled": true,
+  "transcription_status": "completed",
+  "error": null,
+  "provider_attempts": [
+    {
+      "provider": "groq",
+      "status": "completed",
+      "started_at": 1788052198.8892462,
+      "finished_at": 1788052199.899974
+    }
+  ],
+  "provider_used": "groq",
+  "fallback_used": false,
+  "segment_count": 48,
+  "word_count": 0
+}

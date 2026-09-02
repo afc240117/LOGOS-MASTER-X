@@ -1,0 +1,20 @@
+{
+  "version": "5.4.3.2",
+  "module": "Audio X",
+  "hotfix": "cloud-upload-alias",
+  "fixes": [
+    "POST /api/audio-x/cloud/upload 404 Not Found"
+  ],
+  "preserves": [
+    "Atlas X",
+    "Bíblia X",
+    "Raio X",
+    "Studio X",
+    "DNA K7",
+    "PWA"
+  ],
+  "expected_after_install": {
+    "POST /api/audio-x/cloud/upload": "must not return 404",
+    "GET /api/audio-x/cloud/health": "200 OK"
+  }
+}

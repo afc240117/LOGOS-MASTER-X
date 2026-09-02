@@ -1,0 +1,308 @@
+{
+  "job_id": "77684d4d4fc34423a615a26f85e082f1",
+  "provider": "groq",
+  "fallback_used": false,
+  "provider_attempts": [
+    {
+      "provider": "groq",
+      "status": "completed",
+      "started_at": 1788052198.8892462,
+      "finished_at": 1788052199.899974
+    }
+  ],
+  "text": "Aconteceu assim ó Ele os convida a passar pra outro lado No mar, tudo tranquilo Pedro no leme, pilotando a embarcação O vento sobrava, tão bom pra navegação Ninguém esperava o que iria acontecer Aí de repente o mar se agita de maneira veemente O vento sopra, entretando toda a gente Desesperados começam a gritar Socorre Jesus Socorre se n for o Senhor estamos sem sorte E vamos morrer no meio do mar Jesus acorda, pois estava dormindo na popa do barco Pois o seu corpo humano estava cansado Mas sua alma de Deus não dorme jamais Ele se levanta, acalma o vento e a fúria do mar Vento não tem ouvido, nem tampouco o mar Mas quando Jesus fala, eles têm que escutar Se fui eu que te chamei para atravessar o mar Você não irá morrer no meio do grande mar Pode até se levantar uma grande tempestade Que cubra o teu barco, mas você não morrerá Quem formou voc fui eu quem criou o mar fui eu E esse vento veemente quem est soprando sou eu Posso at estar dormindo l na popa do teu barco At dormindo pesado o controle ainda meu É meu, é meu, é meu, é meu Você é meu, o vento e o mar é meu O teu problema é meu, o teu deserto é meu Teus inimigos são meus, o teu ministério é meu Tua família, teu trabalho, tua casa tudo é meu Se o mar é o problema, eu mando se aquietar Se o deserto é o problema, eu transformo ele em mar Se são os teus inimigos, eu cheguei pra guerrear E o ministério que eu te dei, hoje eu faço prosperar Tem alguém do outro lado, apostando a tua sorte Desejando o teu final, almejando a tua morte Só que eles se esqueceram no meio da tua história Um detalhe muito forte É que eu estou no barco, tô curando no barco T salvando no barco estou de p no barco O barco n afunda ningu morre afogado A minha gl hoje invadi esse teu barco Acalma tua alma, pois quem fala é teu Deus Eu repreendi a morte hoje no meio dos teus Te alegra e te anima, pois no barco da tua vida o controle ainda é meu É que eu estou no barco, tô curando no barco, tô salvando no barco Estou de pé no barco, o barco não afunda, ninguém morre afogado A minha glória hoje invadi esse teu barco, acalma tua alma Pois quem fala é teu Deus, eu repreendi a morte hoje no meio dos teus Te alegra e te anima, pois no barco da tua vida O controle ainda é meu Você é meu Você é meu",
+  "language": "Portuguese",
+  "duration": 308.339838796,
+  "segments": [
+    {
+      "id": 0,
+      "start": 0.0,
+      "end": 18.699999,
+      "text": "Aconteceu assim ó"
+    },
+    {
+      "id": 1,
+      "start": 30.0,
+      "end": 34.16,
+      "text": "Ele os convida a passar pra outro lado"
+    },
+    {
+      "id": 2,
+      "start": 34.16,
+      "end": 39.079998,
+      "text": "No mar, tudo tranquilo"
+    },
+    {
+      "id": 3,
+      "start": 39.079998,
+      "end": 43.26,
+      "text": "Pedro no leme, pilotando a embarcação"
+    },
+    {
+      "id": 4,
+      "start": 43.26,
+      "end": 47.92,
+      "text": "O vento sobrava, tão bom pra navegação"
+    },
+    {
+      "id": 5,
+      "start": 47.92,
+      "end": 52.48,
+      "text": "Ninguém esperava o que iria acontecer"
+    },
+    {
+      "id": 6,
+      "start": 52.48,
+      "end": 61.399998,
+      "text": "Aí de repente o mar se agita de maneira veemente"
+    },
+    {
+      "id": 7,
+      "start": 61.399998,
+      "end": 66.04,
+      "text": "O vento sopra, entretando toda a gente"
+    },
+    {
+      "id": 8,
+      "start": 66.04,
+      "end": 71.24,
+      "text": "Desesperados começam a gritar"
+    },
+    {
+      "id": 9,
+      "start": 71.24,
+      "end": 84.40653,
+      "text": "Socorre Jesus Socorre se n for o Senhor estamos sem sorte"
+    },
+    {
+      "id": 10,
+      "start": 84.40653,
+      "end": 89.22653,
+      "text": "E vamos morrer no meio do mar"
+    },
+    {
+      "id": 11,
+      "start": 89.22653,
+      "end": 97.74654,
+      "text": "Jesus acorda, pois estava dormindo na popa do barco"
+    },
+    {
+      "id": 12,
+      "start": 97.74654,
+      "end": 102.30653,
+      "text": "Pois o seu corpo humano estava cansado"
+    },
+    {
+      "id": 13,
+      "start": 102.30653,
+      "end": 107.20653,
+      "text": "Mas sua alma de Deus não dorme jamais"
+    },
+    {
+      "id": 14,
+      "start": 107.20653,
+      "end": 115.72653,
+      "text": "Ele se levanta, acalma o vento e a fúria do mar"
+    },
+    {
+      "id": 15,
+      "start": 115.72653,
+      "end": 120.166534,
+      "text": "Vento não tem ouvido, nem tampouco o mar"
+    },
+    {
+      "id": 16,
+      "start": 120.166534,
+      "end": 125.026535,
+      "text": "Mas quando Jesus fala, eles têm que escutar"
+    },
+    {
+      "id": 17,
+      "start": 125.026535,
+      "end": 131.48653,
+      "text": "Se fui eu que te chamei para atravessar o mar"
+    },
+    {
+      "id": 18,
+      "start": 131.48653,
+      "end": 136.00653,
+      "text": "Você não irá morrer no meio do grande mar"
+    },
+    {
+      "id": 19,
+      "start": 136.00653,
+      "end": 140.66653,
+      "text": "Pode até se levantar uma grande tempestade"
+    },
+    {
+      "id": 20,
+      "start": 140.66653,
+      "end": 145.12653,
+      "text": "Que cubra o teu barco, mas você não morrerá"
+    },
+    {
+      "id": 21,
+      "start": 145.12653,
+      "end": 163.35307,
+      "text": "Quem formou voc fui eu quem criou o mar fui eu E esse vento veemente quem est soprando sou eu Posso at estar dormindo l na popa do teu barco At dormindo pesado o controle ainda meu"
+    },
+    {
+      "id": 22,
+      "start": 163.35307,
+      "end": 166.57306,
+      "text": "É meu, é meu, é meu, é meu"
+    },
+    {
+      "id": 23,
+      "start": 166.57306,
+      "end": 170.11307,
+      "text": "Você é meu, o vento e o mar é meu"
+    },
+    {
+      "id": 24,
+      "start": 170.11307,
+      "end": 174.69307,
+      "text": "O teu problema é meu, o teu deserto é meu"
+    },
+    {
+      "id": 25,
+      "start": 174.69307,
+      "end": 179.03307,
+      "text": "Teus inimigos são meus, o teu ministério é meu"
+    },
+    {
+      "id": 26,
+      "start": 179.03307,
+      "end": 183.55307,
+      "text": "Tua família, teu trabalho, tua casa tudo é meu"
+    },
+    {
+      "id": 27,
+      "start": 183.55307,
+      "end": 188.01306,
+      "text": "Se o mar é o problema, eu mando se aquietar"
+    },
+    {
+      "id": 28,
+      "start": 188.01306,
+      "end": 192.65306,
+      "text": "Se o deserto é o problema, eu transformo ele em mar"
+    },
+    {
+      "id": 29,
+      "start": 192.65306,
+      "end": 196.97307,
+      "text": "Se são os teus inimigos, eu cheguei pra guerrear"
+    },
+    {
+      "id": 30,
+      "start": 196.97307,
+      "end": 201.79306,
+      "text": "E o ministério que eu te dei, hoje eu faço prosperar"
+    },
+    {
+      "id": 31,
+      "start": 201.79306,
+      "end": 206.31306,
+      "text": "Tem alguém do outro lado, apostando a tua sorte"
+    },
+    {
+      "id": 32,
+      "start": 206.31306,
+      "end": 210.67307,
+      "text": "Desejando o teu final, almejando a tua morte"
+    },
+    {
+      "id": 33,
+      "start": 210.67307,
+      "end": 215.37306,
+      "text": "Só que eles se esqueceram no meio da tua história"
+    },
+    {
+      "id": 34,
+      "start": 215.37306,
+      "end": 218.55307,
+      "text": "Um detalhe muito forte"
+    },
+    {
+      "id": 35,
+      "start": 218.55307,
+      "end": 224.59306,
+      "text": "É que eu estou no barco, tô curando no barco"
+    },
+    {
+      "id": 36,
+      "start": 224.59306,
+      "end": 238.21959,
+      "text": "T salvando no barco estou de p no barco O barco n afunda ningu morre afogado A minha gl hoje invadi esse teu barco"
+    },
+    {
+      "id": 37,
+      "start": 238.21959,
+      "end": 242.49959,
+      "text": "Acalma tua alma, pois quem fala é teu Deus"
+    },
+    {
+      "id": 38,
+      "start": 242.49959,
+      "end": 247.0996,
+      "text": "Eu repreendi a morte hoje no meio dos teus"
+    },
+    {
+      "id": 39,
+      "start": 247.0996,
+      "end": 254.3396,
+      "text": "Te alegra e te anima, pois no barco da tua vida o controle ainda é meu"
+    },
+    {
+      "id": 40,
+      "start": 254.3396,
+      "end": 263.09958,
+      "text": "É que eu estou no barco, tô curando no barco, tô salvando no barco"
+    },
+    {
+      "id": 41,
+      "start": 263.09958,
+      "end": 269.87958,
+      "text": "Estou de pé no barco, o barco não afunda, ninguém morre afogado"
+    },
+    {
+      "id": 42,
+      "start": 269.87958,
+      "end": 276.47958,
+      "text": "A minha glória hoje invadi esse teu barco, acalma tua alma"
+    },
+    {
+      "id": 43,
+      "start": 276.47958,
+      "end": 283.31958,
+      "text": "Pois quem fala é teu Deus, eu repreendi a morte hoje no meio dos teus"
+    },
+    {
+      "id": 44,
+      "start": 283.31958,
+      "end": 287.81958,
+      "text": "Te alegra e te anima, pois no barco da tua vida"
+    },
+    {
+      "id": 45,
+      "start": 287.81958,
+      "end": 290.31958,
+      "text": "O controle ainda é meu"
+    },
+    {
+      "id": 46,
+      "start": 290.31958,
+      "end": 292.5996,
+      "text": "Você é meu"
+    },
+    {
+      "id": 47,
+      "start": 292.5996,
+      "end": 295.8396,
+      "text": "Você é meu"
+    }
+  ],
+  "words": [],
+  "completed_at": 1788052199.8999796
+}

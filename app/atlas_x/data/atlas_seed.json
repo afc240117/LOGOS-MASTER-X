@@ -1,0 +1,3535 @@
+{
+  "schema_version": 2,
+  "module": "Atlas X Vivo",
+  "version": "5.4.3",
+  "generated": "2026-08-28",
+  "disclaimer": "Coordenadas, cronologias e rotas podem ser aproximadas. Registros marcados como traditional, medium, schematic ou debated devem ser apresentados ao usuário com essa ressalva.",
+  "places": [
+    {
+      "id": "jerusalem",
+      "name": "Jerusalém",
+      "aliases": [
+        "Jerusalem",
+        "Sião",
+        "Siao",
+        "Cidade de Davi"
+      ],
+      "type": "city",
+      "region": "Judeia / Israel",
+      "lat": 31.778,
+      "lng": 35.235,
+      "period": "Antigo e Novo Testamento",
+      "from_year": -1000,
+      "to_year": 70,
+      "certainty": "high",
+      "summary": "Centro político e espiritual de Israel; cidade de Davi, Templo e cenário central da última semana de Jesus.",
+      "refs": [
+        "2 Samuel 5",
+        "1 Reis 8",
+        "Salmos 122",
+        "Mateus 21",
+        "Lucas 24",
+        "Atos 2"
+      ],
+      "people": [
+        "Davi",
+        "Salomão",
+        "Jesus",
+        "Pedro"
+      ],
+      "events": [
+        "Conquista da cidade por Davi",
+        "Dedicação do Templo",
+        "Entrada triunfal",
+        "Crucificação e ressurreição",
+        "Pentecostes"
+      ],
+      "tags": [
+        "templo",
+        "sião",
+        "paixão",
+        "pentecostes"
+      ]
+    },
+    {
+      "id": "jericho",
+      "name": "Jericó",
+      "aliases": [
+        "Jericho"
+      ],
+      "type": "city",
+      "region": "Vale do Jordão",
+      "lat": 31.871,
+      "lng": 35.444,
+      "period": "Conquista a Novo Testamento",
+      "from_year": -1400,
+      "to_year": 50,
+      "certainty": "high",
+      "summary": "Cidade estratégica no vale do Jordão, associada a Josué, Bartimeu e Zaqueu.",
+      "refs": [
+        "Josué 6",
+        "Marcos 10:46-52",
+        "Lucas 18:35-43",
+        "Lucas 19:1-10"
+      ],
+      "people": [
+        "Josué",
+        "Bartimeu",
+        "Zaqueu",
+        "Jesus"
+      ],
+      "events": [
+        "Queda de Jericó",
+        "Cura de Bartimeu",
+        "Encontro de Jesus com Zaqueu"
+      ],
+      "tags": [
+        "bartimeu",
+        "zaqueu",
+        "josué",
+        "milagre"
+      ]
+    },
+    {
+      "id": "bethlehem",
+      "name": "Belém",
+      "aliases": [
+        "Belem",
+        "Bethlehem",
+        "Efrata"
+      ],
+      "type": "city",
+      "region": "Judeia",
+      "lat": 31.7054,
+      "lng": 35.2024,
+      "period": "Rute a Novo Testamento",
+      "from_year": -1200,
+      "to_year": 50,
+      "certainty": "high",
+      "summary": "Cidade de Davi e local tradicional do nascimento de Jesus.",
+      "refs": [
+        "Rute 1",
+        "1 Samuel 16",
+        "Miqueias 5:2",
+        "Mateus 2",
+        "Lucas 2"
+      ],
+      "people": [
+        "Rute",
+        "Jessé",
+        "Davi",
+        "Jesus"
+      ],
+      "events": [
+        "Família de Rute",
+        "Unção de Davi",
+        "Nascimento de Jesus"
+      ],
+      "tags": [
+        "natividade",
+        "davi"
+      ]
+    },
+    {
+      "id": "nazareth",
+      "name": "Nazaré",
+      "aliases": [
+        "Nazare",
+        "Nazareth"
+      ],
+      "type": "city",
+      "region": "Galileia",
+      "lat": 32.6996,
+      "lng": 35.3035,
+      "period": "Novo Testamento",
+      "from_year": -10,
+      "to_year": 40,
+      "certainty": "high",
+      "summary": "Cidade onde Jesus cresceu e ensinou na sinagoga.",
+      "refs": [
+        "Mateus 2:23",
+        "Lucas 1:26",
+        "Lucas 4:16-30"
+      ],
+      "people": [
+        "Jesus",
+        "Maria",
+        "José"
+      ],
+      "events": [
+        "Anunciação",
+        "Infância de Jesus",
+        "Ensino na sinagoga"
+      ],
+      "tags": [
+        "galileia",
+        "infância"
+      ]
+    },
+    {
+      "id": "capernaum",
+      "name": "Cafarnaum",
+      "aliases": [
+        "Capernaum",
+        "Kfar Nahum"
+      ],
+      "type": "city",
+      "region": "Galileia",
+      "lat": 32.8803,
+      "lng": 35.5743,
+      "period": "Novo Testamento",
+      "from_year": 20,
+      "to_year": 40,
+      "certainty": "high",
+      "summary": "Base importante do ministério de Jesus na Galileia, às margens do mar da Galileia.",
+      "refs": [
+        "Mateus 4:13",
+        "Marcos 1:21-34",
+        "Marcos 2:1-12",
+        "João 6:24"
+      ],
+      "people": [
+        "Jesus",
+        "Pedro"
+      ],
+      "events": [
+        "Ensino na sinagoga",
+        "Cura da sogra de Pedro",
+        "Cura do paralítico"
+      ],
+      "tags": [
+        "milagres",
+        "sinagoga",
+        "galileia"
+      ]
+    },
+    {
+      "id": "cana",
+      "name": "Caná da Galileia",
+      "aliases": [
+        "Cana",
+        "Kafr Kanna",
+        "Khirbet Qana"
+      ],
+      "type": "place",
+      "region": "Galileia",
+      "lat": 32.746,
+      "lng": 35.341,
+      "period": "Novo Testamento",
+      "from_year": 20,
+      "to_year": 40,
+      "certainty": "traditional",
+      "summary": "Local associado ao primeiro sinal de Jesus em João; a identificação exata do sítio antigo é discutida.",
+      "refs": [
+        "João 2:1-11",
+        "João 4:46"
+      ],
+      "people": [
+        "Jesus",
+        "Maria"
+      ],
+      "events": [
+        "Água transformada em vinho"
+      ],
+      "tags": [
+        "milagre",
+        "casamento"
+      ]
+    },
+    {
+      "id": "bethany",
+      "name": "Betânia",
+      "aliases": [
+        "Bethany",
+        "Al-Eizariya"
+      ],
+      "type": "village",
+      "region": "Judeia",
+      "lat": 31.771,
+      "lng": 35.261,
+      "period": "Novo Testamento",
+      "from_year": 20,
+      "to_year": 40,
+      "certainty": "high",
+      "summary": "Aldeia próxima de Jerusalém ligada a Marta, Maria, Lázaro e à última semana de Jesus.",
+      "refs": [
+        "João 11",
+        "João 12:1-8",
+        "Marcos 11:1"
+      ],
+      "people": [
+        "Jesus",
+        "Marta",
+        "Maria",
+        "Lázaro"
+      ],
+      "events": [
+        "Ressurreição de Lázaro",
+        "Unção em Betânia"
+      ],
+      "tags": [
+        "lázaro",
+        "última semana"
+      ]
+    },
+    {
+      "id": "mount-olives",
+      "name": "Monte das Oliveiras",
+      "aliases": [
+        "Olive Mount",
+        "Olivet"
+      ],
+      "type": "place",
+      "region": "Jerusalém",
+      "lat": 31.778,
+      "lng": 35.245,
+      "period": "Novo Testamento",
+      "from_year": 20,
+      "to_year": 40,
+      "certainty": "high",
+      "summary": "Elevação a leste de Jerusalém ligada ao ensino escatológico, entrada triunfal e ascensão.",
+      "refs": [
+        "Mateus 24",
+        "Lucas 19:29-44",
+        "Atos 1:9-12"
+      ],
+      "people": [
+        "Jesus",
+        "Discípulos"
+      ],
+      "events": [
+        "Discurso do Monte das Oliveiras",
+        "Entrada em Jerusalém",
+        "Ascensão"
+      ],
+      "tags": [
+        "última semana",
+        "ascensão"
+      ]
+    },
+    {
+      "id": "gethsemane",
+      "name": "Getsêmani",
+      "aliases": [
+        "Getsemani",
+        "Gethsemane"
+      ],
+      "type": "place",
+      "region": "Jerusalém",
+      "lat": 31.7794,
+      "lng": 35.2397,
+      "period": "Novo Testamento",
+      "from_year": 25,
+      "to_year": 40,
+      "certainty": "traditional",
+      "summary": "Área ao pé do Monte das Oliveiras tradicionalmente associada à oração e prisão de Jesus.",
+      "refs": [
+        "Mateus 26:36-56",
+        "Marcos 14:32-52",
+        "Lucas 22:39-53",
+        "João 18:1-12"
+      ],
+      "people": [
+        "Jesus",
+        "Pedro",
+        "Judas"
+      ],
+      "events": [
+        "Oração de Jesus",
+        "Prisão de Jesus"
+      ],
+      "tags": [
+        "paixão",
+        "oração"
+      ]
+    },
+    {
+      "id": "sea-galilee",
+      "name": "Mar da Galileia",
+      "aliases": [
+        "Lago de Genesaré",
+        "Sea of Galilee",
+        "Kinneret"
+      ],
+      "type": "region",
+      "region": "Galileia",
+      "lat": 32.82,
+      "lng": 35.59,
+      "period": "Novo Testamento",
+      "from_year": 20,
+      "to_year": 40,
+      "certainty": "high",
+      "summary": "Lago em torno do qual ocorreu parte importante do ministério galileu de Jesus.",
+      "refs": [
+        "Mateus 4:18",
+        "Marcos 4:35-41",
+        "João 6:1"
+      ],
+      "people": [
+        "Jesus",
+        "Pedro",
+        "André"
+      ],
+      "events": [
+        "Chamado de discípulos",
+        "Tempestade acalmada",
+        "Multiplicação nas proximidades"
+      ],
+      "tags": [
+        "lago",
+        "milagres",
+        "discípulos"
+      ]
+    },
+    {
+      "id": "jordan-river",
+      "name": "Rio Jordão",
+      "aliases": [
+        "Jordan River",
+        "Jordao"
+      ],
+      "type": "region",
+      "region": "Israel / Jordânia",
+      "lat": 32.05,
+      "lng": 35.56,
+      "period": "Toda a Bíblia",
+      "from_year": -1400,
+      "to_year": 40,
+      "certainty": "high",
+      "summary": "Rio central na geografia bíblica, associado à entrada em Canaã e ao ministério de João Batista.",
+      "refs": [
+        "Josué 3",
+        "2 Reis 5",
+        "Mateus 3:13-17",
+        "João 1:28"
+      ],
+      "people": [
+        "Josué",
+        "Naamã",
+        "João Batista",
+        "Jesus"
+      ],
+      "events": [
+        "Travessia de Israel",
+        "Cura de Naamã",
+        "Batismo de Jesus"
+      ],
+      "tags": [
+        "batismo",
+        "travessia"
+      ]
+    },
+    {
+      "id": "sychar",
+      "name": "Sicar / região de Siquém",
+      "aliases": [
+        "Sicar",
+        "Sychar",
+        "Shechem",
+        "Siquem"
+      ],
+      "type": "place",
+      "region": "Samaria",
+      "lat": 32.214,
+      "lng": 35.285,
+      "period": "Patriarcas a Novo Testamento",
+      "from_year": -1900,
+      "to_year": 40,
+      "certainty": "medium",
+      "summary": "Região associada a Siquém e, no Evangelho de João, ao encontro de Jesus com a mulher samaritana; a identificação exata de Sicar é discutida.",
+      "refs": [
+        "Gênesis 12:6",
+        "Josué 24:32",
+        "João 4:4-42"
+      ],
+      "people": [
+        "Abraão",
+        "José",
+        "Jesus",
+        "Mulher samaritana"
+      ],
+      "events": [
+        "Abraão em Siquém",
+        "Sepultamento dos ossos de José",
+        "Jesus e a mulher samaritana"
+      ],
+      "tags": [
+        "samaria",
+        "poço de jacó"
+      ]
+    },
+    {
+      "id": "hebron",
+      "name": "Hebrom",
+      "aliases": [
+        "Hebron",
+        "Quiriate-Arba"
+      ],
+      "type": "city",
+      "region": "Judá",
+      "lat": 31.5326,
+      "lng": 35.0998,
+      "period": "Patriarcas e Monarquia",
+      "from_year": -2000,
+      "to_year": -950,
+      "certainty": "high",
+      "summary": "Centro patriarcal e primeira capital de Davi em Judá.",
+      "refs": [
+        "Gênesis 13:18",
+        "Gênesis 23",
+        "2 Samuel 2:1-4",
+        "2 Samuel 5:1-5"
+      ],
+      "people": [
+        "Abraão",
+        "Sara",
+        "Davi"
+      ],
+      "events": [
+        "Compra da caverna de Macpela",
+        "Davi rei de Judá"
+      ],
+      "tags": [
+        "patriarcas",
+        "davi"
+      ]
+    },
+    {
+      "id": "beersheba",
+      "name": "Berseba",
+      "aliases": [
+        "Beersheba",
+        "Beer-Sheba"
+      ],
+      "type": "city",
+      "region": "Neguebe",
+      "lat": 31.252,
+      "lng": 34.791,
+      "period": "Patriarcas a Monarquia",
+      "from_year": -2000,
+      "to_year": -600,
+      "certainty": "high",
+      "summary": "Importante local patriarcal e marco meridional de Israel.",
+      "refs": [
+        "Gênesis 21:22-34",
+        "Gênesis 26:23-33",
+        "1 Reis 19:3"
+      ],
+      "people": [
+        "Abraão",
+        "Isaque",
+        "Elias"
+      ],
+      "events": [
+        "Aliança de Abraão",
+        "Poços de Isaque",
+        "Fuga de Elias"
+      ],
+      "tags": [
+        "poço",
+        "patriarcas",
+        "eias"
+      ]
+    },
+    {
+      "id": "mount-carmel",
+      "name": "Monte Carmelo",
+      "aliases": [
+        "Mount Carmel",
+        "Carmelo"
+      ],
+      "type": "place",
+      "region": "Costa norte de Israel",
+      "lat": 32.731,
+      "lng": 35.049,
+      "period": "Monarquia",
+      "from_year": -900,
+      "to_year": -800,
+      "certainty": "high",
+      "summary": "Cordilheira ligada especialmente ao confronto de Elias com os profetas de Baal.",
+      "refs": [
+        "1 Reis 18"
+      ],
+      "people": [
+        "Elias",
+        "Acabe"
+      ],
+      "events": [
+        "Confronto de Elias no Carmelo"
+      ],
+      "tags": [
+        "eias",
+        "baal",
+        "fogo"
+      ]
+    },
+    {
+      "id": "valley-elah",
+      "name": "Vale de Elá",
+      "aliases": [
+        "Vale de Ela",
+        "Valley of Elah"
+      ],
+      "type": "place",
+      "region": "Judá / Sefelá",
+      "lat": 31.692,
+      "lng": 34.916,
+      "period": "Monarquia unida",
+      "from_year": -1050,
+      "to_year": -950,
+      "certainty": "high",
+      "summary": "Vale associado ao confronto entre Davi e Golias.",
+      "refs": [
+        "1 Samuel 17"
+      ],
+      "people": [
+        "Davi",
+        "Golias",
+        "Saul"
+      ],
+      "events": [
+        "Davi enfrenta Golias"
+      ],
+      "tags": [
+        "davi",
+        "golias",
+        "batalha"
+      ]
+    },
+    {
+      "id": "caesarea-maritima",
+      "name": "Cesareia Marítima",
+      "aliases": [
+        "Caesarea Maritima",
+        "Cesareia"
+      ],
+      "type": "city",
+      "region": "Costa da Judeia",
+      "lat": 32.5,
+      "lng": 34.892,
+      "period": "Novo Testamento",
+      "from_year": 0,
+      "to_year": 70,
+      "certainty": "high",
+      "summary": "Centro administrativo romano associado a Cornélio, Paulo e governadores romanos.",
+      "refs": [
+        "Atos 10",
+        "Atos 23:23-35",
+        "Atos 25"
+      ],
+      "people": [
+        "Pedro",
+        "Cornélio",
+        "Paulo",
+        "Festo"
+      ],
+      "events": [
+        "Conversão de Cornélio",
+        "Prisão e audiências de Paulo"
+      ],
+      "tags": [
+        "atos",
+        "roma"
+      ]
+    },
+    {
+      "id": "joppa",
+      "name": "Jope",
+      "aliases": [
+        "Jaffa",
+        "Joppa",
+        "Yafo"
+      ],
+      "type": "city",
+      "region": "Costa mediterrânea",
+      "lat": 32.05,
+      "lng": 34.75,
+      "period": "Profetas e Novo Testamento",
+      "from_year": -800,
+      "to_year": 50,
+      "certainty": "high",
+      "summary": "Porto associado à fuga de Jonas e à visão de Pedro.",
+      "refs": [
+        "Jonas 1:3",
+        "Atos 9:36-43",
+        "Atos 10:5-23"
+      ],
+      "people": [
+        "Jonas",
+        "Pedro",
+        "Tabita"
+      ],
+      "events": [
+        "Jonas embarca",
+        "Ressurreição de Tabita",
+        "Visão de Pedro"
+      ],
+      "tags": [
+        "porto",
+        "jonas",
+        "pedro"
+      ]
+    },
+    {
+      "id": "damascus",
+      "name": "Damasco",
+      "aliases": [
+        "Damascus"
+      ],
+      "type": "city",
+      "region": "Síria",
+      "lat": 33.5138,
+      "lng": 36.2765,
+      "period": "Antigo e Novo Testamento",
+      "from_year": -1000,
+      "to_year": 70,
+      "certainty": "high",
+      "summary": "Antiga cidade síria, célebre pela conversão de Saulo no caminho de Damasco.",
+      "refs": [
+        "2 Reis 8",
+        "Atos 9:1-25",
+        "Atos 22:5-16"
+      ],
+      "people": [
+        "Paulo",
+        "Ananias"
+      ],
+      "events": [
+        "Conversão de Saulo",
+        "Ministério inicial de Paulo"
+      ],
+      "tags": [
+        "paulo",
+        "conversão"
+      ]
+    },
+    {
+      "id": "antioch-syria",
+      "name": "Antioquia da Síria",
+      "aliases": [
+        "Antioch",
+        "Antioquia"
+      ],
+      "type": "city",
+      "region": "Síria romana",
+      "lat": 36.2021,
+      "lng": 36.1601,
+      "period": "Igreja apostólica",
+      "from_year": 30,
+      "to_year": 70,
+      "certainty": "high",
+      "summary": "Grande centro da igreja gentílica e ponto de partida das viagens missionárias de Paulo.",
+      "refs": [
+        "Atos 11:19-26",
+        "Atos 13:1-3",
+        "Atos 14:26-28"
+      ],
+      "people": [
+        "Paulo",
+        "Barnabé"
+      ],
+      "events": [
+        "Discípulos chamados cristãos",
+        "Envio missionário"
+      ],
+      "tags": [
+        "missões",
+        "paulo",
+        "igreja"
+      ]
+    },
+    {
+      "id": "tarsus",
+      "name": "Tarso",
+      "aliases": [
+        "Tarsus",
+        "Tarso da Cilícia"
+      ],
+      "type": "city",
+      "region": "Cilícia",
+      "lat": 36.9167,
+      "lng": 34.8951,
+      "period": "Igreja apostólica",
+      "from_year": 0,
+      "to_year": 70,
+      "certainty": "high",
+      "summary": "Cidade natal do apóstolo Paulo.",
+      "refs": [
+        "Atos 9:11",
+        "Atos 21:39",
+        "Atos 22:3"
+      ],
+      "people": [
+        "Paulo"
+      ],
+      "events": [
+        "Origem de Paulo"
+      ],
+      "tags": [
+        "paulo",
+        "cilícia"
+      ]
+    },
+    {
+      "id": "salamis",
+      "name": "Salamina",
+      "aliases": [
+        "Salamis"
+      ],
+      "type": "city",
+      "region": "Chipre",
+      "lat": 35.185,
+      "lng": 33.901,
+      "period": "1ª viagem de Paulo",
+      "from_year": 40,
+      "to_year": 55,
+      "certainty": "high",
+      "summary": "Primeira grande parada registrada em Chipre na primeira viagem missionária.",
+      "refs": [
+        "Atos 13:4-5"
+      ],
+      "people": [
+        "Paulo",
+        "Barnabé",
+        "João Marcos"
+      ],
+      "events": [
+        "Pregação nas sinagogas de Salamina"
+      ],
+      "tags": [
+        "paulo",
+        "chipre",
+        "1ª viagem"
+      ]
+    },
+    {
+      "id": "paphos",
+      "name": "Pafos",
+      "aliases": [
+        "Paphos"
+      ],
+      "type": "city",
+      "region": "Chipre",
+      "lat": 34.772,
+      "lng": 32.4297,
+      "period": "1ª viagem de Paulo",
+      "from_year": 40,
+      "to_year": 55,
+      "certainty": "high",
+      "summary": "Cidade de Chipre associada ao encontro com Sérgio Paulo e Elimas.",
+      "refs": [
+        "Atos 13:6-12"
+      ],
+      "people": [
+        "Paulo",
+        "Barnabé",
+        "Sérgio Paulo",
+        "Elimas"
+      ],
+      "events": [
+        "Conversão de Sérgio Paulo"
+      ],
+      "tags": [
+        "paulo",
+        "chipre",
+        "1ª viagem"
+      ]
+    },
+    {
+      "id": "perga",
+      "name": "Perge",
+      "aliases": [
+        "Perga",
+        "Perge"
+      ],
+      "type": "city",
+      "region": "Panfilia",
+      "lat": 36.961,
+      "lng": 30.853,
+      "period": "Viagens de Paulo",
+      "from_year": 40,
+      "to_year": 60,
+      "certainty": "high",
+      "summary": "Cidade da Panfília visitada na primeira viagem missionária.",
+      "refs": [
+        "Atos 13:13",
+        "Atos 14:25"
+      ],
+      "people": [
+        "Paulo",
+        "Barnabé",
+        "João Marcos"
+      ],
+      "events": [
+        "João Marcos retorna a Jerusalém"
+      ],
+      "tags": [
+        "paulo",
+        "panfília"
+      ]
+    },
+    {
+      "id": "pisidian-antioch",
+      "name": "Antioquia da Pisídia",
+      "aliases": [
+        "Pisidian Antioch"
+      ],
+      "type": "city",
+      "region": "Galácia / Pisídia",
+      "lat": 38.307,
+      "lng": 31.18,
+      "period": "1ª viagem de Paulo",
+      "from_year": 40,
+      "to_year": 55,
+      "certainty": "high",
+      "summary": "Cidade onde Paulo pregou importante sermão na sinagoga.",
+      "refs": [
+        "Atos 13:14-52"
+      ],
+      "people": [
+        "Paulo",
+        "Barnabé"
+      ],
+      "events": [
+        "Sermão de Paulo em Antioquia da Pisídia"
+      ],
+      "tags": [
+        "paulo",
+        "sermão",
+        "1ª viagem"
+      ]
+    },
+    {
+      "id": "iconium",
+      "name": "Icônio",
+      "aliases": [
+        "Iconium",
+        "Konya"
+      ],
+      "type": "city",
+      "region": "Licaônia",
+      "lat": 37.8746,
+      "lng": 32.4932,
+      "period": "Viagens de Paulo",
+      "from_year": 40,
+      "to_year": 60,
+      "certainty": "high",
+      "summary": "Cidade visitada por Paulo e Barnabé durante a primeira viagem.",
+      "refs": [
+        "Atos 14:1-7",
+        "Atos 16:2"
+      ],
+      "people": [
+        "Paulo",
+        "Barnabé"
+      ],
+      "events": [
+        "Pregação e oposição em Icônio"
+      ],
+      "tags": [
+        "paulo",
+        "1ª viagem"
+      ]
+    },
+    {
+      "id": "lystra",
+      "name": "Listra",
+      "aliases": [
+        "Lystra"
+      ],
+      "type": "city",
+      "region": "Licaônia",
+      "lat": 37.576,
+      "lng": 32.453,
+      "period": "Viagens de Paulo",
+      "from_year": 40,
+      "to_year": 60,
+      "certainty": "medium",
+      "summary": "Cidade da Licaônia ligada à cura de um homem, apedrejamento de Paulo e a Timóteo.",
+      "refs": [
+        "Atos 14:8-20",
+        "Atos 16:1-3"
+      ],
+      "people": [
+        "Paulo",
+        "Barnabé",
+        "Timóteo"
+      ],
+      "events": [
+        "Cura de homem coxo",
+        "Apedrejamento de Paulo",
+        "Timóteo acompanha Paulo"
+      ],
+      "tags": [
+        "paulo",
+        "timóteo"
+      ]
+    },
+    {
+      "id": "derbe",
+      "name": "Derbe",
+      "aliases": [
+        "Derbe"
+      ],
+      "type": "city",
+      "region": "Licaônia",
+      "lat": 37.35,
+      "lng": 33.27,
+      "period": "Viagens de Paulo",
+      "from_year": 40,
+      "to_year": 60,
+      "certainty": "medium",
+      "summary": "Cidade evangelizada por Paulo e Barnabé na primeira viagem.",
+      "refs": [
+        "Atos 14:20-21",
+        "Atos 16:1"
+      ],
+      "people": [
+        "Paulo",
+        "Barnabé"
+      ],
+      "events": [
+        "Evangelização em Derbe"
+      ],
+      "tags": [
+        "paulo",
+        "1ª viagem"
+      ]
+    },
+    {
+      "id": "troas",
+      "name": "Trôade",
+      "aliases": [
+        "Troas",
+        "Alexandria Troas"
+      ],
+      "type": "city",
+      "region": "Ásia Menor",
+      "lat": 39.753,
+      "lng": 26.158,
+      "period": "Viagens de Paulo",
+      "from_year": 45,
+      "to_year": 65,
+      "certainty": "high",
+      "summary": "Porto onde Paulo recebeu a visão do homem macedônio e posteriormente ministrou a Êutico.",
+      "refs": [
+        "Atos 16:8-11",
+        "Atos 20:5-12"
+      ],
+      "people": [
+        "Paulo",
+        "Êutico"
+      ],
+      "events": [
+        "Visão do homem macedônio",
+        "Restauração de Êutico"
+      ],
+      "tags": [
+        "paulo",
+        "macedônia"
+      ]
+    },
+    {
+      "id": "philippi",
+      "name": "Filipos",
+      "aliases": [
+        "Philippi"
+      ],
+      "type": "city",
+      "region": "Macedônia",
+      "lat": 41.013,
+      "lng": 24.286,
+      "period": "2ª viagem de Paulo",
+      "from_year": 45,
+      "to_year": 65,
+      "certainty": "high",
+      "summary": "Colônia romana ligada a Lídia, à prisão de Paulo e Silas e à igreja de Filipos.",
+      "refs": [
+        "Atos 16:11-40",
+        "Filipenses 1"
+      ],
+      "people": [
+        "Paulo",
+        "Silas",
+        "Lídia"
+      ],
+      "events": [
+        "Conversão de Lídia",
+        "Prisão e terremoto",
+        "Conversão do carcereiro"
+      ],
+      "tags": [
+        "paulo",
+        "silas",
+        "lídia",
+        "2ª viagem"
+      ]
+    },
+    {
+      "id": "thessalonica",
+      "name": "Tessalônica",
+      "aliases": [
+        "Thessalonica",
+        "Thessaloniki"
+      ],
+      "type": "city",
+      "region": "Macedônia",
+      "lat": 40.6401,
+      "lng": 22.9444,
+      "period": "2ª viagem de Paulo",
+      "from_year": 45,
+      "to_year": 65,
+      "certainty": "high",
+      "summary": "Cidade onde Paulo pregou e posteriormente dirigiu cartas à igreja.",
+      "refs": [
+        "Atos 17:1-9",
+        "1 Tessalonicenses 1"
+      ],
+      "people": [
+        "Paulo",
+        "Silas"
+      ],
+      "events": [
+        "Pregação na sinagoga",
+        "Formação da igreja"
+      ],
+      "tags": [
+        "paulo",
+        "2ª viagem"
+      ]
+    },
+    {
+      "id": "berea",
+      "name": "Bereia",
+      "aliases": [
+        "Berea",
+        "Veria"
+      ],
+      "type": "city",
+      "region": "Macedônia",
+      "lat": 40.524,
+      "lng": 22.203,
+      "period": "2ª viagem de Paulo",
+      "from_year": 45,
+      "to_year": 65,
+      "certainty": "high",
+      "summary": "Cidade lembrada pelo exame diligente das Escrituras.",
+      "refs": [
+        "Atos 17:10-15"
+      ],
+      "people": [
+        "Paulo",
+        "Silas"
+      ],
+      "events": [
+        "Bereanos examinam as Escrituras"
+      ],
+      "tags": [
+        "paulo",
+        "escrituras"
+      ]
+    },
+    {
+      "id": "athens",
+      "name": "Atenas",
+      "aliases": [
+        "Athens"
+      ],
+      "type": "city",
+      "region": "Acaia",
+      "lat": 37.9838,
+      "lng": 23.7275,
+      "period": "2ª viagem de Paulo",
+      "from_year": 45,
+      "to_year": 65,
+      "certainty": "high",
+      "summary": "Cidade onde Paulo discursou no Areópago.",
+      "refs": [
+        "Atos 17:16-34"
+      ],
+      "people": [
+        "Paulo",
+        "Dionísio"
+      ],
+      "events": [
+        "Discurso no Areópago"
+      ],
+      "tags": [
+        "paulo",
+        "areópago",
+        "2ª viagem"
+      ]
+    },
+    {
+      "id": "corinth",
+      "name": "Corinto",
+      "aliases": [
+        "Corinth"
+      ],
+      "type": "city",
+      "region": "Acaia",
+      "lat": 37.906,
+      "lng": 22.88,
+      "period": "Viagens de Paulo",
+      "from_year": 45,
+      "to_year": 65,
+      "certainty": "high",
+      "summary": "Importante centro da missão paulina e destinatário das cartas aos Coríntios.",
+      "refs": [
+        "Atos 18:1-18",
+        "1 Coríntios 1"
+      ],
+      "people": [
+        "Paulo",
+        "Áquila",
+        "Priscila",
+        "Gálio"
+      ],
+      "events": [
+        "Ministério prolongado em Corinto"
+      ],
+      "tags": [
+        "paulo",
+        "áquila",
+        "priscila"
+      ]
+    },
+    {
+      "id": "ephesus",
+      "name": "Éfeso",
+      "aliases": [
+        "Ephesus"
+      ],
+      "type": "city",
+      "region": "Ásia",
+      "lat": 37.939,
+      "lng": 27.341,
+      "period": "3ª viagem de Paulo",
+      "from_year": 50,
+      "to_year": 70,
+      "certainty": "high",
+      "summary": "Grande centro da missão de Paulo na Ásia e cenário do tumulto ligado a Ártemis.",
+      "refs": [
+        "Atos 18:18-21",
+        "Atos 19",
+        "Efésios 1"
+      ],
+      "people": [
+        "Paulo",
+        "Áquila",
+        "Priscila",
+        "Apolo"
+      ],
+      "events": [
+        "Ministério de Paulo",
+        "Tumulto em Éfeso"
+      ],
+      "tags": [
+        "paulo",
+        "3ª viagem",
+        "ártemis"
+      ]
+    },
+    {
+      "id": "miletus",
+      "name": "Mileto",
+      "aliases": [
+        "Miletus"
+      ],
+      "type": "city",
+      "region": "Ásia",
+      "lat": 37.53,
+      "lng": 27.28,
+      "period": "3ª viagem de Paulo",
+      "from_year": 50,
+      "to_year": 70,
+      "certainty": "high",
+      "summary": "Porto onde Paulo se despediu dos presbíteros de Éfeso.",
+      "refs": [
+        "Atos 20:15-38"
+      ],
+      "people": [
+        "Paulo",
+        "Presbíteros de Éfeso"
+      ],
+      "events": [
+        "Discurso de despedida"
+      ],
+      "tags": [
+        "paulo",
+        "3ª viagem"
+      ]
+    },
+    {
+      "id": "rome",
+      "name": "Roma",
+      "aliases": [
+        "Rome"
+      ],
+      "type": "city",
+      "region": "Itália",
+      "lat": 41.9028,
+      "lng": 12.4964,
+      "period": "Igreja apostólica",
+      "from_year": 50,
+      "to_year": 100,
+      "certainty": "high",
+      "summary": "Capital imperial e destino final da narrativa de Atos.",
+      "refs": [
+        "Atos 28",
+        "Romanos 1"
+      ],
+      "people": [
+        "Paulo"
+      ],
+      "events": [
+        "Paulo em prisão domiciliar",
+        "Pregação em Roma"
+      ],
+      "tags": [
+        "paulo",
+        "império",
+        "roma"
+      ]
+    },
+    {
+      "id": "malta",
+      "name": "Malta",
+      "aliases": [
+        "Melita"
+      ],
+      "type": "region",
+      "region": "Mediterrâneo central",
+      "lat": 35.8997,
+      "lng": 14.5146,
+      "period": "Viagem de Paulo a Roma",
+      "from_year": 50,
+      "to_year": 70,
+      "certainty": "high",
+      "summary": "Ilha onde Paulo e os demais náufragos foram acolhidos antes de seguir para Roma.",
+      "refs": [
+        "Atos 28:1-10"
+      ],
+      "people": [
+        "Paulo",
+        "Públio"
+      ],
+      "events": [
+        "Naufrágio e estadia em Malta"
+      ],
+      "tags": [
+        "paulo",
+        "naufrágio"
+      ]
+    },
+    {
+      "id": "ur",
+      "name": "Ur dos Caldeus",
+      "aliases": [
+        "Ur",
+        "Ur of the Chaldeans"
+      ],
+      "type": "city",
+      "region": "Mesopotâmia",
+      "lat": 30.962,
+      "lng": 46.103,
+      "period": "Patriarcas",
+      "from_year": -2100,
+      "to_year": -1800,
+      "certainty": "traditional",
+      "summary": "Local tradicionalmente identificado como ponto de origem de Abraão antes de Harã e Canaã.",
+      "refs": [
+        "Gênesis 11:27-32",
+        "Gênesis 15:7"
+      ],
+      "people": [
+        "Abraão",
+        "Terá"
+      ],
+      "events": [
+        "Saída da família de Terá"
+      ],
+      "tags": [
+        "abraão",
+        "patriarcas"
+      ]
+    },
+    {
+      "id": "haran",
+      "name": "Harã",
+      "aliases": [
+        "Haran",
+        "Carrhae"
+      ],
+      "type": "city",
+      "region": "Alta Mesopotâmia",
+      "lat": 36.864,
+      "lng": 39.031,
+      "period": "Patriarcas",
+      "from_year": -2100,
+      "to_year": -1700,
+      "certainty": "high",
+      "summary": "Parada da família de Terá e região ligada às famílias de Abraão, Isaque e Jacó.",
+      "refs": [
+        "Gênesis 11:31-32",
+        "Gênesis 12:1-5",
+        "Gênesis 24"
+      ],
+      "people": [
+        "Abraão",
+        "Terá",
+        "Rebeca",
+        "Jacó"
+      ],
+      "events": [
+        "Chamado de Abraão a partir de Harã"
+      ],
+      "tags": [
+        "abraão",
+        "patriarcas"
+      ]
+    },
+    {
+      "id": "rameses",
+      "name": "Ramessés / região do Delta",
+      "aliases": [
+        "Rameses",
+        "Raamses",
+        "Goshen",
+        "Gósen"
+      ],
+      "type": "region",
+      "region": "Delta oriental do Nilo",
+      "lat": 30.8,
+      "lng": 31.84,
+      "period": "Êxodo",
+      "from_year": -1500,
+      "to_year": -1200,
+      "certainty": "medium",
+      "summary": "Região do Delta associada ao ponto de partida do Êxodo; cronologia e identificações exatas são debatidas.",
+      "refs": [
+        "Êxodo 1:11",
+        "Êxodo 12:37",
+        "Números 33:3"
+      ],
+      "people": [
+        "Moisés",
+        "Arão"
+      ],
+      "events": [
+        "Saída do Egito"
+      ],
+      "tags": [
+        "êxodo",
+        "egito"
+      ]
+    },
+    {
+      "id": "sinai",
+      "name": "Monte Sinai (tradicional)",
+      "aliases": [
+        "Sinai",
+        "Horebe",
+        "Jebel Musa"
+      ],
+      "type": "place",
+      "region": "Península do Sinai",
+      "lat": 28.539,
+      "lng": 33.975,
+      "period": "Êxodo",
+      "from_year": -1500,
+      "to_year": -1200,
+      "certainty": "traditional",
+      "summary": "Local tradicional associado à entrega da Lei; a localização histórica exata do Sinai é debatida.",
+      "refs": [
+        "Êxodo 19",
+        "Êxodo 20",
+        "Êxodo 24"
+      ],
+      "people": [
+        "Moisés",
+        "Arão"
+      ],
+      "events": [
+        "Aliança no Sinai",
+        "Dez Mandamentos"
+      ],
+      "tags": [
+        "êxodo",
+        "aliança",
+        "lei"
+      ]
+    },
+    {
+      "id": "kadesh",
+      "name": "Cades-Barneia",
+      "aliases": [
+        "Kadesh Barnea",
+        "Cades Barneia"
+      ],
+      "type": "place",
+      "region": "Deserto de Parã / Neguebe",
+      "lat": 30.65,
+      "lng": 34.42,
+      "period": "Êxodo e deserto",
+      "from_year": -1500,
+      "to_year": -1200,
+      "certainty": "medium",
+      "summary": "Área associada ao envio dos espias e a importantes episódios da peregrinação.",
+      "refs": [
+        "Números 13",
+        "Números 20",
+        "Deuteronômio 1"
+      ],
+      "people": [
+        "Moisés",
+        "Josué",
+        "Calebe",
+        "Miriã"
+      ],
+      "events": [
+        "Envio dos espias",
+        "Morte de Miriã"
+      ],
+      "tags": [
+        "êxodo",
+        "espias"
+      ]
+    },
+    {
+      "id": "babylon",
+      "name": "Babilônia",
+      "aliases": [
+        "Babylon",
+        "Babel"
+      ],
+      "type": "city",
+      "region": "Mesopotâmia",
+      "lat": 32.542,
+      "lng": 44.421,
+      "period": "Exílio",
+      "from_year": -700,
+      "to_year": -500,
+      "certainty": "high",
+      "summary": "Capital do império neobabilônico e centro do exílio de Judá.",
+      "refs": [
+        "2 Reis 25",
+        "Daniel 1",
+        "Salmos 137"
+      ],
+      "people": [
+        "Nabucodonosor",
+        "Daniel",
+        "Ezequiel"
+      ],
+      "events": [
+        "Exílio de Judá",
+        "Cativeiro babilônico"
+      ],
+      "tags": [
+        "exílio",
+        "daniel",
+        "ezequiel"
+      ]
+    },
+    {
+      "id": "susa",
+      "name": "Susã",
+      "aliases": [
+        "Susa",
+        "Shushan"
+      ],
+      "type": "city",
+      "region": "Elão / Pérsia",
+      "lat": 32.189,
+      "lng": 48.257,
+      "period": "Império Persa",
+      "from_year": -550,
+      "to_year": -400,
+      "certainty": "high",
+      "summary": "Importante centro persa associado às narrativas de Ester e Neemias.",
+      "refs": [
+        "Ester 1:2",
+        "Neemias 1:1"
+      ],
+      "people": [
+        "Ester",
+        "Mardoqueu",
+        "Neemias"
+      ],
+      "events": [
+        "Corte de Assuero",
+        "Chamado de Neemias"
+      ],
+      "tags": [
+        "pérsia",
+        "ester",
+        "neemias"
+      ]
+    }
+  ],
+  "journeys": [
+    {
+      "id": "abraham",
+      "name": "Abraão • Ur → Harã → Canaã",
+      "category": "patriarchs",
+      "from_year": -2000,
+      "to_year": -1800,
+      "certainty": "schematic",
+      "summary": "Jornada patriarcal apresentada de modo esquemático; etapas e cronologia são aproximadas.",
+      "refs": [
+        "Gênesis 11:31",
+        "Gênesis 12:1-9",
+        "Gênesis 13"
+      ],
+      "people": [
+        "Abraão",
+        "Sara",
+        "Ló"
+      ],
+      "stops": [
+        "ur",
+        "haran",
+        "sychar",
+        "hebron",
+        "beersheba"
+      ]
+    },
+    {
+      "id": "exodus",
+      "name": "Êxodo • Egito → Sinai → Cades",
+      "category": "exodus",
+      "from_year": -1500,
+      "to_year": -1200,
+      "certainty": "debated",
+      "summary": "Rota didática do Êxodo. Diversos pontos e a cronologia são debatidos; não representa uma reconstrução arqueológica definitiva.",
+      "refs": [
+        "Êxodo 12",
+        "Êxodo 14",
+        "Êxodo 19",
+        "Números 13"
+      ],
+      "people": [
+        "Moisés",
+        "Arão",
+        "Josué"
+      ],
+      "stops": [
+        "rameses",
+        "sinai",
+        "kadesh"
+      ]
+    },
+    {
+      "id": "jesus-galilee",
+      "name": "Jesus • Ministério na Galileia",
+      "category": "jesus",
+      "from_year": 25,
+      "to_year": 33,
+      "certainty": "schematic",
+      "summary": "Seleção didática de locais importantes do ministério de Jesus na Galileia e arredores.",
+      "refs": [
+        "Mateus 4",
+        "Marcos 1",
+        "João 2",
+        "João 4"
+      ],
+      "people": [
+        "Jesus",
+        "Pedro",
+        "João"
+      ],
+      "stops": [
+        "nazareth",
+        "cana",
+        "capernaum",
+        "sea-galilee",
+        "sychar"
+      ]
+    },
+    {
+      "id": "jesus-final-week",
+      "name": "Jesus • Última Semana",
+      "category": "jesus",
+      "from_year": 30,
+      "to_year": 33,
+      "certainty": "schematic",
+      "summary": "Sequência geográfica didática dos principais lugares associados aos últimos dias de Jesus em Jerusalém.",
+      "refs": [
+        "Marcos 11-16",
+        "Lucas 19-24",
+        "João 11-20"
+      ],
+      "people": [
+        "Jesus",
+        "Discípulos"
+      ],
+      "stops": [
+        "bethany",
+        "mount-olives",
+        "jerusalem",
+        "gethsemane",
+        "jerusalem"
+      ]
+    },
+    {
+      "id": "paul-1",
+      "name": "Paulo • 1ª Viagem Missionária",
+      "category": "apostolic",
+      "from_year": 46,
+      "to_year": 48,
+      "certainty": "high",
+      "summary": "Rota baseada na sequência narrativa de Atos 13–14.",
+      "refs": [
+        "Atos 13",
+        "Atos 14"
+      ],
+      "people": [
+        "Paulo",
+        "Barnabé",
+        "João Marcos"
+      ],
+      "stops": [
+        "antioch-syria",
+        "salamis",
+        "paphos",
+        "perga",
+        "pisidian-antioch",
+        "iconium",
+        "lystra",
+        "derbe",
+        "perga",
+        "antioch-syria"
+      ]
+    },
+    {
+      "id": "paul-2",
+      "name": "Paulo • 2ª Viagem Missionária",
+      "category": "apostolic",
+      "from_year": 49,
+      "to_year": 52,
+      "certainty": "high",
+      "summary": "Rota didática baseada em Atos 15:36–18:22.",
+      "refs": [
+        "Atos 15:36",
+        "Atos 16",
+        "Atos 17",
+        "Atos 18"
+      ],
+      "people": [
+        "Paulo",
+        "Silas",
+        "Timóteo"
+      ],
+      "stops": [
+        "antioch-syria",
+        "tarsus",
+        "derbe",
+        "lystra",
+        "troas",
+        "philippi",
+        "thessalonica",
+        "berea",
+        "athens",
+        "corinth",
+        "ephesus",
+        "caesarea-maritima",
+        "antioch-syria"
+      ]
+    },
+    {
+      "id": "paul-3",
+      "name": "Paulo • 3ª Viagem Missionária",
+      "category": "apostolic",
+      "from_year": 53,
+      "to_year": 57,
+      "certainty": "high",
+      "summary": "Rota didática baseada em Atos 18:23–21:17.",
+      "refs": [
+        "Atos 18:23",
+        "Atos 19",
+        "Atos 20",
+        "Atos 21"
+      ],
+      "people": [
+        "Paulo",
+        "Timóteo"
+      ],
+      "stops": [
+        "antioch-syria",
+        "ephesus",
+        "troas",
+        "philippi",
+        "corinth",
+        "berea",
+        "troas",
+        "miletus",
+        "caesarea-maritima",
+        "jerusalem"
+      ]
+    },
+    {
+      "id": "paul-rome",
+      "name": "Paulo • Cesareia → Roma",
+      "category": "apostolic",
+      "from_year": 59,
+      "to_year": 62,
+      "certainty": "high",
+      "summary": "Trecho final da viagem de Paulo a Roma, com Malta como ponto central após o naufrágio.",
+      "refs": [
+        "Atos 27",
+        "Atos 28"
+      ],
+      "people": [
+        "Paulo",
+        "Lucas"
+      ],
+      "stops": [
+        "caesarea-maritima",
+        "malta",
+        "rome"
+      ]
+    },
+    {
+      "id": "david",
+      "name": "Davi • Belém → Vale de Elá → Hebrom → Jerusalém",
+      "category": "monarchy",
+      "from_year": -1050,
+      "to_year": -970,
+      "certainty": "schematic",
+      "summary": "Trajeto temático que conecta marcos importantes da trajetória de Davi.",
+      "refs": [
+        "1 Samuel 16",
+        "1 Samuel 17",
+        "2 Samuel 2",
+        "2 Samuel 5"
+      ],
+      "people": [
+        "Davi"
+      ],
+      "stops": [
+        "bethlehem",
+        "valley-elah",
+        "hebron",
+        "jerusalem"
+      ]
+    },
+    {
+      "id": "exile-return",
+      "name": "Exílio • Jerusalém → Babilônia → retorno",
+      "category": "exile",
+      "from_year": -605,
+      "to_year": -430,
+      "certainty": "schematic",
+      "summary": "Visão didática do exílio babilônico e do retorno do povo de Judá.",
+      "refs": [
+        "2 Reis 25",
+        "Esdras 1",
+        "Neemias 1-2"
+      ],
+      "people": [
+        "Daniel",
+        "Esdras",
+        "Neemias"
+      ],
+      "stops": [
+        "jerusalem",
+        "babylon",
+        "susa",
+        "jerusalem"
+      ]
+    }
+  ],
+  "periods": [
+    {
+      "id": "all",
+      "name": "Toda a cronologia",
+      "from_year": -2200,
+      "to_year": 100
+    },
+    {
+      "id": "patriarchs",
+      "name": "Patriarcas",
+      "from_year": -2100,
+      "to_year": -1700
+    },
+    {
+      "id": "exodus",
+      "name": "Êxodo e conquista",
+      "from_year": -1500,
+      "to_year": -1200
+    },
+    {
+      "id": "monarchy",
+      "name": "Monarquia",
+      "from_year": -1050,
+      "to_year": -586
+    },
+    {
+      "id": "exile",
+      "name": "Exílio e pós-exílio",
+      "from_year": -605,
+      "to_year": -400
+    },
+    {
+      "id": "second-temple",
+      "name": "Segundo Templo",
+      "from_year": -515,
+      "to_year": 70
+    },
+    {
+      "id": "jesus",
+      "name": "Vida e ministério de Jesus",
+      "from_year": -10,
+      "to_year": 40
+    },
+    {
+      "id": "apostolic",
+      "name": "Igreja apostólica",
+      "from_year": 30,
+      "to_year": 100
+    }
+  ],
+  "events": [
+    {
+      "id": "jerusalem-event-1",
+      "title": "Conquista da cidade por Davi",
+      "place_id": "jerusalem",
+      "place": "Jerusalém",
+      "refs": [
+        "2 Samuel 5",
+        "1 Reis 8",
+        "Salmos 122"
+      ],
+      "people": [
+        "Davi",
+        "Salomão",
+        "Jesus",
+        "Pedro"
+      ],
+      "from_year": -1000,
+      "to_year": 70,
+      "summary": "Centro político e espiritual de Israel; cidade de Davi, Templo e cenário central da última semana de Jesus."
+    },
+    {
+      "id": "jerusalem-event-2",
+      "title": "Dedicação do Templo",
+      "place_id": "jerusalem",
+      "place": "Jerusalém",
+      "refs": [
+        "2 Samuel 5",
+        "1 Reis 8",
+        "Salmos 122"
+      ],
+      "people": [
+        "Davi",
+        "Salomão",
+        "Jesus",
+        "Pedro"
+      ],
+      "from_year": -1000,
+      "to_year": 70,
+      "summary": "Centro político e espiritual de Israel; cidade de Davi, Templo e cenário central da última semana de Jesus."
+    },
+    {
+      "id": "jerusalem-event-3",
+      "title": "Entrada triunfal",
+      "place_id": "jerusalem",
+      "place": "Jerusalém",
+      "refs": [
+        "2 Samuel 5",
+        "1 Reis 8",
+        "Salmos 122"
+      ],
+      "people": [
+        "Davi",
+        "Salomão",
+        "Jesus",
+        "Pedro"
+      ],
+      "from_year": -1000,
+      "to_year": 70,
+      "summary": "Centro político e espiritual de Israel; cidade de Davi, Templo e cenário central da última semana de Jesus."
+    },
+    {
+      "id": "jerusalem-event-4",
+      "title": "Crucificação e ressurreição",
+      "place_id": "jerusalem",
+      "place": "Jerusalém",
+      "refs": [
+        "2 Samuel 5",
+        "1 Reis 8",
+        "Salmos 122"
+      ],
+      "people": [
+        "Davi",
+        "Salomão",
+        "Jesus",
+        "Pedro"
+      ],
+      "from_year": -1000,
+      "to_year": 70,
+      "summary": "Centro político e espiritual de Israel; cidade de Davi, Templo e cenário central da última semana de Jesus."
+    },
+    {
+      "id": "jerusalem-event-5",
+      "title": "Pentecostes",
+      "place_id": "jerusalem",
+      "place": "Jerusalém",
+      "refs": [
+        "2 Samuel 5",
+        "1 Reis 8",
+        "Salmos 122"
+      ],
+      "people": [
+        "Davi",
+        "Salomão",
+        "Jesus",
+        "Pedro"
+      ],
+      "from_year": -1000,
+      "to_year": 70,
+      "summary": "Centro político e espiritual de Israel; cidade de Davi, Templo e cenário central da última semana de Jesus."
+    },
+    {
+      "id": "jericho-event-1",
+      "title": "Queda de Jericó",
+      "place_id": "jericho",
+      "place": "Jericó",
+      "refs": [
+        "Josué 6",
+        "Marcos 10:46-52",
+        "Lucas 18:35-43"
+      ],
+      "people": [
+        "Josué",
+        "Bartimeu",
+        "Zaqueu",
+        "Jesus"
+      ],
+      "from_year": -1400,
+      "to_year": 50,
+      "summary": "Cidade estratégica no vale do Jordão, associada a Josué, Bartimeu e Zaqueu."
+    },
+    {
+      "id": "jericho-event-2",
+      "title": "Cura de Bartimeu",
+      "place_id": "jericho",
+      "place": "Jericó",
+      "refs": [
+        "Josué 6",
+        "Marcos 10:46-52",
+        "Lucas 18:35-43"
+      ],
+      "people": [
+        "Josué",
+        "Bartimeu",
+        "Zaqueu",
+        "Jesus"
+      ],
+      "from_year": -1400,
+      "to_year": 50,
+      "summary": "Cidade estratégica no vale do Jordão, associada a Josué, Bartimeu e Zaqueu."
+    },
+    {
+      "id": "jericho-event-3",
+      "title": "Encontro de Jesus com Zaqueu",
+      "place_id": "jericho",
+      "place": "Jericó",
+      "refs": [
+        "Josué 6",
+        "Marcos 10:46-52",
+        "Lucas 18:35-43"
+      ],
+      "people": [
+        "Josué",
+        "Bartimeu",
+        "Zaqueu",
+        "Jesus"
+      ],
+      "from_year": -1400,
+      "to_year": 50,
+      "summary": "Cidade estratégica no vale do Jordão, associada a Josué, Bartimeu e Zaqueu."
+    },
+    {
+      "id": "bethlehem-event-1",
+      "title": "Família de Rute",
+      "place_id": "bethlehem",
+      "place": "Belém",
+      "refs": [
+        "Rute 1",
+        "1 Samuel 16",
+        "Miqueias 5:2"
+      ],
+      "people": [
+        "Rute",
+        "Jessé",
+        "Davi",
+        "Jesus"
+      ],
+      "from_year": -1200,
+      "to_year": 50,
+      "summary": "Cidade de Davi e local tradicional do nascimento de Jesus."
+    },
+    {
+      "id": "bethlehem-event-2",
+      "title": "Unção de Davi",
+      "place_id": "bethlehem",
+      "place": "Belém",
+      "refs": [
+        "Rute 1",
+        "1 Samuel 16",
+        "Miqueias 5:2"
+      ],
+      "people": [
+        "Rute",
+        "Jessé",
+        "Davi",
+        "Jesus"
+      ],
+      "from_year": -1200,
+      "to_year": 50,
+      "summary": "Cidade de Davi e local tradicional do nascimento de Jesus."
+    },
+    {
+      "id": "bethlehem-event-3",
+      "title": "Nascimento de Jesus",
+      "place_id": "bethlehem",
+      "place": "Belém",
+      "refs": [
+        "Rute 1",
+        "1 Samuel 16",
+        "Miqueias 5:2"
+      ],
+      "people": [
+        "Rute",
+        "Jessé",
+        "Davi",
+        "Jesus"
+      ],
+      "from_year": -1200,
+      "to_year": 50,
+      "summary": "Cidade de Davi e local tradicional do nascimento de Jesus."
+    },
+    {
+      "id": "nazareth-event-1",
+      "title": "Anunciação",
+      "place_id": "nazareth",
+      "place": "Nazaré",
+      "refs": [
+        "Mateus 2:23",
+        "Lucas 1:26",
+        "Lucas 4:16-30"
+      ],
+      "people": [
+        "Jesus",
+        "Maria",
+        "José"
+      ],
+      "from_year": -10,
+      "to_year": 40,
+      "summary": "Cidade onde Jesus cresceu e ensinou na sinagoga."
+    },
+    {
+      "id": "nazareth-event-2",
+      "title": "Infância de Jesus",
+      "place_id": "nazareth",
+      "place": "Nazaré",
+      "refs": [
+        "Mateus 2:23",
+        "Lucas 1:26",
+        "Lucas 4:16-30"
+      ],
+      "people": [
+        "Jesus",
+        "Maria",
+        "José"
+      ],
+      "from_year": -10,
+      "to_year": 40,
+      "summary": "Cidade onde Jesus cresceu e ensinou na sinagoga."
+    },
+    {
+      "id": "nazareth-event-3",
+      "title": "Ensino na sinagoga",
+      "place_id": "nazareth",
+      "place": "Nazaré",
+      "refs": [
+        "Mateus 2:23",
+        "Lucas 1:26",
+        "Lucas 4:16-30"
+      ],
+      "people": [
+        "Jesus",
+        "Maria",
+        "José"
+      ],
+      "from_year": -10,
+      "to_year": 40,
+      "summary": "Cidade onde Jesus cresceu e ensinou na sinagoga."
+    },
+    {
+      "id": "capernaum-event-1",
+      "title": "Ensino na sinagoga",
+      "place_id": "capernaum",
+      "place": "Cafarnaum",
+      "refs": [
+        "Mateus 4:13",
+        "Marcos 1:21-34",
+        "Marcos 2:1-12"
+      ],
+      "people": [
+        "Jesus",
+        "Pedro"
+      ],
+      "from_year": 20,
+      "to_year": 40,
+      "summary": "Base importante do ministério de Jesus na Galileia, às margens do mar da Galileia."
+    },
+    {
+      "id": "capernaum-event-2",
+      "title": "Cura da sogra de Pedro",
+      "place_id": "capernaum",
+      "place": "Cafarnaum",
+      "refs": [
+        "Mateus 4:13",
+        "Marcos 1:21-34",
+        "Marcos 2:1-12"
+      ],
+      "people": [
+        "Jesus",
+        "Pedro"
+      ],
+      "from_year": 20,
+      "to_year": 40,
+      "summary": "Base importante do ministério de Jesus na Galileia, às margens do mar da Galileia."
+    },
+    {
+      "id": "capernaum-event-3",
+      "title": "Cura do paralítico",
+      "place_id": "capernaum",
+      "place": "Cafarnaum",
+      "refs": [
+        "Mateus 4:13",
+        "Marcos 1:21-34",
+        "Marcos 2:1-12"
+      ],
+      "people": [
+        "Jesus",
+        "Pedro"
+      ],
+      "from_year": 20,
+      "to_year": 40,
+      "summary": "Base importante do ministério de Jesus na Galileia, às margens do mar da Galileia."
+    },
+    {
+      "id": "cana-event-1",
+      "title": "Água transformada em vinho",
+      "place_id": "cana",
+      "place": "Caná da Galileia",
+      "refs": [
+        "João 2:1-11",
+        "João 4:46"
+      ],
+      "people": [
+        "Jesus",
+        "Maria"
+      ],
+      "from_year": 20,
+      "to_year": 40,
+      "summary": "Local associado ao primeiro sinal de Jesus em João; a identificação exata do sítio antigo é discutida."
+    },
+    {
+      "id": "bethany-event-1",
+      "title": "Ressurreição de Lázaro",
+      "place_id": "bethany",
+      "place": "Betânia",
+      "refs": [
+        "João 11",
+        "João 12:1-8",
+        "Marcos 11:1"
+      ],
+      "people": [
+        "Jesus",
+        "Marta",
+        "Maria",
+        "Lázaro"
+      ],
+      "from_year": 20,
+      "to_year": 40,
+      "summary": "Aldeia próxima de Jerusalém ligada a Marta, Maria, Lázaro e à última semana de Jesus."
+    },
+    {
+      "id": "bethany-event-2",
+      "title": "Unção em Betânia",
+      "place_id": "bethany",
+      "place": "Betânia",
+      "refs": [
+        "João 11",
+        "João 12:1-8",
+        "Marcos 11:1"
+      ],
+      "people": [
+        "Jesus",
+        "Marta",
+        "Maria",
+        "Lázaro"
+      ],
+      "from_year": 20,
+      "to_year": 40,
+      "summary": "Aldeia próxima de Jerusalém ligada a Marta, Maria, Lázaro e à última semana de Jesus."
+    },
+    {
+      "id": "mount-olives-event-1",
+      "title": "Discurso do Monte das Oliveiras",
+      "place_id": "mount-olives",
+      "place": "Monte das Oliveiras",
+      "refs": [
+        "Mateus 24",
+        "Lucas 19:29-44",
+        "Atos 1:9-12"
+      ],
+      "people": [
+        "Jesus",
+        "Discípulos"
+      ],
+      "from_year": 20,
+      "to_year": 40,
+      "summary": "Elevação a leste de Jerusalém ligada ao ensino escatológico, entrada triunfal e ascensão."
+    },
+    {
+      "id": "mount-olives-event-2",
+      "title": "Entrada em Jerusalém",
+      "place_id": "mount-olives",
+      "place": "Monte das Oliveiras",
+      "refs": [
+        "Mateus 24",
+        "Lucas 19:29-44",
+        "Atos 1:9-12"
+      ],
+      "people": [
+        "Jesus",
+        "Discípulos"
+      ],
+      "from_year": 20,
+      "to_year": 40,
+      "summary": "Elevação a leste de Jerusalém ligada ao ensino escatológico, entrada triunfal e ascensão."
+    },
+    {
+      "id": "mount-olives-event-3",
+      "title": "Ascensão",
+      "place_id": "mount-olives",
+      "place": "Monte das Oliveiras",
+      "refs": [
+        "Mateus 24",
+        "Lucas 19:29-44",
+        "Atos 1:9-12"
+      ],
+      "people": [
+        "Jesus",
+        "Discípulos"
+      ],
+      "from_year": 20,
+      "to_year": 40,
+      "summary": "Elevação a leste de Jerusalém ligada ao ensino escatológico, entrada triunfal e ascensão."
+    },
+    {
+      "id": "gethsemane-event-1",
+      "title": "Oração de Jesus",
+      "place_id": "gethsemane",
+      "place": "Getsêmani",
+      "refs": [
+        "Mateus 26:36-56",
+        "Marcos 14:32-52",
+        "Lucas 22:39-53"
+      ],
+      "people": [
+        "Jesus",
+        "Pedro",
+        "Judas"
+      ],
+      "from_year": 25,
+      "to_year": 40,
+      "summary": "Área ao pé do Monte das Oliveiras tradicionalmente associada à oração e prisão de Jesus."
+    },
+    {
+      "id": "gethsemane-event-2",
+      "title": "Prisão de Jesus",
+      "place_id": "gethsemane",
+      "place": "Getsêmani",
+      "refs": [
+        "Mateus 26:36-56",
+        "Marcos 14:32-52",
+        "Lucas 22:39-53"
+      ],
+      "people": [
+        "Jesus",
+        "Pedro",
+        "Judas"
+      ],
+      "from_year": 25,
+      "to_year": 40,
+      "summary": "Área ao pé do Monte das Oliveiras tradicionalmente associada à oração e prisão de Jesus."
+    },
+    {
+      "id": "sea-galilee-event-1",
+      "title": "Chamado de discípulos",
+      "place_id": "sea-galilee",
+      "place": "Mar da Galileia",
+      "refs": [
+        "Mateus 4:18",
+        "Marcos 4:35-41",
+        "João 6:1"
+      ],
+      "people": [
+        "Jesus",
+        "Pedro",
+        "André"
+      ],
+      "from_year": 20,
+      "to_year": 40,
+      "summary": "Lago em torno do qual ocorreu parte importante do ministério galileu de Jesus."
+    },
+    {
+      "id": "sea-galilee-event-2",
+      "title": "Tempestade acalmada",
+      "place_id": "sea-galilee",
+      "place": "Mar da Galileia",
+      "refs": [
+        "Mateus 4:18",
+        "Marcos 4:35-41",
+        "João 6:1"
+      ],
+      "people": [
+        "Jesus",
+        "Pedro",
+        "André"
+      ],
+      "from_year": 20,
+      "to_year": 40,
+      "summary": "Lago em torno do qual ocorreu parte importante do ministério galileu de Jesus."
+    },
+    {
+      "id": "sea-galilee-event-3",
+      "title": "Multiplicação nas proximidades",
+      "place_id": "sea-galilee",
+      "place": "Mar da Galileia",
+      "refs": [
+        "Mateus 4:18",
+        "Marcos 4:35-41",
+        "João 6:1"
+      ],
+      "people": [
+        "Jesus",
+        "Pedro",
+        "André"
+      ],
+      "from_year": 20,
+      "to_year": 40,
+      "summary": "Lago em torno do qual ocorreu parte importante do ministério galileu de Jesus."
+    },
+    {
+      "id": "jordan-river-event-1",
+      "title": "Travessia de Israel",
+      "place_id": "jordan-river",
+      "place": "Rio Jordão",
+      "refs": [
+        "Josué 3",
+        "2 Reis 5",
+        "Mateus 3:13-17"
+      ],
+      "people": [
+        "Josué",
+        "Naamã",
+        "João Batista",
+        "Jesus"
+      ],
+      "from_year": -1400,
+      "to_year": 40,
+      "summary": "Rio central na geografia bíblica, associado à entrada em Canaã e ao ministério de João Batista."
+    },
+    {
+      "id": "jordan-river-event-2",
+      "title": "Cura de Naamã",
+      "place_id": "jordan-river",
+      "place": "Rio Jordão",
+      "refs": [
+        "Josué 3",
+        "2 Reis 5",
+        "Mateus 3:13-17"
+      ],
+      "people": [
+        "Josué",
+        "Naamã",
+        "João Batista",
+        "Jesus"
+      ],
+      "from_year": -1400,
+      "to_year": 40,
+      "summary": "Rio central na geografia bíblica, associado à entrada em Canaã e ao ministério de João Batista."
+    },
+    {
+      "id": "jordan-river-event-3",
+      "title": "Batismo de Jesus",
+      "place_id": "jordan-river",
+      "place": "Rio Jordão",
+      "refs": [
+        "Josué 3",
+        "2 Reis 5",
+        "Mateus 3:13-17"
+      ],
+      "people": [
+        "Josué",
+        "Naamã",
+        "João Batista",
+        "Jesus"
+      ],
+      "from_year": -1400,
+      "to_year": 40,
+      "summary": "Rio central na geografia bíblica, associado à entrada em Canaã e ao ministério de João Batista."
+    },
+    {
+      "id": "sychar-event-1",
+      "title": "Abraão em Siquém",
+      "place_id": "sychar",
+      "place": "Sicar / região de Siquém",
+      "refs": [
+        "Gênesis 12:6",
+        "Josué 24:32",
+        "João 4:4-42"
+      ],
+      "people": [
+        "Abraão",
+        "José",
+        "Jesus",
+        "Mulher samaritana"
+      ],
+      "from_year": -1900,
+      "to_year": 40,
+      "summary": "Região associada a Siquém e, no Evangelho de João, ao encontro de Jesus com a mulher samaritana; a identificação exata de Sicar é discutida."
+    },
+    {
+      "id": "sychar-event-2",
+      "title": "Sepultamento dos ossos de José",
+      "place_id": "sychar",
+      "place": "Sicar / região de Siquém",
+      "refs": [
+        "Gênesis 12:6",
+        "Josué 24:32",
+        "João 4:4-42"
+      ],
+      "people": [
+        "Abraão",
+        "José",
+        "Jesus",
+        "Mulher samaritana"
+      ],
+      "from_year": -1900,
+      "to_year": 40,
+      "summary": "Região associada a Siquém e, no Evangelho de João, ao encontro de Jesus com a mulher samaritana; a identificação exata de Sicar é discutida."
+    },
+    {
+      "id": "sychar-event-3",
+      "title": "Jesus e a mulher samaritana",
+      "place_id": "sychar",
+      "place": "Sicar / região de Siquém",
+      "refs": [
+        "Gênesis 12:6",
+        "Josué 24:32",
+        "João 4:4-42"
+      ],
+      "people": [
+        "Abraão",
+        "José",
+        "Jesus",
+        "Mulher samaritana"
+      ],
+      "from_year": -1900,
+      "to_year": 40,
+      "summary": "Região associada a Siquém e, no Evangelho de João, ao encontro de Jesus com a mulher samaritana; a identificação exata de Sicar é discutida."
+    },
+    {
+      "id": "hebron-event-1",
+      "title": "Compra da caverna de Macpela",
+      "place_id": "hebron",
+      "place": "Hebrom",
+      "refs": [
+        "Gênesis 13:18",
+        "Gênesis 23",
+        "2 Samuel 2:1-4"
+      ],
+      "people": [
+        "Abraão",
+        "Sara",
+        "Davi"
+      ],
+      "from_year": -2000,
+      "to_year": -950,
+      "summary": "Centro patriarcal e primeira capital de Davi em Judá."
+    },
+    {
+      "id": "hebron-event-2",
+      "title": "Davi rei de Judá",
+      "place_id": "hebron",
+      "place": "Hebrom",
+      "refs": [
+        "Gênesis 13:18",
+        "Gênesis 23",
+        "2 Samuel 2:1-4"
+      ],
+      "people": [
+        "Abraão",
+        "Sara",
+        "Davi"
+      ],
+      "from_year": -2000,
+      "to_year": -950,
+      "summary": "Centro patriarcal e primeira capital de Davi em Judá."
+    },
+    {
+      "id": "beersheba-event-1",
+      "title": "Aliança de Abraão",
+      "place_id": "beersheba",
+      "place": "Berseba",
+      "refs": [
+        "Gênesis 21:22-34",
+        "Gênesis 26:23-33",
+        "1 Reis 19:3"
+      ],
+      "people": [
+        "Abraão",
+        "Isaque",
+        "Elias"
+      ],
+      "from_year": -2000,
+      "to_year": -600,
+      "summary": "Importante local patriarcal e marco meridional de Israel."
+    },
+    {
+      "id": "beersheba-event-2",
+      "title": "Poços de Isaque",
+      "place_id": "beersheba",
+      "place": "Berseba",
+      "refs": [
+        "Gênesis 21:22-34",
+        "Gênesis 26:23-33",
+        "1 Reis 19:3"
+      ],
+      "people": [
+        "Abraão",
+        "Isaque",
+        "Elias"
+      ],
+      "from_year": -2000,
+      "to_year": -600,
+      "summary": "Importante local patriarcal e marco meridional de Israel."
+    },
+    {
+      "id": "beersheba-event-3",
+      "title": "Fuga de Elias",
+      "place_id": "beersheba",
+      "place": "Berseba",
+      "refs": [
+        "Gênesis 21:22-34",
+        "Gênesis 26:23-33",
+        "1 Reis 19:3"
+      ],
+      "people": [
+        "Abraão",
+        "Isaque",
+        "Elias"
+      ],
+      "from_year": -2000,
+      "to_year": -600,
+      "summary": "Importante local patriarcal e marco meridional de Israel."
+    },
+    {
+      "id": "mount-carmel-event-1",
+      "title": "Confronto de Elias no Carmelo",
+      "place_id": "mount-carmel",
+      "place": "Monte Carmelo",
+      "refs": [
+        "1 Reis 18"
+      ],
+      "people": [
+        "Elias",
+        "Acabe"
+      ],
+      "from_year": -900,
+      "to_year": -800,
+      "summary": "Cordilheira ligada especialmente ao confronto de Elias com os profetas de Baal."
+    },
+    {
+      "id": "valley-elah-event-1",
+      "title": "Davi enfrenta Golias",
+      "place_id": "valley-elah",
+      "place": "Vale de Elá",
+      "refs": [
+        "1 Samuel 17"
+      ],
+      "people": [
+        "Davi",
+        "Golias",
+        "Saul"
+      ],
+      "from_year": -1050,
+      "to_year": -950,
+      "summary": "Vale associado ao confronto entre Davi e Golias."
+    },
+    {
+      "id": "caesarea-maritima-event-1",
+      "title": "Conversão de Cornélio",
+      "place_id": "caesarea-maritima",
+      "place": "Cesareia Marítima",
+      "refs": [
+        "Atos 10",
+        "Atos 23:23-35",
+        "Atos 25"
+      ],
+      "people": [
+        "Pedro",
+        "Cornélio",
+        "Paulo",
+        "Festo"
+      ],
+      "from_year": 0,
+      "to_year": 70,
+      "summary": "Centro administrativo romano associado a Cornélio, Paulo e governadores romanos."
+    },
+    {
+      "id": "caesarea-maritima-event-2",
+      "title": "Prisão e audiências de Paulo",
+      "place_id": "caesarea-maritima",
+      "place": "Cesareia Marítima",
+      "refs": [
+        "Atos 10",
+        "Atos 23:23-35",
+        "Atos 25"
+      ],
+      "people": [
+        "Pedro",
+        "Cornélio",
+        "Paulo",
+        "Festo"
+      ],
+      "from_year": 0,
+      "to_year": 70,
+      "summary": "Centro administrativo romano associado a Cornélio, Paulo e governadores romanos."
+    },
+    {
+      "id": "joppa-event-1",
+      "title": "Jonas embarca",
+      "place_id": "joppa",
+      "place": "Jope",
+      "refs": [
+        "Jonas 1:3",
+        "Atos 9:36-43",
+        "Atos 10:5-23"
+      ],
+      "people": [
+        "Jonas",
+        "Pedro",
+        "Tabita"
+      ],
+      "from_year": -800,
+      "to_year": 50,
+      "summary": "Porto associado à fuga de Jonas e à visão de Pedro."
+    },
+    {
+      "id": "joppa-event-2",
+      "title": "Ressurreição de Tabita",
+      "place_id": "joppa",
+      "place": "Jope",
+      "refs": [
+        "Jonas 1:3",
+        "Atos 9:36-43",
+        "Atos 10:5-23"
+      ],
+      "people": [
+        "Jonas",
+        "Pedro",
+        "Tabita"
+      ],
+      "from_year": -800,
+      "to_year": 50,
+      "summary": "Porto associado à fuga de Jonas e à visão de Pedro."
+    },
+    {
+      "id": "joppa-event-3",
+      "title": "Visão de Pedro",
+      "place_id": "joppa",
+      "place": "Jope",
+      "refs": [
+        "Jonas 1:3",
+        "Atos 9:36-43",
+        "Atos 10:5-23"
+      ],
+      "people": [
+        "Jonas",
+        "Pedro",
+        "Tabita"
+      ],
+      "from_year": -800,
+      "to_year": 50,
+      "summary": "Porto associado à fuga de Jonas e à visão de Pedro."
+    },
+    {
+      "id": "damascus-event-1",
+      "title": "Conversão de Saulo",
+      "place_id": "damascus",
+      "place": "Damasco",
+      "refs": [
+        "2 Reis 8",
+        "Atos 9:1-25",
+        "Atos 22:5-16"
+      ],
+      "people": [
+        "Paulo",
+        "Ananias"
+      ],
+      "from_year": -1000,
+      "to_year": 70,
+      "summary": "Antiga cidade síria, célebre pela conversão de Saulo no caminho de Damasco."
+    },
+    {
+      "id": "damascus-event-2",
+      "title": "Ministério inicial de Paulo",
+      "place_id": "damascus",
+      "place": "Damasco",
+      "refs": [
+        "2 Reis 8",
+        "Atos 9:1-25",
+        "Atos 22:5-16"
+      ],
+      "people": [
+        "Paulo",
+        "Ananias"
+      ],
+      "from_year": -1000,
+      "to_year": 70,
+      "summary": "Antiga cidade síria, célebre pela conversão de Saulo no caminho de Damasco."
+    },
+    {
+      "id": "antioch-syria-event-1",
+      "title": "Discípulos chamados cristãos",
+      "place_id": "antioch-syria",
+      "place": "Antioquia da Síria",
+      "refs": [
+        "Atos 11:19-26",
+        "Atos 13:1-3",
+        "Atos 14:26-28"
+      ],
+      "people": [
+        "Paulo",
+        "Barnabé"
+      ],
+      "from_year": 30,
+      "to_year": 70,
+      "summary": "Grande centro da igreja gentílica e ponto de partida das viagens missionárias de Paulo."
+    },
+    {
+      "id": "antioch-syria-event-2",
+      "title": "Envio missionário",
+      "place_id": "antioch-syria",
+      "place": "Antioquia da Síria",
+      "refs": [
+        "Atos 11:19-26",
+        "Atos 13:1-3",
+        "Atos 14:26-28"
+      ],
+      "people": [
+        "Paulo",
+        "Barnabé"
+      ],
+      "from_year": 30,
+      "to_year": 70,
+      "summary": "Grande centro da igreja gentílica e ponto de partida das viagens missionárias de Paulo."
+    },
+    {
+      "id": "tarsus-event-1",
+      "title": "Origem de Paulo",
+      "place_id": "tarsus",
+      "place": "Tarso",
+      "refs": [
+        "Atos 9:11",
+        "Atos 21:39",
+        "Atos 22:3"
+      ],
+      "people": [
+        "Paulo"
+      ],
+      "from_year": 0,
+      "to_year": 70,
+      "summary": "Cidade natal do apóstolo Paulo."
+    },
+    {
+      "id": "salamis-event-1",
+      "title": "Pregação nas sinagogas de Salamina",
+      "place_id": "salamis",
+      "place": "Salamina",
+      "refs": [
+        "Atos 13:4-5"
+      ],
+      "people": [
+        "Paulo",
+        "Barnabé",
+        "João Marcos"
+      ],
+      "from_year": 40,
+      "to_year": 55,
+      "summary": "Primeira grande parada registrada em Chipre na primeira viagem missionária."
+    },
+    {
+      "id": "paphos-event-1",
+      "title": "Conversão de Sérgio Paulo",
+      "place_id": "paphos",
+      "place": "Pafos",
+      "refs": [
+        "Atos 13:6-12"
+      ],
+      "people": [
+        "Paulo",
+        "Barnabé",
+        "Sérgio Paulo",
+        "Elimas"
+      ],
+      "from_year": 40,
+      "to_year": 55,
+      "summary": "Cidade de Chipre associada ao encontro com Sérgio Paulo e Elimas."
+    },
+    {
+      "id": "perga-event-1",
+      "title": "João Marcos retorna a Jerusalém",
+      "place_id": "perga",
+      "place": "Perge",
+      "refs": [
+        "Atos 13:13",
+        "Atos 14:25"
+      ],
+      "people": [
+        "Paulo",
+        "Barnabé",
+        "João Marcos"
+      ],
+      "from_year": 40,
+      "to_year": 60,
+      "summary": "Cidade da Panfília visitada na primeira viagem missionária."
+    },
+    {
+      "id": "pisidian-antioch-event-1",
+      "title": "Sermão de Paulo em Antioquia da Pisídia",
+      "place_id": "pisidian-antioch",
+      "place": "Antioquia da Pisídia",
+      "refs": [
+        "Atos 13:14-52"
+      ],
+      "people": [
+        "Paulo",
+        "Barnabé"
+      ],
+      "from_year": 40,
+      "to_year": 55,
+      "summary": "Cidade onde Paulo pregou importante sermão na sinagoga."
+    },
+    {
+      "id": "iconium-event-1",
+      "title": "Pregação e oposição em Icônio",
+      "place_id": "iconium",
+      "place": "Icônio",
+      "refs": [
+        "Atos 14:1-7",
+        "Atos 16:2"
+      ],
+      "people": [
+        "Paulo",
+        "Barnabé"
+      ],
+      "from_year": 40,
+      "to_year": 60,
+      "summary": "Cidade visitada por Paulo e Barnabé durante a primeira viagem."
+    },
+    {
+      "id": "lystra-event-1",
+      "title": "Cura de homem coxo",
+      "place_id": "lystra",
+      "place": "Listra",
+      "refs": [
+        "Atos 14:8-20",
+        "Atos 16:1-3"
+      ],
+      "people": [
+        "Paulo",
+        "Barnabé",
+        "Timóteo"
+      ],
+      "from_year": 40,
+      "to_year": 60,
+      "summary": "Cidade da Licaônia ligada à cura de um homem, apedrejamento de Paulo e a Timóteo."
+    },
+    {
+      "id": "lystra-event-2",
+      "title": "Apedrejamento de Paulo",
+      "place_id": "lystra",
+      "place": "Listra",
+      "refs": [
+        "Atos 14:8-20",
+        "Atos 16:1-3"
+      ],
+      "people": [
+        "Paulo",
+        "Barnabé",
+        "Timóteo"
+      ],
+      "from_year": 40,
+      "to_year": 60,
+      "summary": "Cidade da Licaônia ligada à cura de um homem, apedrejamento de Paulo e a Timóteo."
+    },
+    {
+      "id": "lystra-event-3",
+      "title": "Timóteo acompanha Paulo",
+      "place_id": "lystra",
+      "place": "Listra",
+      "refs": [
+        "Atos 14:8-20",
+        "Atos 16:1-3"
+      ],
+      "people": [
+        "Paulo",
+        "Barnabé",
+        "Timóteo"
+      ],
+      "from_year": 40,
+      "to_year": 60,
+      "summary": "Cidade da Licaônia ligada à cura de um homem, apedrejamento de Paulo e a Timóteo."
+    },
+    {
+      "id": "derbe-event-1",
+      "title": "Evangelização em Derbe",
+      "place_id": "derbe",
+      "place": "Derbe",
+      "refs": [
+        "Atos 14:20-21",
+        "Atos 16:1"
+      ],
+      "people": [
+        "Paulo",
+        "Barnabé"
+      ],
+      "from_year": 40,
+      "to_year": 60,
+      "summary": "Cidade evangelizada por Paulo e Barnabé na primeira viagem."
+    },
+    {
+      "id": "troas-event-1",
+      "title": "Visão do homem macedônio",
+      "place_id": "troas",
+      "place": "Trôade",
+      "refs": [
+        "Atos 16:8-11",
+        "Atos 20:5-12"
+      ],
+      "people": [
+        "Paulo",
+        "Êutico"
+      ],
+      "from_year": 45,
+      "to_year": 65,
+      "summary": "Porto onde Paulo recebeu a visão do homem macedônio e posteriormente ministrou a Êutico."
+    },
+    {
+      "id": "troas-event-2",
+      "title": "Restauração de Êutico",
+      "place_id": "troas",
+      "place": "Trôade",
+      "refs": [
+        "Atos 16:8-11",
+        "Atos 20:5-12"
+      ],
+      "people": [
+        "Paulo",
+        "Êutico"
+      ],
+      "from_year": 45,
+      "to_year": 65,
+      "summary": "Porto onde Paulo recebeu a visão do homem macedônio e posteriormente ministrou a Êutico."
+    },
+    {
+      "id": "philippi-event-1",
+      "title": "Conversão de Lídia",
+      "place_id": "philippi",
+      "place": "Filipos",
+      "refs": [
+        "Atos 16:11-40",
+        "Filipenses 1"
+      ],
+      "people": [
+        "Paulo",
+        "Silas",
+        "Lídia"
+      ],
+      "from_year": 45,
+      "to_year": 65,
+      "summary": "Colônia romana ligada a Lídia, à prisão de Paulo e Silas e à igreja de Filipos."
+    },
+    {
+      "id": "philippi-event-2",
+      "title": "Prisão e terremoto",
+      "place_id": "philippi",
+      "place": "Filipos",
+      "refs": [
+        "Atos 16:11-40",
+        "Filipenses 1"
+      ],
+      "people": [
+        "Paulo",
+        "Silas",
+        "Lídia"
+      ],
+      "from_year": 45,
+      "to_year": 65,
+      "summary": "Colônia romana ligada a Lídia, à prisão de Paulo e Silas e à igreja de Filipos."
+    },
+    {
+      "id": "philippi-event-3",
+      "title": "Conversão do carcereiro",
+      "place_id": "philippi",
+      "place": "Filipos",
+      "refs": [
+        "Atos 16:11-40",
+        "Filipenses 1"
+      ],
+      "people": [
+        "Paulo",
+        "Silas",
+        "Lídia"
+      ],
+      "from_year": 45,
+      "to_year": 65,
+      "summary": "Colônia romana ligada a Lídia, à prisão de Paulo e Silas e à igreja de Filipos."
+    },
+    {
+      "id": "thessalonica-event-1",
+      "title": "Pregação na sinagoga",
+      "place_id": "thessalonica",
+      "place": "Tessalônica",
+      "refs": [
+        "Atos 17:1-9",
+        "1 Tessalonicenses 1"
+      ],
+      "people": [
+        "Paulo",
+        "Silas"
+      ],
+      "from_year": 45,
+      "to_year": 65,
+      "summary": "Cidade onde Paulo pregou e posteriormente dirigiu cartas à igreja."
+    },
+    {
+      "id": "thessalonica-event-2",
+      "title": "Formação da igreja",
+      "place_id": "thessalonica",
+      "place": "Tessalônica",
+      "refs": [
+        "Atos 17:1-9",
+        "1 Tessalonicenses 1"
+      ],
+      "people": [
+        "Paulo",
+        "Silas"
+      ],
+      "from_year": 45,
+      "to_year": 65,
+      "summary": "Cidade onde Paulo pregou e posteriormente dirigiu cartas à igreja."
+    },
+    {
+      "id": "berea-event-1",
+      "title": "Bereanos examinam as Escrituras",
+      "place_id": "berea",
+      "place": "Bereia",
+      "refs": [
+        "Atos 17:10-15"
+      ],
+      "people": [
+        "Paulo",
+        "Silas"
+      ],
+      "from_year": 45,
+      "to_year": 65,
+      "summary": "Cidade lembrada pelo exame diligente das Escrituras."
+    },
+    {
+      "id": "athens-event-1",
+      "title": "Discurso no Areópago",
+      "place_id": "athens",
+      "place": "Atenas",
+      "refs": [
+        "Atos 17:16-34"
+      ],
+      "people": [
+        "Paulo",
+        "Dionísio"
+      ],
+      "from_year": 45,
+      "to_year": 65,
+      "summary": "Cidade onde Paulo discursou no Areópago."
+    },
+    {
+      "id": "corinth-event-1",
+      "title": "Ministério prolongado em Corinto",
+      "place_id": "corinth",
+      "place": "Corinto",
+      "refs": [
+        "Atos 18:1-18",
+        "1 Coríntios 1"
+      ],
+      "people": [
+        "Paulo",
+        "Áquila",
+        "Priscila",
+        "Gálio"
+      ],
+      "from_year": 45,
+      "to_year": 65,
+      "summary": "Importante centro da missão paulina e destinatário das cartas aos Coríntios."
+    },
+    {
+      "id": "ephesus-event-1",
+      "title": "Ministério de Paulo",
+      "place_id": "ephesus",
+      "place": "Éfeso",
+      "refs": [
+        "Atos 18:18-21",
+        "Atos 19",
+        "Efésios 1"
+      ],
+      "people": [
+        "Paulo",
+        "Áquila",
+        "Priscila",
+        "Apolo"
+      ],
+      "from_year": 50,
+      "to_year": 70,
+      "summary": "Grande centro da missão de Paulo na Ásia e cenário do tumulto ligado a Ártemis."
+    },
+    {
+      "id": "ephesus-event-2",
+      "title": "Tumulto em Éfeso",
+      "place_id": "ephesus",
+      "place": "Éfeso",
+      "refs": [
+        "Atos 18:18-21",
+        "Atos 19",
+        "Efésios 1"
+      ],
+      "people": [
+        "Paulo",
+        "Áquila",
+        "Priscila",
+        "Apolo"
+      ],
+      "from_year": 50,
+      "to_year": 70,
+      "summary": "Grande centro da missão de Paulo na Ásia e cenário do tumulto ligado a Ártemis."
+    },
+    {
+      "id": "miletus-event-1",
+      "title": "Discurso de despedida",
+      "place_id": "miletus",
+      "place": "Mileto",
+      "refs": [
+        "Atos 20:15-38"
+      ],
+      "people": [
+        "Paulo",
+        "Presbíteros de Éfeso"
+      ],
+      "from_year": 50,
+      "to_year": 70,
+      "summary": "Porto onde Paulo se despediu dos presbíteros de Éfeso."
+    },
+    {
+      "id": "rome-event-1",
+      "title": "Paulo em prisão domiciliar",
+      "place_id": "rome",
+      "place": "Roma",
+      "refs": [
+        "Atos 28",
+        "Romanos 1"
+      ],
+      "people": [
+        "Paulo"
+      ],
+      "from_year": 50,
+      "to_year": 100,
+      "summary": "Capital imperial e destino final da narrativa de Atos."
+    },
+    {
+      "id": "rome-event-2",
+      "title": "Pregação em Roma",
+      "place_id": "rome",
+      "place": "Roma",
+      "refs": [
+        "Atos 28",
+        "Romanos 1"
+      ],
+      "people": [
+        "Paulo"
+      ],
+      "from_year": 50,
+      "to_year": 100,
+      "summary": "Capital imperial e destino final da narrativa de Atos."
+    },
+    {
+      "id": "malta-event-1",
+      "title": "Naufrágio e estadia em Malta",
+      "place_id": "malta",
+      "place": "Malta",
+      "refs": [
+        "Atos 28:1-10"
+      ],
+      "people": [
+        "Paulo",
+        "Públio"
+      ],
+      "from_year": 50,
+      "to_year": 70,
+      "summary": "Ilha onde Paulo e os demais náufragos foram acolhidos antes de seguir para Roma."
+    },
+    {
+      "id": "ur-event-1",
+      "title": "Saída da família de Terá",
+      "place_id": "ur",
+      "place": "Ur dos Caldeus",
+      "refs": [
+        "Gênesis 11:27-32",
+        "Gênesis 15:7"
+      ],
+      "people": [
+        "Abraão",
+        "Terá"
+      ],
+      "from_year": -2100,
+      "to_year": -1800,
+      "summary": "Local tradicionalmente identificado como ponto de origem de Abraão antes de Harã e Canaã."
+    },
+    {
+      "id": "haran-event-1",
+      "title": "Chamado de Abraão a partir de Harã",
+      "place_id": "haran",
+      "place": "Harã",
+      "refs": [
+        "Gênesis 11:31-32",
+        "Gênesis 12:1-5",
+        "Gênesis 24"
+      ],
+      "people": [
+        "Abraão",
+        "Terá",
+        "Rebeca",
+        "Jacó"
+      ],
+      "from_year": -2100,
+      "to_year": -1700,
+      "summary": "Parada da família de Terá e região ligada às famílias de Abraão, Isaque e Jacó."
+    },
+    {
+      "id": "rameses-event-1",
+      "title": "Saída do Egito",
+      "place_id": "rameses",
+      "place": "Ramessés / região do Delta",
+      "refs": [
+        "Êxodo 1:11",
+        "Êxodo 12:37",
+        "Números 33:3"
+      ],
+      "people": [
+        "Moisés",
+        "Arão"
+      ],
+      "from_year": -1500,
+      "to_year": -1200,
+      "summary": "Região do Delta associada ao ponto de partida do Êxodo; cronologia e identificações exatas são debatidas."
+    },
+    {
+      "id": "sinai-event-1",
+      "title": "Aliança no Sinai",
+      "place_id": "sinai",
+      "place": "Monte Sinai (tradicional)",
+      "refs": [
+        "Êxodo 19",
+        "Êxodo 20",
+        "Êxodo 24"
+      ],
+      "people": [
+        "Moisés",
+        "Arão"
+      ],
+      "from_year": -1500,
+      "to_year": -1200,
+      "summary": "Local tradicional associado à entrega da Lei; a localização histórica exata do Sinai é debatida."
+    },
+    {
+      "id": "sinai-event-2",
+      "title": "Dez Mandamentos",
+      "place_id": "sinai",
+      "place": "Monte Sinai (tradicional)",
+      "refs": [
+        "Êxodo 19",
+        "Êxodo 20",
+        "Êxodo 24"
+      ],
+      "people": [
+        "Moisés",
+        "Arão"
+      ],
+      "from_year": -1500,
+      "to_year": -1200,
+      "summary": "Local tradicional associado à entrega da Lei; a localização histórica exata do Sinai é debatida."
+    },
+    {
+      "id": "kadesh-event-1",
+      "title": "Envio dos espias",
+      "place_id": "kadesh",
+      "place": "Cades-Barneia",
+      "refs": [
+        "Números 13",
+        "Números 20",
+        "Deuteronômio 1"
+      ],
+      "people": [
+        "Moisés",
+        "Josué",
+        "Calebe",
+        "Miriã"
+      ],
+      "from_year": -1500,
+      "to_year": -1200,
+      "summary": "Área associada ao envio dos espias e a importantes episódios da peregrinação."
+    },
+    {
+      "id": "kadesh-event-2",
+      "title": "Morte de Miriã",
+      "place_id": "kadesh",
+      "place": "Cades-Barneia",
+      "refs": [
+        "Números 13",
+        "Números 20",
+        "Deuteronômio 1"
+      ],
+      "people": [
+        "Moisés",
+        "Josué",
+        "Calebe",
+        "Miriã"
+      ],
+      "from_year": -1500,
+      "to_year": -1200,
+      "summary": "Área associada ao envio dos espias e a importantes episódios da peregrinação."
+    },
+    {
+      "id": "babylon-event-1",
+      "title": "Exílio de Judá",
+      "place_id": "babylon",
+      "place": "Babilônia",
+      "refs": [
+        "2 Reis 25",
+        "Daniel 1",
+        "Salmos 137"
+      ],
+      "people": [
+        "Nabucodonosor",
+        "Daniel",
+        "Ezequiel"
+      ],
+      "from_year": -700,
+      "to_year": -500,
+      "summary": "Capital do império neobabilônico e centro do exílio de Judá."
+    },
+    {
+      "id": "babylon-event-2",
+      "title": "Cativeiro babilônico",
+      "place_id": "babylon",
+      "place": "Babilônia",
+      "refs": [
+        "2 Reis 25",
+        "Daniel 1",
+        "Salmos 137"
+      ],
+      "people": [
+        "Nabucodonosor",
+        "Daniel",
+        "Ezequiel"
+      ],
+      "from_year": -700,
+      "to_year": -500,
+      "summary": "Capital do império neobabilônico e centro do exílio de Judá."
+    },
+    {
+      "id": "susa-event-1",
+      "title": "Corte de Assuero",
+      "place_id": "susa",
+      "place": "Susã",
+      "refs": [
+        "Ester 1:2",
+        "Neemias 1:1"
+      ],
+      "people": [
+        "Ester",
+        "Mardoqueu",
+        "Neemias"
+      ],
+      "from_year": -550,
+      "to_year": -400,
+      "summary": "Importante centro persa associado às narrativas de Ester e Neemias."
+    },
+    {
+      "id": "susa-event-2",
+      "title": "Chamado de Neemias",
+      "place_id": "susa",
+      "place": "Susã",
+      "refs": [
+        "Ester 1:2",
+        "Neemias 1:1"
+      ],
+      "people": [
+        "Ester",
+        "Mardoqueu",
+        "Neemias"
+      ],
+      "from_year": -550,
+      "to_year": -400,
+      "summary": "Importante centro persa associado às narrativas de Ester e Neemias."
+    }
+  ],
+  "color_system": {
+    "version": "1.0",
+    "default_mode": "vivid",
+    "journey_themes": [
+      "abraham",
+      "exodus",
+      "david",
+      "jesus",
+      "last-week",
+      "paul",
+      "exile"
+    ],
+    "historical_tokens": [
+      "israel",
+      "judah",
+      "assyria",
+      "babylon",
+      "persia",
+      "greece",
+      "rome"
+    ]
+  },
+  "cartography": {
+    "mode": "atlas-biblical",
+    "offline": true,
+    "hydrography": true,
+    "relief": true,
+    "regions": "schematic-geographic",
+    "political_boundaries": false
+  }
+}

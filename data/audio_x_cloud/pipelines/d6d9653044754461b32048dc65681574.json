@@ -1,0 +1,55 @@
+{
+  "job_id": "d6d9653044754461b32048dc65681574",
+  "status": "completed",
+  "stage": "completed",
+  "progress": 100,
+  "message": "Pipeline concluído. Perfil pronto para o Studio X.",
+  "created_at": 1788051858.3508081,
+  "profile_id": "5d308993cc1b4c49bbe7eec1c0745512",
+  "error": null,
+  "updated_at": 1788051859.7173767,
+  "profile_name": "02 - Canção & Louvor - O Menino e a Multidão (1)",
+  "dna_score": 42,
+  "dna_profile": "K7 Moderado",
+  "studio_x_config": {
+    "schema": "logos-master-x/studio-x-applied-dna-v1",
+    "source": "audio-x-dna-k7",
+    "profile_id": "5d308993cc1b4c49bbe7eec1c0745512",
+    "profile_name": "02 - Canção & Louvor - O Menino e a Multidão (1)",
+    "dna_score": 42,
+    "strength": 100,
+    "controls": {
+      "intensity": 28,
+      "progression": 64,
+      "biblical_density": 22,
+      "application": 33,
+      "appeal": 20,
+      "rhythm": 30,
+      "climax": 52,
+      "expressiveness": 65,
+      "structure": 93,
+      "context": 29
+    },
+    "signature": {
+      "opening_style": "progressiva",
+      "development_weight": 14,
+      "application_weight": 12,
+      "appeal_weight": 20,
+      "climax_position": 94.2
+    },
+    "generation_directives": {
+      "opening_style": "progressiva",
+      "development_weight": 14,
+      "application_weight": 12,
+      "appeal_weight": 20,
+      "climax_position": 94.2
+    },
+    "safety": {
+      "copy_source_text": false,
+      "imitate_voice": false,
+      "use_structural_characteristics_only": true
+    }
+  },
+  "studio_x_prompt_block": "[DNA K7 ESTRUTURAL]\nPerfil: 02 - Canção & Louvor - O Menino e a Multidão (1)\nForça de aplicação: 100%\nIntensidade: 28/100\nProgressão: 64/100\nDensidade bíblica: 22/100\nAplicação: 33/100\nApelo: 20/100\nRitmo: 30/100\nClímax: 52/100\nExpressividade: 65/100\nEstrutura: 93/100\nContexto: 29/100\nAbertura: progressiva\nPeso desenvolvimento: 14/100\nPeso aplicação: 12/100\nPeso apelo: 20/100\nPosição-alvo do clímax: 94.2% da mensagem\nREGRA: reproduzir somente dinâmica e estrutura. Não copiar frases, texto ou voz do áudio-fonte.\n[/DNA K7 ESTRUTURAL]",
+  "completed_at": 1788051859.7173724
+}

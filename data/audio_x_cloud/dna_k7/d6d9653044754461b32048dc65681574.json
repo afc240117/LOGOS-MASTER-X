@@ -1,0 +1,32 @@
+{
+  "version": "audio-x-dna-k7-v1",
+  "score": 42,
+  "profile": "K7 Moderado",
+  "axes": {
+    "intensidade": 28,
+    "progressao": 64,
+    "densidade_biblica": 22,
+    "aplicacao": 33,
+    "apelo": 20,
+    "ritmo": 30,
+    "climax": 52,
+    "expressividade": 65,
+    "estrutura": 93,
+    "contexto": 29
+  },
+  "source": {
+    "duration": 307.80652,
+    "section_count": 10,
+    "transition_count": 0,
+    "segment_count": 61
+  },
+  "signature": {
+    "opening_style": "progressiva",
+    "development_weight": 14,
+    "application_weight": 12,
+    "appeal_weight": 20,
+    "climax_position": 94.2
+  },
+  "job_id": "d6d9653044754461b32048dc65681574",
+  "provider": "groq"
+}

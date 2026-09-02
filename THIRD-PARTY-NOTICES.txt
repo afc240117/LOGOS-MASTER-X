@@ -1,0 +1,10 @@
+LOGOS MASTER X — Atlas X Mapa Real / Atlas Bíblico v5.4.3
+
+BASE CARTOGRÁFICA
+Natural Earth — dados cartográficos de domínio público.
+Este pacote contém uma versão simplificada/recortada de dados de países em baixa resolução para uso como mapa-base vetorial offline.
+
+CAMADAS PRÓPRIAS DO LOGOS MASTER X
+Rótulos cartográficos, zonas geográficas didáticas, relevo estilizado e hidrografia complementar desta versão são dados/representações próprios do módulo e não constituem fronteiras políticas históricas exatas.
+
+O módulo não exige Google Maps, Mapbox, Leaflet ou chave de API paga para o mapa offline incluído.

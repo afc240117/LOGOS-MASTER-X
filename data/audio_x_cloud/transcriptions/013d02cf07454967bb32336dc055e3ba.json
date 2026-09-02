@@ -1,0 +1,50 @@
+{
+  "job_id": "013d02cf07454967bb32336dc055e3ba",
+  "provider": "groq",
+  "fallback_used": false,
+  "provider_attempts": [
+    {
+      "provider": "groq",
+      "status": "completed",
+      "started_at": 1786946927.5101035,
+      "finished_at": 1786946928.081985
+    }
+  ],
+  "text": "o Espírito de Deus, e é isso que o Espírito de Deus vai fazer aqui nessa noite, porque enquanto eu estava orando essa tarde, passei três horas de joelho na presença do meu Deus, e o Espírito de Deus falou, filho, hoje eu vou restaurar a vida de muitas pessoas ali, não são poucas, porque muitos estão orando por uma restauração, então em nome do Senhor Jesus, vá abrindo teu coração, aperte o cinto que hoje tu vai decolar aqui.",
+  "language": "Portuguese",
+  "duration": 19.93299968,
+  "segments": [
+    {
+      "id": 0,
+      "start": 0.0,
+      "end": 4.2599998,
+      "text": "o Espírito de Deus, e é isso que o Espírito de Deus vai fazer aqui nessa noite, porque"
+    },
+    {
+      "id": 1,
+      "start": 4.2599998,
+      "end": 7.8599997,
+      "text": "enquanto eu estava orando essa tarde, passei três horas de joelho na presença do meu Deus,"
+    },
+    {
+      "id": 2,
+      "start": 8.139999,
+      "end": 11.559999,
+      "text": "e o Espírito de Deus falou, filho, hoje eu vou restaurar a vida de muitas pessoas ali,"
+    },
+    {
+      "id": 3,
+      "start": 11.86,
+      "end": 16.06,
+      "text": "não são poucas, porque muitos estão orando por uma restauração, então em nome do Senhor"
+    },
+    {
+      "id": 4,
+      "start": 16.06,
+      "end": 19.92,
+      "text": "Jesus, vá abrindo teu coração, aperte o cinto que hoje tu vai decolar aqui."
+    }
+  ],
+  "words": [],
+  "completed_at": 1786946928.0819893
+}

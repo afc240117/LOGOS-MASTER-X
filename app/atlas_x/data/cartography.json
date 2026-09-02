@@ -1,0 +1,476 @@
+{
+  "version": "5.4.3",
+  "note": "Camada cartográfica didática offline. Hidrografia e zonas de relevo são estilizadas; fronteiras políticas históricas não são reivindicadas nesta versão.",
+  "waterbodies": [
+    {
+      "id": "sea-galilee",
+      "name": "Mar da Galileia",
+      "lng": 35.59,
+      "lat": 32.82,
+      "rx_deg": 0.16,
+      "ry_deg": 0.22,
+      "label_level": 2
+    },
+    {
+      "id": "dead-sea",
+      "name": "Mar Morto",
+      "lng": 35.5,
+      "lat": 31.5,
+      "rx_deg": 0.12,
+      "ry_deg": 0.46,
+      "label_level": 1
+    }
+  ],
+  "rivers": [
+    {
+      "id": "jordan",
+      "name": "Rio Jordão",
+      "label_level": 1,
+      "certainty": "schematic",
+      "points": [
+        [
+          35.6,
+          32.86
+        ],
+        [
+          35.59,
+          32.68
+        ],
+        [
+          35.58,
+          32.5
+        ],
+        [
+          35.57,
+          32.3
+        ],
+        [
+          35.55,
+          32.1
+        ],
+        [
+          35.53,
+          31.9
+        ],
+        [
+          35.51,
+          31.7
+        ],
+        [
+          35.5,
+          31.55
+        ]
+      ]
+    },
+    {
+      "id": "nile",
+      "name": "Rio Nilo",
+      "label_level": 0,
+      "certainty": "schematic",
+      "points": [
+        [
+          31.25,
+          30.15
+        ],
+        [
+          31.17,
+          29.75
+        ],
+        [
+          31.1,
+          29.3
+        ],
+        [
+          31.0,
+          28.85
+        ],
+        [
+          30.9,
+          28.35
+        ],
+        [
+          30.8,
+          27.85
+        ]
+      ]
+    },
+    {
+      "id": "euphrates",
+      "name": "Rio Eufrates",
+      "label_level": 0,
+      "certainty": "schematic",
+      "points": [
+        [
+          38.1,
+          37.15
+        ],
+        [
+          38.75,
+          36.55
+        ],
+        [
+          39.3,
+          35.9
+        ],
+        [
+          40.0,
+          35.2
+        ],
+        [
+          40.8,
+          34.65
+        ],
+        [
+          41.6,
+          34.1
+        ],
+        [
+          42.55,
+          33.55
+        ],
+        [
+          43.45,
+          33.1
+        ],
+        [
+          44.25,
+          32.65
+        ]
+      ]
+    },
+    {
+      "id": "tigris",
+      "name": "Rio Tigre",
+      "label_level": 0,
+      "certainty": "schematic",
+      "points": [
+        [
+          42.3,
+          37.25
+        ],
+        [
+          42.75,
+          36.5
+        ],
+        [
+          43.1,
+          35.75
+        ],
+        [
+          43.45,
+          35.05
+        ],
+        [
+          43.8,
+          34.4
+        ],
+        [
+          44.1,
+          33.7
+        ],
+        [
+          44.35,
+          33.1
+        ]
+      ]
+    }
+  ],
+  "relief_zones": [
+    {
+      "id": "judean-hills",
+      "name": "Montanhas da Judeia",
+      "lng": 35.1,
+      "lat": 31.72,
+      "rx_deg": 0.42,
+      "ry_deg": 0.78,
+      "angle": -8,
+      "level": 2
+    },
+    {
+      "id": "galilee-hills",
+      "name": "Montanhas da Galileia",
+      "lng": 35.25,
+      "lat": 32.88,
+      "rx_deg": 0.55,
+      "ry_deg": 0.48,
+      "angle": 8,
+      "level": 2
+    },
+    {
+      "id": "jordan-valley",
+      "name": "Vale do Jordão",
+      "lng": 35.52,
+      "lat": 32.05,
+      "rx_deg": 0.2,
+      "ry_deg": 1.35,
+      "angle": 0,
+      "level": 1,
+      "valley": true
+    },
+    {
+      "id": "negev",
+      "name": "Neguebe",
+      "lng": 34.9,
+      "lat": 30.7,
+      "rx_deg": 1.05,
+      "ry_deg": 1.25,
+      "angle": -10,
+      "level": 1,
+      "desert": true
+    },
+    {
+      "id": "sinai-relief",
+      "name": "Sinai",
+      "lng": 33.7,
+      "lat": 29.15,
+      "rx_deg": 1.85,
+      "ry_deg": 1.2,
+      "angle": -8,
+      "level": 0,
+      "desert": true
+    },
+    {
+      "id": "taurus",
+      "name": "Montes Tauro",
+      "lng": 33.8,
+      "lat": 37.2,
+      "rx_deg": 3.2,
+      "ry_deg": 0.55,
+      "angle": -4,
+      "level": 0
+    }
+  ],
+  "regions": [
+    {
+      "id": "galilee",
+      "name": "GALILEIA",
+      "lng": 35.3,
+      "lat": 32.82,
+      "rx_deg": 0.62,
+      "ry_deg": 0.62,
+      "level": 2
+    },
+    {
+      "id": "samaria",
+      "name": "SAMARIA",
+      "lng": 35.25,
+      "lat": 32.22,
+      "rx_deg": 0.55,
+      "ry_deg": 0.55,
+      "level": 2
+    },
+    {
+      "id": "judea",
+      "name": "JUDEIA",
+      "lng": 35.15,
+      "lat": 31.67,
+      "rx_deg": 0.65,
+      "ry_deg": 0.7,
+      "level": 2
+    },
+    {
+      "id": "perea",
+      "name": "PEREIA",
+      "lng": 35.78,
+      "lat": 31.95,
+      "rx_deg": 0.43,
+      "ry_deg": 0.85,
+      "level": 2
+    },
+    {
+      "id": "decapolis",
+      "name": "DECÁPOLIS",
+      "lng": 35.95,
+      "lat": 32.62,
+      "rx_deg": 0.7,
+      "ry_deg": 0.78,
+      "level": 2
+    },
+    {
+      "id": "philistia",
+      "name": "FILÍSTIA",
+      "lng": 34.55,
+      "lat": 31.7,
+      "rx_deg": 0.48,
+      "ry_deg": 0.7,
+      "level": 1
+    },
+    {
+      "id": "moab",
+      "name": "MOABE",
+      "lng": 35.78,
+      "lat": 31.3,
+      "rx_deg": 0.48,
+      "ry_deg": 0.78,
+      "level": 1
+    },
+    {
+      "id": "edom",
+      "name": "EDOM",
+      "lng": 35.45,
+      "lat": 30.45,
+      "rx_deg": 0.58,
+      "ry_deg": 0.82,
+      "level": 1
+    },
+    {
+      "id": "syria",
+      "name": "SÍRIA",
+      "lng": 36.3,
+      "lat": 34.5,
+      "rx_deg": 1.55,
+      "ry_deg": 1.3,
+      "level": 0
+    },
+    {
+      "id": "cilicia",
+      "name": "CILÍCIA",
+      "lng": 35.1,
+      "lat": 37.1,
+      "rx_deg": 1.8,
+      "ry_deg": 0.6,
+      "level": 0
+    },
+    {
+      "id": "asia-minor",
+      "name": "ÁSIA MENOR",
+      "lng": 29.8,
+      "lat": 38.7,
+      "rx_deg": 4.6,
+      "ry_deg": 2.1,
+      "level": 0
+    },
+    {
+      "id": "macedonia",
+      "name": "MACEDÔNIA",
+      "lng": 23.2,
+      "lat": 40.7,
+      "rx_deg": 1.8,
+      "ry_deg": 0.9,
+      "level": 0
+    },
+    {
+      "id": "achaia",
+      "name": "ACAIA",
+      "lng": 22.8,
+      "lat": 38.25,
+      "rx_deg": 1.4,
+      "ry_deg": 1.2,
+      "level": 0
+    },
+    {
+      "id": "egypt",
+      "name": "EGITO",
+      "lng": 30.6,
+      "lat": 29.7,
+      "rx_deg": 2.0,
+      "ry_deg": 1.55,
+      "level": 0
+    },
+    {
+      "id": "mesopotamia",
+      "name": "MESOPOTÂMIA",
+      "lng": 43.0,
+      "lat": 34.1,
+      "rx_deg": 2.45,
+      "ry_deg": 2.05,
+      "level": 0
+    },
+    {
+      "id": "cyprus",
+      "name": "CHIPRE",
+      "lng": 33.2,
+      "lat": 35.1,
+      "rx_deg": 0.85,
+      "ry_deg": 0.34,
+      "level": 0
+    }
+  ],
+  "labels": [
+    {
+      "id": "mediterranean",
+      "name": "MAR MEDITERRÂNEO",
+      "lng": 25.0,
+      "lat": 34.0,
+      "kind": "sea",
+      "level": 0
+    },
+    {
+      "id": "red-sea",
+      "name": "MAR VERMELHO",
+      "lng": 34.5,
+      "lat": 28.2,
+      "kind": "sea",
+      "level": 0
+    },
+    {
+      "id": "sea-gal-label",
+      "name": "Mar da Galileia",
+      "lng": 35.72,
+      "lat": 32.8,
+      "kind": "water",
+      "level": 2
+    },
+    {
+      "id": "dead-sea-label",
+      "name": "Mar Morto",
+      "lng": 35.66,
+      "lat": 31.45,
+      "kind": "water",
+      "level": 1
+    },
+    {
+      "id": "jordan-label",
+      "name": "Rio Jordão",
+      "lng": 35.68,
+      "lat": 32.15,
+      "kind": "river",
+      "level": 2
+    },
+    {
+      "id": "nile-label",
+      "name": "Rio Nilo",
+      "lng": 31.35,
+      "lat": 29.1,
+      "kind": "river",
+      "level": 0
+    },
+    {
+      "id": "euphrates-label",
+      "name": "Eufrates",
+      "lng": 41.0,
+      "lat": 34.7,
+      "kind": "river",
+      "level": 0
+    },
+    {
+      "id": "tigris-label",
+      "name": "Tigre",
+      "lng": 43.45,
+      "lat": 35.0,
+      "kind": "river",
+      "level": 0
+    }
+  ],
+  "major_places": [
+    "jerusalem",
+    "jericho",
+    "bethlehem",
+    "nazareth",
+    "capernaum",
+    "damascus",
+    "antioch-syria",
+    "tarsus",
+    "ephesus",
+    "corinth",
+    "athens",
+    "rome",
+    "babylon",
+    "ur",
+    "rameses",
+    "sinai",
+    "susa",
+    "philippi",
+    "thessalonica"
+  ]
+}

@@ -1,0 +1,22 @@
+/* LOGOS MASTER X — Bíblia X Raio X Restaurado v5.4.2.1 */
+#bOut .lmx-bible-v3-tools .bx-raiox-verse{
+  display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:4px!important;
+  border-color:#8b7138!important;color:#f0d47c!important;
+  background:linear-gradient(180deg,rgba(200,164,70,.10),#08141e)!important;
+}
+#bOut .lmx-bible-v3-tools .bx-raiox-verse:hover{
+  border-color:#d5ad4b!important;color:#ffe7a0!important;box-shadow:0 0 0 1px rgba(213,173,75,.12),0 0 14px rgba(213,173,75,.08)!important;
+}
+/* O modo de leitura antigo pode aplicar hidden a ferramentas desconhecidas. O Raio X deve permanecer ao lado do +. */
+#bOut .lmx-bible-v3-tools .bx-raiox-verse[hidden]{display:inline-flex!important}
+.bx-raiox-modal{position:fixed!important;inset:0!important;z-index:10480!important;display:grid!important;place-items:center!important;padding:18px!important;background:rgba(0,0,0,.68)!important;backdrop-filter:blur(6px)!important}
+.bx-raiox-modal[hidden]{display:none!important}
+.bx-raiox-card{width:min(760px,96vw)!important;max-height:90vh!important;overflow:auto!important;border:1px solid #496171!important;border-radius:18px!important;background:linear-gradient(180deg,#0d1d29,#07121a)!important;color:#eaf1f4!important;box-shadow:0 28px 100px rgba(0,0,0,.72)!important}
+.bx-raiox-card>header{display:flex!important;justify-content:space-between!important;gap:12px!important;padding:14px 16px!important;border-bottom:1px solid #2b4454!important;background:radial-gradient(circle at 15% 0,rgba(218,177,73,.11),transparent 42%),#0a1822!important}
+.bx-raiox-card>header small{display:block!important;color:#60d2df!important;font-size:8px!important;font-weight:900!important;letter-spacing:.09em!important}.bx-raiox-card>header h3{margin:3px 0!important;color:#f4d77d!important;font-size:18px!important}.bx-raiox-card>header p{margin:0!important;color:#8ca1ad!important;font-size:9px!important}
+.bx-raiox-card>header button{width:32px!important;height:32px!important;border:1px solid #355165!important;border-radius:9px!important;background:#07131c!important;color:#fff!important;cursor:pointer!important}
+.bx-raiox-verse-text{margin:12px 16px 4px!important;padding:12px 13px!important;border:1px solid #2b4758!important;border-left:3px solid #d1aa49!important;border-radius:10px!important;background:#08151e!important;color:#e8eef1!important;font-size:12px!important;line-height:1.55!important}
+.bx-raiox-actions{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:7px!important;padding:12px 16px!important}
+.bx-raiox-actions button{min-height:38px!important;padding:6px 8px!important;border:1px solid #304c5e!important;border-radius:9px!important;background:#08151e!important;color:#cdd9df!important;font-size:9px!important;font-weight:850!important;cursor:pointer!important}.bx-raiox-actions button:hover{border-color:#b99543!important;color:#f2d879!important;background:rgba(185,149,67,.07)!important}
+.bx-raiox-card>footer{display:flex!important;justify-content:space-between!important;gap:7px!important;flex-wrap:wrap!important;padding:10px 16px 14px!important;border-top:1px solid #294251!important}.bx-raiox-card>footer button{min-height:35px!important;padding:5px 10px!important;border:1px solid #355164!important;border-radius:9px!important;background:#08151e!important;color:#dbe5ea!important;font-size:9px!important;font-weight:850!important;cursor:pointer!important}.bx-raiox-card>footer button[data-raiox-discover]{border-color:#9a7b35!important;color:#f0d47a!important}
+@media(max-width:720px){.bx-raiox-actions{grid-template-columns:repeat(2,minmax(0,1fr))!important}.bx-raiox-card{width:100%!important;max-height:94dvh!important}}

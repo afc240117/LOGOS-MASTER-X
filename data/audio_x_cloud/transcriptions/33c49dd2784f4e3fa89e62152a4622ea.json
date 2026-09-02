@@ -1,0 +1,26 @@
+{
+  "job_id": "33c49dd2784f4e3fa89e62152a4622ea",
+  "provider": "groq",
+  "fallback_used": false,
+  "provider_attempts": [
+    {
+      "provider": "groq",
+      "status": "completed",
+      "started_at": 1786947354.7427423,
+      "finished_at": 1786947355.5490925
+    }
+  ],
+  "text": "Dizendo Deus, restaura-nos, ó Senhor, a Ti, para que voltemos a ser como Dantes.",
+  "language": "Portuguese",
+  "duration": 6.83212544,
+  "segments": [
+    {
+      "id": 0,
+      "start": 0.0,
+      "end": 6.08,
+      "text": "Dizendo Deus, restaura-nos, ó Senhor, a Ti, para que voltemos a ser como Dantes."
+    }
+  ],
+  "words": [],
+  "completed_at": 1786947355.5490973
+}

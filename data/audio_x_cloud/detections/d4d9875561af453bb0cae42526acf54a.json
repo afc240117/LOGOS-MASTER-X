@@ -1,0 +1,36 @@
+{
+  "family": "congregacional",
+  "family_label": "DNA Congregacional",
+  "icon": "⛪",
+  "content_type": "Louvor congregacional",
+  "confidence": 84.2,
+  "scores": {
+    "pregador": 0,
+    "comunicador": 0,
+    "musical": 0,
+    "congregacional": 100
+  },
+  "raw_scores": {
+    "pregador": 0.0,
+    "comunicador": 0.0,
+    "musical": 0.0,
+    "congregacional": 1.1
+  },
+  "evidence": [
+    "transcrição: a igreja"
+  ],
+  "repetition_percent": 0.0,
+  "average_segment_words": 12.6,
+  "route": "dna_congregacional",
+  "route_status": "recognized_music_branch",
+  "recommended_analyzers": [
+    "estrutura_musical",
+    "congregacionalidade",
+    "repetição",
+    "crescimento",
+    "clímax",
+    "participação"
+  ],
+  "limitations": "Reconhecimento baseado em metadados + transcrição. BPM, tonalidade e instrumentos exigem a próxima camada de análise acústica.",
+  "job_id": "d4d9875561af453bb0cae42526acf54a"
+}

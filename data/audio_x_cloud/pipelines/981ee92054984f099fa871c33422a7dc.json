@@ -1,0 +1,55 @@
+{
+  "job_id": "981ee92054984f099fa871c33422a7dc",
+  "status": "completed",
+  "stage": "completed",
+  "progress": 100,
+  "message": "Pipeline concluído. Perfil pronto para o Studio X.",
+  "created_at": 1788051798.3126903,
+  "profile_id": "ffd04ecec60247c8870efa29edf51da6",
+  "error": null,
+  "updated_at": 1788051799.5713708,
+  "profile_name": "01-Com Muito Louvor",
+  "dna_score": 38,
+  "dna_profile": "K7 Suave",
+  "studio_x_config": {
+    "schema": "logos-master-x/studio-x-applied-dna-v1",
+    "source": "audio-x-dna-k7",
+    "profile_id": "ffd04ecec60247c8870efa29edf51da6",
+    "profile_name": "01-Com Muito Louvor",
+    "dna_score": 38,
+    "strength": 100,
+    "controls": {
+      "intensity": 26,
+      "progression": 62,
+      "biblical_density": 23,
+      "application": 25,
+      "appeal": 24,
+      "rhythm": 33,
+      "climax": 53,
+      "expressiveness": 20,
+      "structure": 95,
+      "context": 33
+    },
+    "signature": {
+      "opening_style": "progressiva",
+      "development_weight": 70,
+      "application_weight": 0,
+      "appeal_weight": 24,
+      "climax_position": 72.7
+    },
+    "generation_directives": {
+      "opening_style": "progressiva",
+      "development_weight": 70,
+      "application_weight": 0,
+      "appeal_weight": 24,
+      "climax_position": 72.7
+    },
+    "safety": {
+      "copy_source_text": false,
+      "imitate_voice": false,
+      "use_structural_characteristics_only": true
+    }
+  },
+  "studio_x_prompt_block": "[DNA K7 ESTRUTURAL]\nPerfil: 01-Com Muito Louvor\nForça de aplicação: 100%\nIntensidade: 26/100\nProgressão: 62/100\nDensidade bíblica: 23/100\nAplicação: 25/100\nApelo: 24/100\nRitmo: 33/100\nClímax: 53/100\nExpressividade: 20/100\nEstrutura: 95/100\nContexto: 33/100\nAbertura: progressiva\nPeso desenvolvimento: 70/100\nPeso aplicação: 0/100\nPeso apelo: 24/100\nPosição-alvo do clímax: 72.7% da mensagem\nREGRA: reproduzir somente dinâmica e estrutura. Não copiar frases, texto ou voz do áudio-fonte.\n[/DNA K7 ESTRUTURAL]",
+  "completed_at": 1788051799.5713665
+}

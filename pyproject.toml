@@ -1,0 +1,7 @@
+[project]
+name = "logos-master"
+version = "5.3.10"
+requires-python = ">=3.11"
+
+[tool.pytest.ini_options]
+pythonpath = ["."]

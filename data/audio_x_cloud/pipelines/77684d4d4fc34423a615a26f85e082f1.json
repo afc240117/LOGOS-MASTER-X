@@ -1,0 +1,55 @@
+{
+  "job_id": "77684d4d4fc34423a615a26f85e082f1",
+  "status": "completed",
+  "stage": "completed",
+  "progress": 100,
+  "message": "Pipeline concluído. Perfil pronto para o Studio X.",
+  "created_at": 1788052198.8860617,
+  "profile_id": "3c9f802674594d40a4cb0ba259baca98",
+  "error": null,
+  "updated_at": 1788052199.9138515,
+  "profile_name": "06 - Canção & Louvor - Você É Meu",
+  "dna_score": 37,
+  "dna_profile": "K7 Suave",
+  "studio_x_config": {
+    "schema": "logos-master-x/studio-x-applied-dna-v1",
+    "source": "audio-x-dna-k7",
+    "profile_id": "3c9f802674594d40a4cb0ba259baca98",
+    "profile_name": "06 - Canção & Louvor - Você É Meu",
+    "dna_score": 37,
+    "strength": 100,
+    "controls": {
+      "intensity": 27,
+      "progression": 63,
+      "biblical_density": 24,
+      "application": 37,
+      "appeal": 13,
+      "rhythm": 30,
+      "climax": 36,
+      "expressiveness": 25,
+      "structure": 92,
+      "context": 38
+    },
+    "signature": {
+      "opening_style": "progressiva",
+      "development_weight": 6,
+      "application_weight": 18,
+      "appeal_weight": 13,
+      "climax_position": 91.2
+    },
+    "generation_directives": {
+      "opening_style": "progressiva",
+      "development_weight": 6,
+      "application_weight": 18,
+      "appeal_weight": 13,
+      "climax_position": 91.2
+    },
+    "safety": {
+      "copy_source_text": false,
+      "imitate_voice": false,
+      "use_structural_characteristics_only": true
+    }
+  },
+  "studio_x_prompt_block": "[DNA K7 ESTRUTURAL]\nPerfil: 06 - Canção & Louvor - Você É Meu\nForça de aplicação: 100%\nIntensidade: 27/100\nProgressão: 63/100\nDensidade bíblica: 24/100\nAplicação: 37/100\nApelo: 13/100\nRitmo: 30/100\nClímax: 36/100\nExpressividade: 25/100\nEstrutura: 92/100\nContexto: 38/100\nAbertura: progressiva\nPeso desenvolvimento: 6/100\nPeso aplicação: 18/100\nPeso apelo: 13/100\nPosição-alvo do clímax: 91.2% da mensagem\nREGRA: reproduzir somente dinâmica e estrutura. Não copiar frases, texto ou voz do áudio-fonte.\n[/DNA K7 ESTRUTURAL]",
+  "completed_at": 1788052199.9138467
+}

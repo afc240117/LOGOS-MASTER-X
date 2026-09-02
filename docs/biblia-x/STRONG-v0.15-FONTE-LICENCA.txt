@@ -1,0 +1,43 @@
+BÍBLIA X — PASSO 3 v3.0 — STRONG: FONTES, LICENÇAS E LIMITES
+
+DICIONÁRIO STRONG PRÉ-INSTALADO
+- 14.197 verbetes: 8.674 hebraicos e 5.523 gregos.
+- Fonte de importação: OpenScriptures — Strong's Dictionaries of Hebrew and Greek.
+- O pacote derivado usado pela base declara CC BY-SA; a atribuição desta fonte
+  deve ser preservada em redistribuições.
+- Os módulos históricos Strong's Hebrew e Strong's Greek distribuídos pela
+  CrossWire são identificados como Public Domain.
+- As definições lexicográficas permanecem em inglês, como na fonte. A Bíblia X
+  não aplica tradução automática a essas definições para evitar alteração de
+  sentido.
+
+CORPUS DE PALAVRAS HEBRAICAS E GREGAS
+- Fonte: BibleForgeDB — arquivo bible_original.sql.gz.
+- URL: https://raw.githubusercontent.com/bibleforge/BibleForgeDB/master/bible_original.sql.gz
+- SHA-256: 4c04e76476ff1a77b2b1f9fbf06ef32abb58a20ddd935e9a2fe43e9dc1a4ab8b
+- Licença indicada pelo projeto: os dados de hebraico/grego original, números
+  Strong e informações gramaticais são Public Domain; os demais dados não
+  especificamente mencionados são CC0.
+- 446.232 formas originais preservadas em 66 livros e 31.232 unidades de
+  referência.
+- 14.097 números Strong distintos efetivamente vinculados ao corpus.
+- 6.402 formas sem número Strong foram preservadas, sem atribuição inventada.
+
+IMPLEMENTAÇÃO E LIMITE EDITORIAL
+- O corpus fica pré-instalado em app/biblia_x/biblia_x.sqlite3 e funciona
+  integralmente offline.
+- Cada forma original é vinculada à mesma referência canônica da tradução
+  portuguesa selecionada. Não é alegado alinhamento automático palavra a
+  palavra com o texto português.
+- A associação anterior baseada em palavras inglesas da WEBP foi removida
+  porque não representava com segurança a sequência hebraica/grega original.
+- A pesquisa aceita números compactos ou preenchidos com zeros, lemas,
+  transliterações e aliases básicos em português.
+- Complementos pessoais importados pelo usuário continuam separados no
+  IndexedDB e nunca substituem silenciosamente o banco pré-instalado.
+
+FONTES CONSULTÁVEIS
+- https://github.com/openscriptures/strongs
+- https://www.crosswire.org/sword/modules/ModInfo.jsp?modName=StrongsHebrew
+- https://www.crosswire.org/sword/modules/ModInfo.jsp?modName=StrongsGreek
+- https://github.com/bibleforge/BibleForgeDB

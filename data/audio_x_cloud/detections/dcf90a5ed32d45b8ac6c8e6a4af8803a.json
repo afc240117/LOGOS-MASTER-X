@@ -1,0 +1,38 @@
+{
+  "family": "pregador",
+  "family_label": "DNA Pregador",
+  "icon": "🧬",
+  "content_type": "Mensagem cristã",
+  "confidence": 92.2,
+  "scores": {
+    "pregador": 100,
+    "comunicador": 0,
+    "musical": 0,
+    "congregacional": 14
+  },
+  "raw_scores": {
+    "pregador": 8.0,
+    "comunicador": 0.0,
+    "musical": 0.0,
+    "congregacional": 1.1
+  },
+  "evidence": [
+    "transcrição: irmãos",
+    "transcrição: versículo",
+    "transcrição: capítulo"
+  ],
+  "repetition_percent": 0.0,
+  "average_segment_words": 11.0,
+  "route": "dna_pregador",
+  "route_status": "ready",
+  "recommended_analyzers": [
+    "estrutura",
+    "ritmo",
+    "progressão",
+    "clímax",
+    "apelo",
+    "densidade_bíblica"
+  ],
+  "limitations": null,
+  "job_id": "dcf90a5ed32d45b8ac6c8e6a4af8803a"
+}

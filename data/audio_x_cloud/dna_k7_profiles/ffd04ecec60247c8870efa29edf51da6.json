@@ -1,0 +1,69 @@
+{
+  "id": "ffd04ecec60247c8870efa29edf51da6",
+  "name": "01-Com Muito Louvor",
+  "notes": "",
+  "tags": [
+    "audio-x",
+    "pipeline"
+  ],
+  "source_job_id": "981ee92054984f099fa871c33422a7dc",
+  "created_at": 1788051799.5700085,
+  "updated_at": 1788051799.5700085,
+  "dna_k7": {
+    "version": "audio-x-dna-k7-v1",
+    "score": 38,
+    "profile": "K7 Suave",
+    "axes": {
+      "intensidade": 26,
+      "progressao": 62,
+      "densidade_biblica": 23,
+      "aplicacao": 25,
+      "apelo": 24,
+      "ritmo": 33,
+      "climax": 53,
+      "expressividade": 20,
+      "estrutura": 95,
+      "contexto": 33
+    },
+    "source": {
+      "duration": 296.10587,
+      "section_count": 7,
+      "transition_count": 1,
+      "segment_count": 44
+    },
+    "signature": {
+      "opening_style": "progressiva",
+      "development_weight": 70,
+      "application_weight": 0,
+      "appeal_weight": 24,
+      "climax_position": 72.7
+    },
+    "job_id": "981ee92054984f099fa871c33422a7dc",
+    "provider": "groq"
+  },
+  "studio_x": {
+    "schema": "logos-master-x/studio-x-dna-k7-v1",
+    "dna_score": 38,
+    "profile": "K7 Suave",
+    "axes": {
+      "intensidade": 26,
+      "progressao": 62,
+      "densidade_biblica": 23,
+      "aplicacao": 25,
+      "apelo": 24,
+      "ritmo": 33,
+      "climax": 53,
+      "expressividade": 20,
+      "estrutura": 95,
+      "contexto": 33
+    },
+    "signature": {
+      "opening_style": "progressiva",
+      "development_weight": 70,
+      "application_weight": 0,
+      "appeal_weight": 24,
+      "climax_position": 72.7
+    },
+    "instruction": "Use apenas características estruturais e dinâmicas. Não copie texto, frases ou voz do áudio-fonte."
+  }
+}

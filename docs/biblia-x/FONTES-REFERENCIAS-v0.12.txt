@@ -1,0 +1,36 @@
+BÍBLIA X — PASSO 2 v2.0 — FONTES E ATRIBUIÇÕES
+
+1) Treasury of Scripture Knowledge (TSK)
+CrossWire classifica a obra TSK como domínio público e informa aproximadamente 500.000
+referências e passagens paralelas na obra editorial.
+
+A base pré-instalada do LOGOS MASTER X usa o dataset Cross References Data Project,
+derivado do TSK e redistribuído sob CC BY 4.0. Ela contém 336.883 relações com âncoras
+de frase da fonte inglesa. A atribuição ao projeto e a licença CC BY 4.0 devem permanecer.
+
+O instalador alternativo OpenBible.info permanece disponível no código. O próprio site
+informa que seus dados derivam principalmente do TSK e são publicados sob licença
+Creative Commons Attribution, salvo indicação em contrário.
+
+2) Nave's Topical Bible
+CrossWire classifica Nave's Topical Bible como domínio público e registra 20.000+ tópicos
+e subtópicos e 100.000 referências na obra original.
+
+O texto incorporado foi obtido do CCEL em formato Unicode Text. O parser v2 preserva
+o tópico e subtópico originais para rastreabilidade e cria, no banco local:
+- 5.315 tópicos principais;
+- 29.220 seções/subtópicos reconhecidos;
+- 77.743 ligações armazenadas;
+- 72.196 ligações canônicas únicas por tópico.
+
+A interface apresenta rótulos comuns em português brasileiro e conserva o original
+inglês internamente. Referências e capítulos são convertidos para os nomes PT-BR.
+
+Atribuições devem permanecer no pacote/distribuição.
+
+Fontes consultadas:
+https://www.crosswire.org/sword/modules/ModInfo.jsp?modName=TSK
+https://crossreferences.org/project/
+https://www.openbible.info/labs/cross-references/
+https://www.crosswire.org/sword/modules/ModInfo.jsp?modName=Nave
+https://www.ccel.org/ccel/nave/bible.html

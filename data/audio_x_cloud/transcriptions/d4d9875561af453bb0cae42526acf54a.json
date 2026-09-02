@@ -1,0 +1,98 @@
+{
+  "job_id": "d4d9875561af453bb0cae42526acf54a",
+  "provider": "groq",
+  "fallback_used": false,
+  "provider_attempts": [
+    {
+      "provider": "groq",
+      "status": "completed",
+      "started_at": 1787000538.3012943,
+      "finished_at": 1787000539.2096412
+    }
+  ],
+  "text": "quando ele atua ele vem em forma de um vento forte e o vento forte quer dizer que ele vem como um furacão e eu nunca ouvi dizer que alguém conseguiu barrar a atuação de um furacão quando o Espírito de Deus vem, ele vem mesmo irmão, não existe homem, não existe presidente da república que possa ditar as regras e dizer que o Espírito Santo está proibido de operar nas igrejas evangélicas do Brasil homem não tem condição de fazer isso porque o Espírito Santo não é homem para se sujeitar a homem O Espírito Santo é Deus, mas Ele respeita a sua atitude Ele respeita o desejo do seu coração Se tu disseres Deus, restaura a minha vida Ele virá aqui e restaurará a tua vida E você sairá daqui hoje restaurado por completo Com todos os dons e tudo aquilo que o Senhor tem para nos dar Você quer isso na sua vida? Um dia desse eu estava pregando uma igreja",
+  "language": "Portuguese",
+  "duration": 48.804999168,
+  "segments": [
+    {
+      "id": 0,
+      "start": 0.0,
+      "end": 5.66,
+      "text": "quando ele atua ele vem em forma de um vento forte e o vento forte quer dizer que ele vem como um furacão"
+    },
+    {
+      "id": 1,
+      "start": 5.66,
+      "end": 9.719999,
+      "text": "e eu nunca ouvi dizer que alguém conseguiu barrar a atuação de um furacão"
+    },
+    {
+      "id": 2,
+      "start": 9.719999,
+      "end": 14.759999,
+      "text": "quando o Espírito de Deus vem, ele vem mesmo irmão, não existe homem, não existe presidente da república"
+    },
+    {
+      "id": 3,
+      "start": 14.759999,
+      "end": 20.38,
+      "text": "que possa ditar as regras e dizer que o Espírito Santo está proibido de operar nas igrejas evangélicas do Brasil"
+    },
+    {
+      "id": 4,
+      "start": 20.38,
+      "end": 25.539999,
+      "text": "homem não tem condição de fazer isso porque o Espírito Santo não é homem para se sujeitar a homem"
+    },
+    {
+      "id": 5,
+      "start": 25.539999,
+      "end": 29.24,
+      "text": "O Espírito Santo é Deus, mas Ele respeita a sua atitude"
+    },
+    {
+      "id": 6,
+      "start": 29.24,
+      "end": 31.759998,
+      "text": "Ele respeita o desejo do seu coração"
+    },
+    {
+      "id": 7,
+      "start": 31.759998,
+      "end": 34.36,
+      "text": "Se tu disseres Deus, restaura a minha vida"
+    },
+    {
+      "id": 8,
+      "start": 34.36,
+      "end": 36.52,
+      "text": "Ele virá aqui e restaurará a tua vida"
+    },
+    {
+      "id": 9,
+      "start": 36.52,
+      "end": 39.42,
+      "text": "E você sairá daqui hoje restaurado por completo"
+    },
+    {
+      "id": 10,
+      "start": 39.42,
+      "end": 42.44,
+      "text": "Com todos os dons e tudo aquilo que o Senhor tem para nos dar"
+    },
+    {
+      "id": 11,
+      "start": 42.44,
+      "end": 43.64,
+      "text": "Você quer isso na sua vida?"
+    },
+    {
+      "id": 12,
+      "start": 47.14,
+      "end": 48.78,
+      "text": "Um dia desse eu estava pregando uma igreja"
+    }
+  ],
+  "words": [],
+  "completed_at": 1787000539.2096457
+}

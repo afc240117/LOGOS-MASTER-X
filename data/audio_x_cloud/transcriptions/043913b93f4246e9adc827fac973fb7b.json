@@ -1,0 +1,158 @@
+{
+  "job_id": "043913b93f4246e9adc827fac973fb7b",
+  "provider": "groq",
+  "fallback_used": false,
+  "provider_attempts": [
+    {
+      "provider": "groq",
+      "status": "completed",
+      "started_at": 1786948149.2010472,
+      "finished_at": 1786948150.0669332
+    }
+  ],
+  "text": "Capítulo 5, fica bem juntinho ao livro de Jeremias, que é um pouquinho maior e mais fácil de encontrar na Bíblia. O livro das Lamentações, capítulo 5, versículo 21, versículo 22, que diz-nos aí a palavra do Senhor. restaura-nos ó Senhor a ti para que retornemos renova os nossos dias como dantes a menos que nos tenha rejeitado totalmente e está sobremaneira virado contra nós, quero repetir a leitura restaura-nos ó Senhor a ti para que retornemos, renova os nossos dias como dantes a menos que nos tenhas rejeitado totalmente e está sobremaneira irado contra nós. Queridos irmãos em Cristo Jesus, se vocês me pedissem um tema para esta noite, eu tenho para lhes dar. Quero aqui hoje falar sobre restauração espiritual e acredito que é um tema palpitante e muito importante para nós esta noite.",
+  "language": "Portuguese",
+  "duration": 67.0210048,
+  "segments": [
+    {
+      "id": 0,
+      "start": 0.0,
+      "end": 7.44,
+      "text": "Capítulo 5, fica bem juntinho ao livro de Jeremias, que é um pouquinho maior e mais fácil de encontrar na Bíblia."
+    },
+    {
+      "id": 1,
+      "start": 8.88,
+      "end": 19.38,
+      "text": "O livro das Lamentações, capítulo 5, versículo 21, versículo 22, que diz-nos aí a palavra do Senhor."
+    },
+    {
+      "id": 2,
+      "start": 19.38,
+      "end": 21.699999,
+      "text": "restaura-nos ó Senhor"
+    },
+    {
+      "id": 3,
+      "start": 21.699999,
+      "end": 24.439999,
+      "text": "a ti para que retornemos"
+    },
+    {
+      "id": 4,
+      "start": 24.439999,
+      "end": 26.779999,
+      "text": "renova os nossos dias"
+    },
+    {
+      "id": 5,
+      "start": 26.779999,
+      "end": 27.859999,
+      "text": "como dantes"
+    },
+    {
+      "id": 6,
+      "start": 27.859999,
+      "end": 30.439999,
+      "text": "a menos que nos tenha rejeitado"
+    },
+    {
+      "id": 7,
+      "start": 30.439999,
+      "end": 32.2,
+      "text": "totalmente e está"
+    },
+    {
+      "id": 8,
+      "start": 32.2,
+      "end": 34.399998,
+      "text": "sobremaneira virado contra"
+    },
+    {
+      "id": 9,
+      "start": 34.399998,
+      "end": 36.52,
+      "text": "nós, quero repetir a leitura"
+    },
+    {
+      "id": 10,
+      "start": 36.52,
+      "end": 38.52,
+      "text": "restaura-nos"
+    },
+    {
+      "id": 11,
+      "start": 38.52,
+      "end": 40.44,
+      "text": "ó Senhor a ti para que"
+    },
+    {
+      "id": 12,
+      "start": 40.44,
+      "end": 42.48,
+      "text": "retornemos, renova"
+    },
+    {
+      "id": 13,
+      "start": 42.48,
+      "end": 44.359997,
+      "text": "os nossos dias como dantes"
+    },
+    {
+      "id": 14,
+      "start": 44.359997,
+      "end": 46.26,
+      "text": "a menos que nos tenhas"
+    },
+    {
+      "id": 15,
+      "start": 46.26,
+      "end": 47.82,
+      "text": "rejeitado totalmente"
+    },
+    {
+      "id": 16,
+      "start": 47.82,
+      "end": 51.66,
+      "text": "e está sobremaneira irado contra nós."
+    },
+    {
+      "id": 17,
+      "start": 52.54,
+      "end": 54.04,
+      "text": "Queridos irmãos em Cristo Jesus,"
+    },
+    {
+      "id": 18,
+      "start": 54.94,
+      "end": 57.079998,
+      "text": "se vocês me pedissem um tema para esta noite,"
+    },
+    {
+      "id": 19,
+      "start": 57.32,
+      "end": 58.239998,
+      "text": "eu tenho para lhes dar."
+    },
+    {
+      "id": 20,
+      "start": 58.92,
+      "end": 61.72,
+      "text": "Quero aqui hoje falar sobre restauração espiritual"
+    },
+    {
+      "id": 21,
+      "start": 61.72,
+      "end": 64.36,
+      "text": "e acredito que é um tema palpitante"
+    },
+    {
+      "id": 22,
+      "start": 64.36,
+      "end": 67.0,
+      "text": "e muito importante para nós esta noite."
+    }
+  ],
+  "words": [],
+  "completed_at": 1786948150.0669377
+}

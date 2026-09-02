@@ -1,0 +1,386 @@
+{
+  "job_id": "d6d9653044754461b32048dc65681574",
+  "provider": "groq",
+  "fallback_used": false,
+  "provider_attempts": [
+    {
+      "provider": "groq",
+      "status": "completed",
+      "started_at": 1788051858.353985,
+      "finished_at": 1788051859.703323
+    }
+  ],
+  "text": "Era só um menino entre a multidão que seguia Jesus Com o lanche na mão, acompanhado da mãe Que o conduz Os discípulos chegaram e falaram com o mestre Em particular Jesus, despede a multidão Pra que comprem comida pra se alimentar Jesus fala que é importante Que todos não saiam dali E manda alimentar A todo o povo que estava ali Os discípulos falaram Senhor, nós não temos nenhuma condição Não temos dinheiro e não temos pão Pra alimentar a grande multidão Mas tinha um menino Que é picadinho Que tinha em sua mão Cinco p e dois peixinhos Um menino comum Como um outro qualquer Mas pra Jesus fazer n precisa ter nome ele usa quem quer Na lógica humana é pouco alimento Mas na mão de Jesus é só por pouco tempo Se pra um homem é pouco e não vale, mas para Jesus é suficiente pra fazer milagres Um mestre pega o pão e o peixe ora e agradece Senta o povo na grama, os discípulos levantam e a eles o servem Quando tirava um pão, já tinha lá dois pães Quando tirava um peixe, já tinha lá dois peixes O povo não sabia se chorava ou se comia Era tanto alimento que a multidão repetia Era tanta glória que invadia aquele lugar Eu sinceramente desejaria estar lá Se para os discípulos um lanchinho não serviria Mas pra Jesus dois peixes é muito peixe E cinco pães é padaria Talvez hoje voc se ache que s mais um entre o povo Que ninguém te viu e nem percebeu que você estava aí Na verdade você só veio com o intuito de adorar Mas na realidade o intuito de Deus é querer te usar Pois há muitos que estão com fome e com sede de ouvir a palavra E o mestre procura aquele que tem algo pra mostrar O povo dispensa e fala que você não tem condição Que o que você tem não dá pra nação E você se esconde entre a multidão Mas hoje ele te viu e mandou te chamar E se você não vir, ele vai te buscar Você não é comum, tem algo a mostrar E o mestre quer te ver, quer te encher, quer te usar Pra muitos você é nada, é uma pedra na estrada mais uma multid sem servente a praveda Mas na m de Jesus voc muito uma bala encadilhada Um mestre vai pegar o ponto que tu tens em ti E vai multiplicar, capacitar, vai sacudir Quando abrir a boca o coxo vai andar Quando louvar o hino, o mundo vai falar Enquanto tudo é glória, algo vai acontecer A glória vai descer, vai descer, vai descer, vai descer A glória vai descer, vai descer, vai descer A glória vai descer, vai descer, vai descer A glória vai descer, vai descer, vai descer, vai descer Através de ti Deus vai fazer tantos milagres Serás alimento de Deus para as cidades Mostra o que tu tens e recebe uma nova unção Pois hoje Jesus é Jesus e você é o menino do lanche nessa multidão Deixa ele te usar",
+  "language": "Portuguese",
+  "duration": 315.69984428600003,
+  "segments": [
+    {
+      "id": 0,
+      "start": 0.0,
+      "end": 24.779999,
+      "text": "Era só um menino entre a multidão que seguia Jesus"
+    },
+    {
+      "id": 1,
+      "start": 24.779999,
+      "end": 29.46,
+      "text": "Com o lanche na mão, acompanhado da mãe"
+    },
+    {
+      "id": 2,
+      "start": 29.46,
+      "end": 30.779999,
+      "text": "Que o conduz"
+    },
+    {
+      "id": 3,
+      "start": 30.779999,
+      "end": 34.16,
+      "text": "Os discípulos chegaram e falaram com o mestre"
+    },
+    {
+      "id": 4,
+      "start": 34.16,
+      "end": 35.28,
+      "text": "Em particular"
+    },
+    {
+      "id": 5,
+      "start": 35.28,
+      "end": 37.66,
+      "text": "Jesus, despede a multidão"
+    },
+    {
+      "id": 6,
+      "start": 37.66,
+      "end": 41.16,
+      "text": "Pra que comprem comida pra se alimentar"
+    },
+    {
+      "id": 7,
+      "start": 41.16,
+      "end": 44.0,
+      "text": "Jesus fala que é importante"
+    },
+    {
+      "id": 8,
+      "start": 44.0,
+      "end": 45.899998,
+      "text": "Que todos não saiam dali"
+    },
+    {
+      "id": 9,
+      "start": 45.899998,
+      "end": 48.66,
+      "text": "E manda alimentar"
+    },
+    {
+      "id": 10,
+      "start": 48.66,
+      "end": 51.62,
+      "text": "A todo o povo que estava ali"
+    },
+    {
+      "id": 11,
+      "start": 51.62,
+      "end": 53.94,
+      "text": "Os discípulos falaram"
+    },
+    {
+      "id": 12,
+      "start": 53.94,
+      "end": 56.44,
+      "text": "Senhor, nós não temos nenhuma condição"
+    },
+    {
+      "id": 13,
+      "start": 56.44,
+      "end": 59.16,
+      "text": "Não temos dinheiro e não temos pão"
+    },
+    {
+      "id": 14,
+      "start": 59.16,
+      "end": 62.84,
+      "text": "Pra alimentar a grande multidão"
+    },
+    {
+      "id": 15,
+      "start": 62.84,
+      "end": 65.94,
+      "text": "Mas tinha um menino"
+    },
+    {
+      "id": 16,
+      "start": 65.94,
+      "end": 68.62,
+      "text": "Que é picadinho"
+    },
+    {
+      "id": 17,
+      "start": 68.62,
+      "end": 71.08,
+      "text": "Que tinha em sua mão"
+    },
+    {
+      "id": 18,
+      "start": 71.08,
+      "end": 84.635506,
+      "text": "Cinco p e dois peixinhos Um menino comum Como um outro qualquer Mas pra Jesus fazer n precisa ter nome ele usa quem quer"
+    },
+    {
+      "id": 19,
+      "start": 84.635506,
+      "end": 89.87551,
+      "text": "Na lógica humana é pouco alimento"
+    },
+    {
+      "id": 20,
+      "start": 89.87551,
+      "end": 95.27551,
+      "text": "Mas na mão de Jesus é só por pouco tempo"
+    },
+    {
+      "id": 21,
+      "start": 95.27551,
+      "end": 103.91551,
+      "text": "Se pra um homem é pouco e não vale, mas para Jesus é suficiente pra fazer milagres"
+    },
+    {
+      "id": 22,
+      "start": 103.91551,
+      "end": 111.83551,
+      "text": "Um mestre pega o pão e o peixe ora e agradece"
+    },
+    {
+      "id": 23,
+      "start": 111.83551,
+      "end": 117.29551,
+      "text": "Senta o povo na grama, os discípulos levantam e a eles o servem"
+    },
+    {
+      "id": 24,
+      "start": 117.29551,
+      "end": 119.955505,
+      "text": "Quando tirava um pão, já tinha lá dois pães"
+    },
+    {
+      "id": 25,
+      "start": 119.955505,
+      "end": 122.6555,
+      "text": "Quando tirava um peixe, já tinha lá dois peixes"
+    },
+    {
+      "id": 26,
+      "start": 122.6555,
+      "end": 125.27551,
+      "text": "O povo não sabia se chorava ou se comia"
+    },
+    {
+      "id": 27,
+      "start": 125.27551,
+      "end": 127.91551,
+      "text": "Era tanto alimento que a multidão repetia"
+    },
+    {
+      "id": 28,
+      "start": 127.91551,
+      "end": 132.5755,
+      "text": "Era tanta glória que invadia aquele lugar"
+    },
+    {
+      "id": 29,
+      "start": 132.5755,
+      "end": 138.3155,
+      "text": "Eu sinceramente desejaria estar lá"
+    },
+    {
+      "id": 30,
+      "start": 138.3155,
+      "end": 143.4555,
+      "text": "Se para os discípulos um lanchinho não serviria"
+    },
+    {
+      "id": 31,
+      "start": 143.4555,
+      "end": 147.39551,
+      "text": "Mas pra Jesus dois peixes é muito peixe"
+    },
+    {
+      "id": 32,
+      "start": 147.39551,
+      "end": 151.0355,
+      "text": "E cinco pães é padaria"
+    },
+    {
+      "id": 33,
+      "start": 151.0355,
+      "end": 166.37102,
+      "text": "Talvez hoje voc se ache que s mais um entre o povo"
+    },
+    {
+      "id": 34,
+      "start": 166.37102,
+      "end": 171.45102,
+      "text": "Que ninguém te viu e nem percebeu que você estava aí"
+    },
+    {
+      "id": 35,
+      "start": 171.45102,
+      "end": 176.53102,
+      "text": "Na verdade você só veio com o intuito de adorar"
+    },
+    {
+      "id": 36,
+      "start": 176.53102,
+      "end": 181.89102,
+      "text": "Mas na realidade o intuito de Deus é querer te usar"
+    },
+    {
+      "id": 37,
+      "start": 182.87102,
+      "end": 187.35101,
+      "text": "Pois há muitos que estão com fome e com sede de ouvir a palavra"
+    },
+    {
+      "id": 38,
+      "start": 187.35101,
+      "end": 192.75102,
+      "text": "E o mestre procura aquele que tem algo pra mostrar"
+    },
+    {
+      "id": 39,
+      "start": 192.75102,
+      "end": 197.79102,
+      "text": "O povo dispensa e fala que você não tem condição"
+    },
+    {
+      "id": 40,
+      "start": 197.79102,
+      "end": 200.47101,
+      "text": "Que o que você tem não dá pra nação"
+    },
+    {
+      "id": 41,
+      "start": 200.47101,
+      "end": 203.97101,
+      "text": "E você se esconde entre a multidão"
+    },
+    {
+      "id": 42,
+      "start": 203.97101,
+      "end": 209.93102,
+      "text": "Mas hoje ele te viu e mandou te chamar"
+    },
+    {
+      "id": 43,
+      "start": 209.93102,
+      "end": 215.031,
+      "text": "E se você não vir, ele vai te buscar"
+    },
+    {
+      "id": 44,
+      "start": 215.031,
+      "end": 220.67102,
+      "text": "Você não é comum, tem algo a mostrar"
+    },
+    {
+      "id": 45,
+      "start": 220.67102,
+      "end": 225.95102,
+      "text": "E o mestre quer te ver, quer te encher, quer te usar"
+    },
+    {
+      "id": 46,
+      "start": 225.95102,
+      "end": 231.21101,
+      "text": "Pra muitos você é nada, é uma pedra na estrada"
+    },
+    {
+      "id": 47,
+      "start": 231.21101,
+      "end": 244.46654,
+      "text": "mais uma multid sem servente a praveda Mas na m de Jesus voc muito uma bala encadilhada"
+    },
+    {
+      "id": 48,
+      "start": 244.46654,
+      "end": 252.58653,
+      "text": "Um mestre vai pegar o ponto que tu tens em ti"
+    },
+    {
+      "id": 49,
+      "start": 252.58653,
+      "end": 258.26654,
+      "text": "E vai multiplicar, capacitar, vai sacudir"
+    },
+    {
+      "id": 50,
+      "start": 258.26654,
+      "end": 261.18652,
+      "text": "Quando abrir a boca o coxo vai andar"
+    },
+    {
+      "id": 51,
+      "start": 261.18652,
+      "end": 266.50653,
+      "text": "Quando louvar o hino, o mundo vai falar Enquanto tudo é glória, algo vai acontecer"
+    },
+    {
+      "id": 52,
+      "start": 266.50653,
+      "end": 269.88654,
+      "text": "A glória vai descer, vai descer, vai descer, vai descer"
+    },
+    {
+      "id": 53,
+      "start": 269.88654,
+      "end": 272.54654,
+      "text": "A glória vai descer, vai descer, vai descer"
+    },
+    {
+      "id": 54,
+      "start": 272.54654,
+      "end": 275.20654,
+      "text": "A glória vai descer, vai descer, vai descer"
+    },
+    {
+      "id": 55,
+      "start": 275.20654,
+      "end": 279.48654,
+      "text": "A glória vai descer, vai descer, vai descer, vai descer"
+    },
+    {
+      "id": 56,
+      "start": 279.48654,
+      "end": 285.32654,
+      "text": "Através de ti Deus vai fazer tantos milagres"
+    },
+    {
+      "id": 57,
+      "start": 285.32654,
+      "end": 290.04654,
+      "text": "Serás alimento de Deus para as cidades"
+    },
+    {
+      "id": 58,
+      "start": 290.04654,
+      "end": 295.24652,
+      "text": "Mostra o que tu tens e recebe uma nova unção"
+    },
+    {
+      "id": 59,
+      "start": 295.24652,
+      "end": 304.32654,
+      "text": "Pois hoje Jesus é Jesus e você é o menino do lanche nessa multidão"
+    },
+    {
+      "id": 60,
+      "start": 304.32654,
+      "end": 307.80652,
+      "text": "Deixa ele te usar"
+    }
+  ],
+  "words": [],
+  "completed_at": 1788051859.7033288
+}

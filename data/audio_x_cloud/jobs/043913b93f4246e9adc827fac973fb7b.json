@@ -1,0 +1,34 @@
+{
+  "id": "043913b93f4246e9adc827fac973fb7b",
+  "status": "transcribed",
+  "stage": "completed",
+  "progress": 100,
+  "filename": "Pr Marco Restauração espiritual melhor_5_1.mp3",
+  "title": "Pr Marco Restauração espiritual melhor_5_1",
+  "language": "pt",
+  "size_bytes": 2682317,
+  "extension": ".mp3",
+  "file_path": "data\\audio_x_cloud\\uploads\\043913b93f4246e9adc827fac973fb7b.mp3",
+  "created_at": 1786948149.1916127,
+  "updated_at": 1786948150.0684972,
+  "provider_order": [
+    "groq",
+    "openai"
+  ],
+  "selected_provider": "groq",
+  "fallback_enabled": true,
+  "transcription_status": "completed",
+  "error": null,
+  "provider_attempts": [
+    {
+      "provider": "groq",
+      "status": "completed",
+      "started_at": 1786948149.2010472,
+      "finished_at": 1786948150.0669332
+    }
+  ],
+  "provider_used": "groq",
+  "fallback_used": false,
+  "segment_count": 23,
+  "word_count": 0
+}

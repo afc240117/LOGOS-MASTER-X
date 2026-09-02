@@ -1,0 +1,55 @@
+{
+  "job_id": "6a15d04e62344b02bf709e36383bd28b",
+  "status": "completed",
+  "stage": "completed",
+  "progress": 100,
+  "message": "Pipeline concluído. Perfil pronto para o Studio X.",
+  "created_at": 1786939978.8196208,
+  "profile_id": "475ca73687044a4780ea7c4e10e9bf04",
+  "error": null,
+  "updated_at": 1786939981.2118583,
+  "profile_name": "Pr Marco Restauração espiritual melhor_1",
+  "dna_score": 52,
+  "dna_profile": "K7 Moderado",
+  "studio_x_config": {
+    "schema": "logos-master-x/studio-x-applied-dna-v1",
+    "source": "audio-x-dna-k7",
+    "profile_id": "475ca73687044a4780ea7c4e10e9bf04",
+    "profile_name": "Pr Marco Restauração espiritual melhor_1",
+    "dna_score": 52,
+    "strength": 100,
+    "controls": {
+      "intensity": 27,
+      "progression": 62,
+      "biblical_density": 100,
+      "application": 27,
+      "appeal": 23,
+      "rhythm": 60,
+      "climax": 34,
+      "expressiveness": 35,
+      "structure": 92,
+      "context": 73
+    },
+    "signature": {
+      "opening_style": "direta",
+      "development_weight": 5,
+      "application_weight": 3,
+      "appeal_weight": 23,
+      "climax_position": 95.6
+    },
+    "generation_directives": {
+      "opening_style": "direta",
+      "development_weight": 5,
+      "application_weight": 3,
+      "appeal_weight": 23,
+      "climax_position": 95.6
+    },
+    "safety": {
+      "copy_source_text": false,
+      "imitate_voice": false,
+      "use_structural_characteristics_only": true
+    }
+  },
+  "studio_x_prompt_block": "[DNA K7 ESTRUTURAL]\nPerfil: Pr Marco Restauração espiritual melhor_1\nForça de aplicação: 100%\nIntensidade: 27/100\nProgressão: 62/100\nDensidade bíblica: 100/100\nAplicação: 27/100\nApelo: 23/100\nRitmo: 60/100\nClímax: 34/100\nExpressividade: 35/100\nEstrutura: 92/100\nContexto: 73/100\nAbertura: direta\nPeso desenvolvimento: 5/100\nPeso aplicação: 3/100\nPeso apelo: 23/100\nPosição-alvo do clímax: 95.6% da mensagem\nREGRA: reproduzir somente dinâmica e estrutura. Não copiar frases, texto ou voz do áudio-fonte.\n[/DNA K7 ESTRUTURAL]",
+  "completed_at": 1786939981.2118542
+}

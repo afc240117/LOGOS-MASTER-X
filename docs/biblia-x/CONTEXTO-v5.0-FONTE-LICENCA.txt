@@ -1,0 +1,93 @@
+LOGOS MASTER X — BÍBLIA X — CONTEXTO v5.0
+FONTES, LICENÇAS E LIMITES EDITORIAIS
+
+1. PERFIS DOS 66 LIVROS — PORTUGUÊS
+
+Fonte de dados:
+- app/biblia_x/resources/context_book_profiles_pt.json
+- Síntese editorial produzida para o módulo Bíblia X.
+
+Escopo:
+- gênero;
+- cenário/período;
+- autoria ou formação literária;
+- destinatários;
+- propósito;
+- contexto histórico, cultural, literário e geográfico;
+- temas, lugares, macroestrutura e referências-chave.
+
+Critério editorial:
+- o perfil não é apresentado como tradução de Easton;
+- autoria e data são distinguidas como tradição, informação explícita do texto
+  ou questão debatida;
+- o perfil evita transformar hipóteses acadêmicas ou confessionais em certeza;
+- a macroestrutura serve para orientação de leitura e não substitui exegese da
+  passagem.
+
+2. EASTON'S BIBLE DICTIONARY — INGLÊS ORIGINAL
+
+Obra:
+- M. G. Easton, Illustrated Bible Dictionary, Third Edition, 1897.
+
+Distribuição utilizada:
+- CrossWire SWORD module Easton 2.0.1.
+- Módulo: https://crosswire.org/sword/modules/ModInfo.jsp?modName=Easton
+- Pacote-fonte:
+  https://crosswire.org/ftpmirror/pub/sword/packages/rawzip/Easton.zip
+
+Licença declarada pelo distribuidor:
+- Public Domain — Copy Freely.
+
+Idioma e tratamento:
+- os 3.963 verbetes são preservados em inglês;
+- as marcações TEI/SWORD são removidas somente para apresentação textual;
+- nenhuma tradução automática é exibida como se fosse texto do autor;
+- o aplicativo identifica visivelmente obra, edição, idioma e licença.
+
+Integridade da versão importada:
+- SHA-256 do Easton.zip:
+  f6dd054554764e2e97d5d189a697eb26039054578a9ccf98ce668ab810341c6e
+
+Limite histórico:
+- é uma obra de 1897;
+- terminologia, cronologias, identificação de autores e algumas conclusões
+  refletem sua época;
+- deve ser consultada criticamente e não é tratada como consenso acadêmico
+  contemporâneo.
+
+3. CAMADA ESTRUTURAL POR CAPÍTULO/PASSAGEM
+
+O contexto estrutural é calculado localmente a partir de bases já auditadas nos
+Passos 1–4:
+- estrutura canônica e texto das traduções instaladas;
+- Nave's Topical Bible / CCEL — Public Domain;
+- referências OpenBible/TSK — Creative Commons Attribution;
+- corpus Strong e léxicos BibleForgeDB — Public Domain / CC0.
+
+Essa camada informa:
+- total de capítulos e versículos;
+- capítulo anterior e seguinte;
+- passagem/versículo selecionado;
+- temas Nave relacionados ao capítulo;
+- conexões TSK;
+- termos originais mais frequentes, sem alegar alinhamento automático com cada
+  palavra da tradução portuguesa.
+
+4. SEPARAÇÃO ENTRE FONTE E CONTEÚDO PESSOAL
+
+- o banco pré-instalado fica no SQLite do servidor local;
+- complementos importados pelo usuário ficam no IndexedDB do navegador;
+- exportar ou limpar complementos pessoais não altera os 66 perfis nem os
+  3.963 verbetes da fonte;
+- a interface marca conteúdo pessoal e fonte histórica de modo distinto.
+
+5. REPRODUÇÃO DO BANCO
+
+Script:
+- scripts/import_context_step5.py
+
+Exemplo:
+- python scripts/import_context_step5.py --source /caminho/Easton.zip
+
+O importador valida o SHA-256 antes de substituir as tabelas contextuais e
+executa PRAGMA integrity_check ao final.

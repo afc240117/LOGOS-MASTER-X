@@ -1,0 +1,11 @@
+{
+  "job_id": "f647f0da73c5483680dc6010b13014ae",
+  "status": "failed",
+  "stage": "failed",
+  "progress": 44,
+  "message": "Pipeline interrompido",
+  "created_at": 1786947190.1911702,
+  "profile_id": null,
+  "error": "name 'DET' is not defined",
+  "updated_at": 1786947191.5021386
+}

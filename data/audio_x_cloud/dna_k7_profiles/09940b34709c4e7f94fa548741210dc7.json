@@ -1,0 +1,69 @@
+{
+  "id": "09940b34709c4e7f94fa548741210dc7",
+  "name": "5 minutos",
+  "notes": "",
+  "tags": [
+    "audio-x",
+    "pipeline"
+  ],
+  "source_job_id": "ce1e365b4b284c429c9e9ef16025f232",
+  "created_at": 1786980046.4381762,
+  "updated_at": 1786980046.4381762,
+  "dna_k7": {
+    "version": "audio-x-dna-k7-v1",
+    "score": 47,
+    "profile": "K7 Moderado",
+    "axes": {
+      "intensidade": 28,
+      "progressao": 63,
+      "densidade_biblica": 85,
+      "aplicacao": 25,
+      "apelo": 26,
+      "ritmo": 39,
+      "climax": 44,
+      "expressividade": 30,
+      "estrutura": 87,
+      "contexto": 48
+    },
+    "source": {
+      "duration": 299.846,
+      "section_count": 12,
+      "transition_count": 3,
+      "segment_count": 63
+    },
+    "signature": {
+      "opening_style": "direta",
+      "development_weight": 20,
+      "application_weight": 0,
+      "appeal_weight": 26,
+      "climax_position": 95.5
+    },
+    "job_id": "ce1e365b4b284c429c9e9ef16025f232",
+    "provider": "groq"
+  },
+  "studio_x": {
+    "schema": "logos-master-x/studio-x-dna-k7-v1",
+    "dna_score": 47,
+    "profile": "K7 Moderado",
+    "axes": {
+      "intensidade": 28,
+      "progressao": 63,
+      "densidade_biblica": 85,
+      "aplicacao": 25,
+      "apelo": 26,
+      "ritmo": 39,
+      "climax": 44,
+      "expressividade": 30,
+      "estrutura": 87,
+      "contexto": 48
+    },
+    "signature": {
+      "opening_style": "direta",
+      "development_weight": 20,
+      "application_weight": 0,
+      "appeal_weight": 26,
+      "climax_position": 95.5
+    },
+    "instruction": "Use apenas características estruturais e dinâmicas. Não copie texto, frases ou voz do áudio-fonte."
+  }
+}

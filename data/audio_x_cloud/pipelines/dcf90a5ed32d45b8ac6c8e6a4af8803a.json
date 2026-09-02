@@ -1,0 +1,110 @@
+{
+  "job_id": "dcf90a5ed32d45b8ac6c8e6a4af8803a",
+  "status": "completed",
+  "stage": "completed",
+  "progress": 100,
+  "message": "Pipeline concluído. Perfil pronto para o Studio X.",
+  "created_at": 1786979335.1582205,
+  "profile_id": "306147dc9cbf4ae9b4a8da978eae2ef4",
+  "error": null,
+  "updated_at": 1786979336.7440262,
+  "detected_family": "pregador",
+  "detected_family_label": "DNA Pregador",
+  "detected_content_type": "Mensagem cristã",
+  "detection_confidence": 92.2,
+  "dna_route": "dna_pregador",
+  "detection": {
+    "family": "pregador",
+    "family_label": "DNA Pregador",
+    "icon": "🧬",
+    "content_type": "Mensagem cristã",
+    "confidence": 92.2,
+    "scores": {
+      "pregador": 100,
+      "comunicador": 0,
+      "musical": 0,
+      "congregacional": 14
+    },
+    "raw_scores": {
+      "pregador": 8.0,
+      "comunicador": 0.0,
+      "musical": 0.0,
+      "congregacional": 1.1
+    },
+    "evidence": [
+      "transcrição: irmãos",
+      "transcrição: versículo",
+      "transcrição: capítulo"
+    ],
+    "repetition_percent": 0.0,
+    "average_segment_words": 11.0,
+    "route": "dna_pregador",
+    "route_status": "ready",
+    "recommended_analyzers": [
+      "estrutura",
+      "ritmo",
+      "progressão",
+      "clímax",
+      "apelo",
+      "densidade_bíblica"
+    ],
+    "limitations": null,
+    "job_id": "dcf90a5ed32d45b8ac6c8e6a4af8803a"
+  },
+  "profile_name": "5 minutos",
+  "dna_score": 47,
+  "dna_profile": "K7 Moderado",
+  "studio_x_config": {
+    "version": "studio-x-dna-bridge-1",
+    "enabled": true,
+    "profile_name": "5 minutos",
+    "global_intensity": 100,
+    "effective_controls": {
+      "intensidade": 28.0,
+      "progression": 63.0,
+      "biblical_density": 85.0,
+      "application": 25.0,
+      "appeal": 26.0,
+      "rhythm": 39.0,
+      "climax": 44.0,
+      "expressiveness": 30.0,
+      "structure": 87.0,
+      "context": 48.0
+    },
+    "rules": [
+      "preservar fidelidade bíblica",
+      "produzir texto original",
+      "usar DNA apenas como orientação estrutural",
+      "não copiar frases exclusivas nem identidade vocal"
+    ],
+    "source": {
+      "type": "audio_x_dna_master",
+      "score": 47,
+      "axes": {
+        "intensidade": 28,
+        "progressao": 63,
+        "densidade_biblica": 85,
+        "aplicacao": 25,
+        "apelo": 26,
+        "ritmo": 39,
+        "climax": 44,
+        "expressividade": 30,
+        "estrutura": 87,
+        "contexto": 48
+      }
+    },
+    "schema": "logos-master-x/studio-x-dna-k7-v1",
+    "profile_id": "306147dc9cbf4ae9b4a8da978eae2ef4",
+    "source_job_id": "dcf90a5ed32d45b8ac6c8e6a4af8803a",
+    "signature": {
+      "opening_style": "direta",
+      "development_weight": 20,
+      "application_weight": 0,
+      "appeal_weight": 26,
+      "climax_position": 95.5
+    },
+    "instruction": "Use apenas características estruturais e dinâmicas. Não copie texto, frases ou voz do áudio-fonte."
+  },
+  "studio_x_prompt_block": "DNA Áudio X / Studio X — 5 minutos\nIntensidade global: 100%\nCaracterísticas estruturais: intensidade=28.0, progression=63.0, biblical_density=85.0, application=25.0, appeal=26.0, rhythm=39.0, climax=44.0, expressiveness=30.0, structure=87.0, context=48.0.\nAplique apenas padrões de estrutura, ritmo, progressão, aplicação e clímax. Não copie frases, letra, melodia, voz ou identidade do material-fonte.",
+  "completed_at": 1786979336.7440228
+}

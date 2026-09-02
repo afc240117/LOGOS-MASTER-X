@@ -1,0 +1,23 @@
+{
+  "groq": {
+    "enabled": true,
+    "priority": 1,
+    "monthly_minutes": 600,
+    "daily_minutes": 120,
+    "cost_per_minute": 0.0
+  },
+  "deepgram": {
+    "enabled": true,
+    "priority": 2,
+    "monthly_minutes": 300,
+    "daily_minutes": 90,
+    "cost_per_minute": 0.0
+  },
+  "openai": {
+    "enabled": true,
+    "priority": 3,
+    "monthly_minutes": 300,
+    "daily_minutes": 120,
+    "cost_per_minute": 0.006
+  }
+}

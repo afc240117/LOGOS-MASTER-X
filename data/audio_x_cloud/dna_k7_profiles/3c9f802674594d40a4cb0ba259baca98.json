@@ -1,0 +1,69 @@
+{
+  "id": "3c9f802674594d40a4cb0ba259baca98",
+  "name": "06 - Canção & Louvor - Você É Meu",
+  "notes": "",
+  "tags": [
+    "audio-x",
+    "pipeline"
+  ],
+  "source_job_id": "77684d4d4fc34423a615a26f85e082f1",
+  "created_at": 1788052199.91228,
+  "updated_at": 1788052199.91228,
+  "dna_k7": {
+    "version": "audio-x-dna-k7-v1",
+    "score": 37,
+    "profile": "K7 Suave",
+    "axes": {
+      "intensidade": 27,
+      "progressao": 63,
+      "densidade_biblica": 24,
+      "aplicacao": 37,
+      "apelo": 13,
+      "ritmo": 30,
+      "climax": 36,
+      "expressividade": 25,
+      "estrutura": 92,
+      "contexto": 38
+    },
+    "source": {
+      "duration": 295.8396,
+      "section_count": 11,
+      "transition_count": 0,
+      "segment_count": 48
+    },
+    "signature": {
+      "opening_style": "progressiva",
+      "development_weight": 6,
+      "application_weight": 18,
+      "appeal_weight": 13,
+      "climax_position": 91.2
+    },
+    "job_id": "77684d4d4fc34423a615a26f85e082f1",
+    "provider": "groq"
+  },
+  "studio_x": {
+    "schema": "logos-master-x/studio-x-dna-k7-v1",
+    "dna_score": 37,
+    "profile": "K7 Suave",
+    "axes": {
+      "intensidade": 27,
+      "progressao": 63,
+      "densidade_biblica": 24,
+      "aplicacao": 37,
+      "apelo": 13,
+      "ritmo": 30,
+      "climax": 36,
+      "expressividade": 25,
+      "estrutura": 92,
+      "contexto": 38
+    },
+    "signature": {
+      "opening_style": "progressiva",
+      "development_weight": 6,
+      "application_weight": 18,
+      "appeal_weight": 13,
+      "climax_position": 91.2
+    },
+    "instruction": "Use apenas características estruturais e dinâmicas. Não copie texto, frases ou voz do áudio-fonte."
+  }
+}

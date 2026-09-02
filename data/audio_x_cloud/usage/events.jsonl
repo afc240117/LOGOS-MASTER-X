@@ -1,0 +1,12 @@
+{"ts": 1786939981.186237, "provider": "groq", "minutes": 10.0, "status": "completed", "job_id": "6a15d04e62344b02bf709e36383bd28b", "cost": 0.0}
+{"ts": 1786945907.2024949, "provider": "groq", "minutes": 10.0, "status": "completed", "job_id": "cc2e1c087b2a4c8aabce341a67a3c210", "cost": 0.0}
+{"ts": 1786946928.0832305, "provider": "groq", "minutes": 0.332, "status": "completed", "job_id": "013d02cf07454967bb32336dc055e3ba", "cost": 0.0}
+{"ts": 1786947191.4961393, "provider": "groq", "minutes": 4.998, "status": "completed", "job_id": "f647f0da73c5483680dc6010b13014ae", "cost": 0.0}
+{"ts": 1786947230.574154, "provider": "groq", "minutes": 10.0, "status": "completed", "job_id": "3eea230a859b42a1b1b450285067be06", "cost": 0.0}
+{"ts": 1786947304.3191652, "provider": "groq", "minutes": 4.998, "status": "completed", "job_id": "5238f79167a54877865d36907dbd49ae", "cost": 0.0}
+{"ts": 1786947355.5502725, "provider": "groq", "minutes": 0.114, "status": "completed", "job_id": "33c49dd2784f4e3fa89e62152a4622ea", "cost": 0.0}
+{"ts": 1786948150.068118, "provider": "groq", "minutes": 1.117, "status": "completed", "job_id": "043913b93f4246e9adc827fac973fb7b", "cost": 0.0}
+{"ts": 1786978840.2625015, "provider": "groq", "minutes": 0.332, "status": "completed", "job_id": "90f6a11b8720412fa7de1e9aa9c4ade4", "cost": 0.0}
+{"ts": 1786979336.7238498, "provider": "groq", "minutes": 4.998, "status": "completed", "job_id": "dcf90a5ed32d45b8ac6c8e6a4af8803a", "cost": 0.0}
+{"ts": 1786980046.4161055, "provider": "groq", "minutes": 4.998, "status": "completed", "job_id": "ce1e365b4b284c429c9e9ef16025f232", "cost": 0.0}
+{"ts": 1787000539.2112625, "provider": "groq", "minutes": 0.813, "status": "completed", "job_id": "d4d9875561af453bb0cae42526acf54a", "cost": 0.0}

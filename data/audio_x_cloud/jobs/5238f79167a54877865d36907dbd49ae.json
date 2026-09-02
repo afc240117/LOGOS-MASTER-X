@@ -1,0 +1,34 @@
+{
+  "id": "5238f79167a54877865d36907dbd49ae",
+  "status": "transcribed",
+  "stage": "completed",
+  "progress": 100,
+  "filename": "5 minutos.mp3",
+  "title": "5 minutos",
+  "language": "pt",
+  "size_bytes": 11998157,
+  "extension": ".mp3",
+  "file_path": "data\\audio_x_cloud\\uploads\\5238f79167a54877865d36907dbd49ae.mp3",
+  "created_at": 1786947302.9410925,
+  "updated_at": 1786947304.319506,
+  "provider_order": [
+    "groq",
+    "openai"
+  ],
+  "selected_provider": "groq",
+  "fallback_enabled": true,
+  "transcription_status": "completed",
+  "error": null,
+  "provider_attempts": [
+    {
+      "provider": "groq",
+      "status": "completed",
+      "started_at": 1786947302.9613862,
+      "finished_at": 1786947304.317857
+    }
+  ],
+  "provider_used": "groq",
+  "fallback_used": false,
+  "segment_count": 63,
+  "word_count": 0
+}

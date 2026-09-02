@@ -1,0 +1,16 @@
+*.rar
+*.zip
+*.7z
+*.mp4
+*.mov
+*.avi
+*.mp3
+*.wav
+node_modules/
+.venv/
+venv/
+__pycache__/
+.env
+.tmp.driveupload/
+BACKUPS-LOGOS/
+_QUARENTENA_*/

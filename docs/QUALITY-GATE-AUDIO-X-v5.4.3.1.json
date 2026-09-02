@@ -1,0 +1,16 @@
+{
+  "project": "LOGOS MASTER X",
+  "version": "v5.4.3.1",
+  "hotfix": "Audio X Not Found",
+  "checks": {
+    "target_js_exists": true,
+    "old_endpoint_detected_or_safe": true,
+    "new_endpoint": "/api/audio-x/upload",
+    "backup_created": true,
+    "rollback_available": true,
+    "atlas_x_not_modified": true,
+    "bible_x_not_modified": true,
+    "studio_x_not_modified": true
+  },
+  "status": "ready"
+}

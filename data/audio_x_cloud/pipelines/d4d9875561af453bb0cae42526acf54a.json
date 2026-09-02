@@ -1,0 +1,56 @@
+{
+  "job_id": "d4d9875561af453bb0cae42526acf54a",
+  "status": "completed",
+  "stage": "completed",
+  "progress": 100,
+  "message": "DNA Congregacional reconhecido e roteado para dna_congregacional.",
+  "created_at": 1787000538.2973828,
+  "profile_id": null,
+  "error": null,
+  "updated_at": 1787000539.2174554,
+  "detected_family": "congregacional",
+  "detected_family_label": "DNA Congregacional",
+  "detected_content_type": "Louvor congregacional",
+  "detection_confidence": 84.2,
+  "dna_route": "dna_congregacional",
+  "detection": {
+    "family": "congregacional",
+    "family_label": "DNA Congregacional",
+    "icon": "⛪",
+    "content_type": "Louvor congregacional",
+    "confidence": 84.2,
+    "scores": {
+      "pregador": 0,
+      "comunicador": 0,
+      "musical": 0,
+      "congregacional": 100
+    },
+    "raw_scores": {
+      "pregador": 0.0,
+      "comunicador": 0.0,
+      "musical": 0.0,
+      "congregacional": 1.1
+    },
+    "evidence": [
+      "transcrição: a igreja"
+    ],
+    "repetition_percent": 0.0,
+    "average_segment_words": 12.6,
+    "route": "dna_congregacional",
+    "route_status": "recognized_music_branch",
+    "recommended_analyzers": [
+      "estrutura_musical",
+      "congregacionalidade",
+      "repetição",
+      "crescimento",
+      "clímax",
+      "participação"
+    ],
+    "limitations": "Reconhecimento baseado em metadados + transcrição. BPM, tonalidade e instrumentos exigem a próxima camada de análise acústica.",
+    "job_id": "d4d9875561af453bb0cae42526acf54a"
+  },
+  "routing_only": true,
+  "dna_score": null,
+  "dna_profile": "Louvor congregacional",
+  "completed_at": 1787000539.2174509
+}

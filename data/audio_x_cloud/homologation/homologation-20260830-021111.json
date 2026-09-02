@@ -1,0 +1,32 @@
+{
+  "type": "provider_probe",
+  "timestamp": 1788066671.8427675,
+  "score": 100,
+  "providers": [
+    {
+      "provider": "groq",
+      "configured": true,
+      "reachable": true,
+      "status": "ok",
+      "http_status": 200,
+      "detail": "API respondeu"
+    },
+    {
+      "provider": "deepgram",
+      "configured": true,
+      "reachable": true,
+      "status": "ok",
+      "http_status": 200,
+      "detail": "API respondeu"
+    },
+    {
+      "provider": "openai",
+      "configured": true,
+      "reachable": true,
+      "status": "ok",
+      "http_status": 200,
+      "detail": "API respondeu"
+    }
+  ],
+  "note": "Este teste apenas verifica autenticação/conectividade e não envia áudio."
+}

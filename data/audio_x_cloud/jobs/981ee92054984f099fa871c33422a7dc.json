@@ -1,0 +1,35 @@
+{
+  "id": "981ee92054984f099fa871c33422a7dc",
+  "status": "transcribed",
+  "stage": "completed",
+  "progress": 100,
+  "filename": "01-Com Muito Louvor.mp3",
+  "title": "01-Com Muito Louvor",
+  "language": "pt",
+  "size_bytes": 5014206,
+  "extension": ".mp3",
+  "file_path": "data\\audio_x_cloud\\uploads\\981ee92054984f099fa871c33422a7dc.mp3",
+  "created_at": 1788051798.3043628,
+  "updated_at": 1788051799.561274,
+  "provider_order": [
+    "groq",
+    "deepgram",
+    "openai"
+  ],
+  "selected_provider": "groq",
+  "fallback_enabled": true,
+  "transcription_status": "completed",
+  "error": null,
+  "provider_attempts": [
+    {
+      "provider": "groq",
+      "status": "completed",
+      "started_at": 1788051798.316597,
+      "finished_at": 1788051799.5594838
+    }
+  ],
+  "provider_used": "groq",
+  "fallback_used": false,
+  "segment_count": 44,
+  "word_count": 0
+}

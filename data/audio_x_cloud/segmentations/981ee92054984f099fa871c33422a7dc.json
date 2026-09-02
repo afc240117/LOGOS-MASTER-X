@@ -1,0 +1,968 @@
+{
+  "version": "audio-x-cloud-segmentation-v1",
+  "sections": [
+    {
+      "id": 0,
+      "kind": "intro",
+      "name": "Introdução",
+      "start": 0.0,
+      "end": 58.72,
+      "duration": 58.72,
+      "segment_ids": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "segment_count": 5,
+      "avg_intensity": 19,
+      "text_preview": "Deus não rejeita A oração é alimento Nunca vi um justo sem resposta Ou ficar no sofrimento Basta somente esperar",
+      "percent": 19.8
+    },
+    {
+      "id": 1,
+      "kind": "text",
+      "name": "Texto Bíblico",
+      "start": 58.72,
+      "end": 100.06195,
+      "duration": 41.34,
+      "segment_ids": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "segment_count": 5,
+      "avg_intensity": 20,
+      "text_preview": "o que Deus irá fazer quando Ele estende suas m a hora de vencer Ent ouve simplesmente ouve Tá chorando ouve, precisando ouve Tá sofrendo ouve, não importa ouve Seu louvor invade o céu",
+      "percent": 14.0
+    },
+    {
+      "id": 2,
+      "kind": "appeal",
+      "name": "Apelo",
+      "start": 100.06195,
+      "end": 107.74195,
+      "duration": 7.68,
+      "segment_ids": [
+        10
+      ],
+      "segment_count": 1,
+      "avg_intensity": 25,
+      "text_preview": "Deus vai na frente abrindo o caminho Quebrando as correntes, tirando os espinhos",
+      "percent": 2.6
+    },
+    {
+      "id": 3,
+      "kind": "context",
+      "name": "Contexto",
+      "start": 107.74195,
+      "end": 120.50195,
+      "duration": 12.76,
+      "segment_ids": [
+        11,
+        12
+      ],
+      "segment_count": 2,
+      "avg_intensity": 21,
+      "text_preview": "Ordena aos anjos pra contigo lutar Ele abre as portas pra ninguém mais deixar Ele trabalha pra o que nele confia Caminha contigo de noite ao de dia",
+      "percent": 4.3
+    },
+    {
+      "id": 4,
+      "kind": "development",
+      "name": "Desenvolvimento",
+      "start": 120.50195,
+      "end": 224.5239,
+      "duration": 104.02,
+      "segment_ids": [
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33
+      ],
+      "segment_count": 21,
+      "avg_intensity": 25,
+      "text_preview": "Erga suas mãos, sua bênção chegou Comece a cantar com muito louvor Com muito louvor Com muito louvor Com muito louvor A gente precisa entender O que Deus est falando Quando Ele fica em sil É porque está trabalhando Basta somente esperar O que Deus irá fazer Qu",
+      "percent": 35.1
+    },
+    {
+      "id": 5,
+      "kind": "climax",
+      "name": "Clímax",
+      "start": 224.5239,
+      "end": 284.16586,
+      "duration": 59.64,
+      "segment_ids": [
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40
+      ],
+      "segment_count": 7,
+      "avg_intensity": 28,
+      "text_preview": "Ele abre as portas pra ningu mais deixar Ele trabalha pro que nele confia Caminha contigo de noite ou de dia Erga suas m sua b chegou Comece a cantar com muito louvor Com muito louvor Com muito louvor Com muito louvor Com muito louvor Com muito louvor",
+      "percent": 20.1
+    },
+    {
+      "id": 6,
+      "kind": "appeal",
+      "name": "Apelo",
+      "start": 284.18585,
+      "end": 296.10587,
+      "duration": 11.92,
+      "segment_ids": [
+        41,
+        42,
+        43
+      ],
+      "segment_count": 3,
+      "avg_intensity": 30,
+      "text_preview": "Exalte o Senhor Cante ao Senhor Com muito louvor",
+      "percent": 4.0
+    }
+  ],
+  "segments": [
+    {
+      "id": 0,
+      "start": 0.0,
+      "end": 29.98,
+      "text": "Deus não rejeita",
+      "kind": "intro",
+      "classification_scores": {
+        "intro": 3,
+        "text": 0,
+        "context": 0,
+        "development": 0,
+        "application": 0,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 18
+    },
+    {
+      "id": 1,
+      "start": 30.0,
+      "end": 35.92,
+      "text": "A oração é alimento",
+      "kind": "intro",
+      "classification_scores": {
+        "intro": 3,
+        "text": 0,
+        "context": 0,
+        "development": 0,
+        "application": 0,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 18
+    },
+    {
+      "id": 2,
+      "start": 35.92,
+      "end": 45.36,
+      "text": "Nunca vi um justo sem resposta",
+      "kind": "intro",
+      "classification_scores": {
+        "intro": 3,
+        "text": 0,
+        "context": 0,
+        "development": 0,
+        "application": 0,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 19
+    },
+    {
+      "id": 3,
+      "start": 45.36,
+      "end": 49.5,
+      "text": "Ou ficar no sofrimento",
+      "kind": "intro",
+      "classification_scores": {
+        "intro": 3,
+        "text": 0,
+        "context": 0,
+        "development": 0,
+        "application": 0,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 19
+    },
+    {
+      "id": 4,
+      "start": 49.5,
+      "end": 58.72,
+      "text": "Basta somente esperar",
+      "kind": "intro",
+      "classification_scores": {
+        "intro": 3,
+        "text": 2,
+        "context": 0,
+        "development": 0,
+        "application": 0,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 19
+    },
+    {
+      "id": 5,
+      "start": 58.72,
+      "end": 64.5,
+      "text": "o que Deus irá fazer",
+      "kind": "text",
+      "classification_scores": {
+        "intro": 0,
+        "text": 2,
+        "context": 0,
+        "development": 0,
+        "application": 0,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 19
+    },
+    {
+      "id": 6,
+      "start": 64.5,
+      "end": 83.32195,
+      "text": "quando Ele estende suas m a hora de vencer Ent ouve simplesmente ouve",
+      "kind": "text",
+      "classification_scores": {
+        "intro": 0,
+        "text": 2,
+        "context": 0,
+        "development": 0,
+        "application": 0,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 20
+    },
+    {
+      "id": 7,
+      "start": 83.32195,
+      "end": 89.76195,
+      "text": "Tá chorando ouve, precisando ouve",
+      "kind": "text",
+      "classification_scores": {
+        "intro": 0,
+        "text": 2,
+        "context": 2,
+        "development": 0,
+        "application": 0,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 20
+    },
+    {
+      "id": 8,
+      "start": 89.76195,
+      "end": 96.041954,
+      "text": "Tá sofrendo ouve, não importa ouve",
+      "kind": "text",
+      "classification_scores": {
+        "intro": 0,
+        "text": 2,
+        "context": 2,
+        "development": 0,
+        "application": 0,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 20
+    },
+    {
+      "id": 9,
+      "start": 96.041954,
+      "end": 100.06195,
+      "text": "Seu louvor invade o céu",
+      "kind": "text",
+      "classification_scores": {
+        "intro": 0,
+        "text": 2,
+        "context": 2,
+        "development": 0,
+        "application": 0,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 21
+    },
+    {
+      "id": 10,
+      "start": 100.06195,
+      "end": 107.74195,
+      "text": "Deus vai na frente abrindo o caminho Quebrando as correntes, tirando os espinhos",
+      "kind": "appeal",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 2,
+        "development": 0,
+        "application": 0,
+        "climax": 0,
+        "appeal": 3
+      },
+      "intensity": 25
+    },
+    {
+      "id": 11,
+      "start": 107.74195,
+      "end": 113.821945,
+      "text": "Ordena aos anjos pra contigo lutar Ele abre as portas pra ninguém mais deixar",
+      "kind": "context",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 2,
+        "development": 0,
+        "application": 0,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 21
+    },
+    {
+      "id": 12,
+      "start": 113.821945,
+      "end": 120.50195,
+      "text": "Ele trabalha pra o que nele confia Caminha contigo de noite ao de dia",
+      "kind": "context",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 2,
+        "development": 0,
+        "application": 0,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 21
+    },
+    {
+      "id": 13,
+      "start": 120.50195,
+      "end": 127.42195,
+      "text": "Erga suas mãos, sua bênção chegou Comece a cantar com muito louvor",
+      "kind": "development",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 2,
+        "development": 3,
+        "application": 0,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 22
+    },
+    {
+      "id": 14,
+      "start": 127.42195,
+      "end": 130.64195,
+      "text": "Com muito louvor",
+      "kind": "development",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 2,
+        "development": 3,
+        "application": 0,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 22
+    },
+    {
+      "id": 15,
+      "start": 130.64195,
+      "end": 133.96194,
+      "text": "Com muito louvor",
+      "kind": "development",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 0,
+        "development": 3,
+        "application": 0,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 22
+    },
+    {
+      "id": 16,
+      "start": 133.96194,
+      "end": 137.68195,
+      "text": "Com muito louvor",
+      "kind": "development",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 0,
+        "development": 3,
+        "application": 0,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 22
+    },
+    {
+      "id": 17,
+      "start": 137.68195,
+      "end": 146.78195,
+      "text": "A gente precisa entender",
+      "kind": "development",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 0,
+        "development": 3,
+        "application": 1,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 23
+    },
+    {
+      "id": 18,
+      "start": 146.78195,
+      "end": 160.5439,
+      "text": "O que Deus est falando Quando Ele fica em sil",
+      "kind": "development",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 0,
+        "development": 3,
+        "application": 1,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 23
+    },
+    {
+      "id": 19,
+      "start": 160.5439,
+      "end": 164.3439,
+      "text": "É porque está trabalhando",
+      "kind": "development",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 0,
+        "development": 3,
+        "application": 1,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 23
+    },
+    {
+      "id": 20,
+      "start": 164.3439,
+      "end": 173.2639,
+      "text": "Basta somente esperar",
+      "kind": "development",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 0,
+        "development": 3,
+        "application": 1,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 24
+    },
+    {
+      "id": 21,
+      "start": 173.2639,
+      "end": 177.44391,
+      "text": "O que Deus irá fazer",
+      "kind": "development",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 0,
+        "development": 3,
+        "application": 1,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 24
+    },
+    {
+      "id": 22,
+      "start": 178.9239,
+      "end": 187.5239,
+      "text": "Quando Ele estende suas mãos",
+      "kind": "development",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 0,
+        "development": 3,
+        "application": 1,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 24
+    },
+    {
+      "id": 23,
+      "start": 187.5239,
+      "end": 191.66391,
+      "text": "É a hora de vencer",
+      "kind": "development",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 0,
+        "development": 3,
+        "application": 1,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 24
+    },
+    {
+      "id": 24,
+      "start": 191.66391,
+      "end": 197.10391,
+      "text": "Então louve, simplesmente louve",
+      "kind": "development",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 0,
+        "development": 3,
+        "application": 1,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 25
+    },
+    {
+      "id": 25,
+      "start": 197.10391,
+      "end": 200.2639,
+      "text": "Tá chorando, louve",
+      "kind": "development",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 0,
+        "development": 3,
+        "application": 1,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 25
+    },
+    {
+      "id": 26,
+      "start": 200.2639,
+      "end": 203.5039,
+      "text": "Precisando, louve",
+      "kind": "development",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 0,
+        "development": 3,
+        "application": 1,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 25
+    },
+    {
+      "id": 27,
+      "start": 203.5039,
+      "end": 206.7039,
+      "text": "Tá sofrendo, louve",
+      "kind": "development",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 0,
+        "development": 3,
+        "application": 1,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 26
+    },
+    {
+      "id": 28,
+      "start": 206.7039,
+      "end": 209.8439,
+      "text": "Não importa o nome",
+      "kind": "development",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 0,
+        "development": 3,
+        "application": 1,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 26
+    },
+    {
+      "id": 29,
+      "start": 209.8439,
+      "end": 215.2239,
+      "text": "Seu louvor invade o céu",
+      "kind": "development",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 0,
+        "development": 3,
+        "application": 1,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 26
+    },
+    {
+      "id": 30,
+      "start": 215.2239,
+      "end": 218.38391,
+      "text": "Deus vai na frente abrindo o caminho",
+      "kind": "development",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 0,
+        "development": 3,
+        "application": 1,
+        "climax": 0,
+        "appeal": 3
+      },
+      "intensity": 30
+    },
+    {
+      "id": 31,
+      "start": 218.38391,
+      "end": 220.1239,
+      "text": "Quebrando as correntes",
+      "kind": "development",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 0,
+        "development": 3,
+        "application": 1,
+        "climax": 3,
+        "appeal": 0
+      },
+      "intensity": 27
+    },
+    {
+      "id": 32,
+      "start": 220.1239,
+      "end": 221.6839,
+      "text": "Tirando os espinhos",
+      "kind": "development",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 0,
+        "development": 3,
+        "application": 1,
+        "climax": 3,
+        "appeal": 0
+      },
+      "intensity": 27
+    },
+    {
+      "id": 33,
+      "start": 221.6839,
+      "end": 224.5239,
+      "text": "Ordena os anjos pra contigo lutar",
+      "kind": "development",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 0,
+        "development": 3,
+        "application": 1,
+        "climax": 3,
+        "appeal": 0
+      },
+      "intensity": 27
+    },
+    {
+      "id": 34,
+      "start": 224.5239,
+      "end": 237.52586,
+      "text": "Ele abre as portas pra ningu mais deixar Ele trabalha pro que nele confia Caminha contigo de noite ou de dia Erga suas m sua b chegou",
+      "kind": "climax",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 0,
+        "development": 0,
+        "application": 1,
+        "climax": 3,
+        "appeal": 0
+      },
+      "intensity": 27
+    },
+    {
+      "id": 35,
+      "start": 237.52586,
+      "end": 241.36586,
+      "text": "Comece a cantar com muito louvor",
+      "kind": "climax",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 0,
+        "development": 0,
+        "application": 1,
+        "climax": 3,
+        "appeal": 0
+      },
+      "intensity": 28
+    },
+    {
+      "id": 36,
+      "start": 241.36586,
+      "end": 245.22586,
+      "text": "Com muito louvor",
+      "kind": "climax",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 0,
+        "development": 0,
+        "application": 0,
+        "climax": 3,
+        "appeal": 0
+      },
+      "intensity": 28
+    },
+    {
+      "id": 37,
+      "start": 245.22586,
+      "end": 247.88586,
+      "text": "Com muito louvor",
+      "kind": "climax",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 0,
+        "development": 0,
+        "application": 0,
+        "climax": 3,
+        "appeal": 0
+      },
+      "intensity": 28
+    },
+    {
+      "id": 38,
+      "start": 247.88586,
+      "end": 251.02586,
+      "text": "Com muito louvor",
+      "kind": "climax",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 0,
+        "development": 0,
+        "application": 0,
+        "climax": 3,
+        "appeal": 3
+      },
+      "intensity": 29
+    },
+    {
+      "id": 39,
+      "start": 251.02586,
+      "end": 254.18587,
+      "text": "Com muito louvor",
+      "kind": "climax",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 0,
+        "development": 0,
+        "application": 0,
+        "climax": 3,
+        "appeal": 3
+      },
+      "intensity": 29
+    },
+    {
+      "id": 40,
+      "start": 254.18587,
+      "end": 284.16586,
+      "text": "Com muito louvor",
+      "kind": "climax",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 0,
+        "development": 0,
+        "application": 0,
+        "climax": 3,
+        "appeal": 3
+      },
+      "intensity": 29
+    },
+    {
+      "id": 41,
+      "start": 284.18585,
+      "end": 287.50586,
+      "text": "Exalte o Senhor",
+      "kind": "appeal",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 0,
+        "development": 0,
+        "application": 0,
+        "climax": 0,
+        "appeal": 3
+      },
+      "intensity": 29
+    },
+    {
+      "id": 42,
+      "start": 287.50586,
+      "end": 291.56586,
+      "text": "Cante ao Senhor",
+      "kind": "appeal",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 0,
+        "development": 0,
+        "application": 0,
+        "climax": 0,
+        "appeal": 3
+      },
+      "intensity": 30
+    },
+    {
+      "id": 43,
+      "start": 291.56586,
+      "end": 296.10587,
+      "text": "Com muito louvor",
+      "kind": "appeal",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 0,
+        "development": 0,
+        "application": 0,
+        "climax": 0,
+        "appeal": 3
+      },
+      "intensity": 30
+    }
+  ],
+  "transitions": [
+    {
+      "segment_id": 24,
+      "start": 191.66391,
+      "terms": [
+        "então"
+      ],
+      "text": "Então louve, simplesmente louve"
+    }
+  ],
+  "intensity": [
+    18,
+    18,
+    19,
+    19,
+    19,
+    19,
+    20,
+    20,
+    20,
+    21,
+    25,
+    21,
+    21,
+    22,
+    22,
+    22,
+    22,
+    23,
+    23,
+    23,
+    24,
+    24,
+    24,
+    24,
+    25,
+    25,
+    25,
+    26,
+    26,
+    26,
+    30,
+    27,
+    27,
+    27,
+    27,
+    28,
+    28,
+    28,
+    29,
+    29,
+    29,
+    29,
+    30,
+    30
+  ],
+  "climax": {
+    "segment_id": 30,
+    "start": 215.2239,
+    "end": 218.38391,
+    "text": "Deus vai na frente abrindo o caminho",
+    "intensity": 30
+  },
+  "stats": {
+    "segment_count": 44,
+    "section_count": 7,
+    "transition_count": 1,
+    "duration": 296.10587
+  },
+  "job_id": "981ee92054984f099fa871c33422a7dc",
+  "provider": "groq"
+}

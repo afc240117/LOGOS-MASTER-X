@@ -1,0 +1,19 @@
+{
+  "version": "v5.4.3.4",
+  "module": "UI Controls Zoom/Fullscreen",
+  "checks": {
+    "javascript_syntax": true,
+    "modular_injection": true,
+    "backup": true,
+    "rollback": true,
+    "zoom_minus": true,
+    "zoom_plus": true,
+    "zoom_reset": true,
+    "fullscreen": true,
+    "exit_fullscreen": true,
+    "keyboard_shortcuts": true,
+    "no_audio_x_changes": true,
+    "no_atlas_changes": true,
+    "no_bible_x_raiox_changes": true
+  }
+}

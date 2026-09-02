@@ -1,0 +1,69 @@
+{
+  "id": "475ca73687044a4780ea7c4e10e9bf04",
+  "name": "Pr Marco Restauração espiritual melhor_1",
+  "notes": "",
+  "tags": [
+    "audio-x",
+    "pipeline"
+  ],
+  "source_job_id": "6a15d04e62344b02bf709e36383bd28b",
+  "created_at": 1786939981.2105865,
+  "updated_at": 1786939981.2105865,
+  "dna_k7": {
+    "version": "audio-x-dna-k7-v1",
+    "score": 52,
+    "profile": "K7 Moderado",
+    "axes": {
+      "intensidade": 27,
+      "progressao": 62,
+      "densidade_biblica": 100,
+      "aplicacao": 27,
+      "apelo": 23,
+      "ritmo": 60,
+      "climax": 34,
+      "expressividade": 35,
+      "estrutura": 92,
+      "contexto": 73
+    },
+    "source": {
+      "duration": 599.978,
+      "section_count": 23,
+      "transition_count": 10,
+      "segment_count": 138
+    },
+    "signature": {
+      "opening_style": "direta",
+      "development_weight": 5,
+      "application_weight": 3,
+      "appeal_weight": 23,
+      "climax_position": 95.6
+    },
+    "job_id": "6a15d04e62344b02bf709e36383bd28b",
+    "provider": "groq"
+  },
+  "studio_x": {
+    "schema": "logos-master-x/studio-x-dna-k7-v1",
+    "dna_score": 52,
+    "profile": "K7 Moderado",
+    "axes": {
+      "intensidade": 27,
+      "progressao": 62,
+      "densidade_biblica": 100,
+      "aplicacao": 27,
+      "apelo": 23,
+      "ritmo": 60,
+      "climax": 34,
+      "expressividade": 35,
+      "estrutura": 92,
+      "contexto": 73
+    },
+    "signature": {
+      "opening_style": "direta",
+      "development_weight": 5,
+      "application_weight": 3,
+      "appeal_weight": 23,
+      "climax_position": 95.6
+    },
+    "instruction": "Use apenas características estruturais e dinâmicas. Não copie texto, frases ou voz do áudio-fonte."
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "version": "5.4.3.3",
+  "module": "Audio X -> Studio X Bridge",
+  "checks": {
+    "js_syntax": true,
+    "index_injection": true,
+    "no_backend_changes": true,
+    "preserve_atlas": true,
+    "preserve_bible_x": true,
+    "preserve_raio_x": true,
+    "preserve_upload_fix_5432": true,
+    "rollback_available": true
+  }
+}

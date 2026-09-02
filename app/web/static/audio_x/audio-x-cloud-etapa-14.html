@@ -1,0 +1,17 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Áudio X · Etapa 14 Homologação</title><link rel="stylesheet" href="./audio-x-cloud-etapa-14.css"></head><body>
+<main class="shell">
+<header><div><h1>🎧 Áudio X</h1><p>Etapa 14 · Homologação Real dos Provedores e Pipeline</p></div><button id="probe">▶ Testar APIs</button></header>
+<section class="hero card"><div><span>STATUS DE HOMOLOGAÇÃO</span><strong id="score">—</strong><b id="state">AGUARDANDO</b></div><p>Valida Groq, Deepgram e OpenAI sem enviar áudio. Depois, use uma MP3 curta para homologar o fluxo real.</p></section>
+<section class="cards" id="providers"></section>
+<section class="layout">
+<article class="card"><h2>Checklist da Etapa 14</h2><div class="checks">
+<div>1. Groq autenticado</div><div>2. Deepgram autenticado</div><div>3. OpenAI autenticado</div>
+<div>4. Upload MP3 real</div><div>5. Transcrição cloud</div><div>6. Segmentação</div>
+<div>7. DNA K7</div><div>8. Biblioteca</div><div>9. Studio X</div></div>
+<div class="note">Os 3 primeiros itens podem ser validados agora sem consumo de transcrição. Os itens 4–9 exigem uma MP3 real.</div></article>
+<aside class="card"><h2>Validar Job já processado</h2><label>Job ID<input id="job" placeholder="Cole um Job ID do Áudio X"></label><button id="validate">Validar fluxo</button><div id="jobResult"></div></aside>
+</section>
+</main>
+<script src="./audio-x-homologation-client.js"></script><script src="./audio-x-cloud-etapa-14.js"></script>
+</body></html>

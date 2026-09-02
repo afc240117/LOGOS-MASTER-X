@@ -1,0 +1,1324 @@
+{
+  "version": "audio-x-cloud-segmentation-v1",
+  "sections": [
+    {
+      "id": 0,
+      "kind": "intro",
+      "name": "Introdução",
+      "start": 0.0,
+      "end": 37.66,
+      "duration": 37.66,
+      "segment_ids": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "segment_count": 6,
+      "avg_intensity": 18,
+      "text_preview": "Era só um menino entre a multidão que seguia Jesus Com o lanche na mão, acompanhado da mãe Que o conduz Os discípulos chegaram e falaram com o mestre Em particular Jesus, despede a multidão",
+      "percent": 12.2
+    },
+    {
+      "id": 1,
+      "kind": "text",
+      "name": "Texto Bíblico",
+      "start": 37.66,
+      "end": 59.16,
+      "duration": 21.5,
+      "segment_ids": [
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13
+      ],
+      "segment_count": 8,
+      "avg_intensity": 20,
+      "text_preview": "Pra que comprem comida pra se alimentar Jesus fala que é importante Que todos não saiam dali E manda alimentar A todo o povo que estava ali Os discípulos falaram Senhor, nós não temos nenhuma condição Não temos dinheiro e não temos pão",
+      "percent": 7.0
+    },
+    {
+      "id": 2,
+      "kind": "context",
+      "name": "Contexto",
+      "start": 59.16,
+      "end": 68.62,
+      "duration": 9.46,
+      "segment_ids": [
+        14,
+        15,
+        16
+      ],
+      "segment_count": 3,
+      "avg_intensity": 21,
+      "text_preview": "Pra alimentar a grande multidão Mas tinha um menino Que é picadinho",
+      "percent": 3.1
+    },
+    {
+      "id": 3,
+      "kind": "development",
+      "name": "Desenvolvimento",
+      "start": 68.62,
+      "end": 151.0355,
+      "duration": 82.42,
+      "segment_ids": [
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32
+      ],
+      "segment_count": 16,
+      "avg_intensity": 23,
+      "text_preview": "Que tinha em sua mão Cinco p e dois peixinhos Um menino comum Como um outro qualquer Mas pra Jesus fazer n precisa ter nome ele usa quem quer Na lógica humana é pouco alimento Mas na mão de Jesus é só por pouco tempo Se pra um homem é pouco e não vale, mas par",
+      "percent": 26.8
+    },
+    {
+      "id": 4,
+      "kind": "application",
+      "name": "Aplicação",
+      "start": 151.0355,
+      "end": 166.37102,
+      "duration": 15.34,
+      "segment_ids": [
+        33
+      ],
+      "segment_count": 1,
+      "avg_intensity": 25,
+      "text_preview": "Talvez hoje voc se ache que s mais um entre o povo",
+      "percent": 5.0
+    },
+    {
+      "id": 5,
+      "kind": "development",
+      "name": "Desenvolvimento",
+      "start": 166.37102,
+      "end": 209.93102,
+      "duration": 43.56,
+      "segment_ids": [
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42
+      ],
+      "segment_count": 9,
+      "avg_intensity": 26,
+      "text_preview": "Que ninguém te viu e nem percebeu que você estava aí Na verdade você só veio com o intuito de adorar Mas na realidade o intuito de Deus é querer te usar Pois há muitos que estão com fome e com sede de ouvir a palavra E o mestre procura aquele que tem algo pra ",
+      "percent": 14.2
+    },
+    {
+      "id": 7,
+      "kind": "development",
+      "name": "Desenvolvimento",
+      "start": 209.93102,
+      "end": 231.21101,
+      "duration": 21.28,
+      "segment_ids": [
+        43,
+        44,
+        45,
+        46
+      ],
+      "segment_count": 4,
+      "avg_intensity": 27,
+      "text_preview": "E se você não vir, ele vai te buscar Você não é comum, tem algo a mostrar E o mestre quer te ver, quer te encher, quer te usar Pra muitos você é nada, é uma pedra na estrada",
+      "percent": 6.9
+    },
+    {
+      "id": 8,
+      "kind": "climax",
+      "name": "Clímax",
+      "start": 231.21101,
+      "end": 285.32654,
+      "duration": 54.12,
+      "segment_ids": [
+        47,
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56
+      ],
+      "segment_count": 10,
+      "avg_intensity": 31,
+      "text_preview": "mais uma multid sem servente a praveda Mas na m de Jesus voc muito uma bala encadilhada Um mestre vai pegar o ponto que tu tens em ti E vai multiplicar, capacitar, vai sacudir Quando abrir a boca o coxo vai andar Quando louvar o hino, o mundo vai falar Enquant",
+      "percent": 17.6
+    },
+    {
+      "id": 9,
+      "kind": "appeal",
+      "name": "Apelo",
+      "start": 285.32654,
+      "end": 295.24652,
+      "duration": 9.92,
+      "segment_ids": [
+        57,
+        58
+      ],
+      "segment_count": 2,
+      "avg_intensity": 32,
+      "text_preview": "Serás alimento de Deus para as cidades Mostra o que tu tens e recebe uma nova unção",
+      "percent": 3.2
+    },
+    {
+      "id": 10,
+      "kind": "application",
+      "name": "Aplicação",
+      "start": 295.24652,
+      "end": 307.80652,
+      "duration": 12.56,
+      "segment_ids": [
+        59,
+        60
+      ],
+      "segment_count": 2,
+      "avg_intensity": 30,
+      "text_preview": "Pois hoje Jesus é Jesus e você é o menino do lanche nessa multidão Deixa ele te usar",
+      "percent": 4.1
+    }
+  ],
+  "segments": [
+    {
+      "id": 0,
+      "start": 0.0,
+      "end": 24.779999,
+      "text": "Era só um menino entre a multidão que seguia Jesus",
+      "kind": "intro",
+      "classification_scores": {
+        "intro": 3,
+        "text": 0,
+        "context": 0,
+        "development": 0,
+        "application": 0,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 18
+    },
+    {
+      "id": 1,
+      "start": 24.779999,
+      "end": 29.46,
+      "text": "Com o lanche na mão, acompanhado da mãe",
+      "kind": "intro",
+      "classification_scores": {
+        "intro": 3,
+        "text": 0,
+        "context": 0,
+        "development": 0,
+        "application": 0,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 18
+    },
+    {
+      "id": 2,
+      "start": 29.46,
+      "end": 30.779999,
+      "text": "Que o conduz",
+      "kind": "intro",
+      "classification_scores": {
+        "intro": 3,
+        "text": 0,
+        "context": 0,
+        "development": 0,
+        "application": 0,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 18
+    },
+    {
+      "id": 3,
+      "start": 30.779999,
+      "end": 34.16,
+      "text": "Os discípulos chegaram e falaram com o mestre",
+      "kind": "intro",
+      "classification_scores": {
+        "intro": 3,
+        "text": 0,
+        "context": 0,
+        "development": 0,
+        "application": 0,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 19
+    },
+    {
+      "id": 4,
+      "start": 34.16,
+      "end": 35.28,
+      "text": "Em particular",
+      "kind": "intro",
+      "classification_scores": {
+        "intro": 3,
+        "text": 0,
+        "context": 0,
+        "development": 0,
+        "application": 0,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 19
+    },
+    {
+      "id": 5,
+      "start": 35.28,
+      "end": 37.66,
+      "text": "Jesus, despede a multidão",
+      "kind": "intro",
+      "classification_scores": {
+        "intro": 3,
+        "text": 2,
+        "context": 0,
+        "development": 0,
+        "application": 0,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 19
+    },
+    {
+      "id": 6,
+      "start": 37.66,
+      "end": 41.16,
+      "text": "Pra que comprem comida pra se alimentar",
+      "kind": "text",
+      "classification_scores": {
+        "intro": 0,
+        "text": 2,
+        "context": 0,
+        "development": 0,
+        "application": 0,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 19
+    },
+    {
+      "id": 7,
+      "start": 41.16,
+      "end": 44.0,
+      "text": "Jesus fala que é importante",
+      "kind": "text",
+      "classification_scores": {
+        "intro": 0,
+        "text": 2,
+        "context": 0,
+        "development": 0,
+        "application": 0,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 19
+    },
+    {
+      "id": 8,
+      "start": 44.0,
+      "end": 45.899998,
+      "text": "Que todos não saiam dali",
+      "kind": "text",
+      "classification_scores": {
+        "intro": 0,
+        "text": 2,
+        "context": 0,
+        "development": 0,
+        "application": 0,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 20
+    },
+    {
+      "id": 9,
+      "start": 45.899998,
+      "end": 48.66,
+      "text": "E manda alimentar",
+      "kind": "text",
+      "classification_scores": {
+        "intro": 0,
+        "text": 2,
+        "context": 2,
+        "development": 0,
+        "application": 0,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 20
+    },
+    {
+      "id": 10,
+      "start": 48.66,
+      "end": 51.62,
+      "text": "A todo o povo que estava ali",
+      "kind": "text",
+      "classification_scores": {
+        "intro": 0,
+        "text": 2,
+        "context": 2,
+        "development": 0,
+        "application": 0,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 20
+    },
+    {
+      "id": 11,
+      "start": 51.62,
+      "end": 53.94,
+      "text": "Os discípulos falaram",
+      "kind": "text",
+      "classification_scores": {
+        "intro": 0,
+        "text": 2,
+        "context": 2,
+        "development": 0,
+        "application": 0,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 20
+    },
+    {
+      "id": 12,
+      "start": 53.94,
+      "end": 56.44,
+      "text": "Senhor, nós não temos nenhuma condição",
+      "kind": "text",
+      "classification_scores": {
+        "intro": 0,
+        "text": 2,
+        "context": 2,
+        "development": 0,
+        "application": 0,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 20
+    },
+    {
+      "id": 13,
+      "start": 56.44,
+      "end": 59.16,
+      "text": "Não temos dinheiro e não temos pão",
+      "kind": "text",
+      "classification_scores": {
+        "intro": 0,
+        "text": 2,
+        "context": 2,
+        "development": 0,
+        "application": 0,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 21
+    },
+    {
+      "id": 14,
+      "start": 59.16,
+      "end": 62.84,
+      "text": "Pra alimentar a grande multidão",
+      "kind": "context",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 2,
+        "development": 0,
+        "application": 0,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 21
+    },
+    {
+      "id": 15,
+      "start": 62.84,
+      "end": 65.94,
+      "text": "Mas tinha um menino",
+      "kind": "context",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 2,
+        "development": 0,
+        "application": 0,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 21
+    },
+    {
+      "id": 16,
+      "start": 65.94,
+      "end": 68.62,
+      "text": "Que é picadinho",
+      "kind": "context",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 2,
+        "development": 0,
+        "application": 0,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 21
+    },
+    {
+      "id": 17,
+      "start": 68.62,
+      "end": 71.08,
+      "text": "Que tinha em sua mão",
+      "kind": "development",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 2,
+        "development": 3,
+        "application": 0,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 21
+    },
+    {
+      "id": 18,
+      "start": 71.08,
+      "end": 84.635506,
+      "text": "Cinco p e dois peixinhos Um menino comum Como um outro qualquer Mas pra Jesus fazer n precisa ter nome ele usa quem quer",
+      "kind": "development",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 2,
+        "development": 3,
+        "application": 0,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 22
+    },
+    {
+      "id": 19,
+      "start": 84.635506,
+      "end": 89.87551,
+      "text": "Na lógica humana é pouco alimento",
+      "kind": "development",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 2,
+        "development": 3,
+        "application": 0,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 22
+    },
+    {
+      "id": 20,
+      "start": 89.87551,
+      "end": 95.27551,
+      "text": "Mas na mão de Jesus é só por pouco tempo",
+      "kind": "development",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 2,
+        "development": 3,
+        "application": 0,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 22
+    },
+    {
+      "id": 21,
+      "start": 95.27551,
+      "end": 103.91551,
+      "text": "Se pra um homem é pouco e não vale, mas para Jesus é suficiente pra fazer milagres",
+      "kind": "development",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 0,
+        "development": 3,
+        "application": 0,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 26
+    },
+    {
+      "id": 22,
+      "start": 103.91551,
+      "end": 111.83551,
+      "text": "Um mestre pega o pão e o peixe ora e agradece",
+      "kind": "development",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 0,
+        "development": 3,
+        "application": 0,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 22
+    },
+    {
+      "id": 23,
+      "start": 111.83551,
+      "end": 117.29551,
+      "text": "Senta o povo na grama, os discípulos levantam e a eles o servem",
+      "kind": "development",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 0,
+        "development": 3,
+        "application": 1,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 23
+    },
+    {
+      "id": 24,
+      "start": 117.29551,
+      "end": 119.955505,
+      "text": "Quando tirava um pão, já tinha lá dois pães",
+      "kind": "development",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 0,
+        "development": 3,
+        "application": 1,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 23
+    },
+    {
+      "id": 25,
+      "start": 119.955505,
+      "end": 122.6555,
+      "text": "Quando tirava um peixe, já tinha lá dois peixes",
+      "kind": "development",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 0,
+        "development": 3,
+        "application": 1,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 23
+    },
+    {
+      "id": 26,
+      "start": 122.6555,
+      "end": 125.27551,
+      "text": "O povo não sabia se chorava ou se comia",
+      "kind": "development",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 0,
+        "development": 3,
+        "application": 1,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 23
+    },
+    {
+      "id": 27,
+      "start": 125.27551,
+      "end": 127.91551,
+      "text": "Era tanto alimento que a multidão repetia",
+      "kind": "development",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 0,
+        "development": 3,
+        "application": 1,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 23
+    },
+    {
+      "id": 28,
+      "start": 127.91551,
+      "end": 132.5755,
+      "text": "Era tanta glória que invadia aquele lugar",
+      "kind": "development",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 0,
+        "development": 3,
+        "application": 1,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 28
+    },
+    {
+      "id": 29,
+      "start": 132.5755,
+      "end": 138.3155,
+      "text": "Eu sinceramente desejaria estar lá",
+      "kind": "development",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 0,
+        "development": 3,
+        "application": 1,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 24
+    },
+    {
+      "id": 30,
+      "start": 138.3155,
+      "end": 143.4555,
+      "text": "Se para os discípulos um lanchinho não serviria",
+      "kind": "development",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 0,
+        "development": 3,
+        "application": 1,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 24
+    },
+    {
+      "id": 31,
+      "start": 143.4555,
+      "end": 147.39551,
+      "text": "Mas pra Jesus dois peixes é muito peixe",
+      "kind": "development",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 0,
+        "development": 3,
+        "application": 1,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 24
+    },
+    {
+      "id": 32,
+      "start": 147.39551,
+      "end": 151.0355,
+      "text": "E cinco pães é padaria",
+      "kind": "development",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 0,
+        "development": 3,
+        "application": 1,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 24
+    },
+    {
+      "id": 33,
+      "start": 151.0355,
+      "end": 166.37102,
+      "text": "Talvez hoje voc se ache que s mais um entre o povo",
+      "kind": "application",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 0,
+        "development": 3,
+        "application": 4,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 25
+    },
+    {
+      "id": 34,
+      "start": 166.37102,
+      "end": 171.45102,
+      "text": "Que ninguém te viu e nem percebeu que você estava aí",
+      "kind": "development",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 0,
+        "development": 3,
+        "application": 1,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 25
+    },
+    {
+      "id": 35,
+      "start": 171.45102,
+      "end": 176.53102,
+      "text": "Na verdade você só veio com o intuito de adorar",
+      "kind": "development",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 0,
+        "development": 3,
+        "application": 1,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 25
+    },
+    {
+      "id": 36,
+      "start": 176.53102,
+      "end": 181.89102,
+      "text": "Mas na realidade o intuito de Deus é querer te usar",
+      "kind": "development",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 0,
+        "development": 3,
+        "application": 1,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 25
+    },
+    {
+      "id": 37,
+      "start": 182.87102,
+      "end": 187.35101,
+      "text": "Pois há muitos que estão com fome e com sede de ouvir a palavra",
+      "kind": "development",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 0,
+        "development": 3,
+        "application": 1,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 25
+    },
+    {
+      "id": 38,
+      "start": 187.35101,
+      "end": 192.75102,
+      "text": "E o mestre procura aquele que tem algo pra mostrar",
+      "kind": "development",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 0,
+        "development": 3,
+        "application": 1,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 30
+    },
+    {
+      "id": 39,
+      "start": 192.75102,
+      "end": 197.79102,
+      "text": "O povo dispensa e fala que você não tem condição",
+      "kind": "development",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 0,
+        "development": 3,
+        "application": 1,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 26
+    },
+    {
+      "id": 40,
+      "start": 197.79102,
+      "end": 200.47101,
+      "text": "Que o que você tem não dá pra nação",
+      "kind": "development",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 0,
+        "development": 3,
+        "application": 1,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 26
+    },
+    {
+      "id": 41,
+      "start": 200.47101,
+      "end": 203.97101,
+      "text": "E você se esconde entre a multidão",
+      "kind": "development",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 0,
+        "development": 3,
+        "application": 1,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 26
+    },
+    {
+      "id": 42,
+      "start": 203.97101,
+      "end": 209.93102,
+      "text": "Mas hoje ele te viu e mandou te chamar",
+      "kind": "application",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 0,
+        "development": 3,
+        "application": 4,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 26
+    },
+    {
+      "id": 43,
+      "start": 209.93102,
+      "end": 215.031,
+      "text": "E se você não vir, ele vai te buscar",
+      "kind": "development",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 0,
+        "development": 3,
+        "application": 1,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 27
+    },
+    {
+      "id": 44,
+      "start": 215.031,
+      "end": 220.67102,
+      "text": "Você não é comum, tem algo a mostrar",
+      "kind": "development",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 0,
+        "development": 3,
+        "application": 1,
+        "climax": 3,
+        "appeal": 0
+      },
+      "intensity": 27
+    },
+    {
+      "id": 45,
+      "start": 220.67102,
+      "end": 225.95102,
+      "text": "E o mestre quer te ver, quer te encher, quer te usar",
+      "kind": "development",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 0,
+        "development": 3,
+        "application": 1,
+        "climax": 3,
+        "appeal": 0
+      },
+      "intensity": 27
+    },
+    {
+      "id": 46,
+      "start": 225.95102,
+      "end": 231.21101,
+      "text": "Pra muitos você é nada, é uma pedra na estrada",
+      "kind": "development",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 0,
+        "development": 3,
+        "application": 1,
+        "climax": 3,
+        "appeal": 0
+      },
+      "intensity": 27
+    },
+    {
+      "id": 47,
+      "start": 231.21101,
+      "end": 244.46654,
+      "text": "mais uma multid sem servente a praveda Mas na m de Jesus voc muito uma bala encadilhada",
+      "kind": "climax",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 0,
+        "development": 0,
+        "application": 1,
+        "climax": 3,
+        "appeal": 0
+      },
+      "intensity": 27
+    },
+    {
+      "id": 48,
+      "start": 244.46654,
+      "end": 252.58653,
+      "text": "Um mestre vai pegar o ponto que tu tens em ti",
+      "kind": "climax",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 0,
+        "development": 0,
+        "application": 1,
+        "climax": 3,
+        "appeal": 0
+      },
+      "intensity": 28
+    },
+    {
+      "id": 49,
+      "start": 252.58653,
+      "end": 258.26654,
+      "text": "E vai multiplicar, capacitar, vai sacudir",
+      "kind": "climax",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 0,
+        "development": 0,
+        "application": 1,
+        "climax": 3,
+        "appeal": 0
+      },
+      "intensity": 28
+    },
+    {
+      "id": 50,
+      "start": 258.26654,
+      "end": 261.18652,
+      "text": "Quando abrir a boca o coxo vai andar",
+      "kind": "climax",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 0,
+        "development": 0,
+        "application": 0,
+        "climax": 3,
+        "appeal": 0
+      },
+      "intensity": 28
+    },
+    {
+      "id": 51,
+      "start": 261.18652,
+      "end": 266.50653,
+      "text": "Quando louvar o hino, o mundo vai falar Enquanto tudo é glória, algo vai acontecer",
+      "kind": "climax",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 0,
+        "development": 0,
+        "application": 0,
+        "climax": 3,
+        "appeal": 0
+      },
+      "intensity": 32
+    },
+    {
+      "id": 52,
+      "start": 266.50653,
+      "end": 269.88654,
+      "text": "A glória vai descer, vai descer, vai descer, vai descer",
+      "kind": "climax",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 0,
+        "development": 0,
+        "application": 0,
+        "climax": 3,
+        "appeal": 0
+      },
+      "intensity": 32
+    },
+    {
+      "id": 53,
+      "start": 269.88654,
+      "end": 272.54654,
+      "text": "A glória vai descer, vai descer, vai descer",
+      "kind": "climax",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 0,
+        "development": 0,
+        "application": 0,
+        "climax": 3,
+        "appeal": 3
+      },
+      "intensity": 33
+    },
+    {
+      "id": 54,
+      "start": 272.54654,
+      "end": 275.20654,
+      "text": "A glória vai descer, vai descer, vai descer",
+      "kind": "climax",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 0,
+        "development": 0,
+        "application": 0,
+        "climax": 3,
+        "appeal": 3
+      },
+      "intensity": 33
+    },
+    {
+      "id": 55,
+      "start": 275.20654,
+      "end": 279.48654,
+      "text": "A glória vai descer, vai descer, vai descer, vai descer",
+      "kind": "climax",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 0,
+        "development": 0,
+        "application": 0,
+        "climax": 3,
+        "appeal": 3
+      },
+      "intensity": 33
+    },
+    {
+      "id": 56,
+      "start": 279.48654,
+      "end": 285.32654,
+      "text": "Através de ti Deus vai fazer tantos milagres",
+      "kind": "climax",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 0,
+        "development": 0,
+        "application": 0,
+        "climax": 3,
+        "appeal": 3
+      },
+      "intensity": 33
+    },
+    {
+      "id": 57,
+      "start": 285.32654,
+      "end": 290.04654,
+      "text": "Serás alimento de Deus para as cidades",
+      "kind": "appeal",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 0,
+        "development": 0,
+        "application": 0,
+        "climax": 0,
+        "appeal": 3
+      },
+      "intensity": 29
+    },
+    {
+      "id": 58,
+      "start": 290.04654,
+      "end": 295.24652,
+      "text": "Mostra o que tu tens e recebe uma nova unção",
+      "kind": "appeal",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 0,
+        "development": 0,
+        "application": 0,
+        "climax": 0,
+        "appeal": 3
+      },
+      "intensity": 34
+    },
+    {
+      "id": 59,
+      "start": 295.24652,
+      "end": 304.32654,
+      "text": "Pois hoje Jesus é Jesus e você é o menino do lanche nessa multidão",
+      "kind": "application",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 0,
+        "development": 0,
+        "application": 3,
+        "climax": 0,
+        "appeal": 3
+      },
+      "intensity": 30
+    },
+    {
+      "id": 60,
+      "start": 304.32654,
+      "end": 307.80652,
+      "text": "Deixa ele te usar",
+      "kind": "appeal",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 0,
+        "development": 0,
+        "application": 0,
+        "climax": 0,
+        "appeal": 3
+      },
+      "intensity": 30
+    }
+  ],
+  "transitions": [],
+  "intensity": [
+    18,
+    18,
+    18,
+    19,
+    19,
+    19,
+    19,
+    19,
+    20,
+    20,
+    20,
+    20,
+    20,
+    21,
+    21,
+    21,
+    21,
+    21,
+    22,
+    22,
+    22,
+    26,
+    22,
+    23,
+    23,
+    23,
+    23,
+    23,
+    28,
+    24,
+    24,
+    24,
+    24,
+    25,
+    25,
+    25,
+    25,
+    25,
+    30,
+    26,
+    26,
+    26,
+    26,
+    27,
+    27,
+    27,
+    27,
+    27,
+    28,
+    28,
+    28,
+    32,
+    32,
+    33,
+    33,
+    33,
+    33,
+    29,
+    34,
+    30,
+    30
+  ],
+  "climax": {
+    "segment_id": 58,
+    "start": 290.04654,
+    "end": 295.24652,
+    "text": "Mostra o que tu tens e recebe uma nova unção",
+    "intensity": 34
+  },
+  "stats": {
+    "segment_count": 61,
+    "section_count": 10,
+    "transition_count": 0,
+    "duration": 307.80652
+  },
+  "job_id": "d6d9653044754461b32048dc65681574",
+  "provider": "groq"
+}

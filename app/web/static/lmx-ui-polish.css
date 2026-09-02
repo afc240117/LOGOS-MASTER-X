@@ -1,0 +1,276 @@
+/* LOGOS MASTER X — acabamento dos controles de navegação e acesso Raio X Vivo. */
+
+html[data-layout="classico"] .top-nav-shell{
+  min-width:0;
+  display:flex;
+  align-items:center;
+  gap:6px;
+  flex:0 1 auto;
+}
+html[data-layout="classico"] .top-nav-shell .top-nav{
+  min-width:0!important;
+  max-width:min(760px,calc(100vw - 500px));
+  overflow-x:auto!important;
+  overflow-y:hidden!important;
+  scroll-behavior:smooth;
+  scrollbar-width:none!important;
+  justify-content:flex-start!important;
+  margin:0!important;
+  padding:3px 2px!important;
+}
+html[data-layout="classico"] .top-nav-shell .top-nav::-webkit-scrollbar{display:none!important}
+html[data-layout="classico"] .top-nav-shell .top-nav button{flex:0 0 auto!important}
+html[data-layout="classico"] .top-nav-edge{
+  width:30px!important;
+  min-width:30px!important;
+  height:42px!important;
+  min-height:42px!important;
+  padding:0!important;
+  display:inline-grid!important;
+  place-items:center!important;
+  border:1px solid rgba(196,151,62,.72)!important;
+  border-radius:13px!important;
+  background:linear-gradient(180deg,#17140d,#080e15)!important;
+  color:#f3cb69!important;
+  box-shadow:0 5px 16px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.06)!important;
+  font-size:25px!important;
+  line-height:1!important;
+  cursor:pointer!important;
+  transition:transform .16s ease,border-color .16s ease,box-shadow .16s ease,filter .16s ease;
+}
+html[data-layout="classico"] .top-nav-edge:hover,
+html[data-layout="classico"] .top-nav-edge:focus-visible{
+  border-color:#f0c969!important;
+  box-shadow:0 7px 20px rgba(0,0,0,.36),0 0 15px rgba(237,188,73,.24),inset 0 1px 0 rgba(255,255,255,.1)!important;
+  transform:translateY(-1px);
+  outline:none;
+}
+html[data-layout="classico"] .top-nav-edge:active{transform:translateY(1px);filter:brightness(.92)}
+html[data-layout="classico"] .top-nav-edge[aria-disabled="true"]{opacity:.4}
+
+/* Os botões que ficam nas pontas da faixa também recebem sombra com canto arredondado. */
+html[data-layout="classico"] .top-nav-shell .top-nav button:first-child,
+html[data-layout="classico"] .top-nav-shell .top-nav button:last-child,
+html[data-layout="classico"] .top-menu-cluster .top-actions button:last-child{
+  border-radius:13px!important;
+  box-shadow:0 5px 15px rgba(0,0,0,.2),inset 0 1px 0 rgba(255,255,255,.025)!important;
+}
+
+@media(max-width:1480px){
+  html[data-layout="classico"] .top-nav-shell .top-nav{max-width:min(650px,calc(100vw - 410px))}
+}
+@media(max-width:1180px){
+  html[data-layout="classico"] .top-nav-shell .top-nav{max-width:min(520px,calc(100vw - 315px))}
+  html[data-layout="classico"] .top-nav-edge{width:28px!important;min-width:28px!important}
+}
+@media(max-width:980px){
+  html[data-layout="classico"] .top-nav-shell .top-nav{max-width:min(420px,calc(100vw - 245px))}
+}
+
+.bx-live-launcher{
+  width:100%;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin:12px 0 0;
+  padding:12px 15px;
+  border:1px solid rgba(244,204,117,.42);
+  border-radius:14px;
+  background:linear-gradient(100deg,rgba(244,204,117,.12),rgba(42,104,180,.12));
+  color:inherit;
+  text-align:left;
+  cursor:pointer;
+  box-shadow:0 8px 22px rgba(0,0,0,.18),inset 0 1px 0 rgba(255,255,255,.06);
+  transition:border-color .18s ease,box-shadow .18s ease,transform .18s ease;
+}
+.bx-live-launcher:hover,.bx-live-launcher:focus-visible{
+  border-color:rgba(244,204,117,.8);
+  box-shadow:0 10px 28px rgba(0,0,0,.25),0 0 18px rgba(244,204,117,.12);
+  transform:translateY(-1px);
+  outline:none;
+}
+.bx-live-launcher:active{transform:translateY(1px)}
+.bx-live-launcher-icon{
+  display:grid;
+  place-items:center;
+  width:34px;
+  height:34px;
+  flex:0 0 34px;
+  border:1px solid rgba(244,204,117,.5);
+  border-radius:10px;
+  background:rgba(0,0,0,.18);
+  font-size:18px;
+}
+.bx-live-launcher>span:nth-child(2){display:grid;gap:2px;min-width:0}
+.bx-live-launcher b{font-size:14px;color:#f4cc75}
+.bx-live-launcher small{font-size:11px;color:rgba(235,242,255,.68)}
+.bx-live-launcher-arrow{margin-left:auto;color:#f4cc75;font-size:22px;font-weight:900}
+@media(max-width:760px){
+  .bx-live-launcher{margin-top:8px;padding:11px 12px}
+  .bx-live-launcher small{font-size:10px}
+}
+
+/* Popup comum dos atalhos abaixo dos versículos. */
+#bxVerseToolPopup{
+  position:fixed!important;
+  inset:0!important;
+  z-index:130000!important;
+  display:grid!important;
+  place-items:center!important;
+  padding:16px!important;
+  background:rgba(0,4,9,.78)!important;
+  backdrop-filter:blur(7px)!important;
+}
+/* Modais já existentes mantêm o fundo separado do cartão. Isso evita que o
+   próprio painel da Bíblia seja esticado para ocupar a tela inteira. */
+body.bx-unified-modal-open{overflow:hidden!important}
+body.bx-unified-modal-open::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  z-index:129999;
+  background:rgba(0,4,9,.78);
+  backdrop-filter:blur(7px);
+  pointer-events:auto;
+}
+.bx-unified-modal:not(#bxVerseContext):not([hidden]){
+  position:fixed!important;
+  inset:0!important;
+  z-index:130000!important;
+  display:grid!important;
+  place-items:center!important;
+  padding:16px!important;
+  background:rgba(0,4,9,.78)!important;
+  backdrop-filter:blur(7px)!important;
+}
+#bxVerseToolPopup[hidden],
+.bx-unified-modal[hidden],
+.bx-unified-live-popup[hidden]{display:none!important}
+#bxVerseToolPopup{color:#edf3f6}
+.bx-verse-tool-popup-card,
+#bxVerseContext.bx-unified-modal:not([hidden]),
+.bx-unified-modal .bx-unified-modal-card,
+#bxLiveExplorer.bx-unified-live-popup:not([hidden]){
+  width:min(1120px,96vw)!important;
+  max-height:calc(100vh - 32px)!important;
+  overflow:auto!important;
+  border:1px solid rgba(210,173,79,.52)!important;
+  border-radius:18px!important;
+  background:linear-gradient(180deg,#0d1a26,#07111a)!important;
+  box-shadow:0 30px 110px rgba(0,0,0,.72),0 0 0 1px rgba(255,255,255,.03) inset!important;
+  box-sizing:border-box!important;
+}
+#bxVerseContext.bx-unified-modal:not([hidden]),
+#bxLiveExplorer.bx-unified-live-popup:not([hidden]){
+  position:fixed!important;
+  inset:auto!important;
+  top:50%!important;
+  left:50%!important;
+  right:auto!important;
+  bottom:auto!important;
+  transform:translate(-50%,-50%)!important;
+  z-index:130000!important;
+  display:block!important;
+  margin:0!important;
+  padding:0!important;
+}
+#bxVerseContext.bx-unified-modal:not([hidden]){overflow:auto!important}
+#bxLiveExplorer.bx-unified-live-popup:not([hidden]){overflow:auto!important}
+.bx-verse-tool-popup-card{position:relative}
+.bx-unified-modal-card{position:relative}
+.bx-popup-toolbar{position:relative;z-index:1}
+.bx-live-explorer.bx-unified-live-popup .bx-live-head{min-width:0}
+.bx-live-explorer.bx-unified-live-popup .bx-live-head>div:first-child{min-width:0}
+.bx-live-explorer.bx-unified-live-popup .bx-live-head p{overflow-wrap:anywhere}
+.bx-live-explorer.bx-unified-live-popup .bx-live-grid{min-width:0}
+.bx-live-explorer.bx-unified-live-popup .bx-live-foot{min-width:0}
+.bx-live-explorer.bx-unified-live-popup .bx-live-foot span{overflow-wrap:anywhere}
+.bx-unified-live-popup{color:#edf3f6}
+.bx-unified-modal .bx-unified-modal-card{position:relative}
+.bx-unified-modal:not(#bxVerseContext):not([hidden]) .bx-unified-modal-card{width:min(1120px,96vw)!important;max-height:calc(100vh - 32px)!important;overflow:auto!important;border:1px solid rgba(210,173,79,.52)!important;border-radius:18px!important;background:linear-gradient(180deg,#0d1a26,#07111a)!important;box-shadow:0 30px 110px rgba(0,0,0,.72),0 0 0 1px rgba(255,255,255,.03) inset!important;box-sizing:border-box!important}
+.bx-unified-modal:not(#bxVerseContext):not([hidden]) .bx-unified-modal-card{color:#edf3f6}
+.bx-unified-modal:not(#bxVerseContext):not([hidden]) .bx-unified-modal-card .bx-popup-toolbar{font-size:calc(1em * var(--bx-popup-zoom,1))}
+.bx-unified-modal:not(#bxVerseContext):not([hidden]) .bx-unified-modal-card .bx-vc-body,
+.bx-unified-modal:not(#bxVerseContext):not([hidden]) .bx-unified-modal-card .bx-vc-local{font-size:calc(1em * var(--bx-popup-zoom,1))}
+.bx-unified-modal:not(#bxVerseContext):not([hidden]) .bx-unified-modal-card{pointer-events:auto}
+.bx-unified-modal:not(#bxVerseContext):not([hidden]){pointer-events:auto}
+.bx-verse-tool-popup-card>header,
+#bxVerseContext.bx-unified-modal>.bx-vc-head,
+.bx-unified-modal .bx-unified-modal-card>header,
+#bxLiveExplorer.bx-unified-live-popup>.bx-live-head{
+  display:flex!important;
+  align-items:flex-start!important;
+  justify-content:space-between!important;
+  gap:12px!important;
+  padding:14px 16px!important;
+  border-bottom:1px solid rgba(255,255,255,.1)!important;
+}
+.bx-verse-tool-popup-card>header small,
+#bxVerseContext.bx-unified-modal>.bx-vc-head small,
+.bx-unified-modal .bx-unified-modal-card>header small{color:#f0cd72;font-size:9px;font-weight:900;letter-spacing:.08em}
+.bx-verse-tool-popup-card>header h3{margin:3px 0;font-size:20px}
+#bxVerseContext.bx-unified-modal>.bx-vc-head h3{margin:3px 0;font-size:20px}
+.bx-verse-tool-popup-card>header p{margin:0;color:#91a5b2;font-size:11px}
+#bxVerseContext.bx-unified-modal>.bx-vc-head p{margin:0;color:#91a5b2;font-size:11px}
+.bx-verse-tool-popup-card>header>button,
+#bxVerseContext.bx-unified-modal>.bx-vc-head>button,
+.bx-unified-modal .bx-unified-modal-card>header>button{width:34px;height:34px;border:1px solid #3c5a6d;border-radius:9px;background:#08141f;color:#fff;font-size:21px;cursor:pointer}
+.bx-popup-toolbar{display:flex;align-items:center;flex-wrap:wrap;gap:6px;padding:8px 14px;border-bottom:1px solid rgba(255,255,255,.09);background:rgba(0,0,0,.13)}
+.bx-popup-toolbar-title{margin-right:auto;color:#9eb0bb;font-size:10px;font-weight:800;letter-spacing:.04em}
+.bx-popup-toolbar button{min-height:30px;padding:5px 9px;border:1px solid #38566b;border-radius:8px;background:#091723;color:#e8eff2;font-size:11px;font-weight:850;cursor:pointer}
+.bx-popup-toolbar button:hover{border-color:#eac965;color:#f2d47c}
+.bx-popup-toolbar output{min-width:44px;text-align:center;color:#f0cd72;font-size:11px;font-weight:900}
+.bx-verse-tool-popup-body{display:grid;gap:12px;min-height:220px;padding:18px;overflow:auto;font-size:calc(1em * var(--bx-popup-zoom,1))}
+.bx-popup-verse-preview{padding:14px;border:1px solid rgba(255,255,255,.1);border-radius:12px;background:rgba(255,255,255,.035)}
+.bx-popup-verse-preview b{display:block;color:#f0cd72;font-size:15px}.bx-popup-verse-preview p{margin:7px 0 0;line-height:1.6;color:#dce7ec}
+.bx-popup-message{display:flex;gap:10px;align-items:flex-start;padding:14px;border:1px solid rgba(76,160,222,.25);border-radius:12px;background:rgba(52,119,184,.1)}
+.bx-popup-message>span{color:#f0cd72;font-size:20px}.bx-popup-message b{display:block}.bx-popup-message p{margin:4px 0 0;color:#96aab7;font-size:12px}
+.bx-verse-tool-popup-body footer{display:flex;justify-content:flex-end;gap:8px}
+.bx-unified-modal .bx-popup-toolbar{font-size:calc(1em * var(--bx-popup-zoom,1))}
+.bx-unified-modal .bx-vc-body,
+.bx-unified-modal .bx-vc-local,
+.bx-unified-live-popup .bx-live-grid,
+.bx-unified-live-popup .bx-live-metrics,
+.bx-unified-live-popup .bx-live-foot{font-size:calc(1em * var(--bx-popup-zoom,1))}
+.bx-unified-modal.bx-popup-fullscreen,
+.bx-unified-live-popup.bx-popup-fullscreen,
+#bxVerseToolPopup.bx-popup-fullscreen{padding:0!important}
+.bx-unified-modal.bx-popup-fullscreen .bx-unified-modal-card,
+#bxVerseContext.bx-popup-fullscreen,
+#bxLiveExplorer.bx-popup-fullscreen,
+#bxVerseToolPopup.bx-popup-fullscreen .bx-verse-tool-popup-card{width:100vw!important;max-height:100vh!important;height:100vh!important;border-radius:0!important}
+#bxVerseContext.bx-popup-fullscreen,
+#bxLiveExplorer.bx-popup-fullscreen{top:0!important;left:0!important;right:auto!important;bottom:auto!important;transform:none!important}
+@media(max-width:760px){
+  #bxVerseToolPopup,.bx-unified-modal:not(#bxVerseContext):not([hidden]){padding:7px!important}
+  .bx-verse-tool-popup-card,.bx-unified-modal .bx-unified-modal-card,#bxVerseContext.bx-unified-modal:not([hidden]),#bxLiveExplorer.bx-unified-live-popup:not([hidden]){width:calc(100vw - 14px)!important;max-height:calc(100vh - 14px)!important;border-radius:14px!important}
+  .bx-popup-toolbar{padding:7px 9px}.bx-popup-toolbar-title{width:100%;margin-right:0}.bx-verse-tool-popup-body{padding:12px}
+}
+
+/* Atlas X: os modos clássico e colorido permanecem disponíveis lado a lado. */
+#bxMapCanvas .bx-map-mode-view{position:absolute;inset:0;overflow:hidden}
+#bxMapCanvas .bx-map-classic-scene{position:absolute;inset:0;overflow:hidden;background:radial-gradient(circle at 68% 48%,rgba(211,185,119,.2),transparent 28%),linear-gradient(110deg,#0a2630 0 28%,#172b20 28% 72%,#262518 72% 100%)}
+#bxMapCanvas .bx-map-classic-land{position:absolute;inset:11% 10% 9% 26%;border:1px solid rgba(229,202,128,.28);border-radius:50% 38% 42% 56%;transform:rotate(-8deg);background:radial-gradient(circle at 45% 40%,rgba(211,188,115,.13),transparent 54%);box-shadow:inset 0 0 70px rgba(203,169,84,.1)}
+#bxMapCanvas .bx-map-modebar{position:absolute;z-index:7;top:10px;left:10px;display:flex;gap:6px;flex-wrap:wrap;max-width:calc(100% - 20px);padding:5px;border:1px solid rgba(196,157,67,.35);border-radius:11px;background:rgba(5,15,23,.9);box-shadow:0 8px 22px rgba(0,0,0,.28);backdrop-filter:blur(8px)}
+#bxMapCanvas .bx-map-modebar button{min-height:32px;padding:5px 9px;border:1px solid #365366;border-radius:8px;background:#081620;color:#cbd7de;font-size:9px;font-weight:900;cursor:pointer}
+#bxMapCanvas .bx-map-modebar button:hover,#bxMapCanvas .bx-map-modebar button.active{border-color:#d9b657;color:#f1d37c;background:#17170f}
+#bxMapCanvas .bx-map-modebar button[disabled]{opacity:.42;cursor:not-allowed}
+#bxMapCanvas .bx-map-canvas-actions{top:auto!important;right:10px!important;bottom:10px!important}
+#bxMapCanvas .bx-map-classic-pin{position:absolute;z-index:5;transform:translate(-50%,-100%);display:grid;place-items:center;border:0;background:transparent;color:#fff;cursor:pointer}
+#bxMapCanvas .bx-map-classic-pin i{width:38px;height:38px;display:grid;place-items:center;border:2px solid rgba(255,255,255,.65);border-radius:50% 50% 50% 0;background:#d3ab45;box-shadow:0 0 20px rgba(234,193,86,.5);font-style:normal;font-size:17px;transform:rotate(-45deg)}
+#bxMapCanvas .bx-map-classic-pin i::first-letter{transform:rotate(45deg)}
+#bxMapCanvas .bx-map-classic-pin b{margin-top:7px;padding:4px 8px;border:1px solid #53636b;border-radius:999px;background:rgba(5,15,22,.92);color:#f2e5bd;font-size:9px;white-space:nowrap}
+#bxMapCanvas .bx-map-classic-note{position:absolute;left:12px;bottom:12px;z-index:4;color:#92a5af;font-size:8px;font-weight:800;letter-spacing:.03em}
+.bx-map-explore-classic{position:relative;flex:1;min-height:360px;overflow:hidden}
+.bx-map-explore-classic .bx-map-classic-scene{position:absolute;inset:0;overflow:hidden;background:radial-gradient(circle at 68% 48%,rgba(211,185,119,.2),transparent 28%),linear-gradient(110deg,#0a2630 0 28%,#172b20 28% 72%,#262518 72% 100%)}
+.bx-map-explore-classic .bx-map-classic-land{position:absolute;inset:11% 10% 9% 26%;border:1px solid rgba(229,202,128,.28);border-radius:50% 38% 42% 56%;transform:rotate(-8deg);background:radial-gradient(circle at 45% 40%,rgba(211,188,115,.13),transparent 54%);box-shadow:inset 0 0 70px rgba(203,169,84,.1)}
+.bx-map-explore-classic .bx-map-classic-pin{position:absolute;z-index:5;transform:translate(-50%,-100%);display:grid;place-items:center;border:0;background:transparent;color:#fff;cursor:pointer}
+.bx-map-explore-classic .bx-map-classic-pin i{width:38px;height:38px;display:grid;place-items:center;border:2px solid rgba(255,255,255,.65);border-radius:50% 50% 50% 0;background:#d3ab45;box-shadow:0 0 20px rgba(234,193,86,.5);font-style:normal;font-size:17px;transform:rotate(-45deg)}
+.bx-map-explore-classic .bx-map-classic-pin b{margin-top:7px;padding:4px 8px;border:1px solid #53636b;border-radius:999px;background:rgba(5,15,22,.92);color:#f2e5bd;font-size:9px;white-space:nowrap}
+.bx-map-explore-classic .bx-map-classic-note{position:absolute;left:12px;bottom:12px;z-index:4;color:#92a5af;font-size:8px;font-weight:800;letter-spacing:.03em}
+@media(max-width:760px){
+  #bxMapCanvas .bx-map-modebar{right:8px;left:8px;top:8px}
+  #bxMapCanvas .bx-map-modebar button{flex:1;min-width:88px}
+  #bxMapCanvas .bx-map-canvas-actions{right:8px!important;bottom:8px!important;left:8px!important}
+  #bxMapCanvas .bx-map-classic-note{display:none}
+}

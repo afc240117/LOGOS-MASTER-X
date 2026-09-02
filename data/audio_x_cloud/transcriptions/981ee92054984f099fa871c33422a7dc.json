@@ -1,0 +1,284 @@
+{
+  "job_id": "981ee92054984f099fa871c33422a7dc",
+  "provider": "groq",
+  "fallback_used": false,
+  "provider_attempts": [
+    {
+      "provider": "groq",
+      "status": "completed",
+      "started_at": 1788051798.316597,
+      "finished_at": 1788051799.5594838
+    }
+  ],
+  "text": "Deus não rejeita A oração é alimento Nunca vi um justo sem resposta Ou ficar no sofrimento Basta somente esperar o que Deus irá fazer quando Ele estende suas m a hora de vencer Ent ouve simplesmente ouve Tá chorando ouve, precisando ouve Tá sofrendo ouve, não importa ouve Seu louvor invade o céu Deus vai na frente abrindo o caminho Quebrando as correntes, tirando os espinhos Ordena aos anjos pra contigo lutar Ele abre as portas pra ninguém mais deixar Ele trabalha pra o que nele confia Caminha contigo de noite ao de dia Erga suas mãos, sua bênção chegou Comece a cantar com muito louvor Com muito louvor Com muito louvor Com muito louvor A gente precisa entender O que Deus est falando Quando Ele fica em sil É porque está trabalhando Basta somente esperar O que Deus irá fazer Quando Ele estende suas mãos É a hora de vencer Então louve, simplesmente louve Tá chorando, louve Precisando, louve Tá sofrendo, louve Não importa o nome Seu louvor invade o céu Deus vai na frente abrindo o caminho Quebrando as correntes Tirando os espinhos Ordena os anjos pra contigo lutar Ele abre as portas pra ningu mais deixar Ele trabalha pro que nele confia Caminha contigo de noite ou de dia Erga suas m sua b chegou Comece a cantar com muito louvor Com muito louvor Com muito louvor Com muito louvor Com muito louvor Com muito louvor Exalte o Senhor Cante ao Senhor Com muito louvor",
+  "language": "Portuguese",
+  "duration": 307.79385772,
+  "segments": [
+    {
+      "id": 0,
+      "start": 0.0,
+      "end": 29.98,
+      "text": "Deus não rejeita"
+    },
+    {
+      "id": 1,
+      "start": 30.0,
+      "end": 35.92,
+      "text": "A oração é alimento"
+    },
+    {
+      "id": 2,
+      "start": 35.92,
+      "end": 45.36,
+      "text": "Nunca vi um justo sem resposta"
+    },
+    {
+      "id": 3,
+      "start": 45.36,
+      "end": 49.5,
+      "text": "Ou ficar no sofrimento"
+    },
+    {
+      "id": 4,
+      "start": 49.5,
+      "end": 58.72,
+      "text": "Basta somente esperar"
+    },
+    {
+      "id": 5,
+      "start": 58.72,
+      "end": 64.5,
+      "text": "o que Deus irá fazer"
+    },
+    {
+      "id": 6,
+      "start": 64.5,
+      "end": 83.32195,
+      "text": "quando Ele estende suas m a hora de vencer Ent ouve simplesmente ouve"
+    },
+    {
+      "id": 7,
+      "start": 83.32195,
+      "end": 89.76195,
+      "text": "Tá chorando ouve, precisando ouve"
+    },
+    {
+      "id": 8,
+      "start": 89.76195,
+      "end": 96.041954,
+      "text": "Tá sofrendo ouve, não importa ouve"
+    },
+    {
+      "id": 9,
+      "start": 96.041954,
+      "end": 100.06195,
+      "text": "Seu louvor invade o céu"
+    },
+    {
+      "id": 10,
+      "start": 100.06195,
+      "end": 107.74195,
+      "text": "Deus vai na frente abrindo o caminho Quebrando as correntes, tirando os espinhos"
+    },
+    {
+      "id": 11,
+      "start": 107.74195,
+      "end": 113.821945,
+      "text": "Ordena aos anjos pra contigo lutar Ele abre as portas pra ninguém mais deixar"
+    },
+    {
+      "id": 12,
+      "start": 113.821945,
+      "end": 120.50195,
+      "text": "Ele trabalha pra o que nele confia Caminha contigo de noite ao de dia"
+    },
+    {
+      "id": 13,
+      "start": 120.50195,
+      "end": 127.42195,
+      "text": "Erga suas mãos, sua bênção chegou Comece a cantar com muito louvor"
+    },
+    {
+      "id": 14,
+      "start": 127.42195,
+      "end": 130.64195,
+      "text": "Com muito louvor"
+    },
+    {
+      "id": 15,
+      "start": 130.64195,
+      "end": 133.96194,
+      "text": "Com muito louvor"
+    },
+    {
+      "id": 16,
+      "start": 133.96194,
+      "end": 137.68195,
+      "text": "Com muito louvor"
+    },
+    {
+      "id": 17,
+      "start": 137.68195,
+      "end": 146.78195,
+      "text": "A gente precisa entender"
+    },
+    {
+      "id": 18,
+      "start": 146.78195,
+      "end": 160.5439,
+      "text": "O que Deus est falando Quando Ele fica em sil"
+    },
+    {
+      "id": 19,
+      "start": 160.5439,
+      "end": 164.3439,
+      "text": "É porque está trabalhando"
+    },
+    {
+      "id": 20,
+      "start": 164.3439,
+      "end": 173.2639,
+      "text": "Basta somente esperar"
+    },
+    {
+      "id": 21,
+      "start": 173.2639,
+      "end": 177.44391,
+      "text": "O que Deus irá fazer"
+    },
+    {
+      "id": 22,
+      "start": 178.9239,
+      "end": 187.5239,
+      "text": "Quando Ele estende suas mãos"
+    },
+    {
+      "id": 23,
+      "start": 187.5239,
+      "end": 191.66391,
+      "text": "É a hora de vencer"
+    },
+    {
+      "id": 24,
+      "start": 191.66391,
+      "end": 197.10391,
+      "text": "Então louve, simplesmente louve"
+    },
+    {
+      "id": 25,
+      "start": 197.10391,
+      "end": 200.2639,
+      "text": "Tá chorando, louve"
+    },
+    {
+      "id": 26,
+      "start": 200.2639,
+      "end": 203.5039,
+      "text": "Precisando, louve"
+    },
+    {
+      "id": 27,
+      "start": 203.5039,
+      "end": 206.7039,
+      "text": "Tá sofrendo, louve"
+    },
+    {
+      "id": 28,
+      "start": 206.7039,
+      "end": 209.8439,
+      "text": "Não importa o nome"
+    },
+    {
+      "id": 29,
+      "start": 209.8439,
+      "end": 215.2239,
+      "text": "Seu louvor invade o céu"
+    },
+    {
+      "id": 30,
+      "start": 215.2239,
+      "end": 218.38391,
+      "text": "Deus vai na frente abrindo o caminho"
+    },
+    {
+      "id": 31,
+      "start": 218.38391,
+      "end": 220.1239,
+      "text": "Quebrando as correntes"
+    },
+    {
+      "id": 32,
+      "start": 220.1239,
+      "end": 221.6839,
+      "text": "Tirando os espinhos"
+    },
+    {
+      "id": 33,
+      "start": 221.6839,
+      "end": 224.5239,
+      "text": "Ordena os anjos pra contigo lutar"
+    },
+    {
+      "id": 34,
+      "start": 224.5239,
+      "end": 237.52586,
+      "text": "Ele abre as portas pra ningu mais deixar Ele trabalha pro que nele confia Caminha contigo de noite ou de dia Erga suas m sua b chegou"
+    },
+    {
+      "id": 35,
+      "start": 237.52586,
+      "end": 241.36586,
+      "text": "Comece a cantar com muito louvor"
+    },
+    {
+      "id": 36,
+      "start": 241.36586,
+      "end": 245.22586,
+      "text": "Com muito louvor"
+    },
+    {
+      "id": 37,
+      "start": 245.22586,
+      "end": 247.88586,
+      "text": "Com muito louvor"
+    },
+    {
+      "id": 38,
+      "start": 247.88586,
+      "end": 251.02586,
+      "text": "Com muito louvor"
+    },
+    {
+      "id": 39,
+      "start": 251.02586,
+      "end": 254.18587,
+      "text": "Com muito louvor"
+    },
+    {
+      "id": 40,
+      "start": 254.18587,
+      "end": 284.16586,
+      "text": "Com muito louvor"
+    },
+    {
+      "id": 41,
+      "start": 284.18585,
+      "end": 287.50586,
+      "text": "Exalte o Senhor"
+    },
+    {
+      "id": 42,
+      "start": 287.50586,
+      "end": 291.56586,
+      "text": "Cante ao Senhor"
+    },
+    {
+      "id": 43,
+      "start": 291.56586,
+      "end": 296.10587,
+      "text": "Com muito louvor"
+    }
+  ],
+  "words": [],
+  "completed_at": 1788051799.559489
+}

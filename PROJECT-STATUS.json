@@ -1,0 +1,47 @@
+{
+  "project": "LOGOS MASTER X",
+  "version": "5.3.11",
+  "build": "2026-08-22",
+  "current_release": "Home com valores do Resumo do Sistema centralizados dentro das cápsulas originais nas 17 paletas",
+  "mode": [
+    "LOCAL/OFFLINE",
+    "ONLINE/API"
+  ],
+  "functional_local": [
+    "Studio",
+    "Prompt Mestre",
+    "DNA K7",
+    "Laboratório K7",
+    "Think/roteiros locais",
+    "Bíblia importável",
+    "Pesquisa bíblica local",
+    "Concordância local",
+    "Editor",
+    "Biblioteca",
+    "Projetos",
+    "Púlpito",
+    "Backup",
+    "TXT",
+    "Markdown",
+    "Word .doc",
+    "Print/PDF"
+  ],
+  "functional_api": [
+    "health",
+    "OpenAI optional generation",
+    "basic token-protected cloud sync endpoint"
+  ],
+  "platforms": {
+    "web": "ready",
+    "pwa": "ready",
+    "android": "Capacitor scaffold",
+    "desktop": "Electron scaffold",
+    "backend": "FastAPI ready"
+  },
+  "limitations": [
+    "No complete copyrighted Bible translation bundled",
+    "No full generative LLM runs purely inside static HTML",
+    "Cloud sync endpoint is basic and should be hardened before multi-user production",
+    "Word export is .doc-compatible HTML; native .docx can be added later"
+  ]
+}

@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LOGOS MASTER X · Áudio X Cloud · Etapa 3</title>
+<link rel="stylesheet" href="./audio-x-cloud-etapa-03.css">
+</head>
+<body>
+<main class="shell">
+<header class="top">
+  <div>
+    <h1>🎧 Áudio X</h1>
+    <p>Etapa 3 · Transcrição Cloud com fallback automático</p>
+  </div>
+  <button id="reloadJob" class="btn">↻ Recarregar Job</button>
+</header>
+
+<section class="stepbar">
+  <div class="step done"><span>1</span><b>Router</b><small>Cloud pronto</small></div>
+  <div class="step done"><span>2</span><b>Upload</b><small>Job criado</small></div>
+  <div class="step active"><span>3</span><b>Transcrever</b><small>Groq → Deepgram → OpenAI</small></div>
+</section>
+
+<section class="layout">
+  <article class="card main">
+    <div class="job-head">
+      <div>
+        <span class="eyebrow">JOB CLOUD</span>
+        <h2 id="jobTitle">Nenhum job carregado</h2>
+        <p id="jobMeta">Conclua a Etapa 2.</p>
+      </div>
+      <span id="jobBadge" class="badge">AGUARDANDO</span>
+    </div>
+
+    <section class="route">
+      <div class="provider" data-provider="groq"><span>1</span><div><b>Groq</b><small>Primário</small></div><strong>—</strong></div>
+      <div class="arrow">→</div>
+      <div class="provider" data-provider="deepgram"><span>2</span><div><b>Deepgram</b><small>Fallback 1</small></div><strong>—</strong></div>
+      <div class="arrow">→</div>
+      <div class="provider" data-provider="openai"><span>3</span><div><b>OpenAI</b><small>Fallback 2</small></div><strong>—</strong></div>
+    </section>
+
+    <div class="start-row">
+      <div id="statusText" class="status-text">Aguardando Job Cloud.</div>
+      <button id="transcribeBtn" class="btn primary" disabled>▶ Transcrever agora</button>
+    </div>
+
+    <section id="resultPanel" class="result hidden">
+      <div class="result-head">
+        <div>
+          <span class="eyebrow">TRANSCRIÇÃO CONCLUÍDA</span>
+          <h3 id="providerUsed">—</h3>
+        </div>
+        <div class="result-stats">
+          <div><span>Segmentos</span><b id="segmentCount">0</b></div>
+          <div><span>Palavras c/ timestamp</span><b id="wordCount">0</b></div>
+          <div><span>Duração</span><b id="duration">—</b></div>
+        </div>
+      </div>
+
+      <div class="transcript-actions">
+        <input id="search" type="search" placeholder="Buscar na transcrição...">
+        <button id="exportTxt" class="btn">TXT</button>
+        <button id="exportJson" class="btn">JSON</button>
+      </div>
+
+      <div id="segments" class="segments"></div>
+    </section>
+  </article>
+
+  <aside class="card side">
+    <h2>Tentativas do Router</h2>
+    <div id="attempts" class="attempts empty">Nenhuma tentativa ainda.</div>
+
+    <div class="tip">
+      <b>Fallback real</b>
+      <p>Se Groq falhar, o backend tenta Deepgram. Se Deepgram também falhar, tenta OpenAI. A interface recebe uma transcrição normalizada independentemente do provedor.</p>
+    </div>
+
+    <div class="privacy">
+      <b>🔒 Segurança</b>
+      <p>As chaves API permanecem no backend. O navegador recebe apenas o resultado normalizado e o nome do provedor utilizado.</p>
+    </div>
+  </aside>
+</section>
+</main>
+
+<script src="./audio-x-cloud-transcription-client.js"></script>
+<script src="./audio-x-cloud-etapa-03.js"></script>
+</body>
+</html>

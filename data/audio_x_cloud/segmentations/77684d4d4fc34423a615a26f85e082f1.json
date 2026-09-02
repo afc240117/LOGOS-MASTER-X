@@ -1,0 +1,1091 @@
+{
+  "version": "audio-x-cloud-segmentation-v1",
+  "sections": [
+    {
+      "id": 0,
+      "kind": "intro",
+      "name": "Introdução",
+      "start": 0.0,
+      "end": 47.92,
+      "duration": 47.92,
+      "segment_ids": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "segment_count": 5,
+      "avg_intensity": 19,
+      "text_preview": "Aconteceu assim ó Ele os convida a passar pra outro lado No mar, tudo tranquilo Pedro no leme, pilotando a embarcação O vento sobrava, tão bom pra navegação",
+      "percent": 16.2
+    },
+    {
+      "id": 1,
+      "kind": "text",
+      "name": "Texto Bíblico",
+      "start": 47.92,
+      "end": 89.22653,
+      "duration": 41.31,
+      "segment_ids": [
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "segment_count": 6,
+      "avg_intensity": 20,
+      "text_preview": "Ninguém esperava o que iria acontecer Aí de repente o mar se agita de maneira veemente O vento sopra, entretando toda a gente Desesperados começam a gritar Socorre Jesus Socorre se n for o Senhor estamos sem sorte E vamos morrer no meio do mar",
+      "percent": 14.0
+    },
+    {
+      "id": 2,
+      "kind": "context",
+      "name": "Contexto",
+      "start": 89.22653,
+      "end": 107.20653,
+      "duration": 17.98,
+      "segment_ids": [
+        11,
+        12,
+        13
+      ],
+      "segment_count": 3,
+      "avg_intensity": 21,
+      "text_preview": "Jesus acorda, pois estava dormindo na popa do barco Pois o seu corpo humano estava cansado Mas sua alma de Deus não dorme jamais",
+      "percent": 6.1
+    },
+    {
+      "id": 3,
+      "kind": "development",
+      "name": "Desenvolvimento",
+      "start": 107.20653,
+      "end": 183.55307,
+      "duration": 76.35,
+      "segment_ids": [
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26
+      ],
+      "segment_count": 13,
+      "avg_intensity": 24,
+      "text_preview": "Ele se levanta, acalma o vento e a fúria do mar Vento não tem ouvido, nem tampouco o mar Mas quando Jesus fala, eles têm que escutar Se fui eu que te chamei para atravessar o mar Você não irá morrer no meio do grande mar Pode até se levantar uma grande tempest",
+      "percent": 25.8
+    },
+    {
+      "id": 5,
+      "kind": "development",
+      "name": "Desenvolvimento",
+      "start": 183.55307,
+      "end": 201.79306,
+      "duration": 18.24,
+      "segment_ids": [
+        27,
+        28,
+        29,
+        30
+      ],
+      "segment_count": 4,
+      "avg_intensity": 26,
+      "text_preview": "Se o mar é o problema, eu mando se aquietar Se o deserto é o problema, eu transformo ele em mar Se são os teus inimigos, eu cheguei pra guerrear E o ministério que eu te dei, hoje eu faço prosperar",
+      "percent": 6.2
+    },
+    {
+      "id": 7,
+      "kind": "development",
+      "name": "Desenvolvimento",
+      "start": 201.79306,
+      "end": 215.37306,
+      "duration": 13.58,
+      "segment_ids": [
+        31,
+        32,
+        33
+      ],
+      "segment_count": 3,
+      "avg_intensity": 26,
+      "text_preview": "Tem alguém do outro lado, apostando a tua sorte Desejando o teu final, almejando a tua morte Só que eles se esqueceram no meio da tua história",
+      "percent": 4.6
+    },
+    {
+      "id": 9,
+      "kind": "development",
+      "name": "Desenvolvimento",
+      "start": 215.37306,
+      "end": 224.59306,
+      "duration": 9.22,
+      "segment_ids": [
+        34,
+        35
+      ],
+      "segment_count": 2,
+      "avg_intensity": 29,
+      "text_preview": "Um detalhe muito forte É que eu estou no barco, tô curando no barco",
+      "percent": 3.1
+    },
+    {
+      "id": 10,
+      "kind": "application",
+      "name": "Aplicação",
+      "start": 224.59306,
+      "end": 247.0996,
+      "duration": 22.51,
+      "segment_ids": [
+        36,
+        37,
+        38
+      ],
+      "segment_count": 3,
+      "avg_intensity": 28,
+      "text_preview": "T salvando no barco estou de p no barco O barco n afunda ningu morre afogado A minha gl hoje invadi esse teu barco Acalma tua alma, pois quem fala é teu Deus Eu repreendi a morte hoje no meio dos teus",
+      "percent": 7.6
+    },
+    {
+      "id": 13,
+      "kind": "climax",
+      "name": "Clímax",
+      "start": 247.0996,
+      "end": 269.87958,
+      "duration": 22.78,
+      "segment_ids": [
+        39,
+        40,
+        41
+      ],
+      "segment_count": 3,
+      "avg_intensity": 29,
+      "text_preview": "Te alegra e te anima, pois no barco da tua vida o controle ainda é meu É que eu estou no barco, tô curando no barco, tô salvando no barco Estou de pé no barco, o barco não afunda, ninguém morre afogado",
+      "percent": 7.7
+    },
+    {
+      "id": 14,
+      "kind": "application",
+      "name": "Aplicação",
+      "start": 269.87958,
+      "end": 287.81958,
+      "duration": 17.94,
+      "segment_ids": [
+        42,
+        43,
+        44
+      ],
+      "segment_count": 3,
+      "avg_intensity": 30,
+      "text_preview": "A minha glória hoje invadi esse teu barco, acalma tua alma Pois quem fala é teu Deus, eu repreendi a morte hoje no meio dos teus Te alegra e te anima, pois no barco da tua vida",
+      "percent": 6.1
+    },
+    {
+      "id": 16,
+      "kind": "appeal",
+      "name": "Apelo",
+      "start": 287.81958,
+      "end": 295.8396,
+      "duration": 8.02,
+      "segment_ids": [
+        45,
+        46,
+        47
+      ],
+      "segment_count": 3,
+      "avg_intensity": 30,
+      "text_preview": "O controle ainda é meu Você é meu Você é meu",
+      "percent": 2.7
+    }
+  ],
+  "segments": [
+    {
+      "id": 0,
+      "start": 0.0,
+      "end": 18.699999,
+      "text": "Aconteceu assim ó",
+      "kind": "intro",
+      "classification_scores": {
+        "intro": 3,
+        "text": 0,
+        "context": 3,
+        "development": 0,
+        "application": 0,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 18
+    },
+    {
+      "id": 1,
+      "start": 30.0,
+      "end": 34.16,
+      "text": "Ele os convida a passar pra outro lado",
+      "kind": "intro",
+      "classification_scores": {
+        "intro": 3,
+        "text": 0,
+        "context": 0,
+        "development": 0,
+        "application": 0,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 18
+    },
+    {
+      "id": 2,
+      "start": 34.16,
+      "end": 39.079998,
+      "text": "No mar, tudo tranquilo",
+      "kind": "intro",
+      "classification_scores": {
+        "intro": 3,
+        "text": 0,
+        "context": 0,
+        "development": 0,
+        "application": 0,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 19
+    },
+    {
+      "id": 3,
+      "start": 39.079998,
+      "end": 43.26,
+      "text": "Pedro no leme, pilotando a embarcação",
+      "kind": "intro",
+      "classification_scores": {
+        "intro": 3,
+        "text": 0,
+        "context": 0,
+        "development": 0,
+        "application": 0,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 19
+    },
+    {
+      "id": 4,
+      "start": 43.26,
+      "end": 47.92,
+      "text": "O vento sobrava, tão bom pra navegação",
+      "kind": "intro",
+      "classification_scores": {
+        "intro": 3,
+        "text": 2,
+        "context": 0,
+        "development": 0,
+        "application": 0,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 19
+    },
+    {
+      "id": 5,
+      "start": 47.92,
+      "end": 52.48,
+      "text": "Ninguém esperava o que iria acontecer",
+      "kind": "text",
+      "classification_scores": {
+        "intro": 0,
+        "text": 2,
+        "context": 0,
+        "development": 0,
+        "application": 0,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 19
+    },
+    {
+      "id": 6,
+      "start": 52.48,
+      "end": 61.399998,
+      "text": "Aí de repente o mar se agita de maneira veemente",
+      "kind": "text",
+      "classification_scores": {
+        "intro": 0,
+        "text": 2,
+        "context": 0,
+        "development": 0,
+        "application": 0,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 20
+    },
+    {
+      "id": 7,
+      "start": 61.399998,
+      "end": 66.04,
+      "text": "O vento sopra, entretando toda a gente",
+      "kind": "text",
+      "classification_scores": {
+        "intro": 0,
+        "text": 2,
+        "context": 0,
+        "development": 0,
+        "application": 0,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 20
+    },
+    {
+      "id": 8,
+      "start": 66.04,
+      "end": 71.24,
+      "text": "Desesperados começam a gritar",
+      "kind": "text",
+      "classification_scores": {
+        "intro": 0,
+        "text": 2,
+        "context": 2,
+        "development": 0,
+        "application": 0,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 20
+    },
+    {
+      "id": 9,
+      "start": 71.24,
+      "end": 84.40653,
+      "text": "Socorre Jesus Socorre se n for o Senhor estamos sem sorte",
+      "kind": "text",
+      "classification_scores": {
+        "intro": 0,
+        "text": 2,
+        "context": 2,
+        "development": 0,
+        "application": 0,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 20
+    },
+    {
+      "id": 10,
+      "start": 84.40653,
+      "end": 89.22653,
+      "text": "E vamos morrer no meio do mar",
+      "kind": "text",
+      "classification_scores": {
+        "intro": 0,
+        "text": 2,
+        "context": 2,
+        "development": 0,
+        "application": 0,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 21
+    },
+    {
+      "id": 11,
+      "start": 89.22653,
+      "end": 97.74654,
+      "text": "Jesus acorda, pois estava dormindo na popa do barco",
+      "kind": "context",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 2,
+        "development": 0,
+        "application": 0,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 21
+    },
+    {
+      "id": 12,
+      "start": 97.74654,
+      "end": 102.30653,
+      "text": "Pois o seu corpo humano estava cansado",
+      "kind": "context",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 2,
+        "development": 0,
+        "application": 0,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 21
+    },
+    {
+      "id": 13,
+      "start": 102.30653,
+      "end": 107.20653,
+      "text": "Mas sua alma de Deus não dorme jamais",
+      "kind": "context",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 2,
+        "development": 0,
+        "application": 0,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 21
+    },
+    {
+      "id": 14,
+      "start": 107.20653,
+      "end": 115.72653,
+      "text": "Ele se levanta, acalma o vento e a fúria do mar",
+      "kind": "development",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 2,
+        "development": 3,
+        "application": 0,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 22
+    },
+    {
+      "id": 15,
+      "start": 115.72653,
+      "end": 120.166534,
+      "text": "Vento não tem ouvido, nem tampouco o mar",
+      "kind": "development",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 2,
+        "development": 3,
+        "application": 0,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 22
+    },
+    {
+      "id": 16,
+      "start": 120.166534,
+      "end": 125.026535,
+      "text": "Mas quando Jesus fala, eles têm que escutar",
+      "kind": "development",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 0,
+        "development": 3,
+        "application": 0,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 22
+    },
+    {
+      "id": 17,
+      "start": 125.026535,
+      "end": 131.48653,
+      "text": "Se fui eu que te chamei para atravessar o mar",
+      "kind": "development",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 0,
+        "development": 3,
+        "application": 0,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 22
+    },
+    {
+      "id": 18,
+      "start": 131.48653,
+      "end": 136.00653,
+      "text": "Você não irá morrer no meio do grande mar",
+      "kind": "development",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 0,
+        "development": 3,
+        "application": 1,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 23
+    },
+    {
+      "id": 19,
+      "start": 136.00653,
+      "end": 140.66653,
+      "text": "Pode até se levantar uma grande tempestade",
+      "kind": "development",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 0,
+        "development": 3,
+        "application": 1,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 23
+    },
+    {
+      "id": 20,
+      "start": 140.66653,
+      "end": 145.12653,
+      "text": "Que cubra o teu barco, mas você não morrerá",
+      "kind": "development",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 0,
+        "development": 3,
+        "application": 1,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 23
+    },
+    {
+      "id": 21,
+      "start": 145.12653,
+      "end": 163.35307,
+      "text": "Quem formou voc fui eu quem criou o mar fui eu E esse vento veemente quem est soprando sou eu Posso at estar dormindo l na popa do teu barco At dormindo pesado o controle ainda meu",
+      "kind": "development",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 0,
+        "development": 3,
+        "application": 1,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 23
+    },
+    {
+      "id": 22,
+      "start": 163.35307,
+      "end": 166.57306,
+      "text": "É meu, é meu, é meu, é meu",
+      "kind": "development",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 0,
+        "development": 3,
+        "application": 1,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 24
+    },
+    {
+      "id": 23,
+      "start": 166.57306,
+      "end": 170.11307,
+      "text": "Você é meu, o vento e o mar é meu",
+      "kind": "development",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 0,
+        "development": 3,
+        "application": 1,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 24
+    },
+    {
+      "id": 24,
+      "start": 170.11307,
+      "end": 174.69307,
+      "text": "O teu problema é meu, o teu deserto é meu",
+      "kind": "development",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 0,
+        "development": 3,
+        "application": 1,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 24
+    },
+    {
+      "id": 25,
+      "start": 174.69307,
+      "end": 179.03307,
+      "text": "Teus inimigos são meus, o teu ministério é meu",
+      "kind": "development",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 0,
+        "development": 3,
+        "application": 1,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 24
+    },
+    {
+      "id": 26,
+      "start": 179.03307,
+      "end": 183.55307,
+      "text": "Tua família, teu trabalho, tua casa tudo é meu",
+      "kind": "application",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 0,
+        "development": 3,
+        "application": 4,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 25
+    },
+    {
+      "id": 27,
+      "start": 183.55307,
+      "end": 188.01306,
+      "text": "Se o mar é o problema, eu mando se aquietar",
+      "kind": "development",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 0,
+        "development": 3,
+        "application": 1,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 25
+    },
+    {
+      "id": 28,
+      "start": 188.01306,
+      "end": 192.65306,
+      "text": "Se o deserto é o problema, eu transformo ele em mar",
+      "kind": "development",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 0,
+        "development": 3,
+        "application": 1,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 25
+    },
+    {
+      "id": 29,
+      "start": 192.65306,
+      "end": 196.97307,
+      "text": "Se são os teus inimigos, eu cheguei pra guerrear",
+      "kind": "development",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 0,
+        "development": 3,
+        "application": 1,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 25
+    },
+    {
+      "id": 30,
+      "start": 196.97307,
+      "end": 201.79306,
+      "text": "E o ministério que eu te dei, hoje eu faço prosperar",
+      "kind": "application",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 0,
+        "development": 3,
+        "application": 4,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 26
+    },
+    {
+      "id": 31,
+      "start": 201.79306,
+      "end": 206.31306,
+      "text": "Tem alguém do outro lado, apostando a tua sorte",
+      "kind": "development",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 0,
+        "development": 3,
+        "application": 1,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 26
+    },
+    {
+      "id": 32,
+      "start": 206.31306,
+      "end": 210.67307,
+      "text": "Desejando o teu final, almejando a tua morte",
+      "kind": "development",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 0,
+        "development": 3,
+        "application": 1,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 26
+    },
+    {
+      "id": 33,
+      "start": 210.67307,
+      "end": 215.37306,
+      "text": "Só que eles se esqueceram no meio da tua história",
+      "kind": "context",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 3,
+        "development": 3,
+        "application": 1,
+        "climax": 0,
+        "appeal": 0
+      },
+      "intensity": 26
+    },
+    {
+      "id": 34,
+      "start": 215.37306,
+      "end": 218.55307,
+      "text": "Um detalhe muito forte",
+      "kind": "development",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 0,
+        "development": 3,
+        "application": 1,
+        "climax": 3,
+        "appeal": 0
+      },
+      "intensity": 27
+    },
+    {
+      "id": 35,
+      "start": 218.55307,
+      "end": 224.59306,
+      "text": "É que eu estou no barco, tô curando no barco",
+      "kind": "development",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 0,
+        "development": 3,
+        "application": 1,
+        "climax": 3,
+        "appeal": 0
+      },
+      "intensity": 31
+    },
+    {
+      "id": 36,
+      "start": 224.59306,
+      "end": 238.21959,
+      "text": "T salvando no barco estou de p no barco O barco n afunda ningu morre afogado A minha gl hoje invadi esse teu barco",
+      "kind": "application",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 0,
+        "development": 3,
+        "application": 4,
+        "climax": 3,
+        "appeal": 0
+      },
+      "intensity": 27
+    },
+    {
+      "id": 37,
+      "start": 238.21959,
+      "end": 242.49959,
+      "text": "Acalma tua alma, pois quem fala é teu Deus",
+      "kind": "climax",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 0,
+        "development": 0,
+        "application": 1,
+        "climax": 3,
+        "appeal": 0
+      },
+      "intensity": 27
+    },
+    {
+      "id": 38,
+      "start": 242.49959,
+      "end": 247.0996,
+      "text": "Eu repreendi a morte hoje no meio dos teus",
+      "kind": "application",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 0,
+        "development": 0,
+        "application": 4,
+        "climax": 3,
+        "appeal": 0
+      },
+      "intensity": 28
+    },
+    {
+      "id": 39,
+      "start": 247.0996,
+      "end": 254.3396,
+      "text": "Te alegra e te anima, pois no barco da tua vida o controle ainda é meu",
+      "kind": "climax",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 0,
+        "development": 0,
+        "application": 0,
+        "climax": 3,
+        "appeal": 0
+      },
+      "intensity": 28
+    },
+    {
+      "id": 40,
+      "start": 254.3396,
+      "end": 263.09958,
+      "text": "É que eu estou no barco, tô curando no barco, tô salvando no barco",
+      "kind": "climax",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 0,
+        "development": 0,
+        "application": 0,
+        "climax": 3,
+        "appeal": 0
+      },
+      "intensity": 32
+    },
+    {
+      "id": 41,
+      "start": 263.09958,
+      "end": 269.87958,
+      "text": "Estou de pé no barco, o barco não afunda, ninguém morre afogado",
+      "kind": "climax",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 0,
+        "development": 0,
+        "application": 0,
+        "climax": 3,
+        "appeal": 0
+      },
+      "intensity": 28
+    },
+    {
+      "id": 42,
+      "start": 269.87958,
+      "end": 276.47958,
+      "text": "A minha glória hoje invadi esse teu barco, acalma tua alma",
+      "kind": "application",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 0,
+        "development": 0,
+        "application": 3,
+        "climax": 3,
+        "appeal": 3
+      },
+      "intensity": 33
+    },
+    {
+      "id": 43,
+      "start": 276.47958,
+      "end": 283.31958,
+      "text": "Pois quem fala é teu Deus, eu repreendi a morte hoje no meio dos teus",
+      "kind": "application",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 0,
+        "development": 0,
+        "application": 3,
+        "climax": 3,
+        "appeal": 3
+      },
+      "intensity": 29
+    },
+    {
+      "id": 44,
+      "start": 283.31958,
+      "end": 287.81958,
+      "text": "Te alegra e te anima, pois no barco da tua vida",
+      "kind": "climax",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 0,
+        "development": 0,
+        "application": 0,
+        "climax": 3,
+        "appeal": 3
+      },
+      "intensity": 29
+    },
+    {
+      "id": 45,
+      "start": 287.81958,
+      "end": 290.31958,
+      "text": "O controle ainda é meu",
+      "kind": "appeal",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 0,
+        "development": 0,
+        "application": 0,
+        "climax": 0,
+        "appeal": 3
+      },
+      "intensity": 29
+    },
+    {
+      "id": 46,
+      "start": 290.31958,
+      "end": 292.5996,
+      "text": "Você é meu",
+      "kind": "appeal",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 0,
+        "development": 0,
+        "application": 0,
+        "climax": 0,
+        "appeal": 3
+      },
+      "intensity": 30
+    },
+    {
+      "id": 47,
+      "start": 292.5996,
+      "end": 295.8396,
+      "text": "Você é meu",
+      "kind": "appeal",
+      "classification_scores": {
+        "intro": 0,
+        "text": 0,
+        "context": 0,
+        "development": 0,
+        "application": 0,
+        "climax": 0,
+        "appeal": 3
+      },
+      "intensity": 30
+    }
+  ],
+  "transitions": [],
+  "intensity": [
+    18,
+    18,
+    19,
+    19,
+    19,
+    19,
+    20,
+    20,
+    20,
+    20,
+    21,
+    21,
+    21,
+    21,
+    22,
+    22,
+    22,
+    22,
+    23,
+    23,
+    23,
+    23,
+    24,
+    24,
+    24,
+    24,
+    25,
+    25,
+    25,
+    25,
+    26,
+    26,
+    26,
+    26,
+    27,
+    31,
+    27,
+    27,
+    28,
+    28,
+    32,
+    28,
+    33,
+    29,
+    29,
+    29,
+    30,
+    30
+  ],
+  "climax": {
+    "segment_id": 42,
+    "start": 269.87958,
+    "end": 276.47958,
+    "text": "A minha glória hoje invadi esse teu barco, acalma tua alma",
+    "intensity": 33
+  },
+  "stats": {
+    "segment_count": 48,
+    "section_count": 11,
+    "transition_count": 0,
+    "duration": 295.8396
+  },
+  "job_id": "77684d4d4fc34423a615a26f85e082f1",
+  "provider": "groq"
+}

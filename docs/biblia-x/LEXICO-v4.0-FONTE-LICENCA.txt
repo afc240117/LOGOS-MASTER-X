@@ -1,0 +1,60 @@
+BÍBLIA X — PASSO 4 v4.0 — LÉXICO: FONTES, LICENÇAS E LIMITES
+
+BANCO LEXICAL PRÉ-INSTALADO
+- Fonte: BibleForgeDB — léxicos grego e hebraico.
+- Repositório: https://github.com/bibleforge/BibleForgeDB
+- Grego: https://raw.githubusercontent.com/bibleforge/BibleForgeDB/master/lexicon_greek.sql.gz
+- SHA-256 grego: 594d0b5340b673583ee73f1405a7d294d8e7b41913a1275b72689cf4e4304c08
+- Hebraico: https://raw.githubusercontent.com/bibleforge/BibleForgeDB/master/lexicon_hebrew.sql.gz
+- SHA-256 hebraico: 992a717645101b47c388e055c68b42d04cc941bbcab0dfc548e57f48ef3754a2
+- Licença indicada pelo projeto: os léxicos grego e hebraico, os textos
+  originais, os números Strong e as informações gramaticais estão em domínio
+  público; os demais dados não especificados são dedicados via CC0.
+- Sem garantia, conforme a declaração do projeto-fonte.
+
+CONTEÚDO INSTALADO
+- 14.812 análises lexicais no total.
+- 5.523 entradas gregas.
+- 9.289 análises hebraicas, cobrindo 8.674 números Strong hebraicos. A diferença
+  decorre de números que possuem mais de uma análise/classe na fonte; nenhuma
+  variante foi descartada.
+- 14.197 números Strong distintos no conjunto grego/hebraico.
+- 37.789 itens de sentidos extensos, preservados na ordem da fonte.
+- Para cada entrada, quando presentes: lema, transliteração SBL, pronúncia de
+  dicionário, IPA histórico/moderno, definição breve, sentido literal, sentidos
+  extensos, uso, derivação, relações, nota, classe gramatical e indicação de
+  aramaico.
+- O JSON integral de cada registro da fonte também é preservado no SQLite para
+  fidelidade e futura evolução do leitor.
+
+INTEGRAÇÃO COM O CORPUS ORIGINAL DO PASSO 3
+- 446.232 ocorrências hebraicas/gregas em 66 livros.
+- 134.078 combinações distintas de número Strong e forma original.
+- Formas, transliterações, pronúncias e códigos morfológicos são agregados por
+  verbete sem alterar o corpus-fonte.
+- Ocorrências são ligadas à mesma referência canônica da tradução portuguesa
+  selecionada. Não é alegado alinhamento automático palavra a palavra com o
+  texto português.
+
+IMPLEMENTAÇÃO E LIMITE EDITORIAL
+- O Léxico X é uma camada própria, distinta do Strong X: o Strong prioriza
+  número e concordância; o Léxico prioriza análise do lema, sentidos,
+  pronúncias, variantes, formas e morfologia.
+- Definições, sentidos e usos permanecem em inglês como na fonte. Não foi
+  aplicada tradução automática, evitando introduzir sentidos não verificados.
+- Interface, rótulos, ajuda, filtros e aliases comuns são apresentados em
+  português. Aliases servem apenas para localizar verbetes; não substituem nem
+  traduzem o conteúdo lexicográfico.
+- O grego da fonte não possui coluna própria de classe gramatical no dump;
+  nesses casos a interface informa honestamente que a classe não foi fornecida.
+- Complementos pessoais ficam no IndexedDB do navegador, separados do banco
+  pré-instalado. Limpar complementos não apaga o léxico distribuído no pacote.
+
+REPRODUÇÃO
+- Importador: scripts/import_bibleforge_lexicons.py
+- Banco final: app/biblia_x/biblia_x.sqlite3
+- O importador valida os dois hashes antes de substituir as tabelas lexicais,
+  importa em transação e recria o índice de pesquisa FTS5.
+
+FONTE PRIMÁRIA CONSULTÁVEL
+- https://github.com/bibleforge/BibleForgeDB
