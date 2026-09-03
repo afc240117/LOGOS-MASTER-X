@@ -44,6 +44,7 @@ function playApprovedHomeJourneySound(){ /* 5.4.2 — áudio do flash removido a
 
 function startMobileLoading(){const el=document.getElementById('mobileLoadingBar');if(!el)return;mobileLoadingTimer=setInterval(()=>{mobileLoadingProgress=Math.min(92,mobileLoadingProgress+Math.max(1,(92-mobileLoadingProgress)*.08));el.style.width=mobileLoadingProgress+'%';},120);}
 function finishMobileLoading(){
+ return; /* 5.4.163 — sem FX/canvas de abertura (DNA): nada entre o clique e o app pronto. */
  if(mobileLoadingTimer){clearInterval(mobileLoadingTimer);mobileLoadingTimer=null}
  const el=document.getElementById('mobileLoadingBar');
  if(el)el.style.width='100%';
