@@ -4625,6 +4625,24 @@ html,body{font-synthesis:none;text-rendering:optimizeLegibility;-webkit-font-smo
 .bible-x-resource-strip button:hover{border-color:var(--theme-primary,var(--accent,#22d3ee));color:var(--theme-primary,var(--accent,#22d3ee))}
 .bible-x-output{min-height:320px!important;border-radius:14px!important;font-size:15px!important;line-height:1.72!important}
 .bible-x-import{border:1px solid #26384d;border-radius:12px;padding:10px 12px;background:#08121d}.bible-x-import summary{cursor:pointer;color:#dbe6ef;font-weight:750}
+/* 5.4.161 — pop-up "Comandos rápidos" da Bíblia X (primeira visita; não polui) */
+.bx-guide-overlay{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(3,6,11,.62);z-index:260000;padding:18px;backdrop-filter:blur(2px)}
+.bx-guide-card{width:min(94vw,430px);max-height:88vh;overflow:auto;background:#0b1726;border:1px solid #2b4059;border-radius:18px;padding:16px 16px 14px;box-shadow:0 24px 70px rgba(0,0,0,.55);color:#e9eff6;font-size:15px;line-height:1.45}
+.bx-guide-card header{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.bx-guide-card header .bxq-mark{font-size:22px;background:rgba(245,197,66,.14);border:1px solid rgba(245,197,66,.4);width:42px;height:42px;border-radius:12px;display:grid;place-items:center;flex:none}
+.bx-guide-card header small{display:block;font-size:10px;letter-spacing:.14em;color:#f5c542;font-weight:800}
+.bx-guide-card header h3{margin:0;font-size:17px}
+.bx-guide-card header .bxq-close{margin-left:auto;background:rgba(255,255,255,.06);border:1px solid transparent;color:#cbd7e2;border-radius:10px;width:32px;height:32px;font-size:14px;cursor:pointer;flex:none}
+.bx-guide-card header .bxq-close:hover{background:rgba(255,255,255,.12)}
+.bx-guide-card ul{list-style:none;margin:0 0 12px;padding:0;display:grid;gap:8px}
+.bx-guide-card li{display:flex;gap:10px;align-items:flex-start;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:9px 10px}
+.bx-guide-card .bxq-ico{font-size:17px;line-height:1.3;flex:none}
+.bx-guide-card footer{display:flex;align-items:center;gap:10px;justify-content:space-between;border-top:1px solid rgba(255,255,255,.08);padding-top:11px}
+.bx-guide-card .bxq-never{display:flex;gap:7px;align-items:center;font-size:12.5px;color:#b9c6d3;cursor:pointer;user-select:none}
+.bx-guide-card .bxq-never input{accent-color:#f5c542;width:15px;height:15px;flex:none}
+.bx-guide-card .bxq-ok{background:linear-gradient(180deg,#f5c542,#e0a82e);color:#241a02;font-weight:800;border:0;border-radius:11px;padding:9px 18px;font-size:14px;cursor:pointer}
+.bx-guide-card .bxq-ok:hover{filter:brightness(1.07)}
+@media(max-width:760px){.bx-guide-card{font-size:14.5px}}
 .bible-x-empty{min-height:430px;border:1px solid #26384d;border-radius:16px;background:radial-gradient(circle at 50% 30%,color-mix(in srgb,var(--theme-primary,#22d3ee) 10%,transparent),transparent 32%),#08121d;display:grid;place-items:center;align-content:center;text-align:center;padding:32px}
 .bible-x-empty>span{font-size:58px;margin-bottom:12px}.bible-x-empty h3{font-size:24px;margin:0 0 8px}.bible-x-empty p{max-width:560px;color:#b0bfcd;font-size:14px;line-height:1.55;margin:0 0 10px}.bible-x-empty small{color:var(--theme-primary,var(--accent,#22d3ee))}
 @media(max-width:980px){.bible-x-shell{grid-template-columns:210px minmax(0,1fr)}.bible-x-sidebar{padding:8px}.bible-x-nav button{padding:8px}.bible-x-nav button small{display:none}.bible-x-toolbar,.bible-x-search-row{grid-template-columns:1fr 1fr}.bible-x-toolbar>div,.bible-x-search-row>div{grid-column:1/-1}}
