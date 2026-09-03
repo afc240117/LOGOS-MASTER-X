@@ -13355,6 +13355,18 @@ body:has(.bible-x-shell.bx-reading-full) .bx-v157-rail{
 @media(max-width:760px){
   .lmx-bible-v3-pericope{font-size:17px!important;margin:15px 0 8px}
 }
+/* 5.4.163 — epígrafe que ENCABEÇA a página: amarelo + abreviação do livro/capítulo. */
+.lmx-bible-v3-pericope.lmx-v3-pericope-head{
+  color:#ffd23f;
+  border-bottom-color:rgba(255,210,63,.55);
+}
+.lmx-v3-pericope-ref{
+  font-weight:600;
+  font-size:.82em;
+  letter-spacing:.03em;
+  white-space:nowrap;
+  opacity:.95;
+}
 
 /* V5.4.129 â€” ðŸ“± POLIMENTO MOBILE: transiÃ§Ã£o de telas + barra inferior esperta + drawer */
 @media(max-width:760px){
