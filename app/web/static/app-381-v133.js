@@ -1970,7 +1970,7 @@ function maybeBibleQuickGuide(){
   const never=(()=>{try{return Store.get("logosx:bxQuickGuideNever")==="1"}catch(_){return false}})();
   if(never||window.__bxQuickGuideShown)return;
   const shell=document.querySelector(".bible-x-shell");
-  if(!shell||!document.querySelector(".bible-x-panel[data-bible-panel='reader']"))return;
+  if(!shell||!document.querySelector('[data-bible-panel="reader"]'))return;
   window.__bxQuickGuideShown=true;
   const isPhone=window.matchMedia("(max-width:760px)").matches;
   const row=(ico,txt)=>`<li><span class="bxq-ico">${ico}</span><span>${txt}</span></li>`;
