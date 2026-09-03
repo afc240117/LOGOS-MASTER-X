@@ -1465,4 +1465,103 @@ window.LMX_PERICOPES = {
   "Filemom 1:1": "Saudações de Paulo e Timóteo a Filemom",
   "Filemom 1:8": "Paulo intercede por Onésimo, agora irmão em Cristo",
   "Filemom 1:21": "A confiança de Paulo na obediência de Filemom",
+
+  /* ------------------------------ HEBREUS ----------------------------- */
+  "Hebreus 1:1": "Deus falou pelo Filho: superior aos anjos",
+  "Hebreus 2:1": "Não desprezemos tão grande salvação",
+  "Hebreus 3:1": "Cristo superior a Moisés: guardai-vos da incredulidade",
+  "Hebreus 4:1": "O descanso de Deus permanece: entremos nesse descanso",
+  "Hebreus 4:14": "Um grande sumo sacerdote que se compadece de nós",
+  "Hebreus 6:19": "A esperança, âncora da alma, penetra o interior do véu",
+  "Hebreus 7:1": "Melquisedeque e o sacerdócio superior de Cristo",
+  "Hebreus 9:1": "O santuário terrestre e o sacrifício perfeito de Cristo",
+  "Hebreus 10:1": "O único sacrifício de Cristo tira o pecado",
+  "Hebreus 10:19": "A ousadia para entrar no santuário pelo sangue de Jesus",
+  "Hebreus 11:1": "A galeria dos heróis da fé",
+  "Hebreus 12:1": "Corramos a carreira: o autor e consumador da fé",
+  "Hebreus 12:18": "O monte Sião: o reino inabalável",
+  "Hebreus 13:1": "As virtudes práticas e as saudações finais",
+
+  /* ------------------------------- TIAGO ------------------------------ */
+  "Tiago 1:1": "A prova da fé produz a paciência",
+  "Tiago 1:5": "Se te falta sabedoria, pede a Deus que a todos dá liberalmente",
+  "Tiago 1:19": "Sede prontos para ouvir, tardios para falar",
+  "Tiago 2:1": "A fé sem obras é morta",
+  "Tiago 3:1": "O poder e o perigo da língua",
+  "Tiago 4:1": "As contendas: a amizade com o mundo é inimizade contra Deus",
+  "Tiago 4:7": "Sujeitai-vos a Deus: resisti ao diabo e ele fugirá de vós",
+  "Tiago 5:1": "Ai dos ricos que oprimem os trabalhadores",
+  "Tiago 5:13": "A oração da fé: confessai as vossas culpas uns aos outros",
+
+  /* ------------------------------ 1 PEDRO ----------------------------- */
+  "1 Pedro 1:1": "A esperança viva pela ressurreição de Jesus",
+  "1 Pedro 1:13": "Cingi os lombos do entendimento: sede santos como Deus é santo",
+  "1 Pedro 2:1": "Cristo, a pedra viva, e o novo nascimento pela palavra",
+  "1 Pedro 2:9": "Vós sois a geração eleita, o sacerdócio real",
+  "1 Pedro 3:1": "O testemunho no lar e a beleza do coração manso",
+  "1 Pedro 4:12": "Não estranheis a ardente prova que vem sobre vós",
+  "1 Pedro 5:1": "A exortação de Pedro aos presbíteros",
+  "1 Pedro 5:8": "Sede sóbrios e vigiai: o diabo anda ao derredor",
+
+  /* ------------------------------ 2 PEDRO ----------------------------- */
+  "2 Pedro 1:1": "O chamado e a eleição: acrescentai à fé a virtude",
+  "2 Pedro 1:16": "A transfiguração: a palavra profética mais firme",
+  "2 Pedro 2:1": "Os falsos profetas e a sua destruição",
+  "2 Pedro 3:1": "Os escarnecedores dos últimos dias",
+  "2 Pedro 3:8": "O dia do Senhor: para o Senhor um dia é como mil anos",
+  "2 Pedro 3:10": "A esperança dos novos céus e da nova terra",
+
+  /* ------------------------------ 1 JOÃO ------------------------------ */
+  "1 João 1:1": "O que era desde o princípio: o testemunho da vida eterna",
+  "1 João 1:5": "Deus é luz, e nele não há trevas nenhumas",
+  "1 João 2:1": "Jesus Cristo, o justo, é a nossa propiciação",
+  "1 João 2:15": "Não ameis o mundo, nem o que no mundo há",
+  "1 João 3:1": "Vede que grande amor o Pai nos concedeu",
+  "1 João 4:1": "Provai os espíritos se vêm de Deus",
+  "1 João 4:7": "Deus é amor: amemo-nos uns aos outros",
+  "1 João 5:13": "A certeza da vida eterna: estas coisas vos escrevi",
+
+  /* ------------------------------ 2 JOÃO ------------------------------ */
+  "2 João 1:1": "À senhora eleita: o mandamento do amor",
+  "2 João 1:7": "Cuidado com os enganadores: muitos negam a vinda de Cristo",
+
+  /* ------------------------------ 3 JOÃO ------------------------------ */
+  "3 João 1:1": "O amado Gaio e a hospitalidade aos irmãos",
+  "3 João 1:9": "A soberba de Diótrefes e o bom exemplo de Demétrio",
+
+  /* ------------------------------- JUDAS ------------------------------ */
+  "Judas 1:1": "A exortação a pelejar pela fé uma vez entregue aos santos",
+  "Judas 1:5": "O juízo de Deus sobre os ímpios nos exemplos do passado",
+  "Judas 1:20": "Edificai-vos na fé: guardai-vos no amor de Deus",
+
+  /* ---------------------------- APOCALIPSE ---------------------------- */
+  "Apocalipse 1:1": "A revelação de Jesus Cristo entregue a João",
+  "Apocalipse 1:4": "As sete igrejas e a visão do Filho do homem",
+  "Apocalipse 2:1": "A mensagem à igreja de Éfeso",
+  "Apocalipse 2:8": "A igreja de Esmirna: sê fiel até à morte",
+  "Apocalipse 2:12": "A mensagem à igreja de Pérgamo",
+  "Apocalipse 2:18": "A mensagem à igreja de Tiatira",
+  "Apocalipse 3:1": "A igreja de Sardes: desperta, porque estás quase morto",
+  "Apocalipse 3:7": "A igreja de Filadélfia: a porta aberta que ninguém fecha",
+  "Apocalipse 3:14": "A igreja de Laodiceia: os mornos serão vomitados",
+  "Apocalipse 4:1": "A porta aberta no céu: a visão do trono de Deus",
+  "Apocalipse 5:1": "O livro selado e o Cordeiro digno de o abrir",
+  "Apocalipse 6:1": "A abertura dos selos e os quatro cavaleiros",
+  "Apocalipse 7:1": "Os cento e quarenta e quatro mil selados",
+  "Apocalipse 7:9": "A grande multidão que ninguém podia contar",
+  "Apocalipse 8:1": "O sétimo selo e o toque das trombetas",
+  "Apocalipse 11:1": "As duas testemunhas e a sétima trombeta",
+  "Apocalipse 12:1": "A mulher, o dragão e a guerra no céu",
+  "Apocalipse 13:1": "As duas bestas e o seu poder enganador",
+  "Apocalipse 14:1": "O Cordeiro no monte Sião e a colheita da terra",
+  "Apocalipse 16:1": "O derramamento das sete taças da ira de Deus",
+  "Apocalipse 18:1": "A queda da grande Babilônia",
+  "Apocalipse 19:1": "Aleluia: as bodas do Cordeiro",
+  "Apocalipse 19:11": "O cavaleiro fiel e verdadeiro desce do céu",
+  "Apocalipse 20:1": "O milênio e a prisão de Satanás",
+  "Apocalipse 20:11": "O juízo diante do grande trono branco",
+  "Apocalipse 21:1": "O novo céu e a nova terra",
+  "Apocalipse 21:9": "A nova Jerusalém, a cidade santa que desce do céu",
+  "Apocalipse 22:1": "O rio da vida e a árvore da vida",
+  "Apocalipse 22:6": "Certamente venho sem demora: a bênção final",
 };
