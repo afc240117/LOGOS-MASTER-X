@@ -15391,3 +15391,19 @@ body > .bx-v157-more-panel button{min-height:44px!important;font-size:14.5px!imp
     animation:none!important;
   }
 }
+
+/* ============================================================
+   5.4.159 — CELULAR: fileira de botões do versículo (antes do "＋")
+   ocupando a linha TODA, igual ao leque expandido ("＋"). Os atalhos
+   visíveis (.lmx-bible-v3-tools) herdavam um padding-left de ~65px
+   (alinhamento antigo sob o número do versículo), o que abria uma
+   lacuna vazia à esquerda e deixava os botões mais estreitos que os
+   do leque .lmx-bible-v3-extra. Agora a fileira começa na mesma borda,
+   usa as mesmas 4 colunas e os botões ficam do mesmo tamanho do leque.
+   Desktop (>760px) intocado. */
+@media(max-width:760px){
+  body.bx-mobile-app #workspace #bOut .lmx-bible-v3-tools{
+    padding-left:0!important;
+    margin-left:0!important;
+  }
+}
