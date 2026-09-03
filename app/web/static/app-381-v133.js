@@ -5137,8 +5137,31 @@ Gerado em ${new Date().toLocaleString("pt-BR")}
  };
 
  /* 5.4.126 — Epígrafes: título de perícope sobre o texto (banco em bible-pericopes.js).
-    Devolve o <h4> quando a ref do versículo abre uma perícope; senão, string vazia. */
- const pericopeHtml=ref=>{const t=window.LMX_PERICOPES&&window.LMX_PERICOPES[ref||""];return t?`<h4 class="lmx-bible-v3-pericope">${escapeHtml(t)}</h4>`:""};
+    Devolve o <h4> quando a ref do versículo abre uma perícope; senão, string vazia.
+    5.4.163 — quando a epígrafe ENCABEÇA a página (primeiro item do trecho renderizado),
+    anexa a abreviação do livro + capítulo (ex.: " … Rm 3") e marca amarelo. */
+ const EPIGRAPH_ABBR={
+   "Gênesis":"Gn","Êxodo":"Êx","Levítico":"Lv","Números":"Nm","Deuteronômio":"Dt",
+   "Josué":"Js","Juízes":"Jz","Rute":"Rt","1 Samuel":"1Sm","2 Samuel":"2Sm",
+   "1 Reis":"1Rs","2 Reis":"2Rs","1 Crônicas":"1Cr","2 Crônicas":"2Cr","Esdras":"Ed",
+   "Neemias":"Ne","Ester":"Et","Jó":"Jó","Salmos":"Sl","Provérbios":"Pv",
+   "Eclesiastes":"Ec","Cânticos":"Ct","Cantares":"Ct","Isaías":"Is","Jeremias":"Jr",
+   "Lamentações":"Lm","Ezequiel":"Ez","Daniel":"Dn","Oséias":"Os","Joel":"Jl","Amós":"Am",
+   "Obadias":"Ob","Jonas":"Jn","Miquéias":"Mq","Naum":"Na","Habacuque":"Hc","Sofonias":"Sf",
+   "Ageu":"Ag","Zacarias":"Zc","Malaquias":"Ml","Mateus":"Mt","Marcos":"Mc","Lucas":"Lc",
+   "João":"Jo","Atos":"At","Romanos":"Rm","1 Coríntios":"1Co","2 Coríntios":"2Co",
+   "Gálatas":"Gl","Efésios":"Ef","Filipenses":"Fp","Colossenses":"Cl",
+   "1 Tessalonicenses":"1Ts","2 Tessalonicenses":"2Ts","1 Timóteo":"1Tm","2 Timóteo":"2Tm",
+   "Tito":"Tt","Filemom":"Fm","Hebreus":"Hb","Tiago":"Tg","1 Pedro":"1Pe","2 Pedro":"2Pe",
+   "1 João":"1Jo","2 João":"2Jo","3 João":"3Jo","Judas":"Jd","Apocalipse":"Ap"
+ };
+ const pericopeHtml=(v,head)=>{
+   const ref=(v&&(v.ref!=null?v.ref:""))||"";
+   const t=window.LMX_PERICOPES&&window.LMX_PERICOPES[ref];
+   if(!t)return "";
+   const chip=head?` <span class="lmx-v3-pericope-ref">${escapeHtml(EPIGRAPH_ABBR[v.book]||v.book)} ${escapeHtml(String(v.chapter))}</span>`:"";
+   return `<h4 class="lmx-bible-v3-pericope${head?" lmx-v3-pericope-head":""}">${escapeHtml(t)}${chip}</h4>`;
+ };
  const renderBibleVerses=(rows=[])=>{const out=$("#bOut");if(!out)return;out.classList.remove("bx-v159-results-mode");if(!rows.length){out.innerHTML='<div class="bx-reader-empty">Passagem não encontrada.</div>';return}
   bxHistoryPush(rows);
   bxSaveReadingProgress(rows);
@@ -5250,7 +5273,7 @@ Gerado em ${new Date().toLocaleString("pt-BR")}
   <div class="bx-v157-more-panel" data-v157-more-panel hidden></div>
 
   <div class="lmx-bible-v3-list">
-    ${rows.map((v,idx)=>`${pericopeHtml(v.ref)}<div class="lmx-bible-v3-verse ${bxSelectionHas(v.ref)?"bx-selected-verse":""}" data-bx-v3-verse data-v157-index="${idx}" data-ref="${escapeHtml(v.ref)}" data-highlight="${escapeHtml(bxHighlightFor(v.ref))}">
+    ${rows.map((v,idx)=>`${pericopeHtml(v,idx===0)}<div class="lmx-bible-v3-verse ${bxSelectionHas(v.ref)?"bx-selected-verse":""}" data-bx-v3-verse data-v157-index="${idx}" data-ref="${escapeHtml(v.ref)}" data-highlight="${escapeHtml(bxHighlightFor(v.ref))}">
       <div class="lmx-bible-v3-textrow">
         <button type="button" class="bx-v155-select ${bxSelectionHas(v.ref)?"selected":""}" data-v155-select="${escapeHtml(v.ref)}" title="Selecionar ${escapeHtml(v.ref)}">${bxSelectionHas(v.ref)?"✓":"○"}</button>
         <button class="lmx-bible-v3-num" data-open-ref="${escapeHtml(v.ref)}" title="${escapeHtml(v.ref)}">${escapeHtml(String(v.verse))}</button>
