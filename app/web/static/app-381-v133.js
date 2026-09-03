@@ -1962,6 +1962,47 @@ function installStudioStepNavigation(){
    a pedido do usuário (botão amarelo no topo de cada página). O acesso à Central
    Bíblia X segue pelos botões "Painéis" do topo e "Painéis & Ferramentas" da lateral. */
 
+/* 5.4.161 — pop-up "Comandos rápidos" na primeira visita à Bíblia X.
+   Mostra gestos/atalhos reais do leitor sem poluir: some ao tocar fora,
+   com ✕/Entendi e opção "Não mostrar novamente" (persistida). Só reaparece
+   uma vez por sessão enquanto o usuário não marcar "não mostrar". */
+function maybeBibleQuickGuide(){
+  const never=(()=>{try{return Store.get("logosx:bxQuickGuideNever")==="1"}catch(_){return false}})();
+  if(never||window.__bxQuickGuideShown)return;
+  const shell=document.querySelector(".bible-x-shell");
+  if(!shell||!document.querySelector(".bible-x-panel[data-bible-panel='reader']"))return;
+  window.__bxQuickGuideShown=true;
+  const isPhone=window.matchMedia("(max-width:760px)").matches;
+  const row=(ico,txt)=>`<li><span class="bxq-ico">${ico}</span><span>${txt}</span></li>`;
+  const tips=isPhone?[
+    row("👈👉","Deslize o dedo: <b>esquerda</b> = próximo capítulo &nbsp;•&nbsp; <b>direita</b> = capítulo anterior"),
+    row("📖","Toque em um <b>versículo</b> para abrir as ferramentas (Referências, Strong, Léxico, Comentários…)."),
+    row("🕹️","Na barra de baixo: <b>🔗 Referências</b>, <b>🇬🇷 Strong</b>, <b>📥 Importar</b> (Bíblia offline) e <b>☰ Modos</b>.")
+  ]:[
+    row("⌨️","Atalhos: <b>N</b> próximo capítulo &nbsp;•&nbsp; <b>P</b> capítulo anterior &nbsp;•&nbsp; <b>F</b> foco de leitura"),
+    row("📖","Toque em um <b>versículo</b> para abrir as ferramentas (Referências, Strong, Léxico, Comentários…)."),
+    row("🕹️","No menu lateral você troca de módulo; a barra do topo tem busca, opções e zoom.")
+  ];
+  const wrap=document.createElement("div");
+  wrap.className="bx-guide-overlay";
+  wrap.setAttribute("role","dialog");
+  wrap.setAttribute("aria-modal","true");
+  wrap.innerHTML=`
+   <div class="bx-guide-card">
+    <header><span class="bxq-mark">📖</span><div><small>BÍBLIA X</small><h3>Comandos rápidos</h3></div><button type="button" class="bxq-close" aria-label="Fechar">✕</button></header>
+    <ul>${tips.join("")}</ul>
+    <footer>
+      <label class="bxq-never"><input type="checkbox">Não mostrar novamente</label>
+      <button type="button" class="bxq-ok">Entendi</button>
+    </footer>
+   </div>`;
+  const close=()=>{try{const cb=wrap.querySelector(".bxq-never input");if(cb&&cb.checked)Store.set("logosx:bxQuickGuideNever","1")}catch(_){}wrap.remove()};
+  wrap.querySelector(".bxq-ok").addEventListener("click",close);
+  wrap.querySelector(".bxq-close").addEventListener("click",close);
+  wrap.addEventListener("click",e=>{if(e.target===wrap)close()});
+  document.body.appendChild(wrap);
+}
+
 async function render(view){
  /* 5.4.41 — O trilho flutuante vive no <body>; some ao trocar de view.
     O leitor o recria quando um capítulo é aberto. */
@@ -1972,6 +2013,7 @@ async function render(view){
     botão "Painéis" do topo e "Painéis & Ferramentas" da lateral) */
  $$("[data-go]").forEach(b=>b.onclick=()=>navigateView(b.dataset.go));
  if(view==="dashboard"){$("#installPwaHome")?.addEventListener("click",installPwa);bindHomeDashboard();/* fluxo visual oficial: HOTFIX 4.3.14 */} $$(".top-nav [data-go]").forEach(b=>b.classList.toggle("active",b.dataset.go===view)); $$(".bottom-nav [data-go]").forEach(b=>b.classList.toggle("active",b.dataset.go===view)); document.body.classList.toggle("lmx-hide-global-nav",view==="bible"); if($("#installPwaSide"))$("#installPwaSide").onclick=installPwa;
+ if(view==="bible")setTimeout(maybeBibleQuickGuide,520);
  if(view==="appearance"){$("#openAppearanceInside")?.addEventListener("click",openAppearance);}
  if(view==="custompages"){$("#customPageSave")?.addEventListener("click",()=>{const title=$("#customPageTitle").value.trim();if(!title)return;const a=Store.get("customPages",[]);a.push({title,icon:$("#customPageIcon").value||"⭐",content:$("#customPageContent").value});Store.set("customPages",a);render("custompages")});$$('[data-page-delete]').forEach(b=>b.onclick=()=>{const a=Store.get("customPages",[]);a.splice(Number(b.dataset.pageDelete),1);Store.set("customPages",a);render("custompages")});}
  if(view==="quick"){
