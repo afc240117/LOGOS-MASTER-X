@@ -1540,7 +1540,7 @@ ${homeDesktopControls(actions)}
    <div class="bible-x-resource-strip">
     <button data-bible-jump="cross">🔗 Referências</button><button data-bible-jump="strong">🇬🇷🇮🇱 Strong</button><button data-bible-jump="lexicon">📚 Léxico</button><button data-bible-jump="context">🧭 Contexto</button><button data-bible-jump="dna">🧬 DNA K7</button><button data-bible-studio>⚡ Enviar ao Studio X</button><button id="bxFavoriteCurrent">⭐ Favoritar</button><button data-bible-jump="comments">💬 Comentários</button><button data-bible-jump="notes">📝 Notas</button>
    </div>
-   <div id="bOut" class="output bible-x-output">Carregando João 3:16...</div><section id="bxVerseContext" class="bx-verse-context" hidden>
+   <div id="bOut" class="output bible-x-output">🕯️ Lâmpada para meus pés é tua palavra, e luz para o meu caminho</div><section id="bxVerseContext" class="bx-verse-context" hidden>
 <div class="bx-vc-sticky">
 <div class="bx-vc-head"><div><small id="bxVcKind">FERRAMENTA</small><h3 id="bxVcTitle">Detalhes</h3></div></div>
 <div class="bx-vc-toolbar" aria-label="Controles do recurso">
@@ -9198,6 +9198,20 @@ window.BibliaXLocal = window.BibliaXLocal || {
     },120);
   };
 
+  /* 5.4.160 — "Importar" na barra inferior: abre o painel do leitor e leva até o
+     bloco ⚙️ Bíblia local / módulos offline (mesmo que aparece no fim da página
+     em tela normal), abrindo-o para escolher arquivo / importar / ver status. */
+  const openLocalImport=()=>{
+    openReader();
+    setTimeout(()=>{
+      const panel=document.querySelector('[data-bible-panel="reader"]');
+      const details=panel&&panel.querySelector('details.bible-x-import');
+      if(!details)return;
+      if(!details.open)details.open=true;
+      try{details.scrollIntoView({behavior:"smooth",block:"center"});}catch(_){details.scrollIntoView();}
+    },220);
+  };
+
   const mountBottomNav=()=>{
     let nav=document.querySelector("#bxMobileBottomNav");
     if(!isMobile() || !bibleShell()){
@@ -9215,13 +9229,13 @@ window.BibliaXLocal = window.BibliaXLocal || {
         <button type="button" data-bxm="reader"><span>📖</span><b>Bíblia</b></button>
         <button type="button" data-bxm="cross"><span>🔗</span><b>Referências</b></button>
         <button type="button" data-bxm="strong"><span>🇬🇷</span><b>Strong</b></button>
-        <button type="button" data-bxm="maps"><span>🗺️</span><b>Mapas</b></button>
+        <button type="button" data-bxm="import" title="Bíblia local / módulos offline: escolher arquivo e importar"><span>📥</span><b>Importar</b></button>
         <button type="button" data-bxm="pages" title="Modos de leitura e ferramentas"><span>☰</span><b>Modos</b></button>`;
       document.body.appendChild(nav);
       nav.querySelector('[data-bxm="reader"]')?.addEventListener("click",openReader);
       nav.querySelector('[data-bxm="cross"]')?.addEventListener("click",()=>activateSection("cross"));
       nav.querySelector('[data-bxm="strong"]')?.addEventListener("click",()=>activateSection("strong"));
-      nav.querySelector('[data-bxm="maps"]')?.addEventListener("click",()=>activateSection("maps"));
+      nav.querySelector('[data-bxm="import"]')?.addEventListener("click",openLocalImport);
       nav.querySelector('[data-bxm="pages"]')?.addEventListener("click",()=>{(window.__bxV170ModeFanToggle&&window.__bxV170ModeFanToggle())||window.LMXBXPages?.openPageMenu?.();});
     }
     nav.hidden=false;
