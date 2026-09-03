@@ -6398,8 +6398,16 @@ Gerado em ${new Date().toLocaleString("pt-BR")}
     if(bxV157Pos)bxV157Pos.textContent=`${bxV157CurrentIndex+1} / ${rows.length}`;
     const marked=bxBookmarksGet().some(x=>x.ref===v.ref);
     if(bxV157Bm){bxV157Bm.textContent=marked?"★":"☆";bxV157Bm.classList.toggle("active",marked);bxV157Bm.title=marked?`Remover marcador de ${v.ref}`:`Marcar ${v.ref}`}
-    bxV157Els.forEach((el,i)=>el.classList.toggle("bx-v157-current",i===bxV157CurrentIndex));
-    if(scroll)bxV157Els[bxV157CurrentIndex]?.scrollIntoView({behavior:"smooth",block:"center"});
+    /* 5.4.158 — CELULAR: o destaque do versículo corrente (.bx-v157-current)
+       era alternado a cada passagem do scroll, e CADA troca re-rasteriza o texto
+       (as letras "tremem" no instante em que um versículo é marcado/desmarcado).
+       No celular (≤760px) o índice continua sendo atualizado (posição X/Y,
+       marcador, copiar atual, TTS, busca no versículo corrente), mas a CLASSE
+       não é mais alternada nos versículos — sem mudança de estilo, sem tremor.
+       Desktop segue marcando normal. */
+    const _bxV158Desktop=!window.matchMedia("(max-width:760px)").matches;
+    if(_bxV158Desktop)bxV157Els.forEach((el,i)=>el.classList.toggle("bx-v157-current",i===bxV157CurrentIndex));
+    if(scroll&&_bxV158Desktop)bxV157Els[bxV157CurrentIndex]?.scrollIntoView({behavior:"smooth",block:"center"});
     window.__bxV157Ctx={rows,index:bxV157CurrentIndex,setCurrent:bxV157SetCurrent};
   };
   bxV157Bm?.addEventListener("click",()=>{
@@ -9376,7 +9384,14 @@ lm150.ensureProgress();
 
 /* versículo ativo no scroll (scroll-spy) */
 let _spy=null;
-function initSpy(){const v=$$("#bOut .lmx-bible-v3-verse");if(!v.length)return;_spy?.disconnect();_spy=new IntersectionObserver(es=>{for(const en of es){if(en.isIntersecting){$$(".lmx150-active").forEach(x=>x.classList.remove("lmx150-active"));en.target.classList.add("lmx150-active");break}}},{rootMargin:"-18% 0px -64% 0px",threshold:0});v.forEach(x=>_spy.observe(x))}
+/* 5.4.158 — CELULAR: o scroll-spy (.lmx150-active) é desligado no celular (≤760px).
+   Antes, o versículo que passava pelo meio ganhava/perdia a classe a cada pedacinho
+   de rolagem e CADA troca re-rasterizava o texto — as letras "tremiam" no instante
+   em que um versículo era marcado/desmarcado. Sem a classe alternada, não há
+   mudança de estilo nem tremor. Desktop mantém o scroll-spy normal. */
+function initSpy(){
+  if(window.matchMedia("(max-width:760px)").matches){_spy?.disconnect();_spy=null;return}
+  const v=$$("#bOut .lmx-bible-v3-verse");if(!v.length)return;_spy?.disconnect();_spy=new IntersectionObserver(es=>{for(const en of es){if(en.isIntersecting){$$(".lmx150-active").forEach(x=>x.classList.remove("lmx150-active"));en.target.classList.add("lmx150-active");break}}},{rootMargin:"-18% 0px -64% 0px",threshold:0});v.forEach(x=>_spy.observe(x))}
 
 /* swipe entre capítulos (celular) */
 let _sx=null,_sy=null;

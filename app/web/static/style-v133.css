@@ -15363,3 +15363,31 @@ body > .bx-v157-more-panel button{min-height:44px!important;font-size:14.5px!imp
   #bOut .lmx-bible-v3-verse.lmx150-active{animation:none!important}
   #bOut .lmx150-skeleton{animation:none!important}
 }
+
+/* ============================================================
+   5.4.158 — CELULAR: SEM seleção/destaque do versículo corrente.
+   O usuário relatou que, ao rolar, o versículo do meio fica "selecionado"
+   e as letras TREMEM no instante em que ele é marcado e desmarcado.
+   O JS 5.4.158 parou de alternar as classes .lmx150-active e
+   .bx-v157-current nos versículos no celular (nada muda → nada treme).
+   Este bloco é o cinto e suspensório: cobre também o estado residual
+   (ex.: browser redimensionado de desktop p/ mobile com a classe já
+   aplicada, modo foco, etc.) — mesmo que a classe exista, ela não pode
+   pintar barra, fundo, pulso, borda arredondada nem deslocar o texto. */
+@media(max-width:760px){
+  #workspace #bOut .lmx-bible-v3-verse.lmx150-active,
+  #workspace #bOut .lmx-bible-v3-verse.bx-v157-current{
+    box-shadow:none!important;
+    border-radius:0!important;
+    background:transparent!important;
+    animation:none!important;
+    outline:none!important;
+    transform:none!important;
+  }
+  #workspace #bOut .lmx-bible-v3-verse.lmx150-active *,
+  #workspace #bOut .lmx-bible-v3-verse.bx-v157-current *{
+    box-shadow:none!important;
+    background:transparent!important;
+    animation:none!important;
+  }
+}
