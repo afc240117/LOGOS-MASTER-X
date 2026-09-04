@@ -5322,6 +5322,7 @@ Gerado em ${new Date().toLocaleString("pt-BR")}
     <button type="button" data-v157-copy-current title="Copiar versículo atual">✂</button>
     <button type="button" data-v157-fullscreen title="Tela cheia">⛶</button>
     <button type="button" data-v157-more title="Mais ações da passagem">＋</button>
+    <button type="button" class="bx-v157-exit" data-v157-exit title="Sair da tela cheia">✕ Sair</button>
   </div>
 
   <div class="bx-v157-more-panel" data-v157-more-panel hidden></div>
