@@ -5165,7 +5165,7 @@ Gerado em ${new Date().toLocaleString("pt-BR")}
    const ref=(v&&(v.ref!=null?v.ref:""))||"";
    const t=window.LMX_PERICOPES&&window.LMX_PERICOPES[ref];
    if(!t)return "";
-   const chip=head?` <span class="lmx-v3-pericope-ref">${escapeHtml(EPIGRAPH_ABBR[v.book]||v.book)} ${escapeHtml(String(v.chapter))}</span>`:"";
+   const chip=head?` <span class="lmx-v3-pericope-ref">&nbsp;—&nbsp;${escapeHtml(EPIGRAPH_ABBR[v.book]||v.book)}&nbsp;${escapeHtml(String(v.chapter))}</span>`:"";
    return `<h4 class="lmx-bible-v3-pericope${head?" lmx-v3-pericope-head":""}">${escapeHtml(t)}${chip}</h4>`;
  };
  /* 5.4.163 — VOLTAR (gesto/botao do celular) dentro da Biblia: cada passagem aberta
