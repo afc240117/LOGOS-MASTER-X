@@ -15507,3 +15507,77 @@ body > .bx-v157-more-panel button{min-height:44px!important;font-size:14.5px!imp
   body:has(.bible-x-shell.bx-page-full) #bOut,
   body.lmx-bx-full #bOut{padding-bottom:128px!important}
 }
+
+/* ==========================================================
+   5.4.165 — MOBILE: fonte do texto maior, contador do trilho
+   removido e pop-up "Trocar passagem" com as 2 linhas grandes
+   ========================================================== */
+
+/* (1) Contador "1 / N" some do trilho em TODOS os contextos:
+       lateral (bíblia normal), barra auto-hide e barra em tela cheia */
+.bx-v157-rail [data-v157-position]{display:none!important}
+
+/* (2) Abreviação "Rm 3" da epígrafe com hífen já no JS — cor própria */
+.lmx-v3-pericope-ref{
+  color:#9fd7ff!important;
+  font-weight:700!important;
+  font-size:.94em!important;
+}
+
+/* (3) Trilho lateral/normal (PC e tablet): botões e símbolos maiores */
+.bx-v157-rail button{
+  width:46px!important;
+  min-width:46px!important;
+  height:46px!important;
+  min-height:46px!important;
+  font-size:20px!important;
+}
+
+/* (4) Tela cheia: símbolos e "✕ Sair" maiores ainda (sobrepoõe o 5.4.164) */
+body:has(.bible-x-shell.bx-reading-full) .bx-v157-rail button,
+body:has(.bible-x-shell.bx-page-full) .bx-v157-rail button,
+body.lmx-bx-full .bx-v157-rail button{
+  font-size:22px!important;
+}
+body:has(.bible-x-shell.bx-reading-full) .bx-v157-rail [data-v157-exit],
+body:has(.bible-x-shell.bx-page-full) .bx-v157-rail [data-v157-exit],
+body.lmx-bx-full .bx-v157-rail [data-v157-exit]{
+  font-size:15px!important;
+}
+
+/* (5) Pop-up "Trocar passagem": as duas linhas de localização grandes (desktop) */
+.bxn-status{
+  font-size:16px!important;
+  line-height:1.55!important;
+  min-height:0!important;
+  font-weight:600!important;
+  margin:10px 2px 2px!important;
+}
+
+/* (6) Celular: tudo acima — fonte do texto da Bíblia maior por padrão,
+       mantendo o zoom de letra (A−/A+, níveis 1–5 são % da base aqui). */
+@media(max-width:760px){
+  body.bx-mobile-app #bOut .lmx-bible-v3-list{font-size:25px!important}
+  .bible-x-shell.bx-reading-full #bOut .lmx-bible-v3-text{
+    font-size:calc(25px * var(--bx-reader-scale,1))!important;
+  }
+  .bxn-status{font-size:21px!important;line-height:1.6!important}
+  .bx-v157-rail{padding:7px 4px!important;gap:5px!important}
+  .bx-v157-rail button{
+    width:46px!important;min-width:46px!important;
+    height:46px!important;min-height:46px!important;
+    font-size:21px!important;
+  }
+}
+@media(max-width:390px){
+  body.bx-mobile-app #bOut .lmx-bible-v3-list{font-size:24px!important}
+  .bible-x-shell.bx-reading-full #bOut .lmx-bible-v3-text{
+    font-size:calc(24px * var(--bx-reader-scale,1))!important;
+  }
+  .bx-v157-rail button{
+    width:44px!important;min-width:44px!important;
+    height:44px!important;min-height:44px!important;
+    font-size:19px!important;
+  }
+  .bxn-status{font-size:19px!important}
+}
