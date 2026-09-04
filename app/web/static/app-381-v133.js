@@ -13776,48 +13776,109 @@ window.BibleXPolimento=Object.assign(window.BibleXPolimento||{},{lote528:"concor
     }
 
     /* ---------- (b) ⚙️ escolher quais botões aparecem ---------- */
-    var KEY = 'logosbx:v157railvis';
-    var MAP = [
-      ['nav', 'nav', '📖 Trocar passagem'],
-      ['listen', 'listen', '🔊 Ouvir capítulo'],
-      ['bookmark', 'bookmark-current', '☆ Marcar versículo'],
-      ['copy', 'copy-current', '✂ Copiar versículo'],
-      ['fullscreen', 'fullscreen', '⛶ Tela cheia'],
-      ['more', 'more', '＋ Mais ações']
+    /* 5.4.169 — catálogo GRANDE (agrupado no painel ⚙️). Cada item:
+       [chave, sufixo do data-v157-*, ícone, rótulo, padrão(1=ligado)].
+       Máximo de 6 LIGADOS por vez: o 7º botão da barra (✕ Sair) e o
+       próprio ⚙️ são FIXOS e não entram na contagem. */
+    var LIMIT = 6;
+    var GROUPS = [
+      { t: 'Navegação', rows: [
+        ['nav','nav','📖','Trocar passagem',1],
+        ['chap-prev','chap-prev','⏮','Capítulo anterior',0],
+        ['chap-next','chap-next','⏭','Capítulo seguinte',0],
+        ['hist-prev','hist-prev','↩','Passagem anterior',0],
+        ['hist-next','hist-next','↪','Passagem seguinte',0]
+      ]},
+      { t: 'Versículo atual', rows: [
+        ['listen','listen','🔊','Ouvir capítulo',1],
+        ['bookmark','bookmark-current','☆','Marcar versículo',1],
+        ['bookmarks','bookmarks','🔖','Lista de marcadores',0],
+        ['copy','copy-current','✂','Copiar versículo',1],
+        ['share','share','↗','Compartilhar',0],
+        ['cite','cite','❞','Citar X',0],
+        ['fullscreen','fullscreen','⛶','Tela cheia',1],
+        ['more','more','＋','Mais ações',1]
+      ]},
+      { t: 'Ferramentas de estudo', rows: [
+        ['guide','guide','🧭','Guia da passagem',0],
+        ['discover','discover','🔭','Descobertas',0],
+        ['words','words','🔤','Palavra X',0],
+        ['atlas','atlas','🗺','Atlas Instantâneo',0],
+        ['context7','context7','7×7','Contexto 7×7',0],
+        ['cadeia','cadeia','⛓','Cadeia X',0],
+        ['duas','duas','Ⅱ','Duas Passagens',0],
+        ['biblioteca','biblioteca','🏛','Biblioteca Pessoal',0],
+        ['comparex','comparex','▥','Comparador X',0],
+        ['mesa','mesa','▦','Mesa X',0],
+        ['network','network','🕸','Rede X',0],
+        ['tempo','tempo','🕰','Tempo X',0],
+        ['journey','journey','🧭','Jornada X',0],
+        ['notebook','notebook','📓','Caderno X',0],
+        ['questions','questions','❓','Perguntas X',0],
+        ['pulpit','pulpit','🎤','Púlpito',0],
+        ['painel360','painel360','◉','Painel 360',0],
+        ['central','central','✦','Central X',0],
+        ['memoria','memoria','🧠','Memória X',0]
+      ]}
     ];
+    function allRows() { var a = []; GROUPS.forEach(function (g) { a = a.concat(g.rows); }); return a; }
+    var KEY = 'logosbx:v157railvis';
     var vis = {};
     try { vis = JSON.parse(localStorage.getItem(KEY) || 'null') || {}; } catch (_) { vis = {}; }
-    MAP.forEach(function (m) { if (typeof vis[m[0]] !== 'number') vis[m[0]] = 1; });
+    allRows().forEach(function (m) { if (typeof vis[m[0]] !== 'number') vis[m[0]] = m[4] ? 1 : 0; });
+    function countOn() { var n = 0; allRows().forEach(function (m) { if (vis[m[0]]) n++; }); return n; }
     function saveVis() { try { localStorage.setItem(KEY, JSON.stringify(vis)); } catch (_) {} }
     function applyVis() {
       var buttons = document.querySelectorAll('.bx-v157-rail button');
       for (var i = 0; i < buttons.length; i++) {
         var b = buttons[i], k = null;
-        for (var m = 0; m < MAP.length; m++) {
-          if (b.hasAttribute('data-v157-' + MAP[m][1])) { k = MAP[m][0]; break; }
-        }
+        for (var r = 0; r < allRows().length; r++) { var m = allRows()[r]; if (b.hasAttribute('data-v157-' + m[1])) { k = m[0]; break; } }
         if (k) b.classList.toggle('bx-v157-off', !vis[k]);
       }
     }
     window.__bxV157RailVis = {
       read: function () { return vis; },
-      set: function (k, on) { vis[k] = on ? 1 : 0; saveVis(); applyVis(); }
+      set: function (k, on) { vis[k] = on ? 1 : 0; saveVis(); applyVis(); refreshPanel(); }
     };
 
     var panel = document.createElement('div');
     panel.className = 'bx-v157-settings';
     panel.setAttribute('data-bx-rail-panel', '');
     panel.hidden = true;
-    var ph = '<div class="bx-v157-settings-title">Escolher botões da barra</div>';
-    MAP.forEach(function (m) {
-      ph += '<label class="bx-v157-settings-row"><input type="checkbox" data-bx-rail-k="' + m[0] + '"' + (vis[m[0]] ? ' checked' : '') + '><span>' + m[2] + '</span></label>';
-    });
-    ph += '<div class="bx-v157-settings-hint">Desmarque para esconder da barra (📖 a ＋). ⚙️ e ✕ Sair ficam sempre.</div>';
-    panel.innerHTML = ph;
+    function buildPanelHtml() {
+      var h = '<div class="bx-v157-settings-title"><span>Botões da barra</span><b class="bx-v157-settings-count" data-bx-rail-count>0 / ' + LIMIT + '</b></div>';
+      h += '<div class="bx-v157-settings-limit" data-bx-rail-limit hidden>Máximo de ' + LIMIT + ' ligados. O 7º botão é o ✕ Sair — ele é fixo.</div>';
+      h += '<div class="bx-v157-settings-body">';
+      GROUPS.forEach(function (g) {
+        h += '<div class="bx-v157-settings-group"><div class="bx-v157-settings-group-t">' + g.t + '</div>';
+        g.rows.forEach(function (m) {
+          h += '<label class="bx-v157-settings-row"><span class="bx-v157-settings-ico">' + m[2] + '</span><span class="bx-v157-settings-lb">' + m[3] + '</span><input type="checkbox" data-bx-rail-k="' + m[0] + '"></label>';
+        });
+        h += '</div>';
+      });
+      h += '</div>';
+      h += '<div class="bx-v157-settings-hint">A barra em tela cheia mostra até ' + LIMIT + ' botões. ⚙️ e ✕ Sair ficam sempre.</div>';
+      return h;
+    }
+    panel.innerHTML = buildPanelHtml();
     document.body.appendChild(panel);
-
+    var countEl = panel.querySelector('[data-bx-rail-count]');
+    var limitEl = panel.querySelector('[data-bx-rail-limit]');
+    function refreshLimitUI() {
+      var on = countOn();
+      if (countEl) countEl.textContent = on + ' / ' + LIMIT;
+      var over = on >= LIMIT;
+      if (limitEl) limitEl.hidden = !over;
+      var boxes = panel.querySelectorAll('[data-bx-rail-k]');
+      for (var i = 0; i < boxes.length; i++) {
+        var cb = boxes[i], full = over && !cb.checked;
+        cb.disabled = full;
+        cb.title = full ? ('Desligue um botão antes de ligar outro (máximo ' + LIMIT + ')') : '';
+      }
+    }
     function refreshPanel() {
       panel.querySelectorAll('[data-bx-rail-k]').forEach(function (cb) { cb.checked = !!vis[cb.dataset.bxRailK]; });
+      refreshLimitUI();
     }
     function openPanel() {
       refreshPanel();
