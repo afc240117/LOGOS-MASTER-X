@@ -9002,19 +9002,24 @@ window.BibliaXLocal = window.BibliaXLocal || {
   };
   const full=async on=>{
     const root=shell();if(!root)return false;
-    /* 5.4.163 — no CELULAR NAO ativa o Fullscreen API nativo: o Chrome/Android pinta
-       por cima "…onrender.com · arraste para cima para sair", que a pagina nao consegue
-       remover. A emulacao CSS (.bx-page-full) ja ocupa a tela toda no mobile. */
-    const fsNativeOk=typeof window.matchMedia!=="function"||!window.matchMedia("(max-width:760px)").matches;
+    /* 5.4.164 — volta ao FULLSCREEN NATIVO no celular (usuário pediu "literalmente
+       em full screen": a emulação CSS mostrava a faixa de horas/data do Android).
+       No CELULAR o nativo é pedido no DOCUMENTO (documentElement), NÃO no shell:
+       pedir no shell o coloca na top-layer e ESCONDE a barra inferior (o rail
+       .bx-v157-rail vive no <body>) e o botão "✕ Sair" — só sobraria o gesto do
+       Chrome. Com o <html> em fullscreen a faixa de cima some e a barra+✕ Sair
+       continuam visíveis. No PC continua pedindo no shell, como sempre foi. */
+    const isPhone=typeof window.matchMedia==="function"&&window.matchMedia("(max-width:760px)").matches;
     setFullUi(!!on);
     if(on){
-      const request=root.requestFullscreen||root.webkitRequestFullscreen;
-      if(request&&!document.fullscreenElement&&!document.webkitFullscreenElement&&fsNativeOk){
+      const target=isPhone?(document.documentElement||document.body):root;
+      const request=target.requestFullscreen||target.webkitRequestFullscreen;
+      if(request&&!document.fullscreenElement&&!document.webkitFullscreenElement){
         /* Fix 5.4.4 — flag OTIMISTA: se a promessa do request resolver depois do ESC
            (fullscreenchange já disparado), a flag ainda estava false e o .bx-page-full
            ficava preso. Marcar antes evita a tela "esvanecida" ao sair. */
         nativeFullscreenOwned=true;
-        try{await request.call(root,{navigationUI:"hide"})}catch(_){nativeFullscreenOwned=false}
+        try{await request.call(target,{navigationUI:"hide"})}catch(_){nativeFullscreenOwned=false}
       }else{
         nativeFullscreenOwned=false;
       }
@@ -13183,6 +13188,9 @@ window.BibleXPolimento=Object.assign(window.BibleXPolimento||{},{lote528:"concor
    (o .bible-x-shell pode não existir no boot) + checagem periódica. */
 (function () {
   var BTN = 'lmx134-exit', last = false;
+  /* 5.4.164 — no celular este "✕ Sair" do canto superior direito sai de cena:
+     o Sair agora fica DENTRO da barra inferior (5.4.164). No PC continua. */
+  var isPhone = typeof window.matchMedia === 'function' && window.matchMedia('(max-width:760px)').matches;
   function isFull() {
     return !!document.querySelector('.bible-x-shell.bx-reading-full, .bible-x-shell.bx-page-full');
   }
@@ -13194,6 +13202,7 @@ window.BibleXPolimento=Object.assign(window.BibleXPolimento||{},{lote528:"concor
     }
   }
   function sync() {
+    if (isPhone) { var hb = document.getElementById(BTN); if (hb) hb.style.display = 'none'; last = false; return; }
     var now = isFull();
     if (now === last) return;
     last = now;
@@ -13201,6 +13210,7 @@ window.BibleXPolimento=Object.assign(window.BibleXPolimento||{},{lote528:"concor
     if (b) b.style.display = now ? 'flex' : 'none';
   }
   function ensure() {
+    if (isPhone) return;
     var b = document.getElementById(BTN);
     if (!b) {
       b = document.createElement('button');
