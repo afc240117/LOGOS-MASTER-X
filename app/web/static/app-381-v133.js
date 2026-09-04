@@ -13390,7 +13390,7 @@ window.BibleXPolimento=Object.assign(window.BibleXPolimento||{},{lote528:"concor
     var now = isFullNow();
     if (now === wasFull) return;
     wasFull = now;
-    if (now) { apply(true); clearTimeout(timer); timer = setTimeout(function () { apply(false); }, 2200); }
+    if (now) { apply(true); clearTimeout(timer); timer = setTimeout(function () { apply(false); }, 4400); } /* 5.4.173 — entrar no full revela por 2.2s→4.4s */
     else { apply(false); }
   }, 500);
 })();
@@ -13963,7 +13963,7 @@ window.BibleXPolimento=Object.assign(window.BibleXPolimento||{},{lote528:"concor
         var now = isFull();
         if (now !== wasFull) {
           wasFull = now;
-          if (now) { tmpUntil = Date.now() + 2200; } else { tmpUntil = 0; }
+          if (now) { tmpUntil = Date.now() + 4400; } else { tmpUntil = 0; } /* 5.4.173 — 2.2s→4.4s ao entrar no full */
         }
         if (now) compute();
       }, 350);
