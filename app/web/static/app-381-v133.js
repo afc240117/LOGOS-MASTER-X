@@ -14232,7 +14232,8 @@ window.BibleXPolimento=Object.assign(window.BibleXPolimento||{},{lote528:"concor
     bible:{mark:"📖",eyebrow:"BÍBLIA X",title:"Comandos rápidos",rows:ph=>ph?[
         R("👈👉","Deslize o dedo: <b>esquerda</b> = próximo capítulo &nbsp;•&nbsp; <b>direita</b> = capítulo anterior"),
         R("⚡","Dois <b>toques rápidos</b> no texto entram na <b>tela cheia</b>; dois toques rápidos voltam à leitura."),
-        R("🕹️","Na barra de baixo: <b>🏠 Home</b>, <b>▦ Módulos</b>, <b>☰ Painéis</b>, <b>📥 Importar</b> e <b>🎛️ Modos</b>.")
+        R("🕹️","Na barra de baixo: <b>🏠 Home</b>, <b>▦ Módulos</b>, <b>☰ Painéis</b>, <b>📥 Importar</b> e <b>🎛️ Modos</b>."),
+        R("🛠️","Na <b>borda direita</b> há uma <b>aba dourada fina</b>: passe o dedo perto dela (ou toque nela) para abrir as <b>ferramentas de leitura</b>.")
       ]:[
         R("⌨️","Atalhos: <b>N</b> próximo capítulo &nbsp;•&nbsp; <b>P</b> capítulo anterior &nbsp;•&nbsp; <b>F</b> foco de leitura"),
         R("📖","Toque em um <b>versículo</b> para abrir as ferramentas (Referências, Strong, Léxico, Comentários…)."),
@@ -14324,84 +14325,23 @@ window.BibleXPolimento=Object.assign(window.BibleXPolimento||{},{lote528:"concor
 })();
 
 /* ============================================================
-   5.4.173 — ABA discreta (#bx-v157-grip) + balão de dica
-   (#bx-v157-tip) para o trilho auto-hide .bx-v157-rail.
-   Lado do usuário:
-     . ABA vertical semi-invisível na borda direita da leitura
-       normal: indica que há uma barra escondida ali; tocar nela
-       abre a barra (o tempo dobrado de 3.6s vem do 5.4.133).
-       Some na tela cheia (lá a barra vira a barra da base).
-     . Quando a barra APARECE (normal OU tela cheia) sobe um balão
-       curto apontando para ela — referência de toque que se apaga
-       sozinho e dá tempo de usar.
-   Estado VISUAL da barra é lido igual ao app:
-     normal (≤760px sem full): classe .bx-v157-touch no trilho
-       (CSS 5.4.155 desliza para dentro);
-     tela cheia: o compute 5.4.169 esconde a barra INLINE
-       (opacity '0' / visibility hidden) ao rolar fora do fim; a
-       CSS 5.4.164 a deixa sempre visível, então "visível" =
-       inline ≠ escondido.
-   Observa a cada 200ms por setInterval (sem MutationObserver →
-   sem risco de loop de escrita). ================================= */
+   5.4.173b — ABA discreta (#bx-v157-grip) do trilho auto-hide
+   .bx-v157-rail, SEM o balão de dica (retirado a pedido).
+   A dica dessa barra agora mora no card "Comandos rápidos" da
+   área 'bible' (motor 5.4.172) — o que aparece ao iniciar a
+   Bíblia. Tempos dobrados já aplicados no JS 5.4.133/5.4.169:
+   1.8s→3.6s normal, 2.8s→5.6s full, 2.2s→4.4s ao entrar no full.
+   A aba indica onde a barra escondida está: tocar nela abre a
+   barra (mesmo sinal .bx-v157-touch do 5.4.133); some na tela
+   cheia (lá a barra vira a base) e se apaga quando a barra abre.
+   ============================================================ */
 (function () {
   try {
     if (window.__bxV157UX) return;                 /* já instalado */
     var FULL = '.bible-x-shell.bx-reading-full,.bible-x-shell.bx-page-full';
-    var rail = function () { return document.querySelector('.bx-v157-rail'); };
-    var isFull = function () { return !!document.querySelector(FULL); };
-    var GRIP = null, TIP = null, tipTimer = null, openTimer = null;
-    var lastShown = false, HIDE_AFTER = 3200;
-
-    /* estado VISUAL (intenção de mostrar) da barra */
-    function shown() {
-      var r = rail();
-      if (!r) return false;
-      if (isFull()) {
-        return r.style.opacity !== '0' && r.style.visibility !== 'hidden';
-      }
-      return r.classList.contains('bx-v157-touch');
-    }
-
-    function tipText(full) {
-      return full ? '📖 Ferramentas — toque para usar' : '📖 Ferramentas de leitura — toque para usar';
-    }
-
-    function hideTip() {
-      if (TIP) TIP.classList.remove('bx-v157-tip-show');
-    }
-
-    function showTip(full) {
-      var r = rail();
-      if (!r) return;
-      var txt = tipText(full);
-      if (TIP.textContent !== txt) { TIP.textContent = txt; }
-      var rc = r.getBoundingClientRect();
-      var W = window.innerWidth, H = window.innerHeight;
-      if (full) {
-        /* barra da base (largura total): balão centralizado ACIMA, seta p/ baixo */
-        TIP.classList.add('tip-up');
-        TIP.classList.remove('tip-right');
-        TIP.setAttribute('data-fx', 'x');
-        TIP.style.left = Math.round(rc.left + rc.width / 2) + 'px';
-        TIP.style.right = 'auto';
-        TIP.style.top = 'auto';
-        TIP.style.bottom = Math.round(H - rc.top + 12) + 'px';
-      } else {
-        /* trilho vertical da lateral: balão à ESQUERDA do trilho, centralizado,
-           seta p/ a direita */
-        TIP.classList.add('tip-right');
-        TIP.classList.remove('tip-up');
-        TIP.removeAttribute('data-fx');
-        TIP.style.left = 'auto';
-        TIP.style.bottom = 'auto';
-        TIP.style.right = Math.round(W - rc.left + 10) + 'px';
-        var th = TIP.offsetHeight;                 /* altura já com o texto */
-        TIP.style.top = Math.round(rc.top + rc.height / 2 - th / 2) + 'px';
-      }
-      TIP.classList.add('bx-v157-tip-show');
-      clearTimeout(tipTimer);
-      tipTimer = setTimeout(hideTip, HIDE_AFTER);
-    }
+    function rail() { return document.querySelector('.bx-v157-rail'); }
+    function isFull() { return !!document.querySelector(FULL); }
+    var GRIP = null, openTimer = null;
 
     function openRail() {
       if (isFull()) return;                        /* no full a aba não existe */
@@ -14410,40 +14350,28 @@ window.BibleXPolimento=Object.assign(window.BibleXPolimento||{},{lote528:"concor
       r.classList.add('bx-v157-touch');            /* mesmo sinal do 5.4.133 */
       clearTimeout(openTimer);
       openTimer = setTimeout(function () { r.classList.remove('bx-v157-touch'); }, 3600);
-      lastShown = true;
-      showTip(false);
     }
 
     function sync() {
+      if (!GRIP) return;
       var full = isFull();
-      var vis = shown();
-      /* aba: acesa quando há trilho fechado na leitura normal; apagada senão.
-         (na tela cheia o CSS a esconde por completo) */
-      var lit = !!rail() && !full && !vis;
+      /* aba acesa: leitura normal com barra FECHADA. Apagada: barra aberta,
+         sem trilho, ou tela cheia (ali o CSS também a esconde por completo). */
+      var lit = !!rail() && !full && !document.querySelector('.bx-v157-rail.bx-v157-touch');
       GRIP.classList.toggle('bx-v173-dim', !lit);
-      if (vis !== lastShown) {
-        lastShown = vis;
-        if (vis) { showTip(full); } else { hideTip(); }
-      }
     }
 
     function init() {
       if (window.__bxV157UX) return;
       if (!document.body) { document.addEventListener('DOMContentLoaded', init); return; }
-      if (document.getElementById('bx-v157-grip') && document.getElementById('bx-v157-tip')) {
-        window.__bxV157UX = { open: openRail }; return;
-      }
+      if (document.getElementById('bx-v157-grip')) { window.__bxV157UX = { open: openRail }; return; }
       GRIP = document.createElement('button');
       GRIP.id = 'bx-v157-grip';
       GRIP.type = 'button';
       GRIP.setAttribute('aria-label', 'Abrir ferramentas de leitura');
       GRIP.addEventListener('pointerdown', function (e) { e.preventDefault(); openRail(); });
-      TIP = document.createElement('div');
-      TIP.id = 'bx-v157-tip';
-      TIP.setAttribute('aria-hidden', 'true');
-      (document.body).appendChild(GRIP);
-      (document.body).appendChild(TIP);
-      setInterval(sync, 200);
+      document.body.appendChild(GRIP);
+      setInterval(sync, 250);
       window.__bxV157UX = { open: openRail };
     }
     init();
