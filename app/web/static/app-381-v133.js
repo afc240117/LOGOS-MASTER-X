@@ -1605,7 +1605,7 @@ ${homeDesktopControls(actions)}
  </div>
  <small id="bxVcStatus"></small>
 </div></section>
-   <details class="bible-x-import"><summary>⚙️ Bíblia local / módulos offline</summary>
+   <details class="bible-x-import"><summary>⚙️ Bíblia local / módulos offline</summary><button type="button" class="bx-import-x" aria-label="Fechar importação" title="Fechar">✕</button>
     <p class="muted">Importe uma tradução cuja licença permita seu uso. O texto permanece neste navegador.</p>
     <div class="row"><input type="file" id="bFile" accept=".json,.csv,.txt"><button class="btn primary" id="bImport">Importar Bíblia</button><button class="btn secondary" id="bMeta">Status</button></div>
    </details>
@@ -1989,18 +1989,30 @@ function bxTryExitApp(){
   if(__bxExitInFlight)return;
   __bxExitInFlight=true;
   closeExitDialog();
-  /* gesto do usuário: fecha sincronamente (PWA standalone / WebView que permita) */
-  try{window.close()}catch(_){}
-  try{if(window.top&&window.top!==window)window.top.close()}catch(_){}
-  /* ponte nativa, se um dia existir no wrapper do app */
-  try{if(window.AndroidBridge&&typeof window.AndroidBridge.exitApp==='function')window.AndroidBridge.exitApp()}catch(_){}
-  try{if(window.flutter_inappwebview&&typeof window.flutter_inappwebview.callHandler==='function')window.flutter_inappwebview.callHandler('exitApp')}catch(_){}
-  setTimeout(function(){if(!__bxExitInFlight)return;try{window.close()}catch(_){}},350);
+  /* 5.4.172 — tentar window.close() cegamente NÃO funciona em aba comum (o
+     navegador bloqueia), por isso o usuário via SEMPRE a mensagem antiga.
+     Agora só fechamos de verdade quando o ambiente permite: ponte nativa do
+     wrapper do app, ou aba aberta por script / <iframe>. Caso contrário,
+     explicamos com clareza o que fazer para sair. */
+  var nativeBridge=false;
+  try{if(window.AndroidBridge&&typeof window.AndroidBridge.exitApp==='function'){window.AndroidBridge.exitApp();nativeBridge=true}}catch(_){}
+  try{if(window.flutter_inappwebview&&typeof window.flutter_inappwebview.callHandler==='function'){window.flutter_inappwebview.callHandler('exitApp');nativeBridge=true}}catch(_){}
+  var scriptClosable=false;
+  try{scriptClosable=!!(window.opener||(window.top&&window.top!==window))}catch(_){scriptClosable=false}
+  if(!nativeBridge&&scriptClosable){
+    try{window.close()}catch(_){}
+    try{if(window.top&&window.top!==window)window.top.close()}catch(_){}
+    setTimeout(function(){if(!__bxExitInFlight)return;try{window.close()}catch(_){}},300);
+  }
   setTimeout(function(){
     if(!__bxExitInFlight)return;
-    bxExitToast('Se a janela não fechou, feche esta aba do app (gesto de recentes) para sair.');
+    var msg;
+    if(nativeBridge)msg='Pedimos o encerramento no app. Se não fechou, use o gesto de recentes.';
+    else if(scriptClosable)msg='Fechando esta janela… Se não fechar, use o gesto de recentes.';
+    else msg='O navegador bloqueia fechar esta aba sozinho. Para sair: no celular, feche a aba pelos recentes; no computador, feche a aba do navegador.';
+    bxExitToast(msg);
     __bxExitInFlight=false;
-  },900);
+  },700);
 }
 function closeExitDialog(){
   var d=document.querySelector('#bxExitDialog');
@@ -2014,12 +2026,12 @@ function askExitApp(){
   w.setAttribute('role','dialog');
   w.setAttribute('aria-modal','true');
   w.innerHTML='<div class="bx-exit-card">'
-    +'<div class="bx-exit-ico">↩</div>'
-    +'<h3>Deseja sair?</h3>'
-    +'<p>Você quer sair do LOGOS MASTER X?</p>'
+    +'<div class="bx-exit-ico">👋</div>'
+    +'<h3>Encerrar o LOGOS MASTER X?</h3>'
+    +'<p>Você pode continuar na leitura ou encerrar o app por aqui.</p>'
     +'<div class="bx-exit-actions">'
-    +'<button type="button" class="bx-exit-btn bx-exit-danger" data-exit="go">Sair do LOGOS MASTER X</button>'
-    +'<button type="button" class="bx-exit-btn bx-exit-stay" data-exit="stay">Continuar aqui</button>'
+    +'<button type="button" class="bx-exit-btn bx-exit-stay" data-exit="stay">Continuar na Bíblia</button>'
+    +'<button type="button" class="bx-exit-btn bx-exit-danger" data-exit="go">Sair do app</button>'
     +'</div></div>';
   w.addEventListener('click',function(e){
     if(e.target===w){closeExitDialog();return;}
@@ -2120,7 +2132,7 @@ async function render(view){
     botão "Painéis" do topo e "Painéis & Ferramentas" da lateral) */
  $$("[data-go]").forEach(b=>b.onclick=()=>navigateView(b.dataset.go));
  if(view==="dashboard"){$("#installPwaHome")?.addEventListener("click",installPwa);bindHomeDashboard();/* fluxo visual oficial: HOTFIX 4.3.14 */} $$(".top-nav [data-go]").forEach(b=>b.classList.toggle("active",b.dataset.go===view)); $$(".bottom-nav [data-go]").forEach(b=>b.classList.toggle("active",b.dataset.go===view)); document.body.classList.toggle("lmx-hide-global-nav",view==="bible"); if($("#installPwaSide"))$("#installPwaSide").onclick=installPwa;
- if(view==="bible")setTimeout(maybeBibleQuickGuide,520);
+ if(view==="bible")setTimeout(function(){try{if(window.bxMaybeTip)window.bxMaybeTip("bible");if(window.__bxTipEnsureWatchers)window.__bxTipEnsureWatchers()}catch(e){}},520);
  if(view==="appearance"){$("#openAppearanceInside")?.addEventListener("click",openAppearance);}
  if(view==="custompages"){$("#customPageSave")?.addEventListener("click",()=>{const title=$("#customPageTitle").value.trim();if(!title)return;const a=Store.get("customPages",[]);a.push({title,icon:$("#customPageIcon").value||"⭐",content:$("#customPageContent").value});Store.set("customPages",a);render("custompages")});$$('[data-page-delete]').forEach(b=>b.onclick=()=>{const a=Store.get("customPages",[]);a.splice(Number(b.dataset.pageDelete),1);Store.set("customPages",a);render("custompages")});}
  if(view==="quick"){
@@ -9309,6 +9321,7 @@ window.BibliaXLocal = window.BibliaXLocal || {
     if(p.parentElement!==host)host.appendChild(p);
     p.hidden=false;
     requestAnimationFrame(()=>p.classList.add("open"));
+    setTimeout(()=>{try{window.bxMaybeTip&&window.bxMaybeTip("modulos")}catch(e){}},600);
     /* 5.4.120 — o ☰ Todos os módulos NÃO usa mais o overlay do "2º clique fecha":
        o clone ficava POR CIMA do painel aberto e ficava feio (pedido do usuário,
        "somente ele por enquanto"). O painel fecha pelo ✕, clique fora ou ao escolher
@@ -9580,8 +9593,14 @@ window.BibliaXLocal = window.BibliaXLocal || {
       document.body.appendChild(nav);
       nav.querySelector('[data-bxm="home"]')?.addEventListener("click",goHome);
       nav.querySelector('[data-bxm="extra"]')?.addEventListener("click",()=>{(window.LMXBXPages&&typeof window.LMXBXPages.openPageExtra==="function")?window.LMXBXPages.openPageExtra():window.LMXBXPages?.togglePageExtra?.();});
-      nav.querySelector('[data-bxm="painel"]')?.addEventListener("click",()=>{(window.LMXBXPages&&typeof window.LMXBXPages.openPagePainel==="function")?window.LMXBXPages.openPagePainel():window.LMXBXPages?.togglePagePainel?.();});
-      nav.querySelector('[data-bxm="import"]')?.addEventListener("click",openLocalImport);
+      nav.querySelector('[data-bxm="painel"]')?.addEventListener("click",()=>{(window.LMXBXPages&&typeof window.LMXBXPages.togglePagePainel==="function")?window.LMXBXPages.togglePagePainel():window.LMXBXPages?.openPagePainel?.();});
+      nav.querySelector('[data-bxm="import"]')?.addEventListener("click",()=>{
+        const _pn=document.querySelector('[data-bible-panel="reader"]');
+        const _det=_pn&&_pn.querySelector('details.bible-x-import');
+        if(_det&&_det.open&&_pn&&_pn.offsetParent!==null){_det.open=false;return;}
+        openLocalImport();
+        setTimeout(()=>{try{window.bxMaybeTip&&window.bxMaybeTip("import")}catch(e){}},520);
+      });
       nav.querySelector('[data-bxm="pages"]')?.addEventListener("click",()=>{(window.__bxV170ModeFanToggle&&window.__bxV170ModeFanToggle())||window.LMXBXPages?.openPageMenu?.();});
     }
     nav.hidden=false;
@@ -10305,6 +10324,7 @@ function drawerOpen(view){
     body.prepend(tutBtn);
   }
   requestAnimationFrame(()=>dr.classList.add("open"));
+  if(_drawerView==="menu")setTimeout(()=>{try{window.bxMaybeTip&&window.bxMaybeTip("paineis")}catch(e){}},600);
 }
 function drawerClose(){window.__bxToggleOverlay?.clear();const dr=$("#lmx150-drawer");if(dr){dr.classList.remove("open");setTimeout(()=>{if(!dr.classList.contains("open"))dr.remove()},280)}}
 /* 5.4.105 — expõe o drawer "Painéis & Ferramentas" para o botão ☰ Painéis da
@@ -13818,6 +13838,7 @@ window.BibleXPolimento=Object.assign(window.BibleXPolimento||{},{lote528:"concor
     if(!fan)return;
     anchor();
     fan.hidden=false;
+    setTimeout(()=>{try{window.bxMaybeTip&&window.bxMaybeTip("modos")}catch(e){}},500);
     syncActive();
     var b=pagesBtn();if(b)b.classList.add("mfan-open");
   }
@@ -14194,4 +14215,110 @@ window.BibleXPolimento=Object.assign(window.BibleXPolimento||{},{lote528:"concor
       lastT = now; lastX = ch.clientX; lastY = ch.clientY;
     }, { passive: false });
   } catch (_) {}
+})();
+
+/* ============================================================
+   5.4.172 — DICAS CONTEXTUAIS POR ÁREA (mobile + web)
+   Cada área/lugar onde o usuário entra pode ter uma caixinha curta
+   de "Comandos rápidos": 1 ícone + dicas reais. Toda caixa tem ✕,
+   "Entendi" e a opção "Não mostrar novamente" (persistida por área).
+   - uma única instância por vez (não empilha)
+   - cada área aparece 1× por sessão até ser dispensada para sempre
+   - persistência em localStorage via Store (prefixo logosx:)
+   ============================================================ */
+(function(){
+  const R=(ico,txt)=>`<li><span class="bxq-ico">${ico}</span><span>${txt}</span></li>`;
+  const TIPS={
+    bible:{mark:"📖",eyebrow:"BÍBLIA X",title:"Comandos rápidos",rows:ph=>ph?[
+        R("👈👉","Deslize o dedo: <b>esquerda</b> = próximo capítulo &nbsp;•&nbsp; <b>direita</b> = capítulo anterior"),
+        R("⚡","Dois <b>toques rápidos</b> no texto entram na <b>tela cheia</b>; dois toques rápidos voltam à leitura."),
+        R("🕹️","Na barra de baixo: <b>🏠 Home</b>, <b>▦ Módulos</b>, <b>☰ Painéis</b>, <b>📥 Importar</b> e <b>🎛️ Modos</b>.")
+      ]:[
+        R("⌨️","Atalhos: <b>N</b> próximo capítulo &nbsp;•&nbsp; <b>P</b> capítulo anterior &nbsp;•&nbsp; <b>F</b> foco de leitura"),
+        R("📖","Toque em um <b>versículo</b> para abrir as ferramentas (Referências, Strong, Léxico, Comentários…)."),
+        R("🕹️","A barra do topo troca de módulo; <b>☰ Painéis</b> abre os painéis de estudo e tutoriais.")
+      ]},
+    full:{mark:"⛶",eyebrow:"BÍBLIA X",title:"Tela cheia",rows:ph=>ph?[
+        R("⚡","Dois <b>toques rápidos</b> no texto <b>saem</b> da tela cheia e voltam à leitura."),
+        R("⚙️","Toque <b>⚙️</b> para escolher quais botões aparecem na barra; o último, <b>✕ Sair</b>, volta à leitura."),
+        R("👈👉","Deslize para o lado também troca de capítulo aqui na tela cheia.")
+      ]:[
+        R("⌨️","Pressione <b>Esc</b> (ou <b>✕ Sair</b> na barra) para voltar à leitura."),
+        R("🕹️","Os botões da barra agem sobre o versículo atual; <b>⚙️</b> escolhe quais aparecem.")
+      ]},
+    modos:{mark:"🎛️",eyebrow:"BÍBLIA X",title:"Modos",rows:ph=>ph?[
+        R("📖","Escolha o <b>módulo</b>: 📖 Leitura, 🔎 Estudo, 🇬🇷 Originais, 🗺️ Geografia, 🔥 Pregação ou 🌐 Tudo."),
+        R("⚙️","O <b>⚙️ Ferramentas</b> abre o leque do que aparece abaixo do versículo."),
+        R("⬇️","O <b>⬇️ Offline</b> abre a Bíblia local / importação de traduções.")
+      ]:[
+        R("🎛️","A faixa do topo alterna os módulos; <b>🌐 Tudo</b> reúne todos abaixo da leitura.")
+      ]},
+    modulos:{mark:"▦",eyebrow:"BÍBLIA X",title:"Todos os módulos",rows:()=>[
+        R("▦","Cada quadrado é um <b>ambiente</b> da Bíblia X. Toque para abrir."),
+        R("📌","O módulo em uso fica destacado na grade."),
+        R("✕","Feche pelo <b>✕</b> no alto ou tocando fora do painel.")
+      ]},
+    paineis:{mark:"☰",eyebrow:"BÍBLIA X",title:"Painéis & Ferramentas",rows:()=>[
+        R("🌀","Atalhos de leitura: <b>Foco</b>, <b>Mergulho</b>, <b>Largura</b>, <b>Brilho</b>…"),
+        R("📑","Abaixo, os <b>painéis</b> de estudo: Favoritos, Notas, Concordância, Strong, Léxico e mais."),
+        R("❓","Cada painel com <b>?</b> ou <b>▶</b> tem um mini tutorial narrado 🔊.")
+      ]},
+    import:{mark:"📥",eyebrow:"BÍBLIA X",title:"Importar Bíblia",rows:ph=>ph?[
+        R("📄","Escolha um arquivo (<b>JSON/CSV/TXT</b>) de uma tradução cuja licença permita o uso."),
+        R("🔒","O texto fica <b>neste navegador</b> — nada é enviado à internet."),
+        R("✕","Feche pelo <b>✕</b> no alto ou tocando de novo em <b>📥 Importar</b>.")
+      ]:[
+        R("📄","Escolha um arquivo (<b>JSON/CSV/TXT</b>) de uma tradução cuja licença permita o uso."),
+        R("🔒","O texto fica <b>neste navegador</b> — nada é enviado à internet."),
+        R("🧪","Use <b>Status</b> para conferir o que já está carregado.")
+      ]}
+  };
+  const isPhone=()=>{try{return window.matchMedia("(max-width:760px)").matches}catch(_){return false}};
+  function bxTipDismissed(area){try{if(Store.get("tip:"+area)==="1")return true;if(area==="bible"&&Store.get("logosx:bxQuickGuideNever")==="1")return true}catch(_){}return false}
+  function bxTipClose(wrap){
+    try{const cb=wrap&&wrap.querySelector(".bxq-never input");if(cb&&cb.checked)Store.set("tip:"+wrap.__area,"1")}catch(_){}
+    window.__bxTipOpen=null;if(wrap&&wrap.remove)wrap.remove();
+  }
+  function bxTipShow(area){
+    try{
+      if(!TIPS[area])return;
+      if(window.__bxTipShown&&window.__bxTipShown[area])return;
+      if(bxTipDismissed(area))return;
+      if(window.__bxTipOpen)return;
+      document.querySelectorAll(".bx-guide-overlay").forEach(function(n){try{n.remove()}catch(_){}});
+      const c=TIPS[area],ph=isPhone();
+      const wrap=document.createElement("div");
+      wrap.className="bx-guide-overlay bx-guide-area";
+      wrap.setAttribute("role","dialog");wrap.setAttribute("aria-modal","true");
+      wrap.innerHTML='<div class="bx-guide-card"><header><span class="bxq-mark">'+c.mark+'</span><div><small>'+c.eyebrow+'</small><h3>'+c.title+'</h3></div><button type="button" class="bxq-close" aria-label="Fechar">✕</button></header><ul>'+c.rows(ph).join("")+'</ul><footer><label class="bxq-never"><input type="checkbox">Não mostrar novamente</label><button type="button" class="bxq-ok">Entendi</button></footer></div>';
+      wrap.__area=area;
+      window.__bxTipOpen=area;
+      if(!window.__bxTipShown)window.__bxTipShown={};
+      window.__bxTipShown[area]=true;
+      const ok=wrap.querySelector(".bxq-ok"),cl=wrap.querySelector(".bxq-close");
+      if(ok)ok.addEventListener("click",function(){bxTipClose(wrap)});
+      if(cl)cl.addEventListener("click",function(){bxTipClose(wrap)});
+      wrap.addEventListener("click",function(e){if(e.target===wrap)bxTipClose(wrap)});
+      const host=document.fullscreenElement||document.querySelector(".bible-x-shell.bx-reading-full,.bible-x-shell.bx-page-full")||document.body;
+      (host||document.body).appendChild(wrap);
+    }catch(e){}
+  }
+  window.bxMaybeTip=bxTipShow;
+  /* fecha a janelinha de importar pelo ✕ injetado no <details> */
+  document.addEventListener("click",function(e){
+    const t=e.target&&e.target.closest?e.target.closest(".bx-import-x"):null;
+    if(!t)return;
+    e.preventDefault();
+    const d=t.closest("details.bible-x-import");if(d)d.open=false;
+  });
+  /* observa a entrada na tela cheia para mostrar a dica (uma única vez) */
+  let bxFullWatch=null;
+  function bxStartFullWatch(){
+    if(bxFullWatch)return;
+    let seen=false;
+    const check=function(){try{const f=document.querySelector(".bible-x-shell.bx-reading-full,.bible-x-shell.bx-page-full");if(f&&!seen){seen=true;setTimeout(function(){seen=false;bxTipShow("full")},420)}else if(!f){seen=false}}catch(_){}};
+    try{bxFullWatch=new MutationObserver(check);bxFullWatch.observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:["class"]})}catch(_){}
+    setTimeout(check,900);
+  }
+  window.__bxTipEnsureWatchers=bxStartFullWatch;
 })();
