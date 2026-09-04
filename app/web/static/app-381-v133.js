@@ -5322,6 +5322,32 @@ Gerado em ${new Date().toLocaleString("pt-BR")}
     <button type="button" data-v157-copy-current title="Copiar versículo atual">✂</button>
     <button type="button" data-v157-fullscreen title="Tela cheia">⛶</button>
     <button type="button" data-v157-more title="Mais ações da passagem">＋</button>
+    <button type="button" class="bx-v157-extra" data-bx-extra="chap-prev" data-v157-chap-prev title="Capítulo anterior">⏮</button>
+    <button type="button" class="bx-v157-extra" data-bx-extra="chap-next" data-v157-chap-next title="Capítulo seguinte">⏭</button>
+    <button type="button" class="bx-v157-extra" data-bx-extra="hist-prev" data-v157-hist-prev title="Passagem anterior (histórico)">↩</button>
+    <button type="button" class="bx-v157-extra" data-bx-extra="hist-next" data-v157-hist-next title="Passagem seguinte (histórico)">↪</button>
+    <button type="button" class="bx-v157-extra" data-bx-extra="bookmarks" data-v157-bookmarks title="Lista de marcadores">🔖</button>
+    <button type="button" class="bx-v157-extra" data-bx-extra="share" data-v157-share title="Compartilhar passagem">↗</button>
+    <button type="button" class="bx-v157-extra" data-bx-extra="cite" data-v157-cite title="Citar X">❞</button>
+    <button type="button" class="bx-v157-extra" data-bx-extra="guide" data-v157-guide title="Guia da passagem">🧭</button>
+    <button type="button" class="bx-v157-extra" data-bx-extra="discover" data-v157-discover title="Descobertas">🔭</button>
+    <button type="button" class="bx-v157-extra" data-bx-extra="words" data-v157-words title="Palavra X">🔤</button>
+    <button type="button" class="bx-v157-extra" data-bx-extra="atlas" data-v157-atlas title="Atlas Instantâneo">🗺</button>
+    <button type="button" class="bx-v157-extra" data-bx-extra="context7" data-v157-context7 title="Contexto 7×7">7×7</button>
+    <button type="button" class="bx-v157-extra" data-bx-extra="cadeia" data-v157-cadeia title="Cadeia X">⛓</button>
+    <button type="button" class="bx-v157-extra" data-bx-extra="duas" data-v157-duas title="Duas Passagens">Ⅱ</button>
+    <button type="button" class="bx-v157-extra" data-bx-extra="biblioteca" data-v157-biblioteca title="Biblioteca Pessoal">🏛</button>
+    <button type="button" class="bx-v157-extra" data-bx-extra="comparex" data-v157-comparex title="Comparador X">▥</button>
+    <button type="button" class="bx-v157-extra" data-bx-extra="mesa" data-v157-mesa title="Mesa X">▦</button>
+    <button type="button" class="bx-v157-extra" data-bx-extra="network" data-v157-network title="Rede X">🕸</button>
+    <button type="button" class="bx-v157-extra" data-bx-extra="tempo" data-v157-tempo title="Tempo X">🕰</button>
+    <button type="button" class="bx-v157-extra" data-bx-extra="journey" data-v157-journey title="Jornada X">🧭</button>
+    <button type="button" class="bx-v157-extra" data-bx-extra="notebook" data-v157-notebook title="Caderno X">📓</button>
+    <button type="button" class="bx-v157-extra" data-bx-extra="questions" data-v157-questions title="Perguntas X">❓</button>
+    <button type="button" class="bx-v157-extra" data-bx-extra="pulpit" data-v157-pulpit title="Púlpito Bíblia">🎤</button>
+    <button type="button" class="bx-v157-extra" data-bx-extra="painel360" data-v157-painel360 title="Painel 360">◉</button>
+    <button type="button" class="bx-v157-extra" data-bx-extra="central" data-v157-central title="Central X">✦</button>
+    <button type="button" class="bx-v157-extra" data-bx-extra="memoria" data-v157-memoria title="Memória X">🧠</button>
     <button type="button" data-v157-settings title="Escolher quais botões aparecem na barra">⚙️</button>
     <button type="button" class="bx-v157-exit" data-v157-exit title="Sair da tela cheia">✕ Sair</button>
   </div>
@@ -13709,20 +13735,29 @@ window.BibleXPolimento=Object.assign(window.BibleXPolimento||{},{lote528:"concor
     }
     var tmpUntil = 0;
     var tmpTimer = null;
+    var railShown = false;               /* estado atual da barra (histerese) */
+    function distEnd(sc) {
+      if (!sc) return Infinity;
+      var sh = sc.scrollHeight, ch = sc.clientHeight, st = sc.scrollTop || 0;
+      if (sh <= ch + 1) return 0;
+      return sh - ch - st;
+    }
     function compute() {
       var full = isFull();
-      var out = document.getElementById('bOut');
-      if (!full) {
-        setInline('clear');
-        if (out) out.style.removeProperty('padding-bottom');
-        return;
-      }
+      if (!full) { setInline('clear'); railShown = false; return; }
       var r = railEl();
       var sc = document.querySelector('.bible-x-shell.bx-reading-full, .bible-x-shell.bx-page-full');
-      var show = atEnd(sc) || (!!r && r.classList.contains('bx-v157-touch')) || (tmpUntil > Date.now());
-      if (show) showRail(); else hideRail();
-      /* ajusta a folga do fim do texto conforme a barra (evita texto preso atrás) */
-      if (out) out.style.setProperty('padding-bottom', show ? 'calc(90px + env(safe-area-inset-bottom,0px))' : '6px', 'important');
+      var d = distEnd(sc);
+      var touch = !!r && r.classList.contains('bx-v157-touch');
+      var want;
+      if (touch || tmpUntil > Date.now()) want = true;   /* toque na base / ao entrar no full */
+      else if (d <= 56) want = true;                     /* fim do texto: mostra */
+      else if (d > 150) want = false;                    /* longe do fim: esconde */
+      else want = railShown;                             /* 56..150: segura o estado atual (anti-pisca) */
+      if (want !== railShown) { railShown = want; if (want) showRail(); else hideRail(); }
+      /* 5.4.169 — o padding do fim do texto agora é FIXO (CSS), aplicado só quando há
+         tela cheia. Antes este compute alternava 90px↔6px inline no #bOut: isso mudava
+         o scrollHeight na fronteira do fim e fazia a barra PISCAR a cada frame. */
     }
     var scT = null;
     function onScroll() { if (!scT) { scT = requestAnimationFrame(function () { scT = null; compute(); }); } }
