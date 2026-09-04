@@ -176,14 +176,17 @@
   async function full(on) {
     const root = shell();
     if (!root) return false;
-    /* 5.4.163 — no celular evita o Fullscreen API nativo (mensagem "…onrender.com ·
-       arraste para cima" do Chrome/Android); a emulacao CSS .bx-page-full ja cobre. */
-    const fsNativeOk = typeof window.matchMedia !== "function" || !window.matchMedia("(max-width:760px)").matches;
+    /* 5.4.164 — volta ao FULLSCREEN NATIVO no celular (pedido do usuário: esconde
+       a faixa de horas/data). No CELULAR o nativo é pedido no DOCUMENTO, NÃO no
+       shell: o shell virar top-layer esconderia a barra inferior (.bx-v157-rail,
+       que vive no <body>) e o botão "✕ Sair". No PC segue no shell. */
+    const isPhone = typeof window.matchMedia === "function" && window.matchMedia("(max-width:760px)").matches;
     setFullUi(Boolean(on));
     if (on) {
-      const request = root.requestFullscreen || root.webkitRequestFullscreen;
-      if (request && !document.fullscreenElement && !document.webkitFullscreenElement && fsNativeOk) {
-        try { await request.call(root, { navigationUI: "hide" }); nativeFullscreenOwned = true; }
+      const target = isPhone ? (document.documentElement || document.body) : root;
+      const request = target.requestFullscreen || target.webkitRequestFullscreen;
+      if (request && !document.fullscreenElement && !document.webkitFullscreenElement) {
+        try { await request.call(target, { navigationUI: "hide" }); nativeFullscreenOwned = true; }
         catch (_) { nativeFullscreenOwned = false; }
       }
     } else {

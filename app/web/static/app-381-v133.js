@@ -13232,6 +13232,49 @@ window.BibleXPolimento=Object.assign(window.BibleXPolimento||{},{lote528:"concor
   ensure();
   setInterval(sync, 600);
 })();
+
+/* 5.4.164 — FULLSCREEN NATIVO do DOCUMENTO no celular + limpeza por gesto.
+   A Bíblia X volta a usar o Fullscreen API NATIVO (pedido do usuário: "volta a
+   deixar literalmente em full screen", escondendo a faixa de horas/data). No
+   CELULAR o nativo é pedido no <html> (documento inteiro): pedir no shell o
+   coloca na top-layer do navegador e ESCONDE a barra inferior (.bx-v157-rail,
+   que vive no <body>) e o botão "✕ Sair". Com o <html> em fullscreen o rail e
+   o Sair continuam visíveis/clicáveis. Se o gesto do Android (arrastar para
+   baixo) encerrar o nativo, o CSS full é desligado aqui. */
+(function () {
+  if (window.__bxNativeFull) return;
+  var phone = function () { return typeof window.matchMedia === 'function' && window.matchMedia('(max-width:760px)').matches; };
+  var fsEl = function () { return document.fullscreenElement || document.webkitFullscreenElement; };
+  window.__bxNativeFull = {
+    phone: phone,
+    active: function () { return !!fsEl(); },
+    enter: function () {
+      if (!phone()) return false;
+      if (fsEl()) return true;
+      var target = document.documentElement || document.body;
+      var req = target.requestFullscreen || target.webkitRequestFullscreen;
+      if (!req) return false;
+      try { req.call(target, { navigationUI: 'hide' }); return true; } catch (_) { return false; }
+    },
+    exit: function () {
+      var el = fsEl(), ex = document.exitFullscreen || document.webkitExitFullscreen;
+      if (el && ex) { try { ex.call(document); } catch (_) {} }
+    }
+  };
+  function cleanupIfOrphan() {
+    var shell = document.querySelector('.bible-x-shell');
+    if (!shell || fsEl()) return;
+    if (shell.classList.contains('bx-reading-full')) {
+      if (window.LMXBibleReader) window.LMXBibleReader.full(false);
+      else if (window.LMXBX) window.LMXBX.full(false);
+    } else if (shell.classList.contains('bx-page-full')) {
+      if (window.LMXBXPages) window.LMXBXPages.full(false);
+    }
+  }
+  document.addEventListener('fullscreenchange', function () { if (phone()) cleanupIfOrphan(); });
+  document.addEventListener('webkitfullscreenchange', function () { if (phone()) cleanupIfOrphan(); });
+})();
+
 (()=>{
   /* 5.4.140 — troca de capítulo no celular começa do versículo 1.
      O swipe e os botões Anterior/Próximo chamam #bPrevChapter/#bNextChapter;
