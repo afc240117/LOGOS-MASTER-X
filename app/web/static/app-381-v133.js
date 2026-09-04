@@ -5173,7 +5173,13 @@ Gerado em ${new Date().toLocaleString("pt-BR")}
     a passagem anterior com o scroll exato — em vez de cair na Home e perder a leitura. */
  let bxReaderLastChap="";
  let bxReaderSuppressPush=false;
- const bxReaderScr=()=>document.querySelector(".bible-x-shell.bx-reading-full, .bible-x-shell.bx-page-full")||document.scrollingElement||document.documentElement;
+ const bxReaderScr=()=>{
+   const fs=document.querySelector(".bible-x-shell.bx-reading-full, .bible-x-shell.bx-page-full");
+   if(fs)return fs;
+   const m=document.querySelector(".bible-x-main");
+   if(m&&m.scrollHeight>m.clientHeight+1)return m;
+   return document.scrollingElement||document.documentElement;
+ };
  const bxReaderTrackPassage=(rows=[])=>{
    if(!navigationHistoryReady||bxReaderSuppressPush||App.view!=="bible")return;
    const chap=bxV157NavRef(rows);
