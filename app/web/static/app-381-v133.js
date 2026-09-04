@@ -13932,3 +13932,79 @@ window.BibleXPolimento=Object.assign(window.BibleXPolimento||{},{lote528:"concor
     applyVis();
   } catch (_) {}
 })();
+
+/* =============================================================
+   5.4.169 — TROCA DE CAPÍTULO sem "apagar" o texto:
+   mini-pill "Carregando capítulo…" (sem limpar o versículo atual e
+   sem a sombra/brilho de fora a fora do overscroll). A pill some
+   sozinha quando o novo capítulo renderiza ou em caso de erro.
+   ============================================================= */
+(function () {
+  try {
+    var el = null;
+    function ensure() {
+      if (el && el.isConnected) return el;
+      el = document.createElement('div');
+      el.className = 'bx-chapter-loading';
+      el.setAttribute('role', 'status');
+      el.hidden = true;
+      document.body.appendChild(el);
+      return el;
+    }
+    window.__bxChapterLoading = {
+      show: function (ref) {
+        var e = ensure();
+        var r = String(ref || '').trim();
+        e.textContent = '⏳ Carregando ' + (r ? 'capítulo ' + r : 'passagem') + '…';
+        e.hidden = false;
+      },
+      hide: function () { if (el && el.isConnected) el.hidden = true; }
+    };
+  } catch (_) {}
+})();
+
+/* =============================================================
+   5.4.169 — DOIS TOQUES rápidos sobre o texto da Bíblia:
+   entra na tela cheia; dois toques de novo, sai da tela cheia.
+   Só em aparelhos de toque e só sobre o texto dos versículos
+   (não atrapalha botões, inputs nem o duplo-clique do desktop).
+   ============================================================= */
+(function () {
+  try {
+    if (!('ontouchstart' in window)) return;
+    var lastT = 0, lastX = 0, lastY = 0;
+    function isFull() { return !!document.querySelector('.bible-x-shell.bx-reading-full, .bible-x-shell.bx-page-full'); }
+    function exitFull() {
+      var rd = document.querySelector('.bible-x-shell.bx-reading-full');
+      var pg = document.querySelector('.bible-x-shell.bx-page-full');
+      if (rd) { if (window.LMXBibleReader) window.LMXBibleReader.full(false); else if (window.LMXBX) window.LMXBX.full(false); }
+      else if (pg && window.LMXBXPages && window.LMXBXPages.full) window.LMXBXPages.full(false);
+      else if (window.__bxNativeFull) window.__bxNativeFull.exit();
+    }
+    function enterFull() {
+      if (window.LMXBibleReader && document.querySelector('.bible-x-shell')) window.LMXBibleReader.full(true);
+      else if (window.LMXBXPages && window.LMXBXPages.full && document.querySelector('.bible-x-shell')) window.LMXBXPages.full(true);
+      else if (window.__bxNativeFull) window.__bxNativeFull.enter();
+    }
+    function insideVerse(t) {
+      if (!t || !t.closest) return false;
+      if (!t.closest('#bOut .lmx-bible-v3-list, .bible-x-shell .lmx-bible-v3-list')) return false;
+      if (t.closest('button, a, input, select, textarea, [data-v155-select], .bx-v157-rail')) return false;
+      return true;
+    }
+    document.addEventListener('touchend', function (e) {
+      var t = e.target;
+      if (!insideVerse(t)) { lastT = 0; return; }
+      var ch = e.changedTouches && e.changedTouches[0];
+      if (!ch) return;
+      var now = Date.now();
+      if (lastT && (now - lastT) <= 300 && Math.abs(ch.clientX - lastX) <= 28 && Math.abs(ch.clientY - lastY) <= 28) {
+        lastT = 0;
+        if (e.cancelable) e.preventDefault();
+        if (isFull()) exitFull(); else enterFull();
+        return;
+      }
+      lastT = now; lastX = ch.clientX; lastY = ch.clientY;
+    }, { passive: false });
+  } catch (_) {}
+})();
