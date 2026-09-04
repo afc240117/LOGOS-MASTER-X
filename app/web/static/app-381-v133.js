@@ -13380,7 +13380,7 @@ window.BibleXPolimento=Object.assign(window.BibleXPolimento||{},{lote528:"concor
     return t.clientX > window.innerWidth - 20; /* normal: dedo na borda direita */
   };
   var apply = function (on) { var r = document.querySelector('.bx-v157-rail'); if (r) r.classList.toggle('bx-v157-touch', on); };
-  var show = function () { apply(true); clearTimeout(timer); timer = setTimeout(function () { apply(false); }, isFullNow() ? 2800 : 1800); };
+  var show = function () { apply(true); clearTimeout(timer); timer = setTimeout(function () { apply(false); }, isFullNow() ? 5600 : 3600); }; /* 5.4.173 — tempo DOBRADO: 2.8s→5.6s full, 1.8s→3.6s normal (pedido) */
   var hide = function () { clearTimeout(timer); apply(false); };
   document.addEventListener('touchstart', function (e) { var t = e.touches && e.touches[0]; if (near(t)) show(); }, true);
   document.addEventListener('touchmove', function (e) { var t = e.touches && e.touches[0]; if (near(t)) show(); else hide(); }, { passive: true, capture: true });
