@@ -1973,7 +1973,67 @@ function goHome(){
     try{history.replaceState({logosView:"dashboard",logosGuard:true},"",location.href);}catch{}
   }
 }
-function askExitApp(){actionModal({icon:"↩",title:"Deseja sair?",message:"Você quer sair do LOGOS MASTER X?",actions:[{label:"Sair",kind:"danger",run:()=>{try{history.go(-2)}catch{}setTimeout(()=>{try{window.close()}catch{}},350)}},{label:"Continuar no LOGOS",kind:"primary"}]});}
+/* 5.4.171 — pop-up de sair refeito. "Sair" tenta fechar de verdade a janela/PWA
+   (dentro do gesto do usuário) e, se o ambiente bloquear (aba comum / WebView sem
+   ponte nativa), avisa em vez de parecer morto. "Continuar aqui" só fecha o diálogo. */
+let __bxExitInFlight=false;
+function bxExitToast(msg){
+  var t=document.createElement('div');
+  t.className='bx-exit-toast';
+  t.textContent=msg;
+  document.body.appendChild(t);
+  setTimeout(function(){t.classList.add('bx-exit-toast-out')},4200);
+  setTimeout(function(){try{t.remove()}catch(_){}},4700);
+}
+function bxTryExitApp(){
+  if(__bxExitInFlight)return;
+  __bxExitInFlight=true;
+  closeExitDialog();
+  /* gesto do usuário: fecha sincronamente (PWA standalone / WebView que permita) */
+  try{window.close()}catch(_){}
+  try{if(window.top&&window.top!==window)window.top.close()}catch(_){}
+  /* ponte nativa, se um dia existir no wrapper do app */
+  try{if(window.AndroidBridge&&typeof window.AndroidBridge.exitApp==='function')window.AndroidBridge.exitApp()}catch(_){}
+  try{if(window.flutter_inappwebview&&typeof window.flutter_inappwebview.callHandler==='function')window.flutter_inappwebview.callHandler('exitApp')}catch(_){}
+  setTimeout(function(){if(!__bxExitInFlight)return;try{window.close()}catch(_){}},350);
+  setTimeout(function(){
+    if(!__bxExitInFlight)return;
+    bxExitToast('Se a janela não fechou, feche esta aba do app (gesto de recentes) para sair.');
+    __bxExitInFlight=false;
+  },900);
+}
+function closeExitDialog(){
+  var d=document.querySelector('#bxExitDialog');
+  if(d)d.remove();
+}
+function askExitApp(){
+  if(document.querySelector('#bxExitDialog'))return;
+  var w=document.createElement('div');
+  w.id='bxExitDialog';
+  w.className='bx-exit-backdrop';
+  w.setAttribute('role','dialog');
+  w.setAttribute('aria-modal','true');
+  w.innerHTML='<div class="bx-exit-card">'
+    +'<div class="bx-exit-ico">↩</div>'
+    +'<h3>Deseja sair?</h3>'
+    +'<p>Você quer sair do LOGOS MASTER X?</p>'
+    +'<div class="bx-exit-actions">'
+    +'<button type="button" class="bx-exit-btn bx-exit-danger" data-exit="go">Sair do LOGOS MASTER X</button>'
+    +'<button type="button" class="bx-exit-btn bx-exit-stay" data-exit="stay">Continuar aqui</button>'
+    +'</div></div>';
+  w.addEventListener('click',function(e){
+    if(e.target===w){closeExitDialog();return;}
+    var b=e.target&&e.target.closest&&e.target.closest('[data-exit]');
+    if(!b)return;
+    if(b.getAttribute('data-exit')==='stay'){closeExitDialog();return;}
+    bxTryExitApp();
+  });
+  w.addEventListener('keydown',function(e){if(e.key==='Escape'){e.stopPropagation();closeExitDialog();}});
+  document.body.appendChild(w);
+  var f=w.querySelector('[data-exit="stay"]');
+  try{if(f&&f.focus)f.focus({preventScroll:true})}catch(_){}
+}
+window.__bxExitApp=bxTryExitApp;
 function handleAppBack(e){const st=e.state||{};closeMobileNav();
   /* 5.4.163 — estados de leitura gravados em renderBibleVerses: o voltar do celular
      percorre as passagens ja abertas e restaura o scroll exato, em vez de pular pra Home. */
@@ -2023,8 +2083,8 @@ function maybeBibleQuickGuide(){
   const row=(ico,txt)=>`<li><span class="bxq-ico">${ico}</span><span>${txt}</span></li>`;
   const tips=isPhone?[
     row("👈👉","Deslize o dedo: <b>esquerda</b> = próximo capítulo &nbsp;•&nbsp; <b>direita</b> = capítulo anterior"),
-    row("📖","Toque em um <b>versículo</b> para abrir as ferramentas (Referências, Strong, Léxico, Comentários…)."),
-    row("🕹️","Na barra de baixo: <b>🔗 Referências</b>, <b>🇬🇷 Strong</b>, <b>📥 Importar</b> (Bíblia offline) e <b>☰ Modos</b>.")
+    row("⚡","Dois <b>toques rápidos</b> no texto entram na <b>tela cheia</b>; mais dois toques rápidos voltam à leitura."),
+    row("🕹️","Na barra de baixo: <b>🏠 Home</b>, <b>▦ Módulos</b> (grade), <b>☰ Painéis</b>, <b>📥 Importar</b> e <b>🎛️ Modos</b>.")
   ]:[
     row("⌨️","Atalhos: <b>N</b> próximo capítulo &nbsp;•&nbsp; <b>P</b> capítulo anterior &nbsp;•&nbsp; <b>F</b> foco de leitura"),
     row("📖","Toque em um <b>versículo</b> para abrir as ferramentas (Referências, Strong, Léxico, Comentários…)."),
@@ -9494,7 +9554,7 @@ window.BibliaXLocal = window.BibliaXLocal || {
       const details=panel&&panel.querySelector('details.bible-x-import');
       if(!details)return;
       if(!details.open)details.open=true;
-      try{details.scrollIntoView({behavior:"smooth",block:"center"});}catch(_){details.scrollIntoView();}
+      if(!window.matchMedia("(max-width:760px)").matches){try{details.scrollIntoView({behavior:"smooth",block:"center"});}catch(_){details.scrollIntoView();}}
     },220);
   };
 
@@ -9512,15 +9572,15 @@ window.BibliaXLocal = window.BibliaXLocal || {
       nav.className="bx-mobile-bottom-nav";
       nav.setAttribute("aria-label","Navegação rápida da Bíblia X");
       nav.innerHTML=`
-        <button type="button" data-bxm="reader"><span>📖</span><b>Bíblia</b></button>
-        <button type="button" data-bxm="cross"><span>🔗</span><b>Referências</b></button>
-        <button type="button" data-bxm="strong"><span>🇬🇷</span><b>Strong</b></button>
+        <button type="button" data-bxm="home" title="Página inicial"><span>🏠</span><b>Home</b></button>
+        <button type="button" data-bxm="extra" title="Todos os módulos (grade quadrada)"><span>▦</span><b>Módulos</b></button>
+        <button type="button" data-bxm="painel" title="Painéis e ferramentas de estudo"><span>☰</span><b>Painéis</b></button>
         <button type="button" data-bxm="import" title="Bíblia local / módulos offline: escolher arquivo e importar"><span>📥</span><b>Importar</b></button>
-        <button type="button" data-bxm="pages" title="Modos de leitura e ferramentas"><span>☰</span><b>Modos</b></button>`;
+        <button type="button" data-bxm="pages" title="Modos de leitura e ferramentas"><span>🎛️</span><b>Modos</b></button>`;
       document.body.appendChild(nav);
-      nav.querySelector('[data-bxm="reader"]')?.addEventListener("click",openReader);
-      nav.querySelector('[data-bxm="cross"]')?.addEventListener("click",()=>activateSection("cross"));
-      nav.querySelector('[data-bxm="strong"]')?.addEventListener("click",()=>activateSection("strong"));
+      nav.querySelector('[data-bxm="home"]')?.addEventListener("click",goHome);
+      nav.querySelector('[data-bxm="extra"]')?.addEventListener("click",()=>{(window.LMXBXPages&&typeof window.LMXBXPages.openPageExtra==="function")?window.LMXBXPages.openPageExtra():window.LMXBXPages?.togglePageExtra?.();});
+      nav.querySelector('[data-bxm="painel"]')?.addEventListener("click",()=>{(window.LMXBXPages&&typeof window.LMXBXPages.openPagePainel==="function")?window.LMXBXPages.openPagePainel():window.LMXBXPages?.togglePagePainel?.();});
       nav.querySelector('[data-bxm="import"]')?.addEventListener("click",openLocalImport);
       nav.querySelector('[data-bxm="pages"]')?.addEventListener("click",()=>{(window.__bxV170ModeFanToggle&&window.__bxV170ModeFanToggle())||window.LMXBXPages?.openPageMenu?.();});
     }
@@ -13819,9 +13879,11 @@ window.BibleXPolimento=Object.assign(window.BibleXPolimento||{},{lote528:"concor
        ANTI-PISCA: a folga do fim (#bOut padding) agora é FIXA via CSS
        e o mostrado/escondido usa histerese (56px mostra / >150px some).
    (b) Botão ⚙️ na barra: catálogo GRANDE de botões (grupos no painel),
-       no máximo 6 ligados — ✕ Sair (7º) e ⚙️ são fixos. Os extras
-       (data-bx-extra no trilho) só aparecem na tela cheia quando ligados.
-       Persistido em logosbx:v157railvis.
+       SEM LIMITE de ligados (se passar do tamanho, a barra rola). Os
+       extras (data-bx-extra) também podem ser ligados na lateral. ⚙️ e
+       ✕ Sair são fixos. Config INDEPENDENTE por contexto: a lateral
+       (logosbx:v157railvis) e a barra da tela cheia (logosbx:v157fullvis)
+       guardam seleções próprias e não se afetam.
    ============================================================= */
 (function () {
   try {
@@ -13887,11 +13949,13 @@ window.BibleXPolimento=Object.assign(window.BibleXPolimento||{},{lote528:"concor
     }
 
     /* ---------- (b) ⚙️ escolher quais botões aparecem ---------- */
-    /* 5.4.169 — catálogo GRANDE (agrupado no painel ⚙️). Cada item:
-       [chave, sufixo do data-v157-*, ícone, rótulo, padrão(1=ligado)].
-       Máximo de 6 LIGADOS por vez: o 7º botão da barra (✕ Sair) e o
-       próprio ⚙️ são FIXOS e não entram na contagem. */
-    var LIMIT = 6;
+    /* 5.4.171 — catálogo GRANDE (agrupado no painel ⚙️) SEM limite de
+       ligados: ligue quantos quiser e a barra rola quando não couber.
+       Cada barra guarda a própria seleção (lateral da Bíblia normal
+       em logosbx:v157railvis; barra da tela cheia em logosbx:v157fullvis).
+       Cada item: [chave, sufixo do data-v157-*, ícone, rótulo, padrão].
+       ⚙️ e ✕ Sair são fixos (não entram na lista). */
+    var KEYS = { rail: 'logosbx:v157railvis', full: 'logosbx:v157fullvis' };
     var GROUPS = [
       { t: 'Navegação', rows: [
         ['nav','nav','📖','Trocar passagem',1],
@@ -13933,23 +13997,40 @@ window.BibleXPolimento=Object.assign(window.BibleXPolimento||{},{lote528:"concor
       ]}
     ];
     function allRows() { var a = []; GROUPS.forEach(function (g) { a = a.concat(g.rows); }); return a; }
-    var KEY = 'logosbx:v157railvis';
-    var vis = {};
-    try { vis = JSON.parse(localStorage.getItem(KEY) || 'null') || {}; } catch (_) { vis = {}; }
-    allRows().forEach(function (m) { if (typeof vis[m[0]] !== 'number') vis[m[0]] = m[4] ? 1 : 0; });
-    function countOn() { var n = 0; allRows().forEach(function (m) { if (vis[m[0]]) n++; }); return n; }
-    function saveVis() { try { localStorage.setItem(KEY, JSON.stringify(vis)); } catch (_) {} }
-    function applyVis() {
+    function ctxNow() {
+      if (document.body && document.body.classList && document.body.classList.contains('lmx-bx-full')) return 'full';
+      return document.querySelector('.bible-x-shell.bx-reading-full, .bible-x-shell.bx-page-full') ? 'full' : 'rail';
+    }
+    function visFor(ctx) {
+      var KEY = KEYS[ctx] || KEYS.rail, obj = {};
+      try { obj = JSON.parse(localStorage.getItem(KEY) || 'null') || {}; } catch (_) { obj = {}; }
+      allRows().forEach(function (m) { if (typeof obj[m[0]] !== 'number') obj[m[0]] = m[4] ? 1 : 0; });
+      return obj;
+    }
+    function saveVisFor(ctx, obj) { try { localStorage.setItem(KEYS[ctx] || KEYS.rail, JSON.stringify(obj)); } catch (_) {} }
+    /* migração: quem já tinha a config antiga (chave única, usada na lateral)
+       semeia a chave NOVA da tela cheia com a MESMA seleção na primeira vez;
+       depois cada uma diverge livremente */
+    try {
+      if (!localStorage.getItem(KEYS.full)) {
+        var _leg = JSON.parse(localStorage.getItem(KEYS.rail) || 'null') || {};
+        if (_leg && typeof _leg === 'object') localStorage.setItem(KEYS.full, JSON.stringify(_leg));
+      }
+    } catch (_) {}
+    function countOn(obj) { var n = 0; allRows().forEach(function (m) { if (obj[m[0]]) n++; }); return n; }
+    function applyVisFor(ctx) {
+      var obj = visFor(ctx);
       var buttons = document.querySelectorAll('.bx-v157-rail button');
       for (var i = 0; i < buttons.length; i++) {
         var b = buttons[i], k = null;
         for (var r = 0; r < allRows().length; r++) { var m = allRows()[r]; if (b.hasAttribute('data-v157-' + m[1])) { k = m[0]; break; } }
-        if (k) b.classList.toggle('bx-v157-off', !vis[k]);
+        if (k) b.classList.toggle('bx-v157-off', !obj[k]);
       }
     }
+    function applyVis() { applyVisFor(ctxNow()); }
     window.__bxV157RailVis = {
-      read: function () { return vis; },
-      set: function (k, on) { vis[k] = on ? 1 : 0; saveVis(); applyVis(); refreshPanel(); }
+      read: function (ctx) { return visFor(ctx || 'rail'); },
+      set: function (k, on, ctx) { ctx = ctx || 'rail'; var o = visFor(ctx); o[k] = on ? 1 : 0; saveVisFor(ctx, o); applyVis(); refreshPanel(); }
     };
 
     var panel = document.createElement('div');
@@ -13957,8 +14038,7 @@ window.BibleXPolimento=Object.assign(window.BibleXPolimento||{},{lote528:"concor
     panel.setAttribute('data-bx-rail-panel', '');
     panel.hidden = true;
     function buildPanelHtml() {
-      var h = '<div class="bx-v157-settings-title"><span>Botões da barra</span><b class="bx-v157-settings-count" data-bx-rail-count>0 / ' + LIMIT + '</b></div>';
-      h += '<div class="bx-v157-settings-limit" data-bx-rail-limit hidden>Máximo de ' + LIMIT + ' ligados. O 7º botão é o ✕ Sair — ele é fixo.</div>';
+      var h = '<div class="bx-v157-settings-title"><span>Botões da barra<em class="bx-v157-settings-ctx" data-bx-rail-ctx></em></span><b class="bx-v157-settings-count" data-bx-rail-count></b></div>';
       h += '<div class="bx-v157-settings-body">';
       GROUPS.forEach(function (g) {
         h += '<div class="bx-v157-settings-group"><div class="bx-v157-settings-group-t">' + g.t + '</div>';
@@ -13968,27 +14048,22 @@ window.BibleXPolimento=Object.assign(window.BibleXPolimento||{},{lote528:"concor
         h += '</div>';
       });
       h += '</div>';
-      h += '<div class="bx-v157-settings-hint">A barra em tela cheia mostra até ' + LIMIT + ' botões. ⚙️ e ✕ Sair ficam sempre.</div>';
+      h += '<div class="bx-v157-settings-hint">Sem limite: ligue quantos quiser e a barra rola. ⚙️ e ✕ Sair ficam sempre. A edição vale só para a barra indicada no topo (lateral ou tela cheia).</div>';
       return h;
     }
     panel.innerHTML = buildPanelHtml();
     document.body.appendChild(panel);
     var countEl = panel.querySelector('[data-bx-rail-count]');
-    var limitEl = panel.querySelector('[data-bx-rail-limit]');
+    var ctxEl = panel.querySelector('[data-bx-rail-ctx]');
     function refreshLimitUI() {
-      var on = countOn();
-      if (countEl) countEl.textContent = on + ' / ' + LIMIT;
-      var over = on >= LIMIT;
-      if (limitEl) limitEl.hidden = !over;
-      var boxes = panel.querySelectorAll('[data-bx-rail-k]');
-      for (var i = 0; i < boxes.length; i++) {
-        var cb = boxes[i], full = over && !cb.checked;
-        cb.disabled = full;
-        cb.title = full ? ('Desligue um botão antes de ligar outro (máximo ' + LIMIT + ')') : '';
-      }
+      var on = countOn(visFor(ctxNow()));
+      if (countEl) countEl.textContent = on + ' ligados';
     }
     function refreshPanel() {
-      panel.querySelectorAll('[data-bx-rail-k]').forEach(function (cb) { cb.checked = !!vis[cb.dataset.bxRailK]; });
+      var ctx = ctxNow();
+      var obj = visFor(ctx);
+      panel.querySelectorAll('[data-bx-rail-k]').forEach(function (cb) { cb.checked = !!obj[cb.dataset.bxRailK]; });
+      if (ctxEl) ctxEl.textContent = (ctx === 'full' ? '· tela cheia' : '· lateral');
       refreshLimitUI();
     }
     function openPanel() {
@@ -14027,18 +14102,19 @@ window.BibleXPolimento=Object.assign(window.BibleXPolimento||{},{lote528:"concor
     document.addEventListener('change', function (e) {
       var cb = e.target && e.target.closest && e.target.closest('[data-bx-rail-k]');
       if (!cb) return;
-      var k = cb.dataset.bxRailK;
-      if (cb.checked && !vis[k] && countOn() >= LIMIT) { cb.checked = false; refreshLimitUI(); return; }
-      vis[k] = cb.checked ? 1 : 0;
-      saveVis();
-      applyVis();
-      refreshLimitUI();
+      var ctx = ctxNow();
+      var obj = visFor(ctx);
+      obj[cb.dataset.bxRailK] = cb.checked ? 1 : 0;
+      saveVisFor(ctx, obj);
+      applyVisFor(ctx);
+      refreshPanel();
     }, true);
 
     var deb = null;
     function scheduleVis() { if (deb) return; deb = requestAnimationFrame(function () { deb = null; applyVis(); }); }
     if (window.MutationObserver) {
       new MutationObserver(scheduleVis).observe(document.body, { childList: true, subtree: true });
+      try { new MutationObserver(scheduleVis).observe(document.body, { attributes: true, attributeFilter: ['class'], subtree: true }); } catch (_) {}
     }
     applyVis();
   } catch (_) {}

@@ -15768,3 +15768,145 @@ body:has(.bible-x-shell.bx-page-full) .bx-v157-rail button[data-bx-extra]:not(.b
   text-overflow:ellipsis!important;font-family:Segoe UI,system-ui,sans-serif!important;
 }
 .bx-chapter-loading[hidden]{display:none!important}
+/* ==========================================================
+   5.4.171 — OVERHAUL UI (9 itens do usuário)
+   Pop-up de sair novo • seletor acima do full • config do trilho
+   independente/sem limite • import como janela no celular
+   ========================================================== */
+
+/* ---- Item 1 — pop-up "Deseja sair?" (Sair tenta fechar de verdade) ---- */
+.bx-exit-backdrop{
+  position:fixed!important;inset:0!important;z-index:2147483006!important;
+  display:flex!important;align-items:center!important;justify-content:center!important;
+  padding:18px!important;background:rgba(2,6,10,.74)!important;
+  backdrop-filter:blur(3px)!important;-webkit-backdrop-filter:blur(3px)!important;
+  font-family:Segoe UI,system-ui,sans-serif!important;
+}
+.bx-exit-card{
+  width:min(372px,94vw)!important;box-sizing:border-box!important;
+  padding:24px 20px 18px!important;border:1px solid #c9a24e!important;border-radius:20px!important;
+  background:linear-gradient(180deg,#0e1c2a,#080f18)!important;
+  box-shadow:0 24px 70px rgba(0,0,0,.62),inset 0 0 0 1px rgba(201,162,78,.14)!important;
+  text-align:center!important;color:#e8eef4!important;
+}
+.bx-exit-ico{
+  width:60px!important;height:60px!important;margin:0 auto 14px!important;
+  display:flex!important;align-items:center!important;justify-content:center!important;
+  font-size:32px!important;border-radius:50%!important;
+  background:linear-gradient(135deg,rgba(196,52,52,.36),rgba(120,22,22,.28))!important;
+  border:1px solid rgba(255,124,124,.55)!important;color:#ffd9d9!important;
+}
+.bx-exit-card h3{margin:0 0 8px!important;font-size:20px!important;font-weight:800!important;color:#fff!important;letter-spacing:.01em!important}
+.bx-exit-card p{margin:0 0 18px!important;font-size:13.5px!important;line-height:1.5!important;color:#9fb0c2!important}
+.bx-exit-actions{display:flex!important;flex-direction:column!important;gap:10px!important}
+.bx-exit-btn{
+  width:100%!important;box-sizing:border-box!important;cursor:pointer!important;
+  border-radius:13px!important;padding:14px 12px!important;
+  font-size:15.5px!important;font-weight:750!important;line-height:1.15!important;
+  font-family:inherit!important;transition:transform .08s ease,filter .12s ease!important;
+}
+.bx-exit-btn:active{transform:translateY(1px)!important}
+.bx-exit-danger{
+  border:1px solid rgba(255,126,126,.6)!important;color:#fff0f0!important;
+  background:linear-gradient(180deg,#c84443,#8f2020)!important;
+  box-shadow:0 8px 20px rgba(163,32,32,.35)!important;
+}
+.bx-exit-danger:hover{filter:brightness(1.06)!important}
+.bx-exit-stay{
+  border:1px solid #d0a952!important;color:#2b1d05!important;
+  background:linear-gradient(180deg,#f4d97e,#d7b054)!important;
+  box-shadow:0 8px 18px rgba(0,0,0,.28)!important;
+}
+.bx-exit-stay:hover{filter:brightness(1.05)!important}
+.bx-exit-toast{
+  position:fixed!important;left:50%!important;transform:translateX(-50%)!important;
+  bottom:calc(22px + env(safe-area-inset-bottom,0px))!important;z-index:2147483007!important;
+  max-width:92vw!important;box-sizing:border-box!important;
+  padding:12px 16px!important;border-radius:13px!important;border:1px solid #9a7d3c!important;
+  background:rgba(6,14,24,.97)!important;color:#f0d67a!important;
+  font-size:13.5px!important;line-height:1.4!important;text-align:center!important;
+  box-shadow:0 12px 32px rgba(0,0,0,.5)!important;
+  font-family:Segoe UI,system-ui,sans-serif!important;opacity:1!important;
+  transition:opacity .35s ease,transform .35s ease!important;
+}
+.bx-exit-toast.bx-exit-toast-out{opacity:0!important;transform:translateX(-50%) translateY(10px)!important}
+
+/* ---- Item 3 — seletor de passagem ACIMA do shell full (z 999999),
+       da barra full (1000100) e do ⚙️ (1000200) ---- */
+.bxn-bd{z-index:2147483005!important}
+
+/* ---- Item 5 — ⚙️ do trilho: rótulo de contexto no título ---- */
+.bx-v157-settings-ctx{
+  font-style:normal!important;font-size:11px!important;font-weight:650!important;
+  color:#9fd7ff!important;border:1px solid #3a5a74!important;border-radius:999px!important;
+  padding:0 8px!important;margin-left:5px!important;white-space:nowrap!important;
+  vertical-align:2px!important;
+}
+
+/* ---- Item 5 — lateral (Bíblia normal): se passar do tamanho, rola;
+       extras ligados aparecem também aqui (antes só valiam no full) ---- */
+body:not(.lmx-bx-full):not(:has(.bible-x-shell.bx-reading-full)):not(:has(.bible-x-shell.bx-page-full)) .bx-v157-rail{
+  max-height:calc(100vh - 18px)!important;overflow-y:auto!important;
+  scrollbar-width:none!important;-ms-overflow-style:none!important;
+  overscroll-behavior:contain!important;
+}
+body:not(.lmx-bx-full):not(:has(.bible-x-shell.bx-reading-full)):not(:has(.bible-x-shell.bx-page-full)) .bx-v157-rail::-webkit-scrollbar{display:none!important;width:0!important;height:0!important}
+body:not(.lmx-bx-full):not(:has(.bible-x-shell.bx-reading-full)):not(:has(.bible-x-shell.bx-page-full)) .bx-v157-rail > [data-v157-settings]{
+  position:sticky!important;bottom:2px!important;z-index:3!important;
+}
+/* revela extras na lateral quando ligados no ⚙️ (o desligado .bx-v157-off continua escondido) */
+.bx-v157-rail button[data-bx-extra]:not(.bx-v157-off){display:inline-flex}
+
+/* ---- Item 5 — barra da tela cheia (mobile): sem wrap + rola no eixo X
+       quando muitos botões ligados; cada um mantém tamanho mínimo tocável ---- */
+@media(max-width:760px){
+  body:has(.bible-x-shell.bx-reading-full) .bx-v157-rail,
+  body:has(.bible-x-shell.bx-page-full) .bx-v157-rail,
+  body.lmx-bx-full .bx-v157-rail{
+    overflow-x:auto!important;overflow-y:hidden!important;
+    flex-wrap:nowrap!important;scrollbar-width:none!important;-ms-overflow-style:none!important;
+    overscroll-behavior-x:contain!important;
+  }
+  body:has(.bible-x-shell.bx-reading-full) .bx-v157-rail::-webkit-scrollbar,
+  body:has(.bible-x-shell.bx-page-full) .bx-v157-rail::-webkit-scrollbar,
+  body.lmx-bx-full .bx-v157-rail::-webkit-scrollbar{display:none!important;width:0!important;height:0!important}
+  body:has(.bible-x-shell.bx-reading-full) .bx-v157-rail > button,
+  body:has(.bible-x-shell.bx-page-full) .bx-v157-rail > button,
+  body.lmx-bx-full .bx-v157-rail > button{
+    flex:1 1 0!important;min-width:44px!important;width:auto!important;
+  }
+  body:has(.bible-x-shell.bx-reading-full) .bx-v157-rail > [data-v157-exit],
+  body:has(.bible-x-shell.bx-page-full) .bx-v157-rail > [data-v157-exit],
+  body.lmx-bx-full .bx-v157-rail > [data-v157-exit]{
+    min-width:92px!important;flex:1.2 1 0!important;
+  }
+  body:has(.bible-x-shell.bx-reading-full) .bx-v157-rail > [data-v157-settings],
+  body:has(.bible-x-shell.bx-page-full) .bx-v157-rail > [data-v157-settings],
+  body.lmx-bx-full .bx-v157-rail > [data-v157-settings]{
+    min-width:44px!important;flex:1 1 0!important;
+  }
+}
+
+/* ---- Item 6 — "⚙️ Bíblia local / módulos offline" some do fim da Bíblia
+       normal no celular; abrir (📥 Importar / ⬇️ Offline) vira janelinha fixa ---- */
+@media(max-width:760px){
+  .bible-x-section[data-bible-panel="reader"] details.bible-x-import:not([open]){display:none!important}
+  .bible-x-section[data-bible-panel="reader"] details.bible-x-import[open]{
+    position:fixed!important;left:8px!important;right:8px!important;top:auto!important;
+    bottom:calc(88px + env(safe-area-inset-bottom,0px))!important;
+    z-index:2147483003!important;max-height:52vh!important;overflow:auto!important;
+    border:1px solid #35506a!important;border-radius:16px!important;
+    background:rgba(6,13,22,.985)!important;
+    box-shadow:0 18px 60px rgba(0,0,0,.55)!important;
+    padding:12px 14px!important;color:#e8eef4!important;
+    font-family:Segoe UI,system-ui,sans-serif!important;
+  }
+  .bible-x-section[data-bible-panel="reader"] details.bible-x-import[open] summary{
+    cursor:pointer!important;color:#e9d9a6!important;font-weight:750!important;
+    font-size:14px!important;margin-bottom:8px!important;list-style:none!important;
+  }
+  .bible-x-section[data-bible-panel="reader"] details.bible-x-import[open] summary::-webkit-details-marker{display:none!important}
+  .bible-x-section[data-bible-panel="reader"] details.bible-x-import[open] .row{
+    display:flex!important;flex-wrap:wrap!important;gap:8px!important;align-items:center!important;
+  }
+}
