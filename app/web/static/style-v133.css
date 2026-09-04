@@ -15679,3 +15679,92 @@ body.bx-mobile-app .bible-x-shell.bx-page-full{
 }
 .bx-v157-settings-row input{width:18px!important;height:18px!important;accent-color:#c7a14a!important;margin:0!important;flex:0 0 auto!important}
 .bx-v157-settings-hint{font-size:10.5px!important;color:#7e93a3!important;line-height:1.4!important;margin-top:2px!important}
+
+/* ==========================================================
+   5.4.169 — ANTIPISCA + CATÁLOGO ⚙️ GRANDE + CARREGAR CAPÍTULO + 2 TOQUES
+   ========================================================== */
+
+/* (a) folga do fim do texto FIXA na tela cheia (não alterna mais por JS:
+       o scrollHeight não muda na fronteira do fim → a barra não pisca) */
+@media(max-width:760px){
+  body.bx-mobile-app .bible-x-shell.bx-reading-full #bOut,
+  body.bx-mobile-app .bible-x-shell.bx-page-full #bOut,
+  body.lmx-bx-full #bOut{
+    padding-bottom:calc(96px + env(safe-area-inset-bottom,0px))!important;
+  }
+}
+
+/* (b) botões extras do catálogo ⚙️: fora da tela cheia ficam escondidos;
+       na tela cheia aparecem só os que o usuário ligou (o .bx-v157-off
+       com !important continua vencendo os desligados) */
+.bx-v157-rail button[data-bx-extra]{display:none}
+body.lmx-bx-full .bx-v157-rail button[data-bx-extra]:not(.bx-v157-off),
+body:has(.bible-x-shell.bx-reading-full) .bx-v157-rail button[data-bx-extra]:not(.bx-v157-off),
+body:has(.bible-x-shell.bx-page-full) .bx-v157-rail button[data-bx-extra]:not(.bx-v157-off){
+  display:inline-flex
+}
+
+/* (c) painel ⚙️ com grupos e rolagem; z sobe para ficar ACIMA do shell
+       full (z 999999) e da própria barra full (z 1000100) */
+.bx-v157-settings{
+  z-index:1000200!important;
+  width:min(330px,92vw)!important;max-width:330px!important;
+  padding:12px 10px!important;
+  max-height:78dvh!important;
+  overflow:hidden!important;
+}
+.bx-v157-settings-title{
+  display:flex!important;align-items:center!important;justify-content:space-between!important;
+  gap:8px!important;padding:0 2px!important;
+}
+.bx-v157-settings-count{
+  font-size:11.5px!important;color:#f2d77d!important;border:1px solid #d6b25e!important;
+  border-radius:999px!important;padding:1px 9px!important;font-weight:600!important;white-space:nowrap!important;
+}
+.bx-v157-settings-limit{
+  font-size:11px!important;color:#ffcf9f!important;background:rgba(214,110,50,.14)!important;
+  border:1px solid rgba(224,132,70,.5)!important;border-radius:8px!important;
+  padding:5px 9px!important;line-height:1.35!important;
+}
+.bx-v157-settings-body{
+  overflow-y:auto!important;max-height:min(50vh,340px)!important;
+  margin:2px -4px 2px!important;padding:2px 6px 4px 2px!important;
+  display:flex!important;flex-direction:column!important;gap:9px!important;
+  overscroll-behavior:contain!important;
+}
+.bx-v157-settings-body::-webkit-scrollbar{width:8px!important}
+.bx-v157-settings-body::-webkit-scrollbar-thumb{background:#2c4658!important;border-radius:8px!important}
+.bx-v157-settings-group{display:flex!important;flex-direction:column!important;gap:5px!important}
+.bx-v157-settings-group-t{
+  font-size:10.5px!important;text-transform:uppercase!important;letter-spacing:.07em!important;
+  color:#78909f!important;margin:3px 2px 1px!important;font-weight:600!important;
+}
+.bx-v157-settings-row{
+  display:flex!important;align-items:center!important;gap:9px!important;
+  font-size:13.5px!important;line-height:1.15!important;
+  padding:4px 9px!important;min-height:36px!important;
+}
+.bx-v157-settings-row input{margin-left:auto!important;flex:0 0 auto!important}
+.bx-v157-settings-ico{
+  width:26px!important;height:26px!important;min-width:26px!important;
+  display:inline-flex!important;align-items:center!important;justify-content:center!important;
+  font-size:15px!important;background:#0b1b28!important;border:1px solid #2a4355!important;border-radius:7px!important;
+}
+.bx-v157-settings-lb{flex:1 1 auto!important}
+.bx-v157-settings-row:has(input:checked){border-color:#c7a14a!important;background:#0e1e2d!important}
+.bx-v157-settings-row:has(input:disabled){opacity:.42!important;cursor:not-allowed!important}
+
+/* (d) pill de carregamento de capítulo: pequena, flutua sobre a leitura
+       (não limpa o texto nem escurece a tela toda) */
+.bx-chapter-loading{
+  position:fixed!important;left:50%!important;transform:translateX(-50%)!important;
+  bottom:calc(86px + env(safe-area-inset-bottom,0px))!important;top:auto!important;
+  z-index:2147483000!important;pointer-events:none!important;
+  background:rgba(6,14,24,.94)!important;border:1px solid #d6b25e!important;
+  color:#f4d77a!important;font-size:13px!important;line-height:1.4!important;
+  padding:9px 15px!important;border-radius:999px!important;
+  box-shadow:0 8px 22px rgba(0,0,0,.45)!important;
+  max-width:86vw!important;white-space:nowrap!important;overflow:hidden!important;
+  text-overflow:ellipsis!important;font-family:Segoe UI,system-ui,sans-serif!important;
+}
+.bx-chapter-loading[hidden]{display:none!important}
