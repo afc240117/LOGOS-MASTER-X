@@ -7009,6 +7009,62 @@ Gerado em ${new Date().toLocaleString("pt-BR")}
     const sel=String(window.getSelection?.()||"").trim();
     if(sel&&sel.split(/\s+/).length<=3){const v=rows.find(x=>x.ref===el.dataset.ref);bxWordLivePanel(sel,v)}else{bxFocusVerse(el.dataset.ref)}
   }));
+  /* 5.4.169 — botões EXTRA do trilho (catálogo do ⚙️). Disparam os MESMOS
+     gatilhos das ferramentas de estudo (via .click()) para não duplicar a
+     lógica pesada; navegação de capítulo/histórico reusa botões existentes. */
+  const bxExtraAct={
+    'hist-prev':'[data-v157-back]',
+    'hist-next':'[data-v157-forward]',
+    'bookmarks':'[data-v157-bookmarks]',
+    'guide':'[data-bx-passage-guide]',
+    'discover':'[data-v168-discover]',
+    'words':'[data-v177-words]',
+    'atlas':'[data-v189-atlas]',
+    'context7':'[data-v185-context7]',
+    'cadeia':'[data-v186-chain]',
+    'duas':'[data-v187-two]',
+    'biblioteca':'[data-v188-library]',
+    'comparex':'[data-v171-comparex]',
+    'mesa':'[data-v173-desk]',
+    'network':'[data-v174-network]',
+    'tempo':'[data-v175-timeline]',
+    'journey':'[data-v176-journey]',
+    'notebook':'[data-v178-notebook]',
+    'cite':'[data-v179-cite]',
+    'questions':'[data-v180-questions]',
+    'pulpit':'[data-v181-pulpit]',
+    'painel360':'[data-v182-dashboard]',
+    'central':'[data-v183-center]',
+    'memoria':'[data-v184-memory]',
+    'share':'[data-reader-action="share"]'
+  };
+  const bxGoChapter=n=>{
+    const book=rows[0]?.book;if(!book||n<1){bxV157Toast('Não há capítulo aqui');return}
+    const ref=`${book} ${n}`;
+    if(window.__bxChapterLoading)window.__bxChapterLoading.show(ref);
+    smartBibleRef(ref).then(rr=>{
+      if(!rr.length){window.__bxChapterLoading&&window.__bxChapterLoading.hide();bxV157Toast('Capítulo não encontrado');return}
+      current=rr;if($("#bRef"))$("#bRef").value=ref;renderBibleVerses(rr);
+      if(window.__bxChapterLoading)window.__bxChapterLoading.hide();
+      if(window.matchMedia("(max-width:760px)").matches){const v0=document.querySelector("#bOut .lmx-bible-v3-verse");if(v0)v0.scrollIntoView({block:"start"})}
+    }).catch(()=>{window.__bxChapterLoading&&window.__bxChapterLoading.hide();bxV157Toast('Não foi possível abrir o capítulo')});
+  };
+  document.querySelectorAll('.bx-v157-rail [data-bx-extra]').forEach(b=>{
+    b.addEventListener('click',()=>{
+      const k=b.dataset.bxExtra;
+      if(k==='chap-prev'||k==='chap-next'){
+        const navEl=document.getElementById(k==='chap-prev'?'bPrevChapter':'bNextChapter');
+        if(navEl&&typeof navEl.onclick==='function'){navEl.click();return}
+        bxGoChapter((Number(rows[0]?.chapter)||0)+(k==='chap-prev'?-1:1));
+        return;
+      }
+      const sel=bxExtraAct[k];
+      if(!sel){bxV157Toast('Recurso indisponível');return}
+      const src=document.querySelector(sel);
+      if(src)src.click();
+      else bxV157Toast('Abra a passagem para usar isso');
+    });
+  });
  };
  /* 5.4.73 — 📖 trocador de livro/capítulo/versículo (botão do trilho flutuante).
    Definida no escopo principal do leitor (visível ao wiring do trilho). O modal
