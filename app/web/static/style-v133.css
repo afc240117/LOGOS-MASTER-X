@@ -15599,3 +15599,38 @@ body.lmx-bx-full .bx-v157-rail{
 body:has(.bible-x-shell.bx-reading-full) .bx-v157-rail i,
 body:has(.bible-x-shell.bx-page-full) .bx-v157-rail i,
 body.lmx-bx-full .bx-v157-rail i{display:none!important}
+
+/* ==========================================================
+   5.4.167 — Tela cheia da Bíblia alcança o topo (sem recorte/canto
+   e sem o círculo azul-claro do fundo aparecendo atrás)
+   O card antigo usava inset:8px + border-radius:16px → sobrava um
+   vão de 8px onde se via o glow do <body>. Agora preenche a tela.
+   ========================================================== */
+body.bx-mobile-app .bible-x-shell.bx-reading-full,
+body.bx-mobile-app .bible-x-shell.bx-page-full{
+  inset:0!important;
+  width:100%!important;
+  height:100%!important;
+  max-width:none!important;
+  max-height:none!important;
+  border:0!important;
+  border-radius:0!important;
+  box-shadow:none!important;
+  background:#04090e!important;
+  padding-top:max(10px,env(safe-area-inset-top,0px))!important;
+}
+@media(max-width:900px){
+  .bible-x-shell.bx-reading-full,
+  .bible-x-shell.bx-page-full{
+    inset:0!important;
+    width:100%!important;
+    height:100%!important;
+    max-width:none!important;
+    max-height:none!important;
+    border:0!important;
+    border-radius:0!important;
+    box-shadow:none!important;
+    background:#04090e!important;
+    padding-top:max(10px,env(safe-area-inset-top,0px))!important;
+  }
+}
