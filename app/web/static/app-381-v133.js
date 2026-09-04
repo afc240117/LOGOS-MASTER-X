@@ -13772,12 +13772,16 @@ window.BibleXPolimento=Object.assign(window.BibleXPolimento||{},{lote528:"concor
 })();
 
 /* =============================================================
-   5.4.168 — BARRA DE BAIXO da tela cheia da Bíblia
+   5.4.169 — BARRA DE BAIXO da tela cheia da Bíblia
    (a) Fica FIXA embaixo, mas só aparece quando você rola até o FIM
        do texto (some enquanto lê, para não cobrir o versículo; um
        toque/deslize na base também a revela por alguns segundos).
-   (b) Botão ⚙️ na barra: escolhe quais dos 6 botões aparecem ali
-       (persistido em logosbx:v157railvis).
+       ANTI-PISCA: a folga do fim (#bOut padding) agora é FIXA via CSS
+       e o mostrado/escondido usa histerese (56px mostra / >150px some).
+   (b) Botão ⚙️ na barra: catálogo GRANDE de botões (grupos no painel),
+       no máximo 6 ligados — ✕ Sair (7º) e ⚙️ são fixos. Os extras
+       (data-bx-extra no trilho) só aparecem na tela cheia quando ligados.
+       Persistido em logosbx:v157railvis.
    ============================================================= */
 (function () {
   try {
