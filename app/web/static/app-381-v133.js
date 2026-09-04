@@ -630,6 +630,46 @@ function openAppearance(){
 }
 
 const commands=["ESTUDAR","CONTEXTO","EXEGESE","HERMENÊUTICA","ESBOÇO","SERMÃO","SÉRIE","REVISAR","APLICAR","ILUSTRAR","CONCLUIR","ORAÇÃO","DEVOCIONAL","AULA"];
+/* 5.4.169 — ícone condizente para cada sugestão/selecionável do Studio X
+   (Tempo, Tipo de culto, Comando, Público-alvo e afins). Lista ordenada:
+   o primeiro termo que casar com o rótulo decide o emoji (específicos primeiro). */
+const STUDIO_SUGGEST_ICONS=[
+ ["ao ar livre","🏞️"],["ar livre","🏞️"],["ação de graças","🎁"],["acão de graças","🎁"],
+ ["santa ceia","🍷"],["ceia","🍷"],
+ ["culto fúnebre","🕊️"],["fúnebre","🕊️"],["velório","🕊️"],["em luto","🕊️"],["luto","🕊️"],["sem cristo","🕊️"],
+ ["círculo de oração","🙏"],["culto de oração","🙏"],["oração e intercessão","🙏"],["intercessão","🙏"],["oração","🙏"],
+ ["culto de missões","🌍"],["missões","🌍"],["missão","🌍"],["missioná","🌍"],["missionarios","🌍"],["missionários","🌍"],
+ ["avivamento","🔥"],["pentecostal","🔥"],
+ ["culto evangelístico","🙌"],["evangelístico","🙌"],["evangelistico","🙌"],["evangelística","🙌"],["evangelistica","🙌"],
+ ["culto de domingo","⛪"],["domingo","⛪"],["culto de ensino","⛪"],
+ ["aula","🎓"],["ebd","🎓"],["estudantes","🎓"],
+ ["doutrina","📚"],["doutrinário","📚"],["doutrinária","📚"],["ensino","📚"],
+ ["igreja local","⛪"],["igreja","⛪"],["culto","⛪"],
+ ["consagração","🕊️"],["batismo","💧"],["vigília","🌙"],["vigilia","🌙"],
+ ["conferência","📢"],["conferencia","📢"],["encontro","📢"],["congresso","🎪"],["celebração","🎉"],["celebracao","🎉"],["casamento","💍"],
+ ["jovens e adolescentes","🎸"],["jovens","🎸"],["adolescentes","🛹"],
+ ["culto de varões","👨"],["varões","👨"],["varoes","👨"],["casais","💑"],["crianças","🧒"],["criancas","🧒"],
+ ["novos convertidos","🌱"],
+ ["liderança","🎖️"],["lideranca","🎖️"],["líderes","🎖️"],["lideres","🎖️"],["obreiros","🛠️"],["obreiro","🛠️"],
+ ["pastores","🐑"],["pastores e líderes","🐑"],["pastoral","🐑"],["pastor","🐑"],
+ ["famílias","🏡"],["familias","🏡"],["mulheres","👩"],["homens","👨"],
+ ["público misto","👥"],["público geral","👥"],["publico geral","👥"],["público","👥"],["publico","👥"],
+ ["não cristãos","🌐"],["nao cristãos","🌐"],["visitantes","🌐"],["visitante","🌐"],
+ ["em crise","🤝"],["crise","🤝"],["sofrimento","🤝"],
+ ["pessoal / devocional individual","🕯️"],["devocional individual","🕯️"],["individual","🕯️"],["pessoal","🕯️"],["devocional","🕯️"],
+ ["expositiva","📖"],["exegética","🔍"],["exegetica","🔍"],["exegese","🔍"],["hermenêutica","📜"],["hermeneutica","📜"],["textual","📜"],
+ ["temática","🗂️"],["tematica","🗂️"],["narrativa","📖"],["biográfica","👤"],["biografica","👤"],
+ ["apologética","🛡️"],["problema–solução","🧩"],["problema-solucao","🧩"],["problema","🧩"],
+ ["pergunta–resposta","❓"],["pergunta-resposta","❓"],["pergunta","❓"],["resposta","❓"],
+ ["cadeia bíblica","⛓"],["cadeia biblica","⛓"],
+ ["histórico-contextual","🏛️"],["histórico","🏛️"],["historico","🏛️"],["contextual","🏛️"],
+ ["ilustrativa","🎨"],["ilustrar","🎨"],["indutiva","🧭"],["indutivo","🧭"],["dedutiva","🧭"],["dedutivo","🧭"],["dna k7","🧬"],
+ ["estudar","📖"],["contexto","🌐"],["esboço","📝"],["esboco","📝"],["sermão","🎤"],["sermao","🎤"],["série","📚"],["serie","📚"],["revisar","✅"],
+ ["aplicar","🎯"],["aplicativo","🎯"],["concluir","🏁"],
+ ["bíblico","📖"],["biblico","📖"],["equilibrado","⚖️"],["equilibrada","⚖️"],["fiel","🤲"]
+];
+function studIcon(label){const L=String(label||"").toLowerCase();for(let i=0;i<STUDIO_SUGGEST_ICONS.length;i++){if(L.indexOf(STUDIO_SUGGEST_ICONS[i][0])>=0)return STUDIO_SUGGEST_ICONS[i][1];}return "✨";}
+function studOpt(label,selected){return `<option value="${label}" ${selected?"selected":""}>${studIcon(label)} ${label}</option>`;}
 
 function escapeHtml(s=""){return String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[m]))}
 function download(name,text,type="text/plain"){const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([text],{type}));a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500)}
