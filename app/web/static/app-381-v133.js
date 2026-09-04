@@ -13677,3 +13677,153 @@ window.BibleXPolimento=Object.assign(window.BibleXPolimento||{},{lote528:"concor
   }
   setInterval(sync, 500);
 })();
+
+/* =============================================================
+   5.4.168 — BARRA DE BAIXO da tela cheia da Bíblia
+   (a) Fica FIXA embaixo, mas só aparece quando você rola até o FIM
+       do texto (some enquanto lê, para não cobrir o versículo; um
+       toque/deslize na base também a revela por alguns segundos).
+   (b) Botão ⚙️ na barra: escolhe quais dos 6 botões aparecem ali
+       (persistido em logosbx:v157railvis).
+   ============================================================= */
+(function () {
+  try {
+    var MOBILE = typeof window.matchMedia === 'function' && window.matchMedia('(max-width:760px)').matches;
+
+    /* ---------- (a) revelar apenas no fim / toque na base (só full, celular) ---------- */
+    var ISET = ['opacity', 'visibility', 'pointerEvents', 'transform'];
+    function railEl() { return document.querySelector('.bx-v157-rail'); }
+    function setInline(cmd) {
+      var r = railEl(); if (!r) return;
+      if (cmd === 'clear') { ISET.forEach(function (p) { r.style.removeProperty(p); }); return; }
+      ISET.forEach(function (p) { r.style.setProperty(p, cmd[p], 'important'); });
+    }
+    function showRail() { setInline({ opacity: '1', visibility: 'visible', pointerEvents: 'auto', transform: 'none' }); }
+    function hideRail() { setInline({ opacity: '0', visibility: 'hidden', pointerEvents: 'none', transform: 'translateY(120%)' }); }
+    function isFull() { return !!document.querySelector('.bible-x-shell.bx-reading-full, .bible-x-shell.bx-page-full'); }
+    function atEnd(sc) {
+      if (!sc) return false;
+      var sh = sc.scrollHeight, ch = sc.clientHeight, st = sc.scrollTop || 0;
+      if (sh <= ch + 1) return true;
+      return (sh - ch - st) <= 56;
+    }
+    var tmpUntil = 0;
+    var tmpTimer = null;
+    function compute() {
+      var full = isFull();
+      var out = document.getElementById('bOut');
+      if (!full) {
+        setInline('clear');
+        if (out) out.style.removeProperty('padding-bottom');
+        return;
+      }
+      var r = railEl();
+      var sc = document.querySelector('.bible-x-shell.bx-reading-full, .bible-x-shell.bx-page-full');
+      var show = atEnd(sc) || (!!r && r.classList.contains('bx-v157-touch')) || (tmpUntil > Date.now());
+      if (show) showRail(); else hideRail();
+      /* ajusta a folga do fim do texto conforme a barra (evita texto preso atrás) */
+      if (out) out.style.setProperty('padding-bottom', show ? 'calc(90px + env(safe-area-inset-bottom,0px))' : '6px', 'important');
+    }
+    var scT = null;
+    function onScroll() { if (!scT) { scT = requestAnimationFrame(function () { scT = null; compute(); }); } }
+    if (MOBILE) {
+      document.addEventListener('scroll', onScroll, { passive: true, capture: true });
+      window.addEventListener('resize', onScroll);
+      var wasFull = false;
+      setInterval(function () {
+        var now = isFull();
+        if (now !== wasFull) {
+          wasFull = now;
+          if (now) { tmpUntil = Date.now() + 2200; } else { tmpUntil = 0; }
+        }
+        if (now) compute();
+      }, 350);
+    }
+
+    /* ---------- (b) ⚙️ escolher quais botões aparecem ---------- */
+    var KEY = 'logosbx:v157railvis';
+    var MAP = [
+      ['nav', 'nav', '📖 Trocar passagem'],
+      ['listen', 'listen', '🔊 Ouvir capítulo'],
+      ['bookmark', 'bookmark-current', '☆ Marcar versículo'],
+      ['copy', 'copy-current', '✂ Copiar versículo'],
+      ['fullscreen', 'fullscreen', '⛶ Tela cheia'],
+      ['more', 'more', '＋ Mais ações']
+    ];
+    var vis = {};
+    try { vis = JSON.parse(localStorage.getItem(KEY) || 'null') || {}; } catch (_) { vis = {}; }
+    MAP.forEach(function (m) { if (typeof vis[m[0]] !== 'number') vis[m[0]] = 1; });
+    function saveVis() { try { localStorage.setItem(KEY, JSON.stringify(vis)); } catch (_) {} }
+    function applyVis() {
+      var buttons = document.querySelectorAll('.bx-v157-rail button');
+      for (var i = 0; i < buttons.length; i++) {
+        var b = buttons[i], k = null;
+        for (var m = 0; m < MAP.length; m++) {
+          if (b.hasAttribute('data-v157-' + MAP[m][1])) { k = MAP[m][0]; break; }
+        }
+        if (k) b.classList.toggle('bx-v157-off', !vis[k]);
+      }
+    }
+    window.__bxV157RailVis = {
+      read: function () { return vis; },
+      set: function (k, on) { vis[k] = on ? 1 : 0; saveVis(); applyVis(); }
+    };
+
+    var panel = document.createElement('div');
+    panel.className = 'bx-v157-settings';
+    panel.setAttribute('data-bx-rail-panel', '');
+    panel.hidden = true;
+    var ph = '<div class="bx-v157-settings-title">Escolher botões da barra</div>';
+    MAP.forEach(function (m) {
+      ph += '<label class="bx-v157-settings-row"><input type="checkbox" data-bx-rail-k="' + m[0] + '"' + (vis[m[0]] ? ' checked' : '') + '><span>' + m[2] + '</span></label>';
+    });
+    ph += '<div class="bx-v157-settings-hint">Desmarque para esconder da barra (📖 a ＋). ⚙️ e ✕ Sair ficam sempre.</div>';
+    panel.innerHTML = ph;
+    document.body.appendChild(panel);
+
+    function refreshPanel() {
+      panel.querySelectorAll('[data-bx-rail-k]').forEach(function (cb) { cb.checked = !!vis[cb.dataset.bxRailK]; });
+    }
+    function openPanel() {
+      refreshPanel();
+      panel.hidden = false;
+      panel.style.left = '';
+      panel.style.top = '';
+      panel.style.bottom = '';
+      var g = document.querySelector('[data-v157-settings]');
+      var full = isFull();
+      if (g && !full) {
+        var r = g.getBoundingClientRect();
+        panel.style.left = Math.max(10, Math.min(innerWidth - 320, r.left)) + 'px';
+        panel.style.top = (r.top - 8) + 'px';
+        panel.style.bottom = 'auto';
+      } else {
+        panel.style.left = '50%';
+        panel.style.bottom = (MOBILE ? '84px' : '30px');
+        panel.style.top = 'auto';
+      }
+    }
+    function closePanel() { panel.hidden = true; }
+    document.addEventListener('click', function (e) {
+      var t = e.target;
+      if (!t || !t.closest) return;
+      var gear = t.closest('[data-v157-settings]');
+      if (gear) { e.preventDefault(); e.stopPropagation(); if (panel.hidden) openPanel(); else closePanel(); return; }
+      if (!panel.hidden && !t.closest('[data-bx-rail-panel]')) closePanel();
+    }, true);
+    document.addEventListener('change', function (e) {
+      var cb = e.target && e.target.closest && e.target.closest('[data-bx-rail-k]');
+      if (!cb) return;
+      vis[cb.dataset.bxRailK] = cb.checked ? 1 : 0;
+      saveVis();
+      applyVis();
+    }, true);
+
+    var deb = null;
+    function scheduleVis() { if (deb) return; deb = requestAnimationFrame(function () { deb = null; applyVis(); }); }
+    if (window.MutationObserver) {
+      new MutationObserver(scheduleVis).observe(document.body, { childList: true, subtree: true });
+    }
+    applyVis();
+  } catch (_) {}
+})();
