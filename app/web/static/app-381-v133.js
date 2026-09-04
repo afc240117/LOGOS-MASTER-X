@@ -6562,6 +6562,15 @@ Gerado em ${new Date().toLocaleString("pt-BR")}
     else if(window.LMXBXPages?.full){ window.LMXBXPages.full(true); }
     else bxV157Toast("⛶ Tela cheia indisponível");
   });
+  /* 5.4.164 — botão "✕ Sair" DENTRO da barra inferior (novo). Sai de QUALQUER
+     tela cheia ativa (leitura ou páginas), igual ao "✕ Sair" do topo (5.4.134). */
+  out.querySelector("[data-v157-exit]")?.addEventListener("click",()=>{
+    const rd=document.querySelector(".bible-x-shell.bx-reading-full");
+    const pg=document.querySelector(".bible-x-shell.bx-page-full");
+    if(rd){ if(window.LMXBibleReader)window.LMXBibleReader.full(false); else if(window.LMXBX)window.LMXBX.full(false); }
+    else if(pg){ if(window.LMXBXPages?.full)window.LMXBXPages.full(false); }
+    else if(window.__bxNativeFull){ window.__bxNativeFull.exit(); }
+  });
   /* 5.4.73 — 📖 trocar livro/capítulo/versículo direto do trilho flutuante */
   out.querySelector("[data-v157-nav]")?.addEventListener("click",bxOpenPassagePicker);
 
@@ -8643,6 +8652,13 @@ window.BibliaXLocal = window.BibliaXLocal || {
       const exit=document.querySelector('[data-bx-read="exit"]');
       if(full)full.hidden=!!on;
       if(exit)exit.hidden=!on;
+      /* 5.4.164 — celular: volta ao fullscreen NATIVO do DOCUMENTO (esconde a
+         faixa de horas/data do Android) SEM sumir com a barra inferior — pedir
+         no shell o joga pra top-layer e esconderia o rail (que vive no <body>). */
+      if(window.__bxNativeFull){
+        if(on)window.__bxNativeFull.enter(shell);
+        else if(window.__bxNativeFull.phone())window.__bxNativeFull.exit();
+      }
       /* 5.4.139 — TELA CHEIA no celular: volta a mostrar as FERRAMENTAS de cada
          versículo (leque), como no web PC. O padrão mobile é Leitura Limpa (só "＋"),
          mas em full o usuário quer os botões (Referências, Strong, Léxico…).
@@ -8807,6 +8823,12 @@ window.BibliaXLocal = window.BibliaXLocal || {
         const exit=document.querySelector("#bxExitFullBtn");
         if(full)full.hidden=!!on;
         if(exit)exit.hidden=!on;
+        /* 5.4.164 — celular: fullscreen NATIVO do documento (ver nota em
+           LMXBibleReader.full). Restaura a tela cheia literal no Android. */
+        if(window.__bxNativeFull){
+          if(on)window.__bxNativeFull.enter(shell);
+          else if(window.__bxNativeFull.phone())window.__bxNativeFull.exit();
+        }
 
         if(on){
           setTimeout(()=>{
