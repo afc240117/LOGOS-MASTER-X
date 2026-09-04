@@ -15634,3 +15634,48 @@ body.bx-mobile-app .bible-x-shell.bx-page-full{
     padding-top:max(10px,env(safe-area-inset-top,0px))!important;
   }
 }
+
+/* ==========================================================
+   5.4.168 — Barra de baixo (tela cheia) só no fim + ⚙️ configuração
+   A visibilidade da barra no full é controlada por estilo inline
+   (opacity/transform) via JS; aqui ficam o item oculto, a transição
+   e o painel "Escolher botões da barra".
+   ========================================================== */
+
+/* botão que o usuário desmarcou no ⚙️ */
+.bx-v157-rail .bx-v157-off{display:none!important}
+
+/* transição suave de aparecer/sumir (só na barra em tela cheia, celular) */
+@media(max-width:760px){
+  body:has(.bible-x-shell.bx-reading-full) .bx-v157-rail,
+  body:has(.bible-x-shell.bx-page-full) .bx-v157-rail,
+  body.lmx-bx-full .bx-v157-rail{
+    transition:opacity .2s ease, transform .22s ease, visibility .2s ease!important;
+  }
+}
+
+/* painel do ⚙️ */
+.bx-v157-settings{
+  position:fixed!important;z-index:100600!important;
+  width:min(320px,92vw)!important;max-width:320px!important;
+  padding:12px!important;
+  border:1px solid #d6b25e!important;border-radius:14px!important;
+  background:rgba(9,15,25,.985)!important;backdrop-filter:blur(12px)!important;
+  -webkit-backdrop-filter:blur(12px)!important;
+  box-shadow:0 18px 48px rgba(0,0,0,.6)!important;
+  display:flex!important;flex-direction:column!important;gap:6px!important;
+  color:#e8eef4!important;font-family:Segoe UI,system-ui,sans-serif!important;
+}
+.bx-v157-settings[hidden]{display:none!important}
+.bx-v157-settings-title{
+  font-size:13px!important;color:#f2d77d!important;font-weight:600!important;
+  margin-bottom:2px!important;
+}
+.bx-v157-settings-row{
+  display:flex!important;align-items:center!important;gap:9px!important;
+  font-size:14px!important;line-height:1.2!important;
+  padding:6px 8px!important;border:1px solid #2c4658!important;border-radius:9px!important;
+  background:#08141e!important;cursor:pointer!important;
+}
+.bx-v157-settings-row input{width:18px!important;height:18px!important;accent-color:#c7a14a!important;margin:0!important;flex:0 0 auto!important}
+.bx-v157-settings-hint{font-size:10.5px!important;color:#7e93a3!important;line-height:1.4!important;margin-top:2px!important}
