@@ -7003,7 +7003,8 @@ Gerado em ${new Date().toLocaleString("pt-BR")}
   out.querySelectorAll("[data-chapter-nav]").forEach(btn=>btn.onclick=async()=>{
     if(btn.disabled)return;
     const ref=`${rows[0].book} ${btn.dataset.chapterNav}`;
-    try{const rr=await smartBibleRef(ref);if(!rr.length)return;current=rr;if($("#bRef"))$("#bRef").value=ref;renderBibleVerses(rr);$("#bOut")?.scrollIntoView({behavior:"smooth",block:"start"})}catch(_){}
+    if(window.__bxChapterLoading)window.__bxChapterLoading.show(ref);
+    try{const rr=await smartBibleRef(ref);if(!rr.length){if(window.__bxChapterLoading)window.__bxChapterLoading.hide();return}current=rr;if($("#bRef"))$("#bRef").value=ref;renderBibleVerses(rr);if(window.__bxChapterLoading)window.__bxChapterLoading.hide();$("#bOut")?.scrollIntoView({behavior:"smooth",block:"start"})}catch(_){if(window.__bxChapterLoading)window.__bxChapterLoading.hide();}
   });
   out.querySelectorAll("[data-bx-v3-verse]").forEach(el=>el.addEventListener("dblclick",()=>{
     const sel=String(window.getSelection?.()||"").trim();
@@ -7185,14 +7186,18 @@ function bxOpenPassagePicker(){
   m.querySelector("[data-bxn-vnext]").addEventListener("click",()=>{if(vMax&&vCur<vMax){vCur++;setV(String(vCur));vGrid.hidden=true;syncInfo()}});
   m.querySelector("[data-bxn-go]").addEventListener("click",async()=>{
     const ref=vCur>0?`${bookName} ${chCur}:${vCur}`:`${bookName} ${chCur}`;
-    st.textContent="Carregando…";
+    /* 5.4.169 — fecha o pop-up na hora (sem ficar com o fundo escuro "de fora a
+       fora" enquanto espera) e mostra a pill de carregamento sobre a leitura. */
+    if(window.__bxChapterLoading)window.__bxChapterLoading.show(ref);
+    m.remove();
     try{
       const rr=await smartBibleRef(ref);
-      if(!rr.length){st.textContent="Passagem não encontrada.";return}
-      current=rr;if($("#bRef"))$("#bRef").value=ref;renderBibleVerses(rr);m.remove();
+      if(!rr.length){if(window.__bxChapterLoading)window.__bxChapterLoading.hide();bxV157Toast("Passagem não encontrada.");return}
+      current=rr;if($("#bRef"))$("#bRef").value=ref;renderBibleVerses(rr);
+      if(window.__bxChapterLoading)window.__bxChapterLoading.hide();
       $("#bOut")?.scrollIntoView({behavior:"smooth",block:"start"});
       if(vCur>0)setTimeout(()=>bxFocusVerse(rr[0]?.ref),160);
-    }catch(err){if(window.__bxnDebug)console.error("bxOpenPassagePicker:",err);st.textContent="Não foi possível abrir a passagem."}
+    }catch(err){if(window.__bxnDebug)console.error("bxOpenPassagePicker:",err);if(window.__bxChapterLoading)window.__bxChapterLoading.hide();bxV157Toast("Não foi possível abrir a passagem.")}
   });
   syncInfo();
 }
@@ -7238,7 +7243,11 @@ const smartBibleRef=async(q)=>{try{return await apiBibleRef(q)}catch(e){const lo
    }
    // Caso contrário, hidden é uma referência completa e confiável (ex.: vinda do
    // painel de estudos). Os seletores são sincronizados após o carregamento.
-   out.textContent="Carregando passagem...";
+   /* 5.4.169 — NÃO apaga mais o texto ("Carregando passagem..."): o versículo
+      atual continua na tela enquanto o próximo carrega. Antes, ao limpar o
+      conteúdo, o scrollHeight despencava e criava o vão/sombra de fora a fora
+      no overscroll. Agora uma pill pequena avisa e some na renderização/erro. */
+   if(window.__bxChapterLoading)window.__bxChapterLoading.show(String($("#bRef")?.value||"").trim());
    try{
      current=await smartBibleRef($("#bRef").value);
      if(current.length){
@@ -7246,8 +7255,10 @@ const smartBibleRef=async(q)=>{try{return await apiBibleRef(q)}catch(e){const lo
        bxV158SyncVisibleVerse(current);if($("#bChapterTitle"))$("#bChapterTitle").textContent=current.length===1?current[0].ref:`${current[0].book} ${current[0].chapter}`;
      }
      renderBibleVerses(current);
+     if(window.__bxChapterLoading)window.__bxChapterLoading.hide();
    }catch(e){
      current=[];
+     if(window.__bxChapterLoading)window.__bxChapterLoading.hide();
      out.textContent=`Não foi possível abrir a passagem. ${e.message||""}`;
    }
    // 5.4.140: troca de capítulo no celular (swipe/botões Anterior/Próximo)
