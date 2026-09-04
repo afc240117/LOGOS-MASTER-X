@@ -16014,3 +16014,98 @@ details.bible-x-import:not([open])>.bx-import-x{display:none}
 #bxMapClear::before,#bxPeopleClear::before,#bxTimelineClear::before,#bxExploreClear::before,
 #bxFavClear::before,#bxNotesClear::before,#bxColClear::before,#histClear::before
 {content:"\1F9F9";margin-right:6px;font-size:.94em;vertical-align:-1px;display:inline-block}
+
+
+
+/* ============================================================
+   5.4.173 — AUTO-HIDE do trilho .bx-v157-rail com ABA discreta +
+   DICA + tempo dobrado. Pedido do usuário: "a barra lateral que
+   aparece ao passar o dedo — por uma barra semi invisível ali que
+   mostre o que fazer, uma dica rápida; quando aparecer, demorar o
+   dobro do tempo para sumir". O JS 5.4.173 cria:
+     #bx-v157-grip — aba vertical semi-invisível fixa na borda
+       direita da leitura normal (≤760px): indica que há
+       ferramentas escondidas ali; tocar nela revela a barra.
+       Some na tela cheia (lá a barra vira a barra da base).
+     #bx-v157-tip  — balão de dica que surge junto com a barra
+       (aponta p/ a direita na leitura normal; p/ baixo na barra
+       da base da tela cheia) e some quando a barra se recolhe.
+   Os tempos de exibição foram DOBRADOS no JS: 1.8s→3.6s normal,
+   2.8s→5.6s full e 2.2s→4.4s ao entrar no full (blocos 5.4.133 e
+   5.4.169). ===== */
+/* base: fora do celular (ou antes do media) nada aparece */
+#bx-v157-grip,#bx-v157-tip{display:none!important}
+@media(max-width:760px){
+  #bx-v157-grip,#bx-v157-tip{display:block!important}
+  /* ---- aba discreta (grip) na borda direita da leitura normal ---- */
+  #bx-v157-grip{
+    position:fixed!important;
+    right:2px!important;
+    top:50%!important;
+    transform:translateY(-50%)!important;
+    z-index:81!important;
+    width:8px!important;
+    height:108px!important;
+    padding:0!important;
+    margin:0!important;
+    border:0!important;
+    border-radius:999px!important;
+    background:linear-gradient(180deg,rgba(213,173,79,.60),rgba(213,173,79,.08) 46%,rgba(213,173,79,.60))!important;
+    box-shadow:0 0 5px rgba(0,0,0,.20)!important;
+    opacity:.34!important;
+    cursor:pointer!important;
+    touch-action:manipulation!important;
+    -webkit-tap-highlight-color:transparent!important;
+    transition:opacity .3s ease!important;
+  }
+  /* aba apagada quando a barra está aberta ou não há trilho */
+  #bx-v157-grip.bx-v173-dim{opacity:0!important;pointer-events:none!important}
+  body:has(.bible-x-shell.bx-reading-full) #bx-v157-grip,
+  body:has(.bible-x-shell.bx-page-full) #bx-v157-grip{display:none!important}
+
+  /* ---- balão de dica ---- */
+  #bx-v157-tip{
+    position:fixed!important;
+    z-index:1000105!important;
+    max-width:min(236px,72vw)!important;
+    box-sizing:border-box!important;
+    padding:9px 12px!important;
+    border-radius:12px!important;
+    background:rgba(8,15,24,.97)!important;
+    border:1px solid rgba(213,173,79,.55)!important;
+    color:#f3e8c9!important;
+    font-size:12.5px!important;
+    line-height:1.35!important;
+    font-weight:500!important;
+    text-align:center!important;
+    box-shadow:0 8px 26px rgba(0,0,0,.45)!important;
+    pointer-events:none!important;
+    opacity:0!important;
+    transition:opacity .22s ease,transform .22s ease!important;
+  }
+  #bx-v157-tip[data-fx="x"]{transform:translateX(-50%) translateY(8px)}
+  #bx-v157-tip[data-fx="x"].bx-v157-tip-show{transform:translateX(-50%) translateY(0)}
+  #bx-v157-tip:not([data-fx="x"]){transform:translateY(8px)}
+  #bx-v157-tip:not([data-fx="x"]).bx-v157-tip-show{transform:translateY(0)}
+  #bx-v157-tip.bx-v157-tip-show{opacity:1!important}
+  /* setinha */
+  #bx-v157-tip::after{
+    content:""!important;
+    position:absolute!important;
+    width:0!important;
+    height:0!important;
+    border:6px solid transparent!important;
+  }
+  #bx-v157-tip.tip-right::after{ /* aponta para a DIREITA (barra vertical normal) */
+    right:-6px!important;
+    top:50%!important;
+    margin-top:-6px!important;
+    border-left-color:rgba(213,173,79,.55)!important;
+  }
+  #bx-v157-tip.tip-up::after{ /* aponta para BAIXO (barra da base na tela cheia) */
+    bottom:-6px!important;
+    left:50%!important;
+    margin-left:-6px!important;
+    border-top-color:rgba(213,173,79,.55)!important;
+  }
+}
