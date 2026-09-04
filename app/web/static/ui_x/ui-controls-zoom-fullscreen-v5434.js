@@ -174,7 +174,9 @@
   async function enterFullscreen(fromEl){
     const target = findFullscreenTarget(fromEl);
     try {
-      if(!document.fullscreenElement && target.requestFullscreen){
+      /* 5.4.163 — no celular evita o Fullscreen API nativo (mensagem do Chrome/Android);
+         a classe .logosx-immersive-mode aplicada abaixo ja cobre a tela. */
+      if(!document.fullscreenElement && target.requestFullscreen && !(window.matchMedia && window.matchMedia("(max-width:760px)").matches)){
         await target.requestFullscreen();
       }
     } catch(_) {}

@@ -1934,7 +1934,13 @@ function goHome(){
   }
 }
 function askExitApp(){actionModal({icon:"↩",title:"Deseja sair?",message:"Você quer sair do LOGOS MASTER X?",actions:[{label:"Sair",kind:"danger",run:()=>{try{history.go(-2)}catch{}setTimeout(()=>{try{window.close()}catch{}},350)}},{label:"Continuar no LOGOS",kind:"primary"}]});}
-function handleAppBack(e){const st=e.state||{};closeMobileNav();if(st.logosInternal){render(st.logosView||"dashboard");return;}if(st.logosGuard){render("dashboard");return;}if(st.logosBase){render("dashboard");try{history.pushState({logosView:"dashboard",logosGuard:true},"",location.href)}catch{}setTimeout(askExitApp,0);}}
+function handleAppBack(e){const st=e.state||{};closeMobileNav();
+  /* 5.4.163 — estados de leitura gravados em renderBibleVerses: o voltar do celular
+     percorre as passagens ja abertas e restaura o scroll exato, em vez de pular pra Home. */
+  if(st.logosReader&&st.ref){if(window.__bxReaderRestore)window.__bxReaderRestore(st);return;}
+  if(st.logosInternal){if(st.logosView==="bible"){goHome();return;}render(st.logosView||"dashboard");return;}
+  if(st.logosGuard){render("dashboard");return;}
+  if(st.logosBase){render("dashboard");try{history.pushState({logosView:"dashboard",logosGuard:true},"",location.href)}catch{}setTimeout(askExitApp,0);}}
 
 
 const GEN_VISUALS=[{id:"circle-dna",name:"Círculo DNA",icon:"◎"},{id:"k7-icon",name:"K7 Premium",icon:"▣"}];
@@ -5162,7 +5168,49 @@ Gerado em ${new Date().toLocaleString("pt-BR")}
    const chip=head?` <span class="lmx-v3-pericope-ref">${escapeHtml(EPIGRAPH_ABBR[v.book]||v.book)} ${escapeHtml(String(v.chapter))}</span>`:"";
    return `<h4 class="lmx-bible-v3-pericope${head?" lmx-v3-pericope-head":""}">${escapeHtml(t)}${chip}</h4>`;
  };
+ /* 5.4.163 — VOLTAR (gesto/botao do celular) dentro da Biblia: cada passagem aberta
+    ganha um estado proprio no historico do navegador e, no popstate, o app volta para
+    a passagem anterior com o scroll exato — em vez de cair na Home e perder a leitura. */
+ let bxReaderLastChap="";
+ let bxReaderSuppressPush=false;
+ const bxReaderScr=()=>document.querySelector(".bible-x-shell.bx-reading-full, .bible-x-shell.bx-page-full")||document.scrollingElement||document.documentElement;
+ const bxReaderTrackPassage=(rows=[])=>{
+   if(!navigationHistoryReady||bxReaderSuppressPush||App.view!=="bible")return;
+   const chap=bxV157NavRef(rows);
+   if(!chap)return;
+   try{
+     const top=history.state;
+     if(top&&!top.logosReader&&top.logosInternal&&top.logosView==="bible")bxReaderLastChap=""; /* view de Biblia recem-aberta: reinicia a pilha */
+   }catch(_e){}
+   if(chap===bxReaderLastChap)return;
+   try{
+     const top=history.state;
+     if(top&&top.logosReader&&top.ref&&top.ref!==chap){
+       const sc=bxReaderScr();
+       history.replaceState({...top,scroll:sc?(sc.scrollTop||0):0},"",location.href); /* guarda o scroll da passagem que esta saindo */
+     }
+   }catch(_e){}
+   bxReaderLastChap=chap;
+   try{history.pushState({logosView:"bible",logosReader:true,ref:chap,scroll:0},"",location.href)}catch(_e){}
+ };
+ window.__bxReaderRestore=async st=>{
+   if(!st||!st.ref)return;
+   bxReaderSuppressPush=true;
+   try{
+     if(App.view!=="bible")await render("bible");
+     const rr=await smartBibleRef(st.ref);
+     if(!rr.length)return;
+     current=rr;
+     if($("#bRef"))$("#bRef").value=bxV157NavRef(rr);
+     bxReaderLastChap=bxV157NavRef(rr);
+     renderBibleVerses(rr);
+     const target=Number(st.scroll)||0;
+     if(target>0)requestAnimationFrame(()=>requestAnimationFrame(()=>{try{const sc=bxReaderScr();if(sc)sc.scrollTop=target}catch(_e){}}));
+   }catch(_e){}
+   finally{bxReaderSuppressPush=false}
+ };
  const renderBibleVerses=(rows=[])=>{const out=$("#bOut");if(!out)return;out.classList.remove("bx-v159-results-mode");if(!rows.length){out.innerHTML='<div class="bx-reader-empty">Passagem não encontrada.</div>';return}
+  bxReaderTrackPassage(rows);
   bxHistoryPush(rows);
   bxSaveReadingProgress(rows);
   bxSaveSession(rows);
@@ -8925,10 +8973,14 @@ window.BibliaXLocal = window.BibliaXLocal || {
   };
   const full=async on=>{
     const root=shell();if(!root)return false;
+    /* 5.4.163 — no CELULAR NAO ativa o Fullscreen API nativo: o Chrome/Android pinta
+       por cima "…onrender.com · arraste para cima para sair", que a pagina nao consegue
+       remover. A emulacao CSS (.bx-page-full) ja ocupa a tela toda no mobile. */
+    const fsNativeOk=typeof window.matchMedia!=="function"||!window.matchMedia("(max-width:760px)").matches;
     setFullUi(!!on);
     if(on){
       const request=root.requestFullscreen||root.webkitRequestFullscreen;
-      if(request&&!document.fullscreenElement&&!document.webkitFullscreenElement){
+      if(request&&!document.fullscreenElement&&!document.webkitFullscreenElement&&fsNativeOk){
         /* Fix 5.4.4 — flag OTIMISTA: se a promessa do request resolver depois do ESC
            (fullscreenchange já disparado), a flag ainda estava false e o .bx-page-full
            ficava preso. Marcar antes evita a tela "esvanecida" ao sair. */

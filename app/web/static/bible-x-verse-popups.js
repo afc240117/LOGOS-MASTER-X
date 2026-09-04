@@ -134,7 +134,7 @@
         modal.classList.toggle("bx-popup-fullscreen", on);
         el.setAttribute("aria-pressed", on ? "true" : "false");
         el.textContent = on ? "▣ Sair da tela cheia" : "⛶ Tela cheia";
-        if (on && card?.requestFullscreen && !nativeFullscreenElement()) {
+        if (on && card?.requestFullscreen && !nativeFullscreenElement() && !(window.matchMedia && window.matchMedia("(max-width:760px)").matches)) {
           try { Promise.resolve(card.requestFullscreen()).catch(() => {}); } catch (_) {}
         } else if (!on && nativeFullscreenElement() && document.exitFullscreen) {
           try { Promise.resolve(document.exitFullscreen()).catch(() => {}); } catch (_) {}
