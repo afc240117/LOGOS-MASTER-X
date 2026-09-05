@@ -16396,3 +16396,34 @@ body.bx-mobile-app .bible-x-shell.bx-reading-full .bible-x-output{
   border-radius:0!important;
   max-width:none!important;
 }
+
+/* ---- 5.4.178 — TELA CHEIA lê de ponta a ponta (PC E celular) ----
+   No web PC o full (.bx-reading-full) ainda centralizava a coluna de leitura
+   (#bOut 86px de cada lado + raio de canto 14px) via .bible-x-central — em
+   tema com fundo/leitura claro isso desenhava uma moldura em cima e dos
+   lados. Agora o #bOut ocupa a tela toda nos dois; o respiro do texto
+   continua no padding interno do próprio #bOut (e do .bx-reader-list). */
+.bible-x-shell.bx-reading-full .bible-x-central,
+.bible-x-shell.bx-reading-full .bible-x-section,
+.bible-x-shell.bx-reading-full #bOut,
+.bible-x-shell.bx-reading-full .bible-x-output{
+  width:100%!important;
+  max-width:none!important;
+  margin-left:0!important;
+  margin-right:0!important;
+}
+.bible-x-shell.bx-reading-full #bOut,
+.bible-x-shell.bx-reading-full .bible-x-output{
+  border-radius:0!important;
+}
+/* idem quando a página inteira entra em full (.bx-page-full) */
+.bible-x-shell.bx-page-full .bible-x-central,
+.bible-x-shell.bx-page-full .bible-x-section,
+.bible-x-shell.bx-page-full #bOut,
+.bible-x-shell.bx-page-full .bible-x-output{
+  width:100%!important;
+  max-width:none!important;
+  margin-left:0!important;
+  margin-right:0!important;
+  border-radius:0!important;
+}
