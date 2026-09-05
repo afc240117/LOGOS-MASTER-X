@@ -11070,7 +11070,7 @@ a:hover{text-decoration-color:rgba(244,204,117,.95)}
 #lmx150-progress{position:fixed;top:0;left:0;right:0;height:3px;z-index:100060;background:transparent;pointer-events:none}
 #lmx150-progress>i{display:block;height:100%;width:0;background:linear-gradient(90deg,#f4cc75,#6ea8ff);box-shadow:0 0 12px rgba(244,204,117,.7);border-radius:0 99px 99px 0;transition:width .15s ease}
 /* voltar ao topo / meio / baixo (pilha fixa no canto) */
-#lmx150-topstack{position:fixed;right:24px;bottom:21px;z-index:100050;display:flex;flex-direction:column;gap:8px;opacity:0;transform:translateY(12px);pointer-events:none;transition:.24s ease}
+#lmx150-topstack{position:fixed;right:4px;bottom:21px;z-index:100050;display:flex;flex-direction:column;gap:8px;opacity:0;transform:translateY(12px);pointer-events:none;transition:.24s ease}/* 5.4.198: lateral 24px→4px — colado na borda (linha fina), alinhado com o trilho cinza */
 #lmx150-topstack.show{opacity:1;transform:none;pointer-events:auto}
 #lmx150-topstack button{width:44px;height:44px;border-radius:14px;border:1px solid rgba(244,204,117,.45);background:rgba(10,14,22,.82);color:#f4cc75;font-size:17px;display:grid;place-items:center;cursor:pointer;transition:.16s ease;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);box-shadow:0 8px 24px rgba(0,0,0,.4)}
 #lmx150-topstack button:hover{background:rgba(20,26,38,.95);box-shadow:0 10px 30px rgba(244,204,117,.28)}
@@ -16559,8 +16559,10 @@ body.bx-mobile-app .bible-x-shell.bx-reading-full .bible-x-output{
     justify-content:center!important;
     position:fixed!important;
     left:0!important;right:0!important;top:auto!important;bottom:0!important;
-    margin:0!important;
-    width:auto!important;min-width:0!important;max-width:none!important;
+    margin:0 auto!important;              /* 5.4.198: grupo CENTRALIZADO horizontalmente */
+    width:max-content!important;          /* 5.4.198: compacto, abraça os botões no meio */
+    min-width:0!important;
+    max-width:calc(100vw - 12px)!important;
     height:auto!important;
     transform:none!important;
     flex-wrap:nowrap!important;
@@ -16654,13 +16656,13 @@ body.bx-mobile-app .bible-x-shell.bx-reading-full .bible-x-output{
 }
 
 /* ==========================================================
-   5.4.197  CELULAR: a tela cheia da B�blia entra SEMPRE sem
-   bordas (topo/laterais/base), igual ao bot�o do painel do topo,
-   mesmo quando o <body> n�o tem .bx-mobile-app (leitura aberta
+   5.4.197 — CELULAR: a tela cheia da Bíblia entra SEMPRE sem
+   bordas (topo/laterais/base), igual ao botão do painel do topo,
+   mesmo quando o <body> não tem .bx-mobile-app (leitura aberta
    fora do nav mobile). Prefixo de tipo "body" eleva a
-   especificidade p/ (0,3,1) e vence <style> injetado por m�dulo
+   especificidade para (0,3,1) e vence <style> injetado por módulo
    que reprisa a moldura antiga do card (inset:8px; 0,2,0).
-   Em e901px o 5.4.175 j� zera; aqui cobre todo d900px (toque).
+   Em >=901px o 5.4.175 já zera; aqui cobre todo <=900px (toque).
    ========================================================== */
 @media(max-width:900px){
   body .bible-x-shell.bx-reading-full,
@@ -16680,5 +16682,25 @@ body.bx-mobile-app .bible-x-shell.bx-reading-full .bible-x-output{
     box-shadow:none!important;
     padding:0!important;
     margin:0!important;
+  }
+}
+
+/* ============================================================
+   5.4.198 — TRILHO da LEITURA NORMAL do PC (≥761px, fora de full):
+   a barra cinza e o controle âmbar ▲/⏺/▼ (o scroll amarelo) ficam
+   AMBOS colados na borda direita da janela com uma LINHA FINA de ar
+   (right:4px, "bem colada na lateral"), alinhados pela borda direita.
+   Entre a BASE da barra cinza e o TOPO do âmbar fica um VÃO de
+   1 BOTÃO (52px): o âmbar é bottom:21 e tem 148px (44+8+44+8+44)
+   → o topo dele está a 169px do rodapé; a base da cinza fica a
+   221px (169 + 52). Barra cresce PRA CIMA ao ligar botões (base fixa).
+   ============================================================ */
+@media(min-width:761px){
+  body:not(.lmx-bx-full):not(:has(.bible-x-shell.bx-reading-full)):not(:has(.bible-x-shell.bx-page-full)) .bx-v157-rail{
+    right:4px!important;              /* 5.4.198: colada na borda (mesmo right do âmbar) */
+    left:auto!important;              /* desliga lado salvo/antigo */
+    top:auto!important;               /* âncora pela BASE (não pelo topo) */
+    bottom:221px!important;           /* vão de 1 botão: topo do âmbar (169) + 52 = 221 */
+    transform:none!important;
   }
 }

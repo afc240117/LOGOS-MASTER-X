@@ -6993,6 +6993,15 @@ Gerado em ${new Date().toLocaleString("pt-BR")}
     };
     const applyRailPos=pos=>{
       if(!pos)return;
+      /* 5.4.198 — A posição do trilho agora é 100% do CSS: na leitura NORMAL do PC
+         o trilho fica ancorado no TOPO sobre a coluna do scroll amarelo; na TELA
+         CHEIA ele vira a barra de baixo CENTRALIZADA. Aplicar posição salva de
+         arrasto (antigas 5.4.98–113) gravava top/right/left/bottom com !important
+         INLINE, que vence o CSS e deixava a barra da tela cheia presa no CANTO
+         DIREITO (acima do relógio) — por isso o Ctrl+F5 não mudava (ficava no
+         localStorage, não no cache). Desligado: nenhuma geometria inline é gravada;
+         o CSS manda. */
+      return;
       const vw=innerWidth,vh=innerHeight;
       const y=Math.max(4,Math.min(vh-56,Math.round(pos.y)));
       if(desktopNormalRail()){
