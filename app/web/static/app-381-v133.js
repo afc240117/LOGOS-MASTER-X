@@ -9447,7 +9447,7 @@ window.BibliaXLocal = window.BibliaXLocal || {
   };
   document.addEventListener("click",event=>{
     const panel=document.getElementById(EXTRA_PANEL);
-    if(panel&&!panel.hidden&&panel.classList.contains("open")&&!event.target.closest?.("#"+EXTRA_PANEL))closePageExtra();
+    if(panel&&!panel.hidden&&panel.classList.contains("open")&&!event.target.closest?.("#"+EXTRA_PANEL)&&!event.target.closest?.(".bx-guide-overlay"))closePageExtra();
   },true);
   window.__bxToggleOverlay=lmx150ToggleOverlay;
   window.LMXBXPages={sync,zoom,full,openPageMenu,current:currentId,openPageExtra,closePageExtra,openPagePainel,closePagePainel,togglePagePainel};
@@ -14289,9 +14289,9 @@ window.BibleXPolimento=Object.assign(window.BibleXPolimento||{},{lote528:"concor
       if(!window.__bxTipShown)window.__bxTipShown={};
       window.__bxTipShown[area]=true;
       const ok=wrap.querySelector(".bxq-ok"),cl=wrap.querySelector(".bxq-close");
-      if(ok)ok.addEventListener("click",function(){bxTipClose(wrap)});
-      if(cl)cl.addEventListener("click",function(){bxTipClose(wrap)});
-      wrap.addEventListener("click",function(e){if(e.target===wrap)bxTipClose(wrap)});
+      if(ok)ok.addEventListener("click",function(e){if(e&&e.stopPropagation)e.stopPropagation();bxTipClose(wrap)});
+      if(cl)cl.addEventListener("click",function(e){if(e&&e.stopPropagation)e.stopPropagation();bxTipClose(wrap)});
+      wrap.addEventListener("click",function(e){if(e.target===wrap){if(e&&e.stopPropagation)e.stopPropagation();bxTipClose(wrap)}});
       const host=document.fullscreenElement||document.querySelector(".bible-x-shell.bx-reading-full,.bible-x-shell.bx-page-full")||document.body;
       (host||document.body).appendChild(wrap);
     }catch(e){}
