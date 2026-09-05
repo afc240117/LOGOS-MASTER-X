@@ -16441,3 +16441,19 @@ body.bx-mobile-app .bible-x-shell.bx-reading-full .bible-x-output{
   padding-left:0!important;
   padding-right:0!important;
 }
+
+/* 5.4.179 — TELA CHEIA do web PC lê de ponta a ponta (sem a moldura lateral).
+   O respiro de 1180px/centralizado vinha de regra de especificidade ALTA —
+   .bible-x-shell.bx-reading-full .bible-x-main > :not(.bible-x-reader):not(.bible-x-top-actions)
+   {max-width:1180px!important; margin-left/right:auto!important} — que vencia o
+   bloco 5.4.178 (3 classes vs 5). Replico o MESMO alvo acrescentando a classe do
+   próprio filho (.bible-x-section/.bible-x-central) p/ ficar com 6 classes e
+   vencer a cascata. O conforto da linha segue no padding interno do #bOut. */
+.bible-x-shell.bx-reading-full .bible-x-main > :not(.bible-x-reader):not(.bible-x-top-actions).bible-x-section,
+.bible-x-shell.bx-reading-full .bible-x-main > :not(.bible-x-reader):not(.bible-x-top-actions).bible-x-central,
+.bible-x-shell.bx-page-full .bible-x-main > :not(.bible-x-reader):not(.bible-x-top-actions).bible-x-section,
+.bible-x-shell.bx-page-full .bible-x-main > :not(.bible-x-reader):not(.bible-x-top-actions).bible-x-central{
+  max-width:none!important;
+  margin-left:0!important;
+  margin-right:0!important;
+}
