@@ -84,7 +84,7 @@ function finishMobileLoading(){
 
      const W=canvas.width,H=canvas.height;
      const start=performance.now();
-     const duration=10000; /* 5.4.184 — percurso completo com antecipação na Bíblia; DNA mantém o tempo-base */
+     const duration=6800; /* somente a etapa Bíblia→flash existente→DNA foi inserida; demais tempos preservados */
 
      const bez=(a,b,c,d,t)=>{
        const u=1-t;
@@ -447,114 +447,94 @@ function finishMobileLoading(){
      };
 
 
-     /* 5.4.184 — ida antecipada à Bíblia e retorno pela mesma curva.
-        As curvas só conduzem a luz; a arte e o desenho da logo permanecem intactos. */
-     const biblePreviewBlue=[
-       {x:425,y:373},{x:431,y:389},{x:438,y:416},{x:443,y:438}
+     const bibleInsertBlue=[
+       {x:425,y:373},{x:429,y:391},{x:438,y:416},{x:443,y:438}
      ];
-     const biblePreviewGold=[
-       {x:430,y:373},{x:435,y:390},{x:445,y:416},{x:443,y:438}
+     const bibleInsertGold=[
+       {x:430,y:373},{x:435,y:391},{x:445,y:416},{x:443,y:438}
      ];
-     const drawConnectorPath=(u,path,rgb,intensity,reverse=false)=>{
+     const drawBibleInsertPath=(u,path,rgb,intensity,reverse=false)=>{
        const q=reverse?path.slice().reverse():path;
        drawConnector(u,q[0],q[1],q[2],q[3],rgb,intensity);
      };
 
-     /* Mesmo vocabulário visual do flash final, com escala/intensidade menores
-        para a primeira chegada não roubar o clímax. */
-     const drawBiblePreview=(u)=>{
-       if(u<=0||u>=1)return;
-       const e=Math.sin(Math.PI*Math.min(1,u));
-       softEllipse(443,438,132,68,s,e*.48);
-       softEllipse(443,438,96,48,p,e*.25);
-       glowDot(443,440,43,s,e*.78);
-       ctx.save();ctx.translate(443,436);
-       ctx.globalCompositeOperation='lighter';
-       for(let i=-3;i<=3;i++){
-         const ang=-Math.PI/2+i*.16;
-         const len=78+Math.abs(i)*11;
-         const g=ctx.createLinearGradient(0,0,Math.cos(ang)*len,Math.sin(ang)*len);
-         g.addColorStop(0,"rgba(255,255,255,"+(e*.62)+")");
-         g.addColorStop(.25,rgba(s,e*.34));
-         g.addColorStop(1,rgba(s,0));
-         ctx.strokeStyle=g;ctx.lineWidth=2.8-Math.abs(i)*.16;
-         ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(Math.cos(ang)*len,Math.sin(ang)*len);ctx.stroke();
-       }
-       ctx.restore();
-       if(u>.60){
-         const q=(u-.60)/.40;
-         glowDot(443,440,78+42*q,s,Math.min(.78,q*.98));
-         glowDot(443,440,52+28*q,p,Math.min(.48,q*.72));
-       }
-     };
-
      const frame=(now)=>{
-       const elapsedT=(now-start)/duration;
-       const t=Math.min(.999,elapsedT);
+       const elapsedMs=now-start;
+       const elapsedT=Math.min(.999,elapsedMs/duration);
+       const dnaDuration=1196;
+       const preludeDuration=1600;
+       const inPrelude=elapsedMs>=dnaDuration && elapsedMs<dnaDuration+preludeDuration;
+       const originalElapsed=elapsedMs<dnaDuration?elapsedMs:Math.max(0,elapsedMs-preludeDuration);
+       const t=Math.min(.999,originalElapsed/5200);
        ctx.clearRect(0,0,W,H);
        ctx.globalCompositeOperation='lighter';
-
-       /* 1 — descida original, com o mesmo comportamento e tempo-base. */
-       const dnaEnd=.1196; /* 1,196 s: igual a .23 × 5,2 s da versão aprovada */
-       const dnaT=Math.min(1,Math.max(0,t/dnaEnd));
-       if(t<dnaEnd){
+       // 1 — duas pontas descem pelas duas pétalas reais do DNA.
+       const dnaT=Math.min(1,Math.max(0,t/.23));
+       if(t<.23){
          const pulse=.24+.46*Math.sin(Math.PI*Math.min(1,dnaT));
          softEllipse(430,205,190,190,p,pulse*.24);
          softEllipse(430,205,180,185,s,pulse*.18);
          drawTravel(green,Math.min(1,dnaT*1.04),p,1.0);
          drawTravel(gold,Math.min(1,Math.max(0,dnaT-.035)*1.075),s,1.0);
        }
-       if(t>.0208 && t<dnaEnd){
-         const u=(t-.0208)/(dnaEnd-.0208);
+       if(t>.04 && t<.23){
+         const u=(t-.04)/.19;
          drawTravel(green,Math.min(1,u),p,.62);
          drawTravel(gold,Math.min(1,u),s,.62);
        }
 
-       /* 2 — primeira ida à Bíblia e flash menor, no mesmo estilo do final. */
-       if(t>.108 && t<.205){
-         const u=(t-.108)/.097;
-         drawConnectorPath(Math.min(1,u),biblePreviewBlue,p,.82,false);
-         drawConnectorPath(Math.min(1,u),biblePreviewGold,s,.82,false);
+       /* ÚNICA INSERÇÃO: ida ao centro da Bíblia, o flash final já existente
+          e retorno pela mesma curva, antes de liberar o percurso original. */
+       if(inPrelude){
+         const u=(elapsedMs-dnaDuration)/preludeDuration;
+         if(u<.30){
+           const q=u/.30;
+           drawBibleInsertPath(Math.min(1,q),bibleInsertBlue,p,.90);
+           drawBibleInsertPath(Math.min(1,q),bibleInsertGold,s,.90);
+         }
+         if(u>.24 && u<.68) drawBible((u-.24)/.44);
+         if(u>.62){
+           const q=(u-.62)/.38;
+           drawBibleInsertPath(Math.min(1,q),bibleInsertBlue,p,.90,true);
+           drawBibleInsertPath(Math.min(1,q),bibleInsertGold,s,.90,true);
+         }
        }
-       if(t>.175 && t<.255){
-         drawBiblePreview((t-.175)/.080);
-       }
-
-       /* 3 — volta pela mesma curva; no pé do DNA as duas cores se reencontram. */
-       if(t>.225 && t<.315){
-         const u=(t-.225)/.090;
-         drawConnectorPath(Math.min(1,u),biblePreviewBlue,p,.88,true);
-         drawConnectorPath(Math.min(1,u),biblePreviewGold,s,.88,true);
-       }
-       if(t>.295 && t<.355){
-         const u=(t-.295)/.060;
+       if(!inPrelude){
+       // 2 — as duas luzes fundem-se no pé do DNA antes das fitas douradas.
+       if(t>.17 && t<.28){
+         const u=(t-.17)/.11;
          const e=Math.sin(Math.PI*u);
          softEllipse(430,372,72+26*e,48+18*e,s,e*.38);
-         glowDot(430-16*(1-e),372,16+10*e,p,e*.82);
-         glowDot(430+16*(1-e),372,16+10*e,s,e*.85);
+         const spread=(1-e)*16;
+         glowDot(430-spread,372,16+10*e,s,e*.85);
+         glowDot(430+spread,372,16+10*e,s,e*.85);
          glowDot(430,372,26+14*e,s,e);
-         glowDot(430,372,14+9*e,p,e*1.10);
+         glowDot(430,372,14+9*e,s,e*1.15);
+       }
+       if(t>.22 && t<.29){
+         const u=(t-.22)/.07;
+         drawConnector(u,{x:430,y:373},{x:436,y:352},{x:440,y:330},{x:442,y:310},s,.95);
        }
 
-       /* 4 — percurso mais lento e preciso pelas três fitas douradas. */
-       if(t>.335 && t<.575){
-         const u=(t-.335)/.240;
+       // 3 — a energia abre-se e percorre as três fitas douradas até a K7.
+       if(t>.24 && t<.48){
+         const u=(t-.24)/.24;
          const sm=u*u*(3-2*u);
          drawRibbonBundle(Math.min(1,sm*1.035),.98,false);
        }
 
-       /* 5 — entrada exclusivamente pela abertura inferior da K7. */
-       if(t>.535 && t<.625){
-         const u=(t-.535)/.090;
+       // 4 — as três fitas convergem e a ponta mergulha pela base da K7.
+       if(t>.445 && t<.545){
+         const u=(t-.445)/.10;
          drawConnector(u,{x:252,y:250},{x:238,y:248},{x:224,y:243},{x:210,y:240},s,.66);
          drawConnector(u,{x:237,y:273},{x:230,y:260},{x:218,y:247},{x:210,y:240},s,.74);
          drawConnector(u,{x:249,y:336},{x:234,y:308},{x:219,y:266},{x:210,y:240},s,.98);
        }
 
-       /* 6 — energia dentro da K7: centro + duas bobinas. */
-       drawK7((t-.595)/.185);
-       if(t>.595 && t<.780){
-         const u=(t-.595)/.185;
+       // 5 — a corrente entra, percorre o interior e acende as duas bobinas.
+       drawK7((t-.50)/.21);
+       if(t>.50 && t<.71){
+         const u=(t-.50)/.21;
          const sm=u*u*(3-2*u);
          const e=.78+.22*Math.sin(Math.PI*u);
          drawTravel(k7Inside,Math.min(.999,sm),s,.82);
@@ -564,32 +544,47 @@ function finishMobileLoading(){
          softEllipse(180,205,102,58,p,.10+.08*Math.sin(Math.PI*u));
        }
 
-       /* 7 — sai pelo mesmo ponto inferior, sem usar os círculos como saída. */
-       if(t>.755 && t<.835){
-         const u=(t-.755)/.080;
+       // 6 — sai pela mesma abertura inferior, sem salto visual.
+       if(t>.675 && t<.75){
+         const u=(t-.675)/.075;
          drawConnector(u,{x:210,y:240},{x:219,y:266},{x:234,y:308},{x:249,y:336},s,.98);
          drawConnector(u,{x:210,y:240},{x:218,y:247},{x:230,y:260},{x:237,y:273},s,.64);
          drawConnector(u,{x:210,y:240},{x:224,y:243},{x:238,y:248},{x:252,y:250},s,.56);
        }
 
-       /* 8 — retorno pela mesma fita dourada, em sentido inverso. */
-       if(t>.815 && t<.935){
-         const u=(t-.815)/.120;
+       // 7 — retorno pelas fitas douradas em sentido inverso.
+       if(t>.72 && t<.885){
+         const u=(t-.72)/.165;
          const sm=u*u*(3-2*u);
          drawRibbonBundle(Math.min(1,sm*1.035),.94,true);
        }
 
-       /* 9 — retorno final da fita ao miolo da Bíblia. */
-       if(t>.900 && t<.965){
-         const u=(t-.900)/.065;
-         drawConnector(u,{x:430,y:373},{x:436,y:352},{x:440,y:330},{x:443,y:438},s,.92);
-         drawConnector(u,{x:425,y:373},{x:431,y:352},{x:438,y:330},{x:443,y:438},p,.56);
+       // 8 — as trilhas tornam-se uma só e descem ao centro da Bíblia aberta.
+       if(t>.845 && t<.925){
+         const u=(t-.845)/.08;
+         const e=Math.sin(Math.PI*u);
+         softEllipse(436,322,50+24*e,34+16*e,s,e*.32);
+         glowDot(436,322,24+12*e,s,e*.92);
+       }
+       if(t>.875 && t<.955){
+         const u=(t-.875)/.08;
+         const sm=u*u*(3-2*u);
+         const e=Math.sin(Math.PI*Math.min(1,sm*1.08));
+         const K0={x:436,y:322},K1={x:440,y:356},K2={x:440,y:414},K3={x:443,y:438};
+         for(let k=0;k<18;k++){
+           const tt=Math.max(0,sm-k*.022);
+           const q=bez(K0,K1,K2,K3,Math.min(1,tt));
+           glowDot(q.x,q.y,16-k*.45,s,e*(1-k/20));
+         }
+         const q=bez(K0,K1,K2,K3,Math.min(1,sm));
+         glowDot(q.x,q.y,30,s,e);
+         glowDot(q.x,q.y,48,s,e*.28);
        }
 
-       /* 10 — grande clímax final, deliberadamente maior e mais prolongado. */
-       drawBible((t-.930)/.069);
-       if(t>.945 && t<1){
-         const u=(t-.945)/.055;
+       // 9 — último flash no miolo da Bíblia: maior, quente e concentrado.
+       drawBible((t-.90)/.10);
+       if(t>.925 && t<1){
+         const u=(t-.925)/.075;
          const attack=Math.min(1,u/.24);
          const snap=Math.exp(-Math.pow((u-.30)/.13,2));
          const hold=attack*(.94+.06*Math.sin(u*Math.PI*5));
@@ -599,11 +594,12 @@ function finishMobileLoading(){
          glowDot(443,438,64,s,Math.min(1,hold+snap*.48));
          glowDot(443,438,30,p,Math.min(1,hold*.82+snap*.55));
 
+         // flare horizontal no vinco das páginas; não cria faixa vertical.
          ctx.save();
          const flare=ctx.createLinearGradient(270,438,616,438);
          flare.addColorStop(0,rgba(s,0));
          flare.addColorStop(.43,rgba(s,hold*.20));
-         flare.addColorStop(.50,"rgba(255,255,255,"+(Math.min(.94,hold*.56+snap*.34))+")");
+         flare.addColorStop(.50,`rgba(255,255,255,${Math.min(.94,hold*.56+snap*.34)})`);
          flare.addColorStop(.57,rgba(s,hold*.20));
          flare.addColorStop(1,rgba(s,0));
          ctx.fillStyle=flare;
@@ -618,14 +614,14 @@ function finishMobileLoading(){
          }
        }
 
-       if(elapsedT<1){
+       }
+      if(elapsedT<1){
          requestAnimationFrame(frame);
        }else{
          canvas.classList.add('is-ending');
          setTimeout(()=>canvas.remove(),500);
        }
      };
-
      requestAnimationFrame(frame);
    };
    if(splash){
