@@ -2134,6 +2134,7 @@ function logosHomeFlashRun(){
     if(host.querySelector(".bx-home-flash"))return false;
     if(getComputedStyle(host).position==="static")host.style.position="relative";
     var w=rect.width,h=rect.height;
+    if(host.classList&&host.classList.contains("desktop-reference-home"))return __logosDesktopFlash(host,rect,w,h);   /* coreografia cinematográfica */
     var geo=function(sel){var el=host.querySelector(sel);if(!el)return null;var r=el.getBoundingClientRect();return {x:(r.left-rect.left)+r.width/2,y:(r.top-rect.top)+r.height/2};};
     var dna=geo('[data-home-action="dna"]');                       /* DNA/fita K7 */
     var bib=geo('[data-home-action="bible"]');                      /* Bíblia aberta */
@@ -2199,6 +2200,7 @@ setInterval(function(){try{
   if(v==="dashboard"&&(entered||window.__logosHomeFlashLast+16000<Date.now())){
     if(logosHomeFlashRun())window.__logosHomeFlashLast=Date.now();
   }
+  __logosFlashCal();
 }catch(e){}},800);
 
 /* 5.4.171 — pop-up de sair refeito. "Sair" tenta fechar de verdade a janela/PWA
