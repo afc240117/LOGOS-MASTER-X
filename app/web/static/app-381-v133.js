@@ -13539,12 +13539,12 @@ window.BibleXPolimento=Object.assign(window.BibleXPolimento||{},{lote528:"concor
     }
   }
   function sync() {
-    if (isPhone) { var hb = document.getElementById(BTN); if (hb) hb.style.display = 'none'; last = false; return; }
-    var now = isFull();
-    if (now === last) return;
-    last = now;
-    var b = document.getElementById(BTN);
-    if (b) b.style.display = now ? 'flex' : 'none';
+    /* 5.4.185 — o "✕ Sair" flutuante do topo não é mais exibido/criado no PC
+       (a saída agora é o "✕ Sair" da barra de baixo, igual no celular). Se por
+       acaso o botão ainda existir no DOM de uma sessão antiga, fica escondido. */
+    var hb = document.getElementById(BTN);
+    if (hb) hb.style.display = 'none';
+    last = false;
   }
   function ensure() {
     if (isPhone) return;
