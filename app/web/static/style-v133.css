@@ -16280,4 +16280,28 @@ details.bible-x-import:not([open])>.bx-import-x{display:none}
     box-shadow:none!important;
     padding:0!important;
   }
+}/* ==========================================================
+   5.4.176 — "Trocar passagem": as DUAS LINHAS do rodapé (qtd de
+   capítulos e versículos) NÃO podem sair do card quando a lista de
+   livros abre. O .bxn-status tinha min-height:0 e o flex do card o
+   esmagava (o box encolhia e o texto vazava pra fora da borda).
+   Agora: rodapé flex-shrink:0, a grade aberta cede a altura que
+   sobra (rola por dentro) e o card é a rede de segurança (rola se
+   mesmo assim faltar espaço — nada fica de fora em web nem celular).
+   ========================================================== */
+.bxn-bd{overflow-y:auto!important;overscroll-behavior:contain!important}
+.bxn-bd .bxn-card{margin:auto!important}
+.bxn-card{overflow-y:auto!important;overscroll-behavior:contain!important}
+.bxn-card .bxn-head,
+.bxn-card .bxn-navrow,
+.bxn-card .bxn-go,
+.bxn-card .bxn-status{flex-shrink:0!important}
+.bxn-card:has([data-bxn-books]:not([hidden])) .bxn-lab:has([data-bxn-books]){
+  flex:1 1 auto!important;display:flex!important;flex-direction:column!important;min-height:0!important;
 }
+.bxn-card:has([data-bxn-books]:not([hidden])) [data-bxn-books]{
+  flex:1 1 auto!important;max-height:none!important;min-height:76px!important;
+}
+.bxn-card::-webkit-scrollbar{width:8px!important}
+.bxn-card::-webkit-scrollbar-thumb{background:#2c4658!important;border-radius:8px!important}
+.bxn-card::-webkit-scrollbar-track{background:transparent!important}
