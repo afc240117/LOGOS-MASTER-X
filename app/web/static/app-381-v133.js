@@ -1057,6 +1057,11 @@ function safeHomeActionUrl(raw){
 }
 function runHomeAction(id){
  const a=homeActions().find(x=>x.id===id);if(!a)return;
+ /* 5.4.184 — o atalho "Saiba mais" / "Sobre o LOGOS MASTER X" (id about) SEMPRE
+    abre a PÁGINA completa do Sobre (mesma do site PC). Se o Store tiver esse
+    atalho salvo como popup/link (customização antiga — no CELULAR abria um aviso
+    pequeno em vez da página), força a view "about". */
+ if(id==="about"||a.zone==="about"){navigateView("about");return;}
  if(a.type==="view"){
    const target=HOME_ACTION_MODULES.some(x=>x[0]===a.target)?a.target:"dashboard";
    if(target==="dashboard")goHome();else navigateView(target);
