@@ -6738,8 +6738,18 @@ Gerado em ${new Date().toLocaleString("pt-BR")}
     const pg=document.querySelector(".bible-x-shell.bx-page-full");
     if(rd){ if(window.LMXBibleReader)window.LMXBibleReader.full(false); else if(window.LMXBX)window.LMXBX.full(false); }
     else if(pg){ if(window.LMXBXPages?.full)window.LMXBXPages.full(false); else bxV157Toast("✕ Já fora da tela cheia"); }
-    else if(window.LMXBXPages?.full){ window.LMXBXPages.full(true); }
-    else bxV157Toast("⛶ Tela cheia indisponível");
+    else {
+      /* 5.4.183 — PC web no LEITOR: o ⛶ do trilho entra no MESMO full limpo+nativo
+         do botão do topo (reading-full: esconde toolbar/busca → "some a barra do
+         topo" já no 1º clique). Fora do leitor (módulos/páginas) mantém o full de
+         páginas histórico. No celular continua como antes. */
+      const _phone=window.matchMedia&&window.matchMedia("(max-width:760px)").matches;
+      const _nav=document.querySelector('.bible-x-nav [data-bible-section="reader"]');
+      const _inReader=!_phone&&!!_nav&&_nav.classList.contains("active")&&!!document.querySelector("#bOut");
+      if(_inReader&&window.LMXBibleReader){ window.LMXBibleReader.full(true); }
+      else if(window.LMXBXPages?.full){ window.LMXBXPages.full(true); }
+      else bxV157Toast("⛶ Tela cheia indisponível");
+    }
   });
   /* 5.4.164 — botão "✕ Sair" DENTRO da barra inferior (novo). Sai de QUALQUER
      tela cheia ativa (leitura ou páginas), igual ao "✕ Sair" do topo (5.4.134). */
@@ -8900,6 +8910,29 @@ window.BibliaXLocal = window.BibliaXLocal || {
         if(on)window.__bxNativeFull.enter(shell);
         else if(window.__bxNativeFull.phone())window.__bxNativeFull.exit();
       }
+      /* 5.4.183 — PC web: o full de leitura também entra no FULLSCREEN NATIVO (some
+         a barra do navegador), como o full das páginas já fazia. No celular o nativo
+         fica por conta do __bxNativeFull acima (documentElement, preserva a barra
+         inferior e o rail). O dono do nativo é registrado em window.__lmxReadingNative
+         e o fullscreenchange abaixo finaliza o full quando o usuário sai pelo Esc do
+         navegador/botão do SO. O pedido é no <html> (documentElement), NÃO no shell:
+         no Fullscreen API só o elemento full e seus descendentes são pintados — o
+         botão flutuante "✕ Sair" (5.4.134) e o rail vivem no <body> e sumiriam se o
+         shell virasse o elemento full. */
+      if(!(window.matchMedia&&window.matchMedia("(max-width:760px)").matches)){
+        if(on){
+          const _dt=document.documentElement||document.body;
+          const req=_dt.requestFullscreen||_dt.webkitRequestFullscreen;
+          if(req&&!document.fullscreenElement&&!document.webkitFullscreenElement){
+            window.__lmxReadingNative=1;
+            try{req.call(_dt)}catch(_){window.__lmxReadingNative=0}
+          }
+        }else if(window.__lmxReadingNative){
+          window.__lmxReadingNative=0;
+          const fe=document.fullscreenElement||document.webkitFullscreenElement;
+          if(fe){const ex=document.exitFullscreen||document.webkitExitFullscreen;if(ex)try{ex.call(document)}catch(_){}}
+        }
+      }
       /* 5.4.139 — TELA CHEIA no celular: volta a mostrar as FERRAMENTAS de cada
          versículo (leque), como no web PC. O padrão mobile é Leitura Limpa (só "＋"),
          mas em full o usuário quer os botões (Referências, Strong, Léxico…).
@@ -8930,7 +8963,19 @@ window.BibliaXLocal = window.BibliaXLocal || {
       const ta=document.querySelector(".bible-x-top-actions");
       if(qb){
         if(on){ window.__bxQuickOrig=qb.parentElement; if(ta&&qb.parentElement!==ta)ta.appendChild(qb); }
-        else if(window.__bxQuickOrig){ window.__bxQuickOrig.appendChild(qb); window.__bxQuickOrig=null; }
+        else{
+          /* 5.4.183 — devolve a barra rápida ao lugar de origem ao sair. Se o pai
+             original foi re-renderizado/desconectado durante o full (ex.: troca de
+             capítulo), usa o .bible-x-search-row vivo como fallback — sem isso os
+             botões ficavam "presos" na .bible-x-top-actions (display:none) e o menu
+             do topo da tela normal voltava faltando partes. */
+          const moved=qb.parentElement&&qb.parentElement.classList&&qb.parentElement.classList.contains("bible-x-top-actions");
+          if(moved||window.__bxQuickOrig){
+            const home=(window.__bxQuickOrig&&window.__bxQuickOrig.isConnected)?window.__bxQuickOrig:document.querySelector(".bible-x-search-row.bx-v159-search");
+            if(home&&qb.parentElement!==home)home.appendChild(qb);
+            window.__bxQuickOrig=null;
+          }
+        }
       }
       /* 5.4.120 — FULL: o menu flutuante ganha 3 ESPAÇOS próprios. O zoom (A+/A−/100%)
          e o ✕ Sair tela cheia são agrupados num card `.bx-v159-zoom-card`; o ☰ Todos
@@ -8985,6 +9030,20 @@ window.BibliaXLocal = window.BibliaXLocal || {
   document.addEventListener("keydown",e=>{
     if(e.key==="Escape")window.LMXBibleReader.full(false);
   });
+
+  /* 5.4.183 — PC: se o usuário sair do FULLSCREEN NATIVO pelo Esc do navegador ou
+     botão do SO (nenhum clique chega ao app), o fullscreenchange finaliza o full de
+     leitura e devolve a barra rápida. No celular quem cuida é o __bxNativeFull. */
+  function lmxBxDesktopFsExit(){
+    if(window.matchMedia&&window.matchMedia("(max-width:760px)").matches)return;
+    if(document.fullscreenElement||document.webkitFullscreenElement)return;
+    if(!window.__lmxReadingNative)return;
+    window.__lmxReadingNative=0;
+    const _s=document.querySelector(".bible-x-shell");
+    if(_s&&_s.classList.contains("bx-reading-full")&&window.LMXBibleReader)window.LMXBibleReader.full(false);
+  }
+  document.addEventListener("fullscreenchange",lmxBxDesktopFsExit);
+  document.addEventListener("webkitfullscreenchange",lmxBxDesktopFsExit);
 
   new MutationObserver(applyState).observe(document.body,{childList:true,subtree:true});
   setTimeout(applyState,60);
@@ -9237,6 +9296,17 @@ window.BibliaXLocal = window.BibliaXLocal || {
     if(enter){enter.hidden=!!on;enter.setAttribute("aria-pressed",on?"true":"false")}
     if(exit)exit.hidden=!on;
     if(on){root.scrollTop=0;activePanel()?.scrollIntoView({block:"start"})}
+    /* 5.4.183 — anti-dirty: ao sair do full de páginas, devolve a barra rápida caso
+       um full de leitura a tenha movido para a .bible-x-top-actions e não restaurado
+       (impede o menu do topo voltar faltando botões). Idempotente. */
+    if(!on){
+      const _qb=document.querySelector(".bx-v159-quick");
+      if(_qb&&_qb.parentElement&&_qb.parentElement.classList&&_qb.parentElement.classList.contains("bible-x-top-actions")){
+        const _home=(window.__bxQuickOrig&&window.__bxQuickOrig.isConnected)?window.__bxQuickOrig:document.querySelector(".bible-x-search-row.bx-v159-search");
+        if(_home&&_qb.parentElement!==_home)_home.appendChild(_qb);
+        window.__bxQuickOrig=null;
+      }
+    }
     sync();
     try{document.dispatchEvent(new CustomEvent("biblex:fullscreenchange",{detail:{on:!!on}}))}catch(_){}
     return false;
