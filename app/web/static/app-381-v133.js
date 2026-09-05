@@ -2614,7 +2614,7 @@ async function initBibleUI(){let current=[];
 
  const currentRefState=()=>{const raw=String($("#bRef")?.value||"").trim();const m=raw.match(/^(.+?)\s+(\d+)(?::(\d+)(?:-(\d+))?)?$/);return m?{book:m[1],chapter:Number(m[2]),verse:m[3]?Number(m[3]):null}:null};
  const bookItems=[];
- const syncBookChapterSelectors=async(bookName=null,chapter=null)=>{const translation=selectedTranslation();const rb=await bxFetch(`${bibleApiBase()}/books?translation=${encodeURIComponent(translation)}`);if(!rb.ok)return false;const jb=await rb.json();bookItems.splice(0,bookItems.length,...(jb.items||[]));const bookSel=$("#bBook");if(bookSel){bookSel.innerHTML=bookItems.map(x=>`<option value="${escapeHtml(x.code)}">${escapeHtml(translation==="engwebp"?(x.name_en||x.code):(x.name_pt||x.code))}</option>`).join("");let target=bookItems.find(x=>[x.name_pt,x.name_en,x.code].some(v=>String(v||"").toLowerCase()===String(bookName||"").toLowerCase()));if(!target&&current.length)target=bookItems.find(x=>x.code===current[0].bookCode);if(!target)target=bookItems.find(x=>x.code==="JHN")||bookItems[0];if(target)bookSel.value=target.code}
+ const syncBookChapterSelectors=async(bookName=null,chapter=null)=>{const translation=selectedTranslation();const rb=await bxFetch(`${bibleApiBase()}/books?translation=${encodeURIComponent(translation)}`);if(!rb.ok)return false;const jb=await rb.json();bookItems.splice(0,bookItems.length,...(jb.items||[]));const bookSel=$("#bBook");if(bookSel){bookSel.innerHTML=window.__bxV174SelOpts(bookItems,translation);let target=bookItems.find(x=>[x.name_pt,x.name_en,x.code].some(v=>String(v||"").toLowerCase()===String(bookName||"").toLowerCase()));if(!target&&current.length)target=bookItems.find(x=>x.code===current[0].bookCode);if(!target)target=bookItems.find(x=>x.code==="JHN")||bookItems[0];if(target)bookSel.value=target.code}
   const code=bookSel?.value||"JHN";const rc=await bxFetch(`${bibleApiBase()}/chapters?translation=${encodeURIComponent(translation)}&book=${encodeURIComponent(code)}`);if(!rc.ok)return false;const jc=await rc.json();const chSel=$("#bChapter");if(chSel){chSel.innerHTML=(jc.items||[]).map(x=>`<option value="${x.chapter}">${x.chapter}</option>`).join("");const wanted=Number(chapter)||Number(currentRefState()?.chapter)||3;chSel.value=String((jc.items||[]).some(x=>Number(x.chapter)===wanted)?wanted:(jc.items?.[0]?.chapter||1))}return true};
  const selectedBookMeta=()=>bookItems.find(x=>x.code===$("#bBook")?.value);
  const selectedBookName=()=>{const x=selectedBookMeta();return selectedTranslation()==="engwebp"?(x?.name_en||x?.code||"John"):(x?.name_pt||x?.code||"João")};
@@ -7185,7 +7185,7 @@ Gerado em ${new Date().toLocaleString("pt-BR")}
 function bxOpenPassagePicker(){
   const old=document.getElementById("bxNavModal");if(old)old.remove();
   const bSel=$("#bBook");
-  const opts=bSel?[...bSel.options].map((o,i)=>({code:o.value,name:o.textContent.trim(),at:i<39})):[];
+  const opts=bSel?[...bSel.options].map((o,i)=>({code:o.value,name:o.textContent.trim(),at:i<39,i})):[];
   const cur=current[0]||{};
   const curName=cur.book||(bSel?.selectedOptions?.[0]?.textContent||"").trim();
   const curCode=bSel?.value||cur.bookCode||(opts[0]?.code||"GEN");
@@ -7196,12 +7196,7 @@ function bxOpenPassagePicker(){
     <div class="bxn-head"><b>📖 Trocar passagem</b><button type="button" data-bxn-close aria-label="Fechar">×</button></div>
     <label class="bxn-lab">Livro
       <button type="button" class="bxn-bookbtn" data-bxn-book><span class="bxn-bk-main"></span><span class="bxn-bk-sub"></span></button>
-      <div class="bxn-books" data-bxn-books hidden>
-        <div class="bxn-t">Antigo Testamento</div>
-        <div class="bxn-grid">${opts.filter(o=>o.at).map(o=>`<button type="button" class="bxn-bk" data-code="${escapeHtml(o.code)}">${escapeHtml(o.name)}</button>`).join("")}</div>
-        <div class="bxn-t">Novo Testamento</div>
-        <div class="bxn-grid">${opts.filter(o=>!o.at).map(o=>`<button type="button" class="bxn-bk" data-code="${escapeHtml(o.code)}">${escapeHtml(o.name)}</button>`).join("")}</div>
-      </div>
+      <div class="bxn-books" data-bxn-books hidden>${window.__bxV174Bxn(opts)}</div>
     </label>
     <div class="bxn-row">
       <label class="bxn-lab">Capítulo
@@ -7240,7 +7235,7 @@ function bxOpenPassagePicker(){
     b.addEventListener("click",()=>{
       bkPanel.querySelectorAll(".bxn-bk").forEach(x=>x.classList.remove("is-cur"));
       b.classList.add("is-cur");
-      bookCode=b.dataset.code;bookName=b.textContent.trim();setBk(bookName);bkPanel.hidden=true;syncInfo();
+      bookCode=b.dataset.code;bookName=(b.dataset.name||b.textContent).trim();setBk(bookName);bkPanel.hidden=true;syncInfo();
     });
   });
   bkBtn.addEventListener("click",()=>{if(bkPanel.hidden){bkPanel.hidden=false;chGrid.hidden=true;vGrid.hidden=true}else bkPanel.hidden=true});
@@ -7519,7 +7514,7 @@ const smartBibleRef=async(q)=>{try{return await apiBibleRef(q)}catch(e){const lo
        <button type="button" data-v159-preset="nt">Novo Testamento</button>
        <button type="button" data-v159-preset="none">Limpar</button>
      </div>
-     <div class="bx-v159-book-grid">${books.map((b,i)=>`<label><input type="checkbox" value="${escapeHtml(b)}" ${selected.has(bxV159BookKey(b))?"checked":""}><span>${i+1}</span><b>${escapeHtml(b)}</b></label>`).join("")}</div>
+     <div class="bx-v159-book-grid">${window.__bxV174V159(selected)}</div>
      <footer><span data-v159-modal-count>0 livros</span><button type="button" class="btn secondary" data-v159-modal-cancel>Cancelar</button><button type="button" class="btn primary" data-v159-modal-save>Aplicar seleção</button></footer>
    </div>`;
    const checks=[...m.querySelectorAll('input[type="checkbox"]')];
@@ -10161,10 +10156,7 @@ function mountFoot(){
 /* ---------------- menu de livros ---------------- */
 function bookMenuHTML(filter){
   const q=(filter||"").toLowerCase().trim();
-  const parts=[[],[]];
-  BOOK_NAMES.forEach((n,i)=>{if(q&&!n.toLowerCase().includes(q))return;const part=i<39?0:1;parts[part].push(`<button class="lmx150-books-item${part?" lmx150-books-nt":""}" data-lmx150-book="${i}" data-name="${esc(n)}"><b>${esc(n)}</b><small>${BC[i]} capítulos · ${part?"NT":"AT"}</small></button>`)});
-  return `<section class="lmx150-books-at">${parts[0].join("")||`<div class="lmx150-label">Sem resultado</div>`}</section>
-          <section class="lmx150-books-nt-sec">${parts[1].join("")||""}</section>`;
+  return window.__bxV174BooksMenu(q);
 }
 function toggleBooks(){
   let b=$("#lmx150-books");
@@ -14375,5 +14367,156 @@ window.BibleXPolimento=Object.assign(window.BibleXPolimento||{},{lote528:"concor
       window.__bxV157UX = { open: openRail };
     }
     init();
+  } catch (e) { /* nunca derruba o app */ }
+})();
+
+/* ============================================================
+   5.4.174 — (2) SELEÇÃO DE LIVROS COM AT/NT + CATEGORIAS
+   Inclui, em TODOS os lugares que listam os 66 livros:
+     • #bBook do topo (optgroups nativos com ícone + categoria);
+     • popup .bxn da barra final cinza (Trocar passagem);
+     • menu "📖 Livros" do leitor (grade .lmx150-books);
+     • seletor "☑ Escolher livros" da Pesquisa Pro (bxV159).
+   Categorias alinhadas à ordem canônica (índice 0–65):
+     AT: Pentateuco · Históricos · Poéticos · Profetas maiores · menores
+     NT: Evangelhos · Atos · Epístolas paulinas · Epístolas gerais · Apocalipse
+   Ícones são por categoria e aparecem no cabeçalho E em cada livro.
+   Guarda window.__bxV174DONE — nunca roda duas vezes.
+   ============================================================ */
+(function () {
+  try {
+    if (window.__bxV174DONE) return;
+    window.__bxV174DONE = true;
+
+    var CATS = [
+      { s: 0,  e: 5,  at: true,  ic: '🕎', n: 'Pentateuco' },
+      { s: 5,  e: 17, at: true,  ic: '🏛️', n: 'Históricos' },
+      { s: 17, e: 22, at: true,  ic: '🎵', n: 'Poéticos' },
+      { s: 22, e: 27, at: true,  ic: '📯', n: 'Profetas maiores' },
+      { s: 27, e: 39, at: true,  ic: '🌿', n: 'Profetas menores' },
+      { s: 39, e: 43, at: false, ic: '✝️', n: 'Evangelhos' },
+      { s: 43, e: 44, at: false, ic: '🕊️', n: 'Atos' },
+      { s: 44, e: 58, at: false, ic: '✉️', n: 'Epístolas paulinas' },
+      { s: 58, e: 65, at: false, ic: '📨', n: 'Epístolas gerais' },
+      { s: 65, e: 66, at: false, ic: '🌟', n: 'Apocalipse' }
+    ];
+    function catOf(i) {
+      for (var k = 0; k < CATS.length; k++) if (i >= CATS[k].s && i < CATS[k].e) return CATS[k];
+      return null;
+    }
+    window.__bxV174CatOf = catOf;
+
+    function escA(s) {
+      return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    /* ---- #bBook do topo: optgroups com ícone + categoria ---- */
+    window.__bxV174SelOpts = function (items, translation) {
+      var h = '', cur = null, g, name, x;
+      for (var i = 0; i < items.length; i++) {
+        x = items[i];
+        g = catOf(i);
+        name = (translation === 'engwebp' ? (x.name_en || x.code) : (x.name_pt || x.code));
+        if (g) {
+          if (cur !== g) { if (cur) h += '</optgroup>'; h += '<optgroup label="' + escA(g.ic + ' ' + g.n) + '">'; cur = g; }
+        } else if (cur) { h += '</optgroup>'; cur = null; }
+        h += '<option value="' + escA(x.code) + '">' + escA(name) + '</option>';
+      }
+      if (cur) h += '</optgroup>';
+      return h;
+    };
+
+    /* ---- Popup .bxn "Trocar passagem" (barra final cinza) ---- */
+    window.__bxV174Bxn = function (opts) {
+      var h = '', curTest = -1, g, test, items, j, it;
+      for (var k = 0; k < CATS.length; k++) {
+        g = CATS[k]; items = [];
+        for (j = 0; j < opts.length; j++) {
+          it = opts[j];
+          if (typeof it.i === 'number' && it.i >= g.s && it.i < g.e) items.push(it);
+        }
+        if (!items.length) continue;
+        test = g.at ? 0 : 1;
+        if (test !== curTest) {
+          h += '<div class="bx174-test">' + (g.at ? 'Antigo Testamento' : 'Novo Testamento') + '</div>';
+          curTest = test;
+        }
+        h += '<div class="bx174-cat"><span class="bx174-ic">' + g.ic + '</span>' + escA(g.n) + '</div>';
+        h += '<div class="bxn-grid">';
+        for (j = 0; j < items.length; j++) {
+          it = items[j];
+          h += '<button type="button" class="bxn-bk" data-code="' + escA(it.code) + '" data-name="' + escA(it.name) + '">'
+             + g.ic + '<span>' + escA(it.name) + '</span></button>';
+        }
+        h += '</div>';
+      }
+      return h || '<div class="bx174-empty">Nenhum livro carregado.</div>';
+    };
+
+    /* ---- Menu "📖 Livros" do leitor (grade .lmx150-books) ---- */
+    window.__bxV174BooksMenu = function (q) {
+      q = String(q || '').toLowerCase().trim();
+      var h = '', curTest = -1, g, names, i, name;
+      for (var k = 0; k < CATS.length; k++) {
+        g = CATS[k]; names = [];
+        for (i = g.s; i < g.e; i++) {
+          name = BOOK_NAMES[i] || '';
+          if (!name) continue;
+          if (q && name.toLowerCase().indexOf(q) < 0 && g.n.toLowerCase().indexOf(q) < 0) continue;
+          names.push(i);
+        }
+        if (!names.length) continue;
+        if ((g.at ? 0 : 1) !== curTest) {
+          curTest = g.at ? 0 : 1;
+          h += '<div class="bx174-ltest">' + (g.at ? 'Antigo Testamento' : 'Novo Testamento') + '</div>';
+        }
+        h += '<div class="bx174-lcat"><span class="bx174-ic">' + g.ic + '</span>' + escA(g.n) + '</div>';
+        h += '<div class="bx174-lgrid">';
+        for (var m = 0; m < names.length; m++) {
+          var bi = names[m];
+          var bn = BOOK_NAMES[bi] || '';
+          var caps = BC[bi] || 0;
+          var capTxt = caps === 1 ? '1 capítulo' : (caps ? caps + ' capítulos' : '');
+          h += '<button type="button" class="lmx150-books-item' + (g.at ? '' : ' lmx150-books-nt')
+             + '" data-lmx150-book="' + bi + '"><b>' + g.ic + ' ' + escA(bn) + '</b>'
+             + '<small>' + escA(g.n) + (capTxt ? ' · ' + capTxt : '') + '</small></button>';
+        }
+        h += '</div>';
+      }
+      return h || '<div class="bx174-empty">Nenhum livro encontrado.</div>';
+    };
+
+    /* ---- Seletor "☑ Escolher livros" da Pesquisa Pro (bxV159) ---- */
+    window.__bxV174V159 = function (selectedSet) {
+      var sel = document.getElementById('bBook');
+      var names = [];
+      if (sel) {
+        for (var j = 0; j < sel.options.length; j++) {
+          var t = (sel.options[j].textContent || '').trim();
+          if (t && !/carregando/i.test(t)) names.push(t);
+        }
+      }
+      var h = '', curTest = -1, g, group, i, nm;
+      for (var k = 0; k < CATS.length; k++) {
+        g = CATS[k]; group = [];
+        for (i = g.s; i < g.e; i++) { nm = names[i]; if (nm) group.push(nm); }
+        if (!group.length) continue;
+        if ((g.at ? 0 : 1) !== curTest) {
+          curTest = g.at ? 0 : 1;
+          h += '<div class="bx174-vtest">' + (g.at ? 'Antigo Testamento' : 'Novo Testamento') + '</div>';
+        }
+        h += '<div class="bx174-vcat"><span class="bx174-ic">' + g.ic + '</span>' + escA(g.n) + '</div>';
+        for (i = 0; i < group.length; i++) {
+          nm = group[i];
+          var on = false;
+          try { on = selectedSet ? selectedSet.has(bxV159BookKey(nm)) : false; } catch (e) { on = false; }
+          h += '<label class="' + (on ? 'bx174-on' : '') + '">'
+             + '<input type="checkbox" value="' + escA(nm) + '"' + (on ? ' checked' : '') + '>'
+             + '<span class="bx174-vic">' + g.ic + '</span><b>' + escA(nm) + '</b></label>';
+        }
+      }
+      return h;
+    };
   } catch (e) { /* nunca derruba o app */ }
 })();

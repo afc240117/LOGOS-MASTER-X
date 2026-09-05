@@ -16055,3 +16055,202 @@ details.bible-x-import:not([open])>.bx-import-x{display:none}
   body:has(.bible-x-shell.bx-reading-full) #bx-v157-grip,
   body:has(.bible-x-shell.bx-page-full) #bx-v157-grip{display:none!important}
 }
+
+/* ============================================================
+   5.4.174 — (1) NÚMERO DO VERSÍCULO: MAIOR, OPACO E GRUDADO
+   No texto do versículo (o número amarelo à esquerda).
+   Problema-raiz herdado: 5.4.134 deixou o nº do .bx-reading-full
+   com position:absolute;left:-40px e as regras seguintes (5.4.142)
+   não resetaram — no mobile full ele ficava longe/fora da vista.
+   Aqui: coluna auto (largura do nº), colado ao texto, ouro vivo.
+   Inclui variantes com #workspace (o shell mora dentro dele) e sem
+   o prefixo, para o caso de o full rodar fora desse container.
+   ============================================================ */
+
+/* ---- Mobile (leitura normal E tela cheia) ---- */
+@media(max-width:760px){
+  /* grade: coluna 1 auto (só o nº), texto na coluna 2 ocupando o resto */
+  #workspace #bOut .lmx-bible-v3-textrow,
+  #workspace .bible-x-shell.bx-reading-full #bOut .lmx-bible-v3-textrow,
+  #workspace .bible-x-shell.bx-page-full #bOut .lmx-bible-v3-textrow,
+  .bible-x-shell.bx-reading-full #bOut .lmx-bible-v3-textrow,
+  .bible-x-shell.bx-page-full #bOut .lmx-bible-v3-textrow{
+    grid-template-columns:auto minmax(0,1fr)!important;
+    gap:4px!important;
+    width:100%!important;
+  }
+  #workspace #bOut .lmx-bible-v3-num,
+  #workspace .bible-x-shell.bx-reading-full #bOut .lmx-bible-v3-num,
+  #workspace .bible-x-shell.bx-page-full #bOut .lmx-bible-v3-num,
+  .bible-x-shell.bx-reading-full #bOut .lmx-bible-v3-num,
+  .bible-x-shell.bx-page-full #bOut .lmx-bible-v3-num{
+    position:static!important;
+    left:auto!important;top:auto!important;right:auto!important;
+    display:block!important;
+    width:auto!important;min-width:0!important;max-width:none!important;
+    height:auto!important;min-height:0!important;max-height:none!important;
+    line-height:1.2!important;
+    padding:0!important;margin:0!important;border:0!important;border-radius:4px!important;
+    background:transparent!important;
+    grid-column:1!important;grid-row:1!important;
+  }
+  #workspace #bOut .lmx-bible-v3-text,
+  #workspace .bible-x-shell.bx-reading-full #bOut .lmx-bible-v3-text,
+  #workspace .bible-x-shell.bx-page-full #bOut .lmx-bible-v3-text,
+  .bible-x-shell.bx-reading-full #bOut .lmx-bible-v3-text,
+  .bible-x-shell.bx-page-full #bOut .lmx-bible-v3-text{
+    grid-area:auto!important;
+    grid-column:2!important;grid-row:1!important;
+    width:100%!important;max-width:none!important;min-width:0!important;
+  }
+}
+@media(max-width:760px){
+  /* leitura normal mobile: nº 13.5px ouro opaco */
+  #workspace #bOut .lmx-bible-v3-num{
+    font-size:13.5px!important;font-weight:700!important;color:#eac869!important;
+  }
+  /* tela cheia mobile: nº ainda maior (texto ~25px) */
+  #workspace .bible-x-shell.bx-reading-full #bOut .lmx-bible-v3-num,
+  #workspace .bible-x-shell.bx-page-full #bOut .lmx-bible-v3-num,
+  .bible-x-shell.bx-reading-full #bOut .lmx-bible-v3-num,
+  .bible-x-shell.bx-page-full #bOut .lmx-bible-v3-num{
+    font-size:16px!important;font-weight:700!important;color:#f0d071!important;
+  }
+}
+
+/* ---- Desktop / web (tela cheia do navegador) ---- */
+@media(min-width:761px){
+  #workspace #bOut .lmx-bible-v3-textrow,
+  #workspace .bible-x-shell.bx-reading-full #bOut .lmx-bible-v3-textrow,
+  #workspace .bible-x-shell.bx-page-full #bOut .lmx-bible-v3-textrow,
+  .bible-x-shell.bx-reading-full #bOut .lmx-bible-v3-textrow,
+  .bible-x-shell.bx-page-full #bOut .lmx-bible-v3-textrow{
+    grid-template-columns:auto minmax(0,1fr)!important;
+    gap:5px!important;
+  }
+  #workspace #bOut .lmx-bible-v3-num,
+  #workspace .bible-x-shell.bx-reading-full #bOut .lmx-bible-v3-num,
+  #workspace .bible-x-shell.bx-page-full #bOut .lmx-bible-v3-num,
+  .bible-x-shell.bx-reading-full #bOut .lmx-bible-v3-num,
+  .bible-x-shell.bx-page-full #bOut .lmx-bible-v3-num{
+    position:static!important;
+    left:auto!important;top:auto!important;
+    display:block!important;
+    width:auto!important;min-width:0!important;max-width:none!important;
+    height:auto!important;min-height:0!important;max-height:none!important;
+    line-height:1.2!important;
+    padding:0!important;border:0!important;background:transparent!important;
+    font-size:13px!important;font-weight:700!important;color:#e6c45f!important;
+    grid-column:1!important;grid-row:1!important;
+  }
+  #workspace #bOut .lmx-bible-v3-text,
+  #workspace .bible-x-shell.bx-reading-full #bOut .lmx-bible-v3-text,
+  #workspace .bible-x-shell.bx-page-full #bOut .lmx-bible-v3-text,
+  .bible-x-shell.bx-reading-full #bOut .lmx-bible-v3-text,
+  .bible-x-shell.bx-page-full #bOut .lmx-bible-v3-text{
+    grid-area:auto!important;
+    grid-column:2!important;grid-row:1!important;
+    width:100%!important;max-width:none!important;min-width:0!important;
+  }
+}
+
+/* ============================================================
+   5.4.174 — (2) ESTILOS DAS CATEGORIAS AT/NT
+   Classes novas: bx174-test / bx174-cat / bx174-ic (cabeçalhos)
+   bx174-ltest / bx174-lcat / bx174-lgrid (menu de livros)
+   bx174-vtest / bx174-vcat / bx174-vic (Pesquisa Pro bxV159)
+   bx174-empty (aviso sem resultado)
+   ============================================================ */
+
+/* ---- aviso vazio ---- */
+.bx174-empty{
+  display:flex;align-items:center;justify-content:center;
+  min-height:70px;margin:6px 0;
+  border:1px dashed #33506b;border-radius:10px;
+  color:#7f95a3;font-size:12px;text-align:center;padding:12px;
+}
+
+/* ============ Popup .bxn (barra final cinza — Trocar passagem) ============ */
+/* só a grade de LIVROS (não a .bxn-gridpane de capítulo/versículo) */
+.bxn-books:not(.bxn-gridpane) .bxn-grid{
+  flex:0 0 auto!important;
+  grid-auto-rows:auto!important;
+  grid-template-columns:repeat(auto-fill,minmax(112px,1fr))!important;
+  gap:5px!important;
+}
+.bxn-books:not(.bxn-gridpane) .bxn-bk{
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:flex-start!important;
+  gap:4px!important;
+  min-height:36px!important;
+  line-height:1.15!important;
+  padding:4px 6px!important;
+  font-size:11.5px!important;
+}
+.bxn-books:not(.bxn-gridpane) .bxn-bk > span{white-space:normal!important}
+.bxn-books:not(.bxn-gridpane) .bx174-test{
+  font-size:9.5px!important;font-weight:700!important;
+  letter-spacing:1.1px!important;text-transform:uppercase!important;
+  color:#8fd3dd!important;
+  margin:2px 0 2px!important;
+  padding:2px 0 5px!important;
+  border-bottom:1px solid rgba(143,211,221,.28)!important;
+}
+.bxn-books:not(.bxn-gridpane) .bx174-test:first-child{margin-top:0!important}
+.bxn-books:not(.bxn-gridpane) .bx174-cat{
+  display:flex!important;align-items:center!important;gap:5px!important;
+  color:#e0b96a!important;font-size:11.5px!important;font-weight:600!important;
+  letter-spacing:.3px!important;margin:9px 0 3px!important;
+}
+.bxn-books:not(.bxn-gridpane) .bx174-ic{font-size:12px!important;line-height:1!important}
+
+/* ============ Menu "📖 Livros" (grade .lmx150-books) ============ */
+/* container vira bloco vertical; as grades de livros são as .bx174-lgrid */
+.lmx150-books-grid{display:block!important}
+.bx174-ltest{
+  font-size:10px!important;font-weight:700!important;
+  letter-spacing:1.1px!important;text-transform:uppercase!important;
+  color:#8fd3dd!important;
+  margin:10px 0 2px!important;
+  padding:3px 0 6px!important;
+  border-bottom:1px solid rgba(143,211,221,.3)!important;
+}
+.bx174-lcat{
+  display:flex!important;align-items:center!important;gap:6px!important;
+  color:#e0b96a!important;font-size:12px!important;font-weight:600!important;
+  letter-spacing:.3px!important;margin:11px 0 4px!important;
+}
+.bx174-lgrid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(150px,1fr));
+  gap:7px;
+}
+.lmx150-books-item small{line-height:1.3!important}
+.lmx150-books-item b{font-weight:600!important;line-height:1.25!important}
+@media(max-width:760px){
+  .bx174-lgrid{grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:6px}
+}
+
+/* ============ Pesquisa Pro bxV159 — grade de livros ============ */
+.bx-v159-book-grid .bx174-vtest,
+.bx-v159-book-grid .bx174-vcat{grid-column:1/-1!important}
+.bx-v159-book-grid .bx174-vtest{
+  font-size:8px!important;font-weight:700!important;
+  letter-spacing:1px!important;text-transform:uppercase!important;
+  color:#8fd3dd!important;
+  margin:8px 0 1px!important;
+  padding:2px 0 5px!important;
+  border-bottom:1px solid rgba(143,211,221,.28)!important;
+}
+.bx-v159-book-grid .bx174-vcat{
+  display:flex!important;align-items:center!important;gap:5px!important;
+  color:#e0b96a!important;font-size:9.5px!important;font-weight:600!important;
+  margin:6px 0 1px!important;
+}
+.bx-v159-book-grid .bx174-ic{font-size:12px!important;line-height:1!important}
+/* o nº ordinal da coluna vira o ícone da categoria */
+.bx-v159-book-grid label span.bx174-vic{
+  color:inherit!important;font-size:14px!important;
+  display:flex!important;align-items:center!important;justify-content:center!important;
+}
