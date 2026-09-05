@@ -1,4 +1,4 @@
-﻿*{box-sizing:border-box}
+*{box-sizing:border-box}
 :root{--bg:#05070b;--panel:#0e131d;--panel2:#131b28;--line:#263246;--text:#edf2f7;--muted:#98a6b8;--gold:#d6b25e;--gold2:#f1d48c;--green:#28c7a5;--red:#ef6b78;--blue:#67a8ff}
 html,body{margin:0;min-height:100%;background:var(--bg);color:var(--text);font-family:Inter,Segoe UI,Arial,sans-serif}
 button,input,textarea,select{font:inherit}.app{min-height:100vh}.top{position:sticky;top:0;z-index:30;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 18px;background:rgba(5,7,11,.96);border-bottom:1px solid var(--line);backdrop-filter:blur(12px)}
@@ -16355,26 +16355,24 @@ details.bible-x-import:not([open])>.bx-import-x{display:none}
   .bxn-card .bxn-status{font-size:20px!important;line-height:1.5!important}
 }
 
+
 /* ---- (B) Tela cheia (celular) sem bordas em cima e dos lados ----
-   O full jÃ¡ preenche a tela (5.4.167/5.4.175), mas a coluna de leitura
-   (.bible-x-main -> #bOut/.bible-x-output) ainda chegava com 6px de
-   respiro nas laterais, 10px no topo e raio de canto 14px â€” em modos
-   como o "study" (que o full mobile aplica) isso desenhava uma moldura
-   visÃ­vel em cima e dos lados. Agora, no full do celular, a coluna
-   encosta nas bordas da tela; o respiro do texto continua pelo padding
-   interno do prÃ³prio #bOut. */
+   Passo reforçado: usa seletores com tipo (div/main/body) para vencer
+   os <style> injetados por módulos que entram depois no documento.
+   A coluna de leitura encosta nas bordas; o respiro do texto continua
+   pelo padding interno do próprio #bOut. */
 @media(max-width:900px){
-  .bible-x-shell.bx-reading-full,
-  .bible-x-shell.bx-page-full{
+  body.bx-mobile-app div.bible-x-shell.bx-reading-full,
+  body.bx-mobile-app div.bible-x-shell.bx-page-full{
     padding-top:env(safe-area-inset-top,0px)!important;
   }
-  .bible-x-shell.bx-reading-full .bible-x-main,
-  .bible-x-shell.bx-page-full .bible-x-main{
+  body.bx-mobile-app .bible-x-shell.bx-reading-full main.bible-x-main,
+  body.bx-mobile-app .bible-x-shell.bx-page-full main.bible-x-main{
     padding-left:0!important;
     padding-right:0!important;
   }
-  .bible-x-shell.bx-reading-full #bOut,
-  .bible-x-shell.bx-reading-full .bible-x-output{
+  body.bx-mobile-app .bible-x-shell.bx-reading-full #bOut,
+  body.bx-mobile-app .bible-x-shell.bx-reading-full .bible-x-output{
     margin-left:0!important;
     margin-right:0!important;
     border-radius:0!important;
@@ -16382,12 +16380,19 @@ details.bible-x-import:not([open])>.bx-import-x{display:none}
   }
 }
 /* mesma garantia para o app mobile, independentemente da largura */
-body.bx-mobile-app .bible-x-shell.bx-reading-full .bible-x-main,
-body.bx-mobile-app .bible-x-shell.bx-page-full .bible-x-main{
-  padding-left:0!important;padding-right:0!important;
+body.bx-mobile-app div.bible-x-shell.bx-reading-full,
+body.bx-mobile-app div.bible-x-shell.bx-page-full{
+  padding-top:env(safe-area-inset-top,0px)!important;
+}
+body.bx-mobile-app .bible-x-shell.bx-reading-full main.bible-x-main,
+body.bx-mobile-app .bible-x-shell.bx-page-full main.bible-x-main{
+  padding-left:0!important;
+  padding-right:0!important;
 }
 body.bx-mobile-app .bible-x-shell.bx-reading-full #bOut,
 body.bx-mobile-app .bible-x-shell.bx-reading-full .bible-x-output{
-  margin-left:0!important;margin-right:0!important;
-  border-radius:0!important;max-width:none!important;
+  margin-left:0!important;
+  margin-right:0!important;
+  border-radius:0!important;
+  max-width:none!important;
 }
