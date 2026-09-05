@@ -44,7 +44,7 @@ function playApprovedHomeJourneySound(){ /* 5.4.2 — áudio do flash removido a
 
 function startMobileLoading(){const el=document.getElementById('mobileLoadingBar');if(!el)return;mobileLoadingTimer=setInterval(()=>{mobileLoadingProgress=Math.min(92,mobileLoadingProgress+Math.max(1,(92-mobileLoadingProgress)*.08));el.style.width=mobileLoadingProgress+'%';},120);}
 function finishMobileLoading(){
- return; /* 5.4.163 — sem FX/canvas de abertura (DNA): nada entre o clique e o app pronto. */
+ /* 5.4.183 — jornada luminosa da logo restaurada sem reativar o loading. */
  if(mobileLoadingTimer){clearInterval(mobileLoadingTimer);mobileLoadingTimer=null}
  const el=document.getElementById('mobileLoadingBar');
  if(el)el.style.width='100%';
@@ -53,7 +53,8 @@ function finishMobileLoading(){
  setTimeout(()=>{
    const splash=document.getElementById('mobileLoading');
    const startHomeFx=()=>{
-     const host=window.matchMedia('(max-width:760px)').matches
+     const isMobileHome=window.matchMedia('(max-width:760px)').matches;
+     const host=isMobileHome
        ? document.querySelector('.mobile-home-piece.mobile-home-hero')
        : document.querySelector('.reference-body-wrap.desktop-reference-home');
      if(!host || host.querySelector('.dna-canvas-fx-427')) return;
@@ -63,8 +64,10 @@ function finishMobileLoading(){
 
      const canvas=document.createElement('canvas');
      canvas.className='dna-canvas-fx-427';
-     canvas.width=1313;
-     canvas.height=946;
+     /* A arte mobile é um recorte 1001x712, não uma miniatura da 1313x946.
+        O tamanho nativo mantém as mesmas coordenadas sobre DNA, K7 e Bíblia. */
+     canvas.width=isMobileHome?1001:1313;
+     canvas.height=isMobileHome?712:946;
      canvas.setAttribute('aria-hidden','true');
      host.appendChild(canvas);
 
@@ -79,9 +82,9 @@ function finishMobileLoading(){
      const s=parseRgb('--theme-secondary-rgb',[226,171,54]);
      const rgba=(rgb,a)=>`rgba(${rgb[0]},${rgb[1]},${rgb[2]},${a})`;
 
-     const W=1313,H=946;
+     const W=canvas.width,H=canvas.height;
      const start=performance.now();
-     const duration=4000; /* fluxo aprovado sincronizado em ~4 segundos */
+     const duration=5200; /* acompanha o ritmo cinematográfico dos vídeos (~5 s) */
 
      const bez=(a,b,c,d,t)=>{
        const u=1-t;
@@ -295,6 +298,31 @@ function finishMobileLoading(){
        [{x:233,y:328},{x:241,y:331},{x:247,y:333},{x:249,y:336}]
      ];
 
+     /* A energia abre-se pelas três fitas douradas da arte. O pequeno atraso
+        entre elas evita um clarão chapado e conserva uma ponta principal. */
+     const ribbonBundle=[
+       {path:ribbon1,delay:0,gain:.72},
+       {path:ribbon2,delay:.045,gain:.82},
+       {path:ribbon3,delay:.09,gain:1}
+     ];
+     const drawRibbonBundle=(progress,intensity,reverse=false)=>{
+       ribbonBundle.forEach((item,index)=>{
+         const delay=reverse?(ribbonBundle.length-1-index)*.045:item.delay;
+         const u=Math.max(0,Math.min(1,(progress-delay)/(1-delay)));
+         if(u<=0)return;
+         const boost=.80+.20*Math.sin(Math.PI*Math.min(1,u*1.6));
+         drawRibbonTrail(item.path,u,s,intensity*item.gain,reverse,boost);
+       });
+     };
+
+     /* Percurso interno: entra pela base da K7, toca as duas bobinas e volta
+        à mesma abertura, mantendo a sensação de uma única corrente de luz. */
+     const k7Inside=[
+       [{x:210,y:240},{x:214,y:222},{x:224,y:205},{x:221,y:196}],
+       [{x:221,y:196},{x:198,y:181},{x:163,y:178},{x:138,y:185}],
+       [{x:138,y:185},{x:153,y:207},{x:184,y:225},{x:210,y:240}]
+     ];
+
      const drawK7=(u)=>{
        if(u<=0||u>=1)return;
        const e=Math.sin(Math.PI*u);
@@ -419,107 +447,142 @@ function finishMobileLoading(){
      };
 
      const frame=(now)=>{
-       const t=(now-start)/duration;
+       const elapsedT=(now-start)/duration;
+       /* Conserva o último clarão desenhado enquanto o Canvas desvanece. */
+       const t=Math.min(.999,elapsedT);
        ctx.clearRect(0,0,W,H);
        ctx.globalCompositeOperation='lighter';
 
-       // 1 — DESCE PELA LOGO DO DNA (fita verde + dourada), em velocidade uniforme.
-       const dnaT=Math.min(1,Math.max(0,t/.20));
-       if(t<.20){
+       // 1 — duas pontas descem pelas duas pétalas reais do DNA.
+       const dnaT=Math.min(1,Math.max(0,t/.23));
+       if(t<.23){
          const pulse=.24+.46*Math.sin(Math.PI*Math.min(1,dnaT));
          softEllipse(430,205,190,190,p,pulse*.24);
          softEllipse(430,205,180,185,s,pulse*.18);
-         drawTravel(green,Math.min(1,dnaT*1.05),p,1.0);
-         drawTravel(gold,Math.min(1,Math.max(0,dnaT-.05)*1.10),s,1.0);
+         drawTravel(green,Math.min(1,dnaT*1.04),p,1.0);
+         drawTravel(gold,Math.min(1,Math.max(0,dnaT-.035)*1.075),s,1.0);
        }
-       if(t>.035 && t<.20){
-         const u=(t-.035)/.165;
+       if(t>.04 && t<.23){
+         const u=(t-.04)/.19;
          drawTravel(green,Math.min(1,u),p,.62);
          drawTravel(gold,Math.min(1,u),s,.62);
        }
 
-       // DNA -> FUSÃO: os dois flashes que desceram o DNA tornam-se UM único
-       // brilho dourado no ponto de encontro, pronto para percorrer a fita.
-       if(t>.15 && t<.24){
-         const u=(t-.15)/.09;
+       // 2 — as duas luzes fundem-se no pé do DNA antes das fitas douradas.
+       if(t>.17 && t<.28){
+         const u=(t-.17)/.11;
          const e=Math.sin(Math.PI*u);
-         // halo dourado que cresce envolvendo o ponto de encontro
          softEllipse(430,372,72+26*e,48+18*e,s,e*.38);
-         // os DOIS flashes convergem para o centro — viram um
          const spread=(1-e)*16;
          glowDot(430-spread,372,16+10*e,s,e*.85);
          glowDot(430+spread,372,16+10*e,s,e*.85);
-         // núcleo único dourado
          glowDot(430,372,26+14*e,s,e);
          glowDot(430,372,14+9*e,s,e*1.15);
        }
-       // a luz única desliza do ponto de encontro ao braço esquerdo da fita.
-       if(t>.19 && t<.245){
-         const u=(t-.19)/.055;
+       if(t>.22 && t<.29){
+         const u=(t-.22)/.07;
          drawConnector(u,{x:430,y:373},{x:436,y:352},{x:440,y:330},{x:442,y:310},s,.95);
        }
 
-       // 2 — IDA pela fita que sai de baixo, COM SIMETRIA E PROPRIEDADE:
-       //     a luz única percorre devagar a fita dourada inferior até a K7.
-       if(t>.21 && t<.46){
-         const u=(t-.21)/.25;
+       // 3 — a energia abre-se e percorre as três fitas douradas até a K7.
+       if(t>.24 && t<.48){
+         const u=(t-.24)/.24;
          const sm=u*u*(3-2*u);
-         const prog=Math.min(1,sm*1.04);
-         const boost=.78+.22*Math.sin(Math.PI*Math.min(1,prog*1.7));
-         drawRibbonTrail(ribbon3,prog,s,.96,false,boost);
+         drawRibbonBundle(Math.min(1,sm*1.035),.98,false);
        }
 
-       // 3 — adentra POR DEBAIXO: da base da haste (249,336) mergulha e entra
-       //     pela base da K7 (210,240), que acende por dentro logo em seguida.
-       if(t>.44 && t<.52){
-         const u=(t-.44)/.08;
-         // 5.4.15 — mergulho alinhado ao ouro: desce o fim da ribbon3 (base da
-         // haste) e entra na K7 PELA BASE, tocando o dourado — sem teleporte.
+       // 4 — as três fitas convergem e a ponta mergulha pela base da K7.
+       if(t>.445 && t<.545){
+         const u=(t-.445)/.10;
+         drawConnector(u,{x:252,y:250},{x:238,y:248},{x:224,y:243},{x:210,y:240},s,.66);
+         drawConnector(u,{x:237,y:273},{x:230,y:260},{x:218,y:247},{x:210,y:240},s,.74);
          drawConnector(u,{x:249,y:336},{x:234,y:308},{x:219,y:266},{x:210,y:240},s,.98);
        }
 
-       // 4 — K7 acende por dentro, de forma elegante (pulso único e suave).
-      drawK7((t-.50)/.24);
-      if(t>.50 && t<.74){
-        const u=(t-.50)/.24;
-        const e=.82+.18*Math.sin(Math.PI*u);
-        glowDot(138,185,42,s,e);
-        glowDot(221,196,42,s,e);
-        softEllipse(180,205,124,70,s,.30+.10*Math.sin(Math.PI*u));
-      }
+       // 5 — a corrente entra, percorre o interior e acende as duas bobinas.
+       drawK7((t-.50)/.21);
+       if(t>.50 && t<.71){
+         const u=(t-.50)/.21;
+         const sm=u*u*(3-2*u);
+         const e=.78+.22*Math.sin(Math.PI*u);
+         drawTravel(k7Inside,Math.min(.999,sm),s,.82);
+         glowDot(138,185,38,s,e*(.72+.28*Math.sin(Math.PI*Math.min(1,u*1.8))));
+         glowDot(221,196,38,s,e*(.72+.28*Math.sin(Math.PI*Math.min(1,(u+.22)*1.6))));
+         softEllipse(180,205,128,73,s,.28+.14*Math.sin(Math.PI*u));
+         softEllipse(180,205,102,58,p,.10+.08*Math.sin(Math.PI*u));
+       }
 
-      // 5 — (5.4.155) SEM o vai-e-volta pela fita dourada: a luz NÃO refaz o
-      //     caminho de volta. Depois de acesa, a K7 sustenta o brilho enquanto
-      //     UM único fio contínuo desce dela direto ao miolo do livro aberto —
-      //     um só sentido, ritmo uniforme (pedido: efeito mais elegante).
-      if(t>.64 && t<.90){
-        const u=(t-.64)/.26;
-        const sm=u*u*(3-2*u);
-        const e=Math.sin(Math.PI*Math.min(1,sm*1.10));
-        const K0={x:198,y:236},K1={x:258,y:330},K2={x:330,y:404},K3={x:438,y:445};
-        for(let k=0;k<20;k++){
-          const tt=Math.max(0,sm-k*.020);
-          const q=bez(K0,K1,K2,K3,Math.min(1,tt));
-          glowDot(q.x,q.y,15-k*.42,s,e*(1-k/22));
-        }
-        const q=bez(K0,K1,K2,K3,Math.min(1,sm));
-        glowDot(q.x,q.y,28,s,e);
-        glowDot(q.x,q.y,46,s,e*.30);
-      }
+       // 6 — sai pela mesma abertura inferior, sem salto visual.
+       if(t>.675 && t<.75){
+         const u=(t-.675)/.075;
+         drawConnector(u,{x:210,y:240},{x:219,y:266},{x:234,y:308},{x:249,y:336},s,.98);
+         drawConnector(u,{x:210,y:240},{x:218,y:247},{x:230,y:260},{x:237,y:273},s,.64);
+         drawConnector(u,{x:210,y:240},{x:224,y:243},{x:238,y:248},{x:252,y:250},s,.56);
+       }
 
-      // 6 — Bíblia: clímax final, ênfase sustentada (sem voltar à fita).
-      drawBible((t-.84)/.16);
-      if(t>.88 && t<1){
-        const u=(t-.88)/.12;
-        const e=Math.min(1,u/.22);
-        softEllipse(443,438,170,98,s,e*.60);
-        softEllipse(443,438,120,66,p,e*.34);
-        glowDot(443,438,90,s,e);
-        glowDot(443,438,54,s,e*1.18);
-        glowDot(443,438,26,p,e*.88);
-      }
+       // 7 — retorno pelas fitas douradas em sentido inverso.
+       if(t>.72 && t<.885){
+         const u=(t-.72)/.165;
+         const sm=u*u*(3-2*u);
+         drawRibbonBundle(Math.min(1,sm*1.035),.94,true);
+       }
 
-      if(t<1){
+       // 8 — as trilhas tornam-se uma só e descem ao centro da Bíblia aberta.
+       if(t>.845 && t<.925){
+         const u=(t-.845)/.08;
+         const e=Math.sin(Math.PI*u);
+         softEllipse(436,322,50+24*e,34+16*e,s,e*.32);
+         glowDot(436,322,24+12*e,s,e*.92);
+       }
+       if(t>.875 && t<.955){
+         const u=(t-.875)/.08;
+         const sm=u*u*(3-2*u);
+         const e=Math.sin(Math.PI*Math.min(1,sm*1.08));
+         const K0={x:436,y:322},K1={x:440,y:356},K2={x:440,y:414},K3={x:443,y:438};
+         for(let k=0;k<18;k++){
+           const tt=Math.max(0,sm-k*.022);
+           const q=bez(K0,K1,K2,K3,Math.min(1,tt));
+           glowDot(q.x,q.y,16-k*.45,s,e*(1-k/20));
+         }
+         const q=bez(K0,K1,K2,K3,Math.min(1,sm));
+         glowDot(q.x,q.y,30,s,e);
+         glowDot(q.x,q.y,48,s,e*.28);
+       }
+
+       // 9 — último flash no miolo da Bíblia: maior, quente e concentrado.
+       drawBible((t-.90)/.10);
+       if(t>.925 && t<1){
+         const u=(t-.925)/.075;
+         const attack=Math.min(1,u/.24);
+         const snap=Math.exp(-Math.pow((u-.30)/.13,2));
+         const hold=attack*(.94+.06*Math.sin(u*Math.PI*5));
+         softEllipse(443,438,226,120,s,Math.min(.86,hold*.58+snap*.28));
+         softEllipse(443,438,154,80,p,Math.min(.62,hold*.32+snap*.22));
+         glowDot(443,438,112,s,Math.min(1,hold*.88+snap*.35));
+         glowDot(443,438,64,s,Math.min(1,hold+snap*.48));
+         glowDot(443,438,30,p,Math.min(1,hold*.82+snap*.55));
+
+         // flare horizontal no vinco das páginas; não cria faixa vertical.
+         ctx.save();
+         const flare=ctx.createLinearGradient(270,438,616,438);
+         flare.addColorStop(0,rgba(s,0));
+         flare.addColorStop(.43,rgba(s,hold*.20));
+         flare.addColorStop(.50,`rgba(255,255,255,${Math.min(.94,hold*.56+snap*.34)})`);
+         flare.addColorStop(.57,rgba(s,hold*.20));
+         flare.addColorStop(1,rgba(s,0));
+         ctx.fillStyle=flare;
+         ctx.fillRect(270,436.5,346,3);
+         ctx.restore();
+
+         for(let i=0;i<10;i++){
+           const a=(i/10)*Math.PI*2;
+           const orbit=54+(i%3)*18;
+           const twinkle=hold*(.22+.20*Math.max(0,Math.sin(u*22+i*1.7)));
+           glowDot(443+Math.cos(a)*orbit,438+Math.sin(a)*orbit*.42,4+(i%3),i%2?p:s,twinkle);
+         }
+       }
+
+      if(elapsedT<1){
          requestAnimationFrame(frame);
        }else{
          canvas.classList.add('is-ending');
@@ -8420,7 +8483,7 @@ window.addEventListener("DOMContentLoaded",async()=>{
    render("dashboard");
    refreshSystemSummary();
    // V10.1 — restaura EXATAMENTE o fluxo aprovado do arquivo de comparação:
-   // DNA -> 3 fitas -> K7/bobinas -> retorno -> DNA -> Bíblia -> flash final (~4s).
+   // DNA -> 3 fitas -> K7/bobinas -> retorno -> DNA -> Bíblia -> flash final (~5,2 s).
    // O loading continua removido; finishMobileLoading() aqui serve somente para disparar
    // o canvas legado aprovado, que já trata a ausência do splash.
    finishMobileLoading();
