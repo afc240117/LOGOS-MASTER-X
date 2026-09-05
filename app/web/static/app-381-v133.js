@@ -9328,6 +9328,43 @@ window.BibliaXLocal = window.BibliaXLocal || {
   setTimeout(sync,100);
 })();
 
+/* ============================================================
+   5.4.199 — TECLADO na TELA CHEIA do PC (leitura full):
+   rolagem com as SETAS ↑/↓, PAGE DOWN/UP e ESPAÇO (página em
+   página; Shift+Espaço volta) e HOME/END (início/fim do capítulo).
+   No full quem rola é o shell .bible-x-shell.bx-reading-full (o
+   corpo não rola), então as teclas nativas não fazem nada sem este
+   handler. Só age enquanto o full da LEITURA estiver aberto e o
+   foco não estiver em campo/controle; Espaço NÃO captura quando um
+   botão/link está focado (deixa o controle agir). Auto (não smooth)
+   em setas/páginas p/ acompanhar a tecla segurada. ============ */
+(function(){
+  const isEditable=function(t){
+    if(!t||!t.tagName)return false;
+    const tag=t.tagName.toLowerCase();
+    return tag==="input"||tag==="textarea"||tag==="select"||t.isContentEditable===true;
+  };
+  const fullShell=function(){return document.querySelector(".bible-x-shell.bx-reading-full")||null};
+  document.addEventListener("keydown",function(e){
+    try{
+      if(e.ctrlKey||e.metaKey||e.altKey)return;
+      const shell=fullShell();
+      if(!shell)return;
+      if(isEditable(e.target))return;
+      const key=e.key;
+      const page=Math.max(140,Math.round((shell.clientHeight||900)*0.92));
+      const step=Math.max(48,Math.round((shell.clientHeight||900)*0.06));
+      if(key==="ArrowDown"){e.preventDefault();shell.scrollBy({top:step,left:0,behavior:"auto"});return}
+      if(key==="ArrowUp"){e.preventDefault();shell.scrollBy({top:-step,left:0,behavior:"auto"});return}
+      if(key==="PageDown"){e.preventDefault();shell.scrollBy({top:page,left:0,behavior:"auto"});return}
+      if(key==="PageUp"){e.preventDefault();shell.scrollBy({top:-page,left:0,behavior:"auto"});return}
+      if(key===" "){const t=e.target;if(t&&t.closest&&t.closest("button,a,label,[role=button]"))return;e.preventDefault();shell.scrollBy({top:e.shiftKey?-page:page,left:0,behavior:"auto"});return}
+      if(key==="Home"){e.preventDefault();shell.scrollTo({top:0});return}
+      if(key==="End"){e.preventDefault();shell.scrollTo({top:shell.scrollHeight});return}
+    }catch(_){/* nunca derruba o app */}
+  });
+})();
+
 
 /* Bíblia X — páginas exclusivas, zoom por página e tela cheia universal */
 (()=>{
@@ -14555,6 +14592,9 @@ window.BibleXPolimento=Object.assign(window.BibleXPolimento||{},{lote528:"concor
         R("👈👉","Deslize para o lado também troca de capítulo aqui na tela cheia.")
       ]:[
         R("⌨️","Pressione <b>Esc</b> (ou <b>✕ Sair</b> na barra) para voltar à leitura."),
+        R("⬆️⬇️","<b>Setas ↑ ↓</b> rolam o texto na vertical."),
+        R("⏭️","<b>Page Down</b> / <b>Page Up</b> (ou <b>Espaço</b>) rolam de <b>página em página</b>."),
+        R("🏠","<b>Home</b> / <b>End</b> saltam ao <b>início</b> ou ao <b>fim</b> do capítulo."),
         R("🕹️","Os botões da barra agem sobre o versículo atual; <b>⚙️</b> escolhe quais aparecem.")
       ]},
     modos:{mark:"🎛️",eyebrow:"BÍBLIA X",title:"Modos",rows:ph=>ph?[
