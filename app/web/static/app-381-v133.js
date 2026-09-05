@@ -10289,6 +10289,22 @@ VIEW_TITLE["leitura"]="📖 Personalizar leitura";
 let _drawerView="menu";
 let bxMedia={q:"",kind:"image",items:[]};
 function drawerOpen(view){
+  /* 5.4.178 — Painéis "abre por cima": o drawer (z 100020) nascia POR BAIXO
+     do leque "＋" (.bx-v157-more-panel, z 100500) e dos leques de versículo,
+     que continuavam abertos em cima do painel. Ao abrir qualquer painel,
+     fecha esses leques para o drawer aparecer na frente (pedido do usuário). */
+  try{
+    const mp=document.querySelector("[data-v157-more-panel]");
+    if(mp&&!mp.hidden){mp.hidden=true}
+    const mb=document.querySelector("[data-v157-more]");
+    if(mb)mb.classList.remove("active");
+    document.querySelectorAll(".lmx-bible-v3-extra:not([hidden])").forEach(el=>el.setAttribute("hidden",""));
+    document.querySelectorAll(".lmx-bible-v3-verse .lmx-bible-v3-more").forEach(b=>{if(b.textContent!=="＋")b.textContent="＋"});
+    const mf=document.getElementById("bxV170ModeFan");
+    if(mf&&!mf.hidden){mf.hidden=true}
+    const pb=document.querySelector('[data-bxm="pages"]');
+    if(pb)pb.classList.remove("active");
+  }catch(e){}
   /* 5.4.109 — TOGGLE: se o drawer já está aberto na MESMA view, o clique
      fechava (pedido do usuário: "1º clique abre, 2º clique no botão fecha").
      Voltar de uma subview para o menu segue funcionando (view diferente). */
