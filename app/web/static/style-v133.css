@@ -16427,3 +16427,17 @@ body.bx-mobile-app .bible-x-shell.bx-reading-full .bible-x-output{
   margin-right:0!important;
   border-radius:0!important;
 }
+
+/* 5.4.178b — remove também o respiro lateral dos wrappers no full
+   (.bible-x-central/.bible-x-section), senão o #bOut ainda fica a 50px
+   da borda no PC. O conforto do texto fica no padding interno do #bOut. */
+.bible-x-shell.bx-reading-full .bible-x-central,
+.bible-x-shell.bx-reading-full .bible-x-section{
+  padding-left:0!important;
+  padding-right:0!important;
+}
+.bible-x-shell.bx-page-full .bible-x-central,
+.bible-x-shell.bx-page-full .bible-x-section{
+  padding-left:0!important;
+  padding-right:0!important;
+}
