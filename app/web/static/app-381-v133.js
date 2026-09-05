@@ -84,7 +84,8 @@ function finishMobileLoading(){
 
      const W=canvas.width,H=canvas.height;
      const start=performance.now();
-     const duration=6800; /* somente a etapa Bíblia→flash existente→DNA foi inserida; demais tempos preservados */
+     const duration=2400; /* ACELERADO a pedido do usuário (era 6800, depois 4800): efeito flash DNA→Bíblia→K7 agora ~50% do tempo — o relógio comprime a coreografia inteira; o fim chega e o canvas dá fade-out. */
+     const DESIGN=6800; /* duração de desenho original — o relógio abaixo comprime 6800→duration preservando a coreografia. */
 
      const bez=(a,b,c,d,t)=>{
        const u=1-t;
@@ -459,8 +460,24 @@ function finishMobileLoading(){
      };
 
      const frame=(now)=>{
-       const elapsedMs=now-start;
-       const elapsedT=Math.min(.999,elapsedMs/duration);
+      /* Relógio não-linear a pedido do usuário: além da compressão geral
+         (DESIGN/duration), duas janelas de CÂMERA LENTA esticam só o trecho
+         DENTRO da fita K7 (elapsedMs 4200..5292, fase 5 — ~3× mais lento) e a
+         VOLTA até o flash na Bíblia (elapsedMs 5344..6410, retorno+descida —
+         ~2×). O flash final (elapsedMs 6410..DESIGN) e tudo antes da fase 5
+         mantêm a velocidade atual ("para brilhar como está"). Inversa por
+         partes E→elapsedMs: fora das janelas inclinação 1 (duração de sempre);
+         dentro, 1/3 e 1/2. Total sobe para ~3,5s. */
+      const _slowV=(E)=>{
+        if(E<4200)return E;                          /* antes da fita — igual */
+        if(E<7476)return 4200+(E-4200)/3;            /* dentro da fita — ~3× */
+        if(E<7528)return 5292+(E-7476);              /* transição curta 1:1 */
+        if(E<9660)return 5344+(E-7528)/2;            /* volta + aproximação — ~2× */
+        if(E<10050)return 6410+(E-9660);             /* cola no flash — 1:1 */
+        return 6800+(E-10050);                       /* flash final mantém o tempo */
+      };
+      const elapsedMs=_slowV((now-start)*(DESIGN/duration)); /* relógio comprimido com as 2 desacelerações */
+      const elapsedT=elapsedMs/DESIGN; /* sem teto .999 — o fim chega e o canvas dá fade-out (apaga o flash da Bíblia) */
        const dnaDuration=1196;
        const preludeDuration=1600;
        const inPrelude=elapsedMs>=dnaDuration && elapsedMs<dnaDuration+preludeDuration;
@@ -2236,7 +2253,7 @@ function maybeBibleQuickGuide(){
   const row=(ico,txt)=>`<li><span class="bxq-ico">${ico}</span><span>${txt}</span></li>`;
   const tips=isPhone?[
     row("👈👉","Deslize o dedo: <b>esquerda</b> = próximo capítulo &nbsp;•&nbsp; <b>direita</b> = capítulo anterior"),
-    row("⚡","Dois <b>toques rápidos</b> no texto entram na <b>tela cheia</b>; mais dois toques rápidos voltam à leitura."),
+    row("⚡","Dois <b>toques rápidos</b> no texto <b>entram</b> na tela cheia; para sair, <b>três</b> toques rápidos (evita sair sem querer)."),
     row("🕹️","Na barra de baixo: <b>🏠 Home</b>, <b>▦ Módulos</b> (grade), <b>☰ Painéis</b>, <b>📥 Importar</b> e <b>🎛️ Modos</b>.")
   ]:[
     row("⌨️","Atalhos: <b>N</b> próximo capítulo &nbsp;•&nbsp; <b>P</b> capítulo anterior &nbsp;•&nbsp; <b>F</b> foco de leitura"),
@@ -6964,11 +6981,30 @@ Gerado em ${new Date().toLocaleString("pt-BR")}
       return null;
     };
     const setRailStyle=(prop,val)=>{try{railEl.style.setProperty(prop,val,"important")}catch(_){}};
+    /* 5.4.196 — No PC web em LEITURA NORMAL (fora do full) o trilho lateral é
+       ancorado pela BASE (⚙️/✕) em vez de pelo centro vertical. Assim, ao ligar
+       botões no ⚙️ a pilha CRESCE PARA CIMA e a base não afunda na direção do
+       scroll amarelo. Aqui a mesma regra vale quando existe posição salva de
+       arrasto antigo: converte o 'top:y' salvo em âncora pela base. */
+    const desktopNormalRail=()=>{
+      try{return (window.matchMedia&&window.matchMedia("(min-width:761px)").matches)&&
+        !document.body.classList.contains("lmx-bx-full")&&
+        !document.querySelector(".bible-x-shell.bx-reading-full, .bible-x-shell.bx-page-full");}catch(_){return false;}
+    };
     const applyRailPos=pos=>{
       if(!pos)return;
       const vw=innerWidth,vh=innerHeight;
       const y=Math.max(4,Math.min(vh-56,Math.round(pos.y)));
-      setRailStyle("top",`${y}px`);setRailStyle("transform","none");
+      if(desktopNormalRail()){
+        /* âncora na BASE: a base (pé do trilho) fica onde o usuário a guardou
+           e o trilho cresce para cima ao ganhar botões */
+        const h=railEl.offsetHeight||380;
+        setRailStyle("top","auto");
+        setRailStyle("bottom",`${Math.max(4,Math.round(vh-y-h))}px`);
+        setRailStyle("transform","none");
+      }else{
+        setRailStyle("top",`${y}px`);setRailStyle("transform","none");
+      }
       if(pos.side==="left"){
         const x=Math.max(4,Math.min(vw-56,Math.round(pos.x)));
         setRailStyle("left",`${x}px`);setRailStyle("right","auto");
@@ -7010,12 +7046,28 @@ Gerado em ${new Date().toLocaleString("pt-BR")}
      5.4.89 — Para agrupar com os chips "RÁPIDO" (uma linha só, menores/discretos),
      o layers é movido para DENTRO do .bx-v159-quick. */
   const searchRow=document.querySelector(".bible-x-search-row.bx-v159-search");
-  const quickRow=(searchRow&&searchRow.querySelector(".bx-v159-quick"))||searchRow;
+  /* 5.4.193 — os Modos (.bx-v170-layers) só ganham estilo de CHIP dentro de um
+     .bx-v159-quick. Em TELA CHEIA a quick é movida para a .bible-x-top-actions
+     (5.4.102), então procurá-la só DENTRO da search-row retornava null e o layers
+     novo era anexado SOLTO na search-row — ao sair do full esse clone ficava com os
+     botões Modo BRANCOS (padrão do navegador) e encavalados junto dos chips.
+     Agora miramos a .bx-v159-quick VIVA onde ela estiver e removemos cópias órfãs. */
+  const _liveQ=document.querySelector(".bx-v159-quick");
+  const quickRow=(_liveQ&&_liveQ.isConnected)?_liveQ:((searchRow&&searchRow.querySelector(".bx-v159-quick"))||searchRow);
   let layersEl=out.querySelector("[data-v170-layers]")||document.querySelector(".bx-v170-layers");
   if(layersEl&&quickRow&&layersEl.parentElement!==quickRow){
     const other=quickRow.querySelector(".bx-v170-layers");
     if(other&&other!==layersEl)other.remove();
     try{quickRow.appendChild(layersEl)}catch(_){}
+  }
+  /* auto-cura: apaga qualquer .bx-v170-layers que tenha sobrado FORA de uma quick
+     (clone branco deixado por troca de passagem em tela cheia em versões antigas) */
+  if(layersEl){
+    document.querySelectorAll(".bx-v170-layers").forEach(function(_x){
+      if(_x===layersEl)return;
+      if(_x.closest(".bx-v159-quick"))return;
+      try{_x.remove()}catch(_){}
+    });
   }
   const morePanelRoot=out.querySelector("[data-v157-more-panel]");
   /* 5.4.108 — FIX: o morePanel é recriado no innerHTML a cada render. Se já
@@ -7311,6 +7363,10 @@ Gerado em ${new Date().toLocaleString("pt-BR")}
       current=rr;if($("#bRef"))$("#bRef").value=ref;renderBibleVerses(rr);
       if(window.__bxChapterLoading)window.__bxChapterLoading.hide();
       if(window.matchMedia("(max-width:760px)").matches){const v0=document.querySelector("#bOut .lmx-bible-v3-verse");if(v0)v0.scrollIntoView({block:"start"})}
+      /* RENDER-FIX — troca de capítulo pelo ⏮/⏭ do trilho/barra em TELA CHEIA no PC:
+         subir ao INÍCIO da passagem (no full o container de scroll é o próprio
+         .bible-x-shell). Re-sets 90/360ms cobrem a renderização. */
+      if(!window.matchMedia("(max-width:760px)").matches){const _fs=document.querySelector(".bible-x-shell.bx-reading-full,.bible-x-shell.bx-page-full");if(_fs){const _up=()=>{_fs.scrollTop=0};_up();setTimeout(_up,90);setTimeout(_up,360);}}
     }).catch(()=>{window.__bxChapterLoading&&window.__bxChapterLoading.hide();bxV157Toast('Não foi possível abrir o capítulo')});
   };
   document.querySelectorAll('.bx-v157-rail [data-bx-extra]').forEach(b=>{
@@ -7513,6 +7569,12 @@ const smartBibleRef=async(q)=>{try{return await apiBibleRef(q)}catch(e){const lo
        bxV158SyncVisibleVerse(current);if($("#bChapterTitle"))$("#bChapterTitle").textContent=current.length===1?current[0].ref:`${current[0].book} ${current[0].chapter}`;
      }
      renderBibleVerses(current);
+      /* RENDER-FIX — Falha C: ao trocar/abrir capítulo estando em TELA CHEIA, subir
+         ao INÍCIO da passagem. No full o container de scroll é o próprio
+         .bible-x-shell (overflow:auto), NÃO o #bOut (o reset mobile MR acima só
+         vale ≤760px). Re-sets 90/360ms cobrem a renderização. */
+      const _bxShR=document.querySelector(".bible-x-shell.bx-reading-full,.bible-x-shell.bx-page-full");
+      if(_bxShR){const _upR=()=>{_bxShR.scrollTop=0};_upR();setTimeout(_upR,90);setTimeout(_upR,360);}
      if(window.__bxChapterLoading)window.__bxChapterLoading.hide();
    }catch(e){
      current=[];
@@ -14159,7 +14221,12 @@ window.BibleXPolimento=Object.assign(window.BibleXPolimento||{},{lote528:"concor
       else if (d <= 56) want = true;                     /* fim do texto: mostra */
       else if (d > 150) want = false;                    /* longe do fim: esconde */
       else want = railShown;                             /* 56..150: segura o estado atual (anti-pisca) */
-      if (want !== railShown) { railShown = want; if (want) showRail(); else hideRail(); }
+      /* 5.4.195 — grava SEMPRE (idempotente): sem o showRail() inicial do tmpUntil,
+         railShown nascia false e este if (want !== railShown) nunca chamava hideRail(),
+         deixando a barra visível POR PADRÃO do CSS no meio do texto do PC. Agora o
+         estado é escrito a cada compute, e a barra do PC nasce escondida (5.4.186). */
+      railShown = want;
+      if (want) showRail(); else hideRail();
       /* 5.4.169 — o padding do fim do texto agora é FIXO (CSS), aplicado só quando há
          tela cheia. Antes este compute alternava 90px↔6px inline no #bOut: isso mudava
          o scrollHeight na fronteira do fim e fazia a barra PISCAR a cada frame. */
@@ -14177,21 +14244,16 @@ window.BibleXPolimento=Object.assign(window.BibleXPolimento||{},{lote528:"concor
       var now = isFull();
       if (now !== wasFull) {
         wasFull = now;
-        if (now) { tmpUntil = Date.now() + 4400; } else { tmpUntil = 0; } /* 5.4.173 — 2.2s→4.4s ao entrar no full */
+        /* 5.4.195 — o revelar de 4,4s ao entrar no full é SÓ do celular (5.4.173).
+           No PC web a barra de baixo nasce escondida e aparece somente ao chegar
+           no fim do texto (5.4.186) — sem flash no início. */
+        if (now) { tmpUntil = MOBILE ? (Date.now() + 4400) : 0; } else { tmpUntil = 0; }
       }
       compute();
     }, 350);
-    if (!MOBILE) {
-      /* 5.4.185 — PC: o mouse chegando perto da borda de baixo revela a barra
-         da tela cheia (análogo do "dedo na base" do celular). Fica ~2,5s depois
-         que o mouse sai, a menos que o texto já esteja no fim. */
-      window.addEventListener('pointermove', function (e) {
-        if (!isFull()) return;
-        if (e.clientY >= window.innerHeight - 96) {
-          if (tmpUntil < Date.now() + 2500) { tmpUntil = Date.now() + 2500; compute(); }
-        }
-      }, { passive: true });
-    }
+    /* 5.4.195 — (sem o pointermove do PC): a revelação por "mouse perto da base"
+       era do 5.4.185 e fazia a barra aparecer no meio da leitura no PC. O PC agora
+       mostra a barra SÓ no fim do texto; o celular segue com dedo na base (bx-v157-touch). */
 
     /* ---------- (b) ⚙️ escolher quais botões aparecem ---------- */
     /* 5.4.171 — catálogo GRANDE (agrupado no painel ⚙️) SEM limite de
@@ -14403,15 +14465,17 @@ window.BibleXPolimento=Object.assign(window.BibleXPolimento||{},{lote528:"concor
 })();
 
 /* =============================================================
-   5.4.169 — DOIS TOQUES rápidos sobre o texto da Bíblia:
-   entra na tela cheia; dois toques de novo, sai da tela cheia.
+   5.4.197 — TOQUES no texto da Bíblia (assimétricos, celular):
+   DOIS toques rápidos ENTRAM na tela cheia; TRÊS toques rápidos
+   SAEM — dois em full não saem mais (evita sair sem querer).
    Só em aparelhos de toque e só sobre o texto dos versículos
    (não atrapalha botões, inputs nem o duplo-clique do desktop).
    ============================================================= */
 (function () {
   try {
     if (!('ontouchstart' in window)) return;
-    var lastT = 0, lastX = 0, lastY = 0;
+    var tapCount = 0, lastT = 0, lastX = 0, lastY = 0;
+    var GAP = 320, RAD = 96;
     function isFull() { return !!document.querySelector('.bible-x-shell.bx-reading-full, .bible-x-shell.bx-page-full'); }
     function exitFull() {
       var rd = document.querySelector('.bible-x-shell.bx-reading-full');
@@ -14433,17 +14497,23 @@ window.BibleXPolimento=Object.assign(window.BibleXPolimento||{},{lote528:"concor
     }
     document.addEventListener('touchend', function (e) {
       var t = e.target;
-      if (!insideVerse(t)) { lastT = 0; return; }
+      if (!insideVerse(t)) { tapCount = 0; lastT = 0; return; }
       var ch = e.changedTouches && e.changedTouches[0];
       if (!ch) return;
       var now = Date.now();
-      if (lastT && (now - lastT) <= 300 && Math.abs(ch.clientX - lastX) <= 28 && Math.abs(ch.clientY - lastY) <= 28) {
-        lastT = 0;
-        if (e.cancelable) e.preventDefault();
-        if (isFull()) exitFull(); else enterFull();
-        return;
+      if (lastT && (now - lastT) <= GAP && Math.abs(ch.clientX - lastX) <= RAD && Math.abs(ch.clientY - lastY) <= RAD) {
+        tapCount = tapCount + 1;
+      } else {
+        tapCount = 1;
       }
       lastT = now; lastX = ch.clientX; lastY = ch.clientY;
+      /* entra com 2 toques; em tela cheia precisa de 3 para sair */
+      var need = isFull() ? 3 : 2;
+      if (tapCount >= need) {
+        tapCount = 0; lastT = 0;
+        if (e.cancelable) e.preventDefault();
+        if (isFull()) exitFull(); else enterFull();
+      }
     }, { passive: false });
   } catch (_) {}
 })();
@@ -14462,7 +14532,7 @@ window.BibleXPolimento=Object.assign(window.BibleXPolimento||{},{lote528:"concor
   const TIPS={
     bible:{mark:"📖",eyebrow:"BÍBLIA X",title:"Comandos rápidos",rows:ph=>ph?[
         R("👈👉","Deslize o dedo: <b>esquerda</b> = próximo capítulo &nbsp;•&nbsp; <b>direita</b> = capítulo anterior"),
-        R("⚡","Dois <b>toques rápidos</b> no texto entram na <b>tela cheia</b>; dois toques rápidos voltam à leitura."),
+        R("⚡","Dois <b>toques rápidos</b> no texto <b>entram</b> na tela cheia; para sair, <b>três</b> toques rápidos (evita sair sem querer)."),
         R("🕹️","Na barra de baixo: <b>🏠 Home</b>, <b>▦ Módulos</b>, <b>☰ Painéis</b>, <b>📥 Importar</b> e <b>🎛️ Modos</b>."),
         R("🛠️","Na <b>borda direita</b> há uma <b>aba dourada fina</b>: passe o dedo perto dela (ou toque nela) para abrir as <b>ferramentas de leitura</b>.")
       ]:[
@@ -14471,7 +14541,7 @@ window.BibleXPolimento=Object.assign(window.BibleXPolimento||{},{lote528:"concor
         R("🕹️","A barra do topo troca de módulo; <b>☰ Painéis</b> abre os painéis de estudo e tutoriais.")
       ]},
     full:{mark:"⛶",eyebrow:"BÍBLIA X",title:"Tela cheia",rows:ph=>ph?[
-        R("⚡","Dois <b>toques rápidos</b> no texto <b>saem</b> da tela cheia e voltam à leitura."),
+        R("⚡","<b>Três</b> toques rápidos no texto <b>saem</b> da tela cheia e voltam à leitura."),
         R("⚙️","Toque <b>⚙️</b> para escolher quais botões aparecem na barra; o último, <b>✕ Sair</b>, volta à leitura."),
         R("👈👉","Deslize para o lado também troca de capítulo aqui na tela cheia.")
       ]:[
@@ -14758,4 +14828,57 @@ window.BibleXPolimento=Object.assign(window.BibleXPolimento||{},{lote528:"concor
       return h;
     };
   } catch (e) { /* nunca derruba o app */ }
+})();
+
+/* ============================================================
+   RENDER-FIX — Falha B (watchdog): alguns caminhos antigos de saída do full só
+   removem a classe bx-reading-full e esquecem de devolver a barra rápida
+   (.bx-v159-quick) ao lugar, desfazer o .bx-v159-zoom-card, corrigir ✕/⛶ e
+   limpar window.__bxQuickOrig — deixando a tela "quebrada". Repara SEMPRE que o
+   shell não estiver em full mas sobrar vestígio (à prova de timing) e solta o
+   body.logos-reader-lock se nenhum modo full continuar ativo. Idempotente. ===== */
+(function(){
+  function shR(){return document.querySelector(".bible-x-shell")}
+  function dirtyR(){
+    var qb=document.querySelector(".bx-v159-quick");
+    if(!qb)return false;
+    if(window.__bxQuickOrig)return true;
+    if(qb.querySelector(".bx-v159-zoom-card"))return true;
+    var full=document.querySelector("[data-bx-read=\"fullscreen\"]");
+    var exit=document.querySelector("[data-bx-read=\"exit\"]");
+    if(exit&&!exit.hidden)return true;
+    if(full&&full.hidden)return true;
+    if(qb.closest(".bible-x-top-actions"))return true;
+    return false;
+  }
+  function otherFullR(){
+    return !!document.querySelector(".bible-x-shell.bx-page-full, .generated-message.lmx-reader-full, #bOut.bx-global-full");
+  }
+  function repairR(){
+    var qb=document.querySelector(".bx-v159-quick");
+    var orig=window.__bxQuickOrig;
+    if(qb&&orig&&orig.nodeType===1&&qb.parentElement!==orig){try{orig.appendChild(qb)}catch(e){}}
+    if(qb){var zc=qb.querySelector(".bx-v159-zoom-card");
+      if(zc){var bs=[].slice.call(zc.querySelectorAll("[data-bx-read]"));
+        bs.forEach(function(b){qb.insertBefore(b,zc)});zc.remove();}}
+    window.__bxQuickOrig=null;
+    var full=document.querySelector("[data-bx-read=\"fullscreen\"]");
+    var exit=document.querySelector("[data-bx-read=\"exit\"]");
+    if(full)full.hidden=false;
+    if(exit)exit.hidden=true;
+  }
+  function checkR(){
+    var sh=shR();if(!sh)return;
+    var now=sh.classList.contains("bx-reading-full");
+    if(!now){
+      if(dirtyR())repairR();
+      if(!otherFullR()&&document.body.classList.contains("logos-reader-lock"))
+        document.body.classList.remove("logos-reader-lock");
+    }
+  }
+  if(window.MutationObserver){
+    new MutationObserver(function(){checkR()}).observe(document.body,{subtree:true,attributes:true,attributeFilter:["class"]});
+  }
+  setTimeout(function(){checkR()},600);
+  setInterval(checkR,700);
 })();

@@ -16571,9 +16571,9 @@ body.bx-mobile-app .bible-x-shell.bx-reading-full .bible-x-output{
     gap:6px!important;
     padding:7px 14px calc(7px + env(safe-area-inset-bottom,0px)) 14px!important;
     border-radius:0!important;
-    background:linear-gradient(0deg,rgba(6,12,19,.97),rgba(11,20,31,.95))!important;
-    border-top:1px solid rgba(140,170,195,.18)!important;
-    box-shadow:0 -8px 26px rgba(0,0,0,.42)!important;
+    border-top:0!important;
+    background:transparent!important;
+    box-shadow:none!important;
     cursor:default!important;
   }
   body.lmx-bx-full .bx-v157-rail::-webkit-scrollbar,
@@ -16610,8 +16610,75 @@ body.bx-mobile-app .bible-x-shell.bx-reading-full .bible-x-output{
     background:linear-gradient(180deg,rgba(196,52,52,.34),rgba(120,22,22,.3))!important;
     border:1px solid rgba(255,130,130,.5)!important;
   }
-  /* (e) folga no fim do texto para a última linha não ficar atrás da barra */
+  /* (e) folga no fim do texto: ~3 linhas de espaço entre a última fileira de
+         botões dos versículos (Bíblia Viva / Raio X / Comentários...) e a barra,
+         para o "＋" expandir os outros módulos sem encostar na barra */
   body.lmx-bx-full #bOut,
   body:has(.bible-x-shell.bx-reading-full) #bOut,
-  body:has(.bible-x-shell.bx-page-full) #bOut{padding-bottom:110px!important}
+  body:has(.bible-x-shell.bx-page-full) #bOut{padding-bottom:150px!important}
+}
+
+/* ============================================================
+   RENDER-FIX — a barra "⚙️ Bíblia local / módulos offline"
+   (details.bible-x-import, logo abaixo de #bOut) NÃO pode aparecer
+   em tela cheia da Bíblia — nem quando o capítulo tem conteúdo curto
+   (1 versículo) no PC nem no celular. Cobre os dois fulls
+   (.bx-reading-full do leitor e .bx-page-full do dynamic-controls). ===== */
+.bible-x-shell.bx-reading-full details.bible-x-import,
+.bible-x-shell.bx-page-full details.bible-x-import,
+.bible-x-shell.bx-reading-full [data-bible-panel="reader"] > details.bible-x-import,
+.bible-x-shell.bx-page-full [data-bible-panel="reader"] > details.bible-x-import{display:none!important}
+
+/* ============================================================
+   5.4.196 — Trilho lateral na LEITURA NORMAL do PC web (≥761px,
+   fora de qualquer tela cheia):
+   (a) afasta da scrollbar amarela: com right:13px o trilho ficava
+       a ~4px da scrollbar (9px); agora deixa um vão visível.
+   (b) os botões ligados no ⚙️ (data-bx-extra) entram no TOPO da
+       pilha, acima dos fixos 📖🔊☆✂⛶＋, e a pilha CRESCE PARA CIMA:
+       a base do trilho (⚙️/✕) fica ancorada num lugar fixo em vez
+       de o bloco inteiro crescer para os dois lados (o que afundava
+       a base na direção do scroll amarelo ao ganhar botões).
+       A âncora da base vale também quando existe posição salva de
+       arrasto (conversão no app JS, 5.4.196). ==================================== */
+@media(min-width:761px){
+  body:not(.lmx-bx-full):not(:has(.bible-x-shell.bx-reading-full)):not(:has(.bible-x-shell.bx-page-full)) .bx-v157-rail{
+    right:24px!important;                 /* 9px da scrollbar + ~15px de vão visível */
+    top:auto!important;                   /* desliga o centro vertical antigo */
+    bottom:calc(50% - 94px)!important;    /* ancora a BASE no lugar atual da barra */
+    transform:none!important;
+  }
+  body:not(.lmx-bx-full):not(:has(.bible-x-shell.bx-reading-full)):not(:has(.bible-x-shell.bx-page-full)) .bx-v157-rail > button[data-bx-extra]{
+    order:-10!important;                  /* ligados entram acima dos fixos */
+  }
+}
+
+/* ==========================================================
+   5.4.197  CELULAR: a tela cheia da B�blia entra SEMPRE sem
+   bordas (topo/laterais/base), igual ao bot�o do painel do topo,
+   mesmo quando o <body> n�o tem .bx-mobile-app (leitura aberta
+   fora do nav mobile). Prefixo de tipo "body" eleva a
+   especificidade p/ (0,3,1) e vence <style> injetado por m�dulo
+   que reprisa a moldura antiga do card (inset:8px; 0,2,0).
+   Em e901px o 5.4.175 j� zera; aqui cobre todo d900px (toque).
+   ========================================================== */
+@media(max-width:900px){
+  body .bible-x-shell.bx-reading-full,
+  body .bible-x-shell.bx-page-full{
+    inset:0!important;
+    top:0!important;
+    right:0!important;
+    bottom:0!important;
+    left:0!important;
+    width:100%!important;
+    height:100%!important;
+    max-width:none!important;
+    max-height:none!important;
+    border:0!important;
+    outline:0!important;
+    border-radius:0!important;
+    box-shadow:none!important;
+    padding:0!important;
+    margin:0!important;
+  }
 }
