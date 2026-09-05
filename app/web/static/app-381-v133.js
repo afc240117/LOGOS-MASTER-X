@@ -13518,16 +13518,14 @@ window.BibleXPolimento=Object.assign(window.BibleXPolimento||{},{lote528:"concor
   }, 500);
 })();
 
-/* 5.4.134 — botão flutuante "✕ Sair" + Esc para sair da tela cheia.
-   O full agora esconde o card lateral e a barra do topo (CSS 5.4.134);
-   este botão discreto no canto superior direito é a saída. Aparece só
-   quando .bx-*-full está ativo e some ao sair. Observa o <body> inteiro
-   (o .bible-x-shell pode não existir no boot) + checagem periódica. */
+/* 5.4.134 — Esc para sair da tela cheia (observa o <body> inteiro, pois o
+   .bible-x-shell pode não existir no boot, + checagem periódica).
+   5.4.185 — o "✕ Sair" FLUTUANTE do canto superior direito saiu de cena também
+   no PC (no celular já havia saído no 5.4.164): a saída agora mora no "✕ Sair"
+   DENTRO da barra de baixo da tela cheia (barra do celular 5.4.164 / do PC
+   5.4.185). Este módulo passou a cuidar só do Esc. */
 (function () {
   var BTN = 'lmx134-exit', last = false;
-  /* 5.4.164 — no celular este "✕ Sair" do canto superior direito sai de cena:
-     o Sair agora fica DENTRO da barra inferior (5.4.164). No PC continua. */
-  var isPhone = typeof window.matchMedia === 'function' && window.matchMedia('(max-width:760px)').matches;
   function isFull() {
     return !!document.querySelector('.bible-x-shell.bx-reading-full, .bible-x-shell.bx-page-full');
   }
@@ -13547,18 +13545,7 @@ window.BibleXPolimento=Object.assign(window.BibleXPolimento||{},{lote528:"concor
     last = false;
   }
   function ensure() {
-    if (isPhone) return;
-    var b = document.getElementById(BTN);
-    if (!b) {
-      b = document.createElement('button');
-      b.id = BTN;
-      b.type = 'button';
-      b.textContent = '✕ Sair';
-      b.setAttribute('aria-label', 'Sair da tela cheia');
-      b.addEventListener('click', function (e) { e.preventDefault(); e.stopPropagation(); exitFull(); });
-      document.body.appendChild(b);
-    }
-    sync();
+    return; /* 5.4.185 — não cria mais o "✕ Sair" flutuante do canto superior direito */
   }
   if (window.MutationObserver) {
     new MutationObserver(function () { sync(); }).observe(document.body, { subtree: true, attributes: true, attributeFilter: ['class'] });
@@ -14083,18 +14070,31 @@ window.BibleXPolimento=Object.assign(window.BibleXPolimento||{},{lote528:"concor
     }
     var scT = null;
     function onScroll() { if (!scT) { scT = requestAnimationFrame(function () { scT = null; compute(); }); } }
-    if (MOBILE) {
-      document.addEventListener('scroll', onScroll, { passive: true, capture: true });
-      window.addEventListener('resize', onScroll);
-      var wasFull = false;
-      setInterval(function () {
-        var now = isFull();
-        if (now !== wasFull) {
-          wasFull = now;
-          if (now) { tmpUntil = Date.now() + 4400; } else { tmpUntil = 0; } /* 5.4.173 — 2.2s→4.4s ao entrar no full */
+    /* 5.4.185 — a revelação "só no fim / ao entrar no full" passou a valer TAMBÉM
+       no PC web (antes era só celular), porque a tela cheia do PC agora usa a
+       MESMA barra de baixo. compute() quando NÃO há full apenas limpa o estilo
+       inline (não esconde a lateral — ela é controlada por CSS). */
+    document.addEventListener('scroll', onScroll, { passive: true, capture: true });
+    window.addEventListener('resize', onScroll);
+    var wasFull = false;
+    setInterval(function () {
+      var now = isFull();
+      if (now !== wasFull) {
+        wasFull = now;
+        if (now) { tmpUntil = Date.now() + 4400; } else { tmpUntil = 0; } /* 5.4.173 — 2.2s→4.4s ao entrar no full */
+      }
+      compute();
+    }, 350);
+    if (!MOBILE) {
+      /* 5.4.185 — PC: o mouse chegando perto da borda de baixo revela a barra
+         da tela cheia (análogo do "dedo na base" do celular). Fica ~2,5s depois
+         que o mouse sai, a menos que o texto já esteja no fim. */
+      window.addEventListener('pointermove', function (e) {
+        if (!isFull()) return;
+        if (e.clientY >= window.innerHeight - 96) {
+          if (tmpUntil < Date.now() + 2500) { tmpUntil = Date.now() + 2500; compute(); }
         }
-        if (now) compute();
-      }, 350);
+      }, { passive: true });
     }
 
     /* ---------- (b) ⚙️ escolher quais botões aparecem ---------- */
@@ -14104,7 +14104,11 @@ window.BibleXPolimento=Object.assign(window.BibleXPolimento||{},{lote528:"concor
        em logosbx:v157railvis; barra da tela cheia em logosbx:v157fullvis).
        Cada item: [chave, sufixo do data-v157-*, ícone, rótulo, padrão].
        ⚙️ e ✕ Sair são fixos (não entram na lista). */
-    var KEYS = { rail: 'logosbx:v157railvis', full: 'logosbx:v157fullvis' };
+    /* 5.4.185 — o PC ganha a PRÓPRIA barra de baixo na tela cheia (mesma do
+       celular), com configuração de botões INDEPENDENTE: 'rail' = lateral da
+       Bíblia normal; 'full' = barra de baixo da tela cheia no CELULAR; 'fullpc'
+       = barra de baixo da tela cheia no PC (web). Mexer numa não afeta as outras. */
+    var KEYS = { rail: 'logosbx:v157railvis', full: 'logosbx:v157fullvis', fullpc: 'logosbx:v157fullvis-pc' };
     var GROUPS = [
       { t: 'Navegação', rows: [
         ['nav','nav','📖','Trocar passagem',1],
@@ -14147,8 +14151,11 @@ window.BibleXPolimento=Object.assign(window.BibleXPolimento||{},{lote528:"concor
     ];
     function allRows() { var a = []; GROUPS.forEach(function (g) { a = a.concat(g.rows); }); return a; }
     function ctxNow() {
-      if (document.body && document.body.classList && document.body.classList.contains('lmx-bx-full')) return 'full';
-      return document.querySelector('.bible-x-shell.bx-reading-full, .bible-x-shell.bx-page-full') ? 'full' : 'rail';
+      var full = !!(document.body && document.body.classList && document.body.classList.contains('lmx-bx-full')) ||
+                 !!document.querySelector('.bible-x-shell.bx-reading-full, .bible-x-shell.bx-page-full');
+      if (!full) return 'rail';
+      var pc = window.matchMedia && window.matchMedia('(min-width:761px)').matches;
+      return pc ? 'fullpc' : 'full';
     }
     function visFor(ctx) {
       var KEY = KEYS[ctx] || KEYS.rail, obj = {};
@@ -14197,7 +14204,7 @@ window.BibleXPolimento=Object.assign(window.BibleXPolimento||{},{lote528:"concor
         h += '</div>';
       });
       h += '</div>';
-      h += '<div class="bx-v157-settings-hint">Sem limite: ligue quantos quiser e a barra rola. ⚙️ e ✕ Sair ficam sempre. A edição vale só para a barra indicada no topo (lateral ou tela cheia).</div>';
+      h += '<div class="bx-v157-settings-hint">Sem limite: ligue quantos quiser e a barra rola. ⚙️ e ✕ Sair ficam sempre. A edição vale só para a barra indicada no topo (lateral, tela cheia do celular ou tela cheia do PC) — cada uma guarda os próprios botões e não interfere na outra.</div>';
       return h;
     }
     panel.innerHTML = buildPanelHtml();
@@ -14212,7 +14219,7 @@ window.BibleXPolimento=Object.assign(window.BibleXPolimento||{},{lote528:"concor
       var ctx = ctxNow();
       var obj = visFor(ctx);
       panel.querySelectorAll('[data-bx-rail-k]').forEach(function (cb) { cb.checked = !!obj[cb.dataset.bxRailK]; });
-      if (ctxEl) ctxEl.textContent = (ctx === 'full' ? '· tela cheia' : '· lateral');
+      if (ctxEl) ctxEl.textContent = (ctx === 'full' ? '· tela cheia (celular)' : ctx === 'fullpc' ? '· tela cheia (PC)' : '· lateral');
       refreshLimitUI();
     }
     function openPanel() {

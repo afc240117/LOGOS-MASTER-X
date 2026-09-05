@@ -16534,3 +16534,84 @@ body.bx-mobile-app .bible-x-shell.bx-reading-full .bible-x-output{
     font-size:22px!important;
   }
 }
+
+/* ============================================================
+   5.4.185 — TELA CHEIA da Bíblia no PC WEB (≥761px): a barra de
+   baixo que o celular usa na tela cheia (o trilho .bx-v157-rail vira
+   barra horizontal FIXA na base). O "✕ Sair" flutuante do canto
+   superior direito (5.4.134) saiu de cena; a saída é o "✕ Sair"
+   dentro desta barra — igual no celular (5.4.164). A visibilidade no
+   meio/fim do texto é controlada pelo JS (auto-hide 5.4.169, agora
+   também no PC): some enquanto lê, aparece ao entrar no full, no fim
+   do texto e quando o mouse chega perto da base. Config de botões
+   INDEPENDENTE: logosbx:v157fullvis-pc (não mexe na do celular).
+   Bloco anexado ao FIM do arquivo para vencer o escondedor un-gated
+   body:has(...) .bx-v157-rail{display:none!important} (5.4.12x). ===== */
+@media(min-width:761px){
+  /* (a) barra: largura total colada na base, fileira única centralizada
+         (os botões não esticam como no celular estreito) */
+  body.lmx-bx-full .bx-v157-rail,
+  body:has(.bible-x-shell.bx-reading-full) .bx-v157-rail,
+  body:has(.bible-x-shell.bx-page-full) .bx-v157-rail{
+    display:flex!important;
+    flex-direction:row!important;
+    align-items:center!important;
+    justify-content:center!important;
+    position:fixed!important;
+    left:0!important;right:0!important;top:auto!important;bottom:0!important;
+    margin:0!important;
+    width:auto!important;min-width:0!important;max-width:none!important;
+    height:auto!important;
+    transform:none!important;
+    flex-wrap:nowrap!important;
+    overflow-x:auto!important;overflow-y:hidden!important;
+    scrollbar-width:none!important;-ms-overflow-style:none!important;
+    overscroll-behavior-x:contain!important;
+    z-index:1000100!important;
+    gap:6px!important;
+    padding:7px 14px calc(7px + env(safe-area-inset-bottom,0px)) 14px!important;
+    border-radius:0!important;
+    background:linear-gradient(0deg,rgba(6,12,19,.97),rgba(11,20,31,.95))!important;
+    border-top:1px solid rgba(140,170,195,.18)!important;
+    box-shadow:0 -8px 26px rgba(0,0,0,.42)!important;
+    cursor:default!important;
+  }
+  body.lmx-bx-full .bx-v157-rail::-webkit-scrollbar,
+  body:has(.bible-x-shell.bx-reading-full) .bx-v157-rail::-webkit-scrollbar,
+  body:has(.bible-x-shell.bx-page-full) .bx-v157-rail::-webkit-scrollbar{display:none!important;width:0!important;height:0!important}
+  /* (b) some com contador/divisor no full (espaço para os botões) */
+  body.lmx-bx-full .bx-v157-rail > span,
+  body.lmx-bx-full .bx-v157-rail > i,
+  body:has(.bible-x-shell.bx-reading-full) .bx-v157-rail > span,
+  body:has(.bible-x-shell.bx-reading-full) .bx-v157-rail > i,
+  body:has(.bible-x-shell.bx-page-full) .bx-v157-rail > span,
+  body:has(.bible-x-shell.bx-page-full) .bx-v157-rail > i{display:none!important}
+  /* (c) botões do tamanho confortável de desktop, sem esticar */
+  body.lmx-bx-full .bx-v157-rail button,
+  body:has(.bible-x-shell.bx-reading-full) .bx-v157-rail button,
+  body:has(.bible-x-shell.bx-page-full) .bx-v157-rail button{
+    flex:0 0 auto!important;
+    width:44px!important;min-width:44px!important;
+    height:44px!important;min-height:44px!important;
+    padding:0!important;margin:0!important;
+    font-size:20px!important;line-height:1!important;
+    border-radius:10px!important;
+  }
+  /* (d) o "✕ Sair" DENTRO da barra: reaparece (estava display:none no dia a
+         dia) e ganha o destaque vermelho discreto igual no celular */
+  body.lmx-bx-full .bx-v157-rail [data-v157-exit],
+  body:has(.bible-x-shell.bx-reading-full) .bx-v157-rail [data-v157-exit],
+  body:has(.bible-x-shell.bx-page-full) .bx-v157-rail [data-v157-exit]{
+    display:inline-flex!important;align-items:center!important;justify-content:center!important;
+    width:auto!important;min-width:0!important;flex:0 0 auto!important;
+    padding:0 16px!important;
+    font-size:14px!important;font-weight:700!important;
+    color:#ffe2e2!important;
+    background:linear-gradient(180deg,rgba(196,52,52,.34),rgba(120,22,22,.3))!important;
+    border:1px solid rgba(255,130,130,.5)!important;
+  }
+  /* (e) folga no fim do texto para a última linha não ficar atrás da barra */
+  body.lmx-bx-full #bOut,
+  body:has(.bible-x-shell.bx-reading-full) #bOut,
+  body:has(.bible-x-shell.bx-page-full) #bOut{padding-bottom:110px!important}
+}
