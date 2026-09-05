@@ -16457,3 +16457,80 @@ body.bx-mobile-app .bible-x-shell.bx-reading-full .bible-x-output{
   margin-left:0!important;
   margin-right:0!important;
 }
+
+/* ============================================================
+   5.4.180 — Ajustes do trilho cinza + tela cheia + versículo
+   (a) LATERAL / PC (barra VERTICAL): ⚙️ e ✕ ficam PRESOS no FIM da
+       pilha (ordem por flex); os extras ligados entram ACIMA da ⚙️
+       e a barra cresce para cima sem esconder a engrenagem.
+   (b) FULL mobile (barra HORIZONTAL da base): a ⚙️ vem logo depois
+       do "⏭ Avançar capítulo" (ela é movida no DOM do trilho para
+       logo após o ⏭); garantia extra de rolagem horizontal e
+       -webkit-overflow-scrolling para o dedo rolar suave.
+   (c) Tela cheia do CELULAR "literalmente tela cheia": tira o vão
+       do topo (a folga de env(safe-area-inset-top) que empurrava o
+       texto para baixo e desenhava a faixa/lacuna). O respiro passa
+       a ser dentro do próprio texto.
+   (d) Botões debaixo do versículo: letra maior.
+   ============================================================ */
+
+/* (a) barra VERTICAL no PC/tablet (leitura normal E tela cheia do
+       desktop usam a pilha vertical): engrenagem e Sair sempre no fim */
+@media(min-width:761px){
+  .bx-v157-rail > [data-v157-settings]{order:9998!important}
+  .bx-v157-rail > [data-v157-exit]{order:9999!important}
+}
+/* barra lateral do celular (fora do full) também é vertical: mesmo fim */
+@media(max-width:760px){
+  body:not(.lmx-bx-full):not(:has(.bible-x-shell.bx-reading-full)):not(:has(.bible-x-shell.bx-page-full)) .bx-v157-rail > [data-v157-settings]{order:9998!important}
+  body:not(.lmx-bx-full):not(:has(.bible-x-shell.bx-reading-full)):not(:has(.bible-x-shell.bx-page-full)) .bx-v157-rail > [data-v157-exit]{order:9999!important}
+}
+
+/* (b) full mobile: rolagem horizontal com toque suave + engrenagem
+       logo após o ⏭ (ordem natural do DOM já coloca a ⚙️ após o ⏭) */
+@media(max-width:760px){
+  body.lmx-bx-full .bx-v157-rail,
+  body:has(.bible-x-shell.bx-reading-full) .bx-v157-rail,
+  body:has(.bible-x-shell.bx-page-full) .bx-v157-rail{
+    -webkit-overflow-scrolling:touch!important;
+    overscroll-behavior-x:contain!important;
+  }
+}
+
+/* (c) tela cheia do celular sem o vão do topo (literalmente tela cheia):
+       remove a folga de safe-area do SHELL; o texto começa no topo */
+@media(max-width:900px){
+  .bible-x-shell.bx-reading-full,
+  .bible-x-shell.bx-page-full{
+    padding-top:0!important;
+  }
+  body.bx-mobile-app div.bible-x-shell.bx-reading-full,
+  body.bx-mobile-app div.bible-x-shell.bx-page-full{
+    padding-top:0!important;
+  }
+}
+
+/* (d) botões debaixo do versículo — letra maior (leitura normal e full) */
+@media(max-width:760px){
+  body.bx-mobile-app #workspace #bOut .lmx-bible-v3-tools button,
+  body.bx-mobile-app .bible-x-shell.bx-reading-full #bOut .lmx-bible-v3-tools button,
+  body.bx-mobile-app .bible-x-shell.bx-page-full #bOut .lmx-bible-v3-tools button,
+  .bible-x-shell.bx-reading-full #bOut .lmx-bible-v3-tools button,
+  .bible-x-shell.bx-page-full #bOut .lmx-bible-v3-tools button,
+  #workspace #bOut .lmx-bible-v3-tools button{
+    font-size:13px!important;
+    line-height:1.15!important;
+    min-height:44px!important;
+    height:44px!important;
+    max-height:44px!important;
+    padding:4px 7px!important;
+    white-space:nowrap!important;
+  }
+  #workspace #bOut .lmx-bible-v3-tools .lmx-bible-v3-more,
+  .bible-x-shell.bx-reading-full #bOut .lmx-bible-v3-tools .lmx-bible-v3-more,
+  .bible-x-shell.bx-page-full #bOut .lmx-bible-v3-tools .lmx-bible-v3-more{
+    width:44px!important;
+    min-width:44px!important;
+    font-size:22px!important;
+  }
+}

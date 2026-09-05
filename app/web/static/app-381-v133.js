@@ -1973,6 +1973,134 @@ function goHome(){
     try{history.replaceState({logosView:"dashboard",logosGuard:true},"",location.href);}catch{}
   }
 }
+
+/* ============================================================
+   5.4.181 — NAVEGAÇÃO RECOLHÍVEL + FLASH DA HOME
+   (a) #11 — Nos botões do TOPO, da LATERAL (menu) e da BASE, o
+       "2º clique" no módulo já aberto recolhe: volta para a tela
+       anterior (guardada em topViewStack) ou para a Home.
+       Nenhum estilo/sombra muda — apenas o comportamento.
+   (b) #12 — Flash na arte da Home: a luz nasce no DNA/fita K7,
+       atravessa a arte e culmina com um brilho no centro da
+       Bíblia aberta. Decorativo (pointer-events:none) e discreto.
+   ============================================================ */
+
+function __logosIsRealView(t){try{return !!t&&t!=="dashboard"&&!!(views&&Object.prototype.hasOwnProperty.call(views,t));}catch(e){return false}}
+function __logosNavTarget(el){return el?(el.getAttribute("data-go")||el.getAttribute("data-view")||""):""}
+
+/* (a) recolher ao 2º clique: captura antes do onclick nativo dos botões */
+document.addEventListener("click",function(e){
+  try{
+    var btn=e.target&&e.target.closest?e.target.closest(".classic-top [data-go], .classic-sidebar .nav button[data-view]"):null;
+    if(!btn)return;
+    var t=__logosNavTarget(btn);
+    if(!t||!__logosIsRealView(t))return;
+    if(e.altKey||e.shiftKey||e.ctrlKey||e.metaKey)return;
+    if(typeof App!=="undefined"&&App.view===t){
+      /* já está aberto: 2º clique recolhe */
+      try{if(e.cancelable)e.preventDefault();}catch(_){}
+      try{if(e.stopImmediatePropagation)e.stopImmediatePropagation();}catch(_){}
+      try{
+        var back=topViewStack.length?topViewStack.pop():"dashboard";
+        if(back===t)back="dashboard";
+        if(back==="dashboard"){goHome();}
+        else{render(back);if(innerWidth<=760)closeMobileNav();}
+      }catch(err){try{goHome();}catch(_){}}
+      return;
+    }
+    /* 1º clique: guarda de onde veio (para o 2º recolher) */
+    if(typeof App!=="undefined"&&App.view&&App.view!==t&&__logosIsRealView(App.view)&&topViewStack[topViewStack.length-1]!==t)topViewStack.push(App.view);
+  }catch(err){}
+},true);
+
+/* (b) flash da Home — utilitários */
+window.__logosHomeFlashLast=0;
+function __logosHomeHost(){
+  var d=document.querySelector(".exact-reference-home .desktop-reference-home");
+  if(d&&d.getBoundingClientRect().width>60)return d;
+  var m=document.querySelector(".mobile-reference-home .mobile-home-hero");
+  return m&&m.getBoundingClientRect().width>60?m:null;
+}
+function logosHomeFlashRun(){
+  var made=false;
+  try{
+    if(window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches)return false;
+    if(document.hidden)return false;
+    if(typeof App==="undefined"||App.view!=="dashboard")return false;
+    var host=__logosHomeHost();if(!host)return false;
+    var rect=host.getBoundingClientRect();
+    if(rect.width<80||rect.height<60)return false;
+    if(rect.top>innerHeight+30||rect.bottom< -30)return false;      /* fora da janela */
+    if(host.querySelector(".bx-home-flash"))return false;
+    if(getComputedStyle(host).position==="static")host.style.position="relative";
+    var w=rect.width,h=rect.height;
+    var geo=function(sel){var el=host.querySelector(sel);if(!el)return null;var r=el.getBoundingClientRect();return {x:(r.left-rect.left)+r.width/2,y:(r.top-rect.top)+r.height/2};};
+    var dna=geo('[data-home-action="dna"]');                       /* DNA/fita K7 */
+    var bib=geo('[data-home-action="bible"]');                      /* Bíblia aberta */
+    var sx=dna?dna.x:w*0.5, sy=dna?dna.y:h*0.84;
+    var tx=bib?bib.x:w*0.12, ty=bib?bib.y:h*0.5;
+    var ov=document.createElement("div");
+    ov.className="bx-home-flash";
+    ov.style.cssText="position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none;z-index:70;border-radius:inherit;overflow:hidden;mix-blend-mode:screen;";
+    host.appendChild(ov);
+    made=true;
+    setTimeout(function(){try{ov.style.transition="opacity .5s ease";ov.style.opacity="0";}catch(e){}},2900);
+    setTimeout(function(){try{ov.remove();}catch(e){}},3600);
+    var comet=document.createElement("div");
+    comet.style.cssText="position:absolute;left:0;top:0;width:30px;height:30px;margin:-15px 0 0 -15px;border-radius:50%;background:radial-gradient(circle,#fff7d9 0%,#ffd76a 38%,rgba(255,170,40,0) 72%);box-shadow:0 0 30px 10px rgba(255,205,90,.5);";
+    ov.appendChild(comet);
+    var midX=(sx+tx)/2, midY=(sy+ty)/2-(Math.min(90,h*0.10));
+    var sample=function(t){var u=1-t;return {x:u*u*sx+2*u*t*midX+t*t*tx,y:u*u*sy+2*u*t*midY+t*t*ty};};
+    var kf=[],steps=14;
+    for(var i=0;i<=steps;i++){
+      var tt=i/steps,p=sample(tt);
+      var core=tt<0.06?1:tt<0.1?1.5:tt<0.62?1.05:tt<0.78?(1.05+(tt-0.62)/0.16*1.6):(1.05+1.6+((tt-0.78)/0.22)*3.4);
+      var op=tt<0.03?0:tt<0.08?1:tt>0.8?Math.max(0,1-(tt-0.8)/0.2):0.95;
+      kf.push({offset:tt,transform:"translate("+p.x+"px,"+p.y+"px) scale("+core+")",opacity:op});
+    }
+    comet.animate(kf,{duration:2400,fill:"forwards",easing:"cubic-bezier(.42,.05,.24,1)"});
+    /* anel "comunicando" passando pelo meio do trajeto */
+    var ring=document.createElement("div");
+    var mp=sample(0.5);
+    ring.style.cssText="position:absolute;left:"+(mp.x-18)+"px;top:"+(mp.y-18)+"px;width:36px;height:36px;border-radius:50%;border:2px solid rgba(255,214,110,.9);box-sizing:border-box;";
+    ov.appendChild(ring);
+    ring.animate([
+      {offset:0,opacity:0,transform:"scale(.3)"},
+      {offset:.5,opacity:.8,transform:"scale(1)"},
+      {offset:1,opacity:0,transform:"scale(2.6)"}
+    ],{duration:1200,delay:650,fill:"forwards",easing:"ease-out"});
+    /* brilho final no centro da Bíblia */
+    var bloom=document.createElement("div");
+    bloom.style.cssText="position:absolute;left:"+tx+"px;top:"+ty+"px;width:120px;height:120px;margin:-60px 0 0 -60px;border-radius:50%;background:radial-gradient(circle,rgba(255,244,200,.95) 0%,rgba(255,205,70,.55) 34%,rgba(255,160,20,0) 68%);";
+    ov.appendChild(bloom);
+    bloom.animate([
+      {offset:0,opacity:0,transform:"scale(.25)"},
+      {offset:.4,opacity:.9,transform:"scale(.7)"},
+      {offset:.75,opacity:.6,transform:"scale(1.9)"},
+      {offset:1,opacity:0,transform:"scale(3.4)"}
+    ],{duration:1700,delay:1750,fill:"forwards",easing:"cubic-bezier(.2,.6,.3,1)"});
+    /* respiro claro suave sobre a arte inteira no clímax */
+    var wash=document.createElement("div");
+    wash.style.cssText="position:absolute;left:0;top:0;width:100%;height:100%;background:radial-gradient(ellipse at "+tx+"px "+ty+"px,rgba(255,220,120,.28),rgba(255,220,120,0) 55%);";
+    ov.appendChild(wash);
+    wash.animate([
+      {offset:0,opacity:0},
+      {offset:.55,opacity:1},
+      {offset:1,opacity:0}
+    ],{duration:1600,delay:1900,fill:"forwards",easing:"ease-in-out"});
+  }catch(e){}
+  return made;
+}
+var __hfPrev="__none__";
+setInterval(function(){try{
+  if(typeof App==="undefined")return;
+  var v=App.view,entered=(v==="dashboard"&&__hfPrev!=="dashboard");
+  __hfPrev=v;
+  if(v==="dashboard"&&(entered||window.__logosHomeFlashLast+16000<Date.now())){
+    if(logosHomeFlashRun())window.__logosHomeFlashLast=Date.now();
+  }
+}catch(e){}},800);
+
 /* 5.4.171 — pop-up de sair refeito. "Sair" tenta fechar de verdade a janela/PWA
    (dentro do gesto do usuário) e, se o ambiente bloquear (aba comum / WebView sem
    ponte nativa), avisa em vez de parecer morto. "Continuar aqui" só fecha o diálogo. */
@@ -5436,6 +5564,7 @@ Gerado em ${new Date().toLocaleString("pt-BR")}
     <button type="button" data-v157-more title="Mais ações da passagem">＋</button>
     <button type="button" class="bx-v157-extra" data-bx-extra="chap-prev" data-v157-chap-prev title="Capítulo anterior">⏮</button>
     <button type="button" class="bx-v157-extra" data-bx-extra="chap-next" data-v157-chap-next title="Capítulo seguinte">⏭</button>
+    <button type="button" data-v157-settings title="Escolher quais botões aparecem na barra">⚙️</button>
     <button type="button" class="bx-v157-extra" data-bx-extra="hist-prev" data-v157-hist-prev title="Passagem anterior (histórico)">↩</button>
     <button type="button" class="bx-v157-extra" data-bx-extra="hist-next" data-v157-hist-next title="Passagem seguinte (histórico)">↪</button>
     <button type="button" class="bx-v157-extra" data-bx-extra="bookmarks" data-v157-bookmarks title="Lista de marcadores">🔖</button>
@@ -5460,7 +5589,6 @@ Gerado em ${new Date().toLocaleString("pt-BR")}
     <button type="button" class="bx-v157-extra" data-bx-extra="painel360" data-v157-painel360 title="Painel 360">◉</button>
     <button type="button" class="bx-v157-extra" data-bx-extra="central" data-v157-central title="Central X">✦</button>
     <button type="button" class="bx-v157-extra" data-bx-extra="memoria" data-v157-memoria title="Memória X">🧠</button>
-    <button type="button" data-v157-settings title="Escolher quais botões aparecem na barra">⚙️</button>
     <button type="button" class="bx-v157-exit" data-v157-exit title="Sair da tela cheia">✕ Sair</button>
   </div>
 
@@ -13948,7 +14076,12 @@ window.BibleXPolimento=Object.assign(window.BibleXPolimento||{},{lote528:"concor
       var full = isFull();
       if (!full) { setInline('clear'); railShown = false; return; }
       var r = railEl();
-      var sc = document.querySelector('.bible-x-shell.bx-reading-full, .bible-x-shell.bx-page-full');
+      /* o elemento que ROLA no full é o #bOut quando ele é o contêiner de
+         rolagem; senão é o shell. Usar o errado faz a barra "aparecer antes
+         do fim" (distância sempre 0). 5.4.180 */
+      var shell = document.querySelector('.bible-x-shell.bx-reading-full, .bible-x-shell.bx-page-full');
+      var bOut = document.querySelector('#bOut');
+      var sc = (bOut && bOut.scrollHeight > bOut.clientHeight + 1) ? bOut : shell;
       var d = distEnd(sc);
       var touch = !!r && r.classList.contains('bx-v157-touch');
       var want;
