@@ -13703,7 +13703,7 @@ window.BibleXPolimento=Object.assign(window.BibleXPolimento||{},{lote528:"concor
   var isFullNow = function () { return !!document.querySelector('.bible-x-shell.bx-reading-full, .bible-x-shell.bx-page-full'); };
   var near = function (t) {
     if (!t || typeof t.clientX !== 'number') return false;
-    if (isFullNow()) return t.clientY > (window.innerHeight - 46); /* tela cheia: dedo na base */
+    if (isFullNow()) return false; /* 5.4.200: full — a barra de baixo NÃO abre com o dedo na base; só no FIM do texto (5.4.169) */
     return t.clientX > window.innerWidth - 20; /* normal: dedo na borda direita */
   };
   var apply = function (on) { var r = document.querySelector('.bx-v157-rail'); if (r) r.classList.toggle('bx-v157-touch', on); };
@@ -13711,14 +13711,13 @@ window.BibleXPolimento=Object.assign(window.BibleXPolimento||{},{lote528:"concor
   var hide = function () { clearTimeout(timer); apply(false); };
   document.addEventListener('touchstart', function (e) { var t = e.touches && e.touches[0]; if (near(t)) show(); }, true);
   document.addEventListener('touchmove', function (e) { var t = e.touches && e.touches[0]; if (near(t)) show(); else hide(); }, { passive: true, capture: true });
-  /* mostra o trilho por ~2s ao ENTRAR na tela cheia (para descobrir que ele fica na base) */
+  /* 5.4.200 — ao ENTRAR na tela cheia NÃO revela a barra (ela só aparece no FIM do texto) */
   var wasFull = isFullNow();
   setInterval(function () {
     var now = isFullNow();
     if (now === wasFull) return;
     wasFull = now;
-    if (now) { apply(true); clearTimeout(timer); timer = setTimeout(function () { apply(false); }, 4400); } /* 5.4.173 — entrar no full revela por 2.2s→4.4s */
-    else { apply(false); }
+    clearTimeout(timer); apply(false);
   }, 500);
 })();
 
@@ -14208,11 +14207,12 @@ window.BibleXPolimento=Object.assign(window.BibleXPolimento||{},{lote528:"concor
 
 /* =============================================================
    5.4.169 — BARRA DE BAIXO da tela cheia da Bíblia
-   (a) Fica FIXA embaixo, mas só aparece quando você rola até o FIM
-       do texto (some enquanto lê, para não cobrir o versículo; um
-       toque/deslize na base também a revela por alguns segundos).
-       ANTI-PISCA: a folga do fim (#bOut padding) agora é FIXA via CSS
-       e o mostrado/escondido usa histerese (56px mostra / >150px some).
+   (a) Fica FIXA embaixo e aparece SÓ quando você rola até o FIM do
+       texto (some enquanto lê para não cobrir o versículo; revelar por
+       toque/deslize na base ou ao entrar no full foi REMOVIDO no 5.4.200
+       — a barra só vem quando a rolagem chega até ela). ANTI-PISCA: a
+       folga do fim (#bOut padding) agora é FIXA via CSS e o mostrado/
+       escondido usa histerese (56px mostra / >150px some).
    (b) Botão ⚙️ na barra: catálogo GRANDE de botões (grupos no painel),
        SEM LIMITE de ligados (se passar do tamanho, a barra rola). Os
        extras (data-bx-extra) também podem ser ligados na lateral. ⚙️ e
@@ -14224,16 +14224,19 @@ window.BibleXPolimento=Object.assign(window.BibleXPolimento||{},{lote528:"concor
   try {
     var MOBILE = typeof window.matchMedia === 'function' && window.matchMedia('(max-width:760px)').matches;
 
-    /* ---------- (a) revelar apenas no fim / toque na base (só full, celular) ---------- */
-    var ISET = ['opacity', 'visibility', 'pointerEvents', 'transform'];
+    /* ---------- (a) revelar SÓ no FIM do texto (PC e celular) — 5.4.200 ---------- */
+    /* 5.4.200 — setProperty exige o nome CSS kebab-case ('pointer-events', não
+       'pointerEvents'): com camelCase a escrita era ignorada silenciosamente e a
+       barra mostrada no fim ficava com pointer-events:none (não-clicável). */
+    var ISET = ['opacity', 'visibility', 'pointer-events', 'transform'];
     function railEl() { return document.querySelector('.bx-v157-rail'); }
     function setInline(cmd) {
       var r = railEl(); if (!r) return;
       if (cmd === 'clear') { ISET.forEach(function (p) { r.style.removeProperty(p); }); return; }
       ISET.forEach(function (p) { r.style.setProperty(p, cmd[p], 'important'); });
     }
-    function showRail() { setInline({ opacity: '1', visibility: 'visible', pointerEvents: 'auto', transform: 'none' }); }
-    function hideRail() { setInline({ opacity: '0', visibility: 'hidden', pointerEvents: 'none', transform: 'translateY(120%)' }); }
+    function showRail() { setInline({ opacity: '1', visibility: 'visible', 'pointer-events': 'auto', transform: 'none' }); }
+    function hideRail() { setInline({ opacity: '0', visibility: 'hidden', 'pointer-events': 'none', transform: 'translateY(120%)' }); }
     function isFull() { return !!document.querySelector('.bible-x-shell.bx-reading-full, .bible-x-shell.bx-page-full'); }
     function atEnd(sc) {
       if (!sc) return false;
@@ -14241,8 +14244,6 @@ window.BibleXPolimento=Object.assign(window.BibleXPolimento||{},{lote528:"concor
       if (sh <= ch + 1) return true;
       return (sh - ch - st) <= 56;
     }
-    var tmpUntil = 0;
-    var tmpTimer = null;
     var railShown = false;               /* estado atual da barra (histerese) */
     function distEnd(sc) {
       if (!sc) return Infinity;
@@ -14253,7 +14254,6 @@ window.BibleXPolimento=Object.assign(window.BibleXPolimento||{},{lote528:"concor
     function compute() {
       var full = isFull();
       if (!full) { setInline('clear'); railShown = false; return; }
-      var r = railEl();
       /* o elemento que ROLA no full é o #bOut quando ele é o contêiner de
          rolagem; senão é o shell. Usar o errado faz a barra "aparecer antes
          do fim" (distância sempre 0). 5.4.180 */
@@ -14261,45 +14261,32 @@ window.BibleXPolimento=Object.assign(window.BibleXPolimento||{},{lote528:"concor
       var bOut = document.querySelector('#bOut');
       var sc = (bOut && bOut.scrollHeight > bOut.clientHeight + 1) ? bOut : shell;
       var d = distEnd(sc);
-      var touch = !!r && r.classList.contains('bx-v157-touch');
+      /* 5.4.200 — SEM revelar com o dedo na base nem ao entrar no full: a barra
+         de baixo da tela cheia (PC e celular) aparece SÓ quando a rolagem chega
+         ao FIM do texto e esconde ao subir de novo (fica fixa no fim). */
       var want;
-      if (touch || tmpUntil > Date.now()) want = true;   /* toque na base / ao entrar no full */
-      else if (d <= 56) want = true;                     /* fim do texto: mostra */
-      else if (d > 150) want = false;                    /* longe do fim: esconde */
-      else want = railShown;                             /* 56..150: segura o estado atual (anti-pisca) */
-      /* 5.4.195 — grava SEMPRE (idempotente): sem o showRail() inicial do tmpUntil,
-         railShown nascia false e este if (want !== railShown) nunca chamava hideRail(),
-         deixando a barra visível POR PADRÃO do CSS no meio do texto do PC. Agora o
-         estado é escrito a cada compute, e a barra do PC nasce escondida (5.4.186). */
+      if (d <= 56) want = true;                     /* fim do texto: mostra */
+      else if (d > 150) want = false;               /* longe do fim: esconde */
+      else want = railShown;                        /* 56..150: segura o estado atual (anti-pisca) */
+      /* 5.4.195 — grava SEMPRE (idempotente): o estado é escrito a cada compute,
+         então a barra nasce/esconde e só aparece quando a rolagem chega ao fim. */
       railShown = want;
       if (want) showRail(); else hideRail();
-      /* 5.4.169 — o padding do fim do texto agora é FIXO (CSS), aplicado só quando há
-         tela cheia. Antes este compute alternava 90px↔6px inline no #bOut: isso mudava
-         o scrollHeight na fronteira do fim e fazia a barra PISCAR a cada frame. */
     }
     var scT = null;
     function onScroll() { if (!scT) { scT = requestAnimationFrame(function () { scT = null; compute(); }); } }
-    /* 5.4.185 — a revelação "só no fim / ao entrar no full" passou a valer TAMBÉM
-       no PC web (antes era só celular), porque a tela cheia do PC agora usa a
-       MESMA barra de baixo. compute() quando NÃO há full apenas limpa o estilo
-       inline (não esconde a lateral — ela é controlada por CSS). */
+    /* 5.4.185/5.4.200 — a tela cheia do PC e a do CELULAR usam a MESMA barra de
+       baixo; o estado (mostrar só no fim) vale nas duas larguras. compute() quando
+       NÃO há full apenas limpa o estilo inline (não esconde a lateral — ela é
+       controlada por CSS). */
     document.addEventListener('scroll', onScroll, { passive: true, capture: true });
     window.addEventListener('resize', onScroll);
-    var wasFull = false;
-    setInterval(function () {
-      var now = isFull();
-      if (now !== wasFull) {
-        wasFull = now;
-        /* 5.4.195 — o revelar de 4,4s ao entrar no full é SÓ do celular (5.4.173).
-           No PC web a barra de baixo nasce escondida e aparece somente ao chegar
-           no fim do texto (5.4.186) — sem flash no início. */
-        if (now) { tmpUntil = MOBILE ? (Date.now() + 4400) : 0; } else { tmpUntil = 0; }
-      }
-      compute();
-    }, 350);
-    /* 5.4.195 — (sem o pointermove do PC): a revelação por "mouse perto da base"
-       era do 5.4.185 e fazia a barra aparecer no meio da leitura no PC. O PC agora
-       mostra a barra SÓ no fim do texto; o celular segue com dedo na base (bx-v157-touch). */
+    /* 5.4.200 — SEM revelar ao entrar no full (era 4,4s só no celular): em QUALQUER
+       largura a barra de baixo nasce escondida e aparece somente ao chegar ao fim.
+       compute() grava o estado sempre (idempotente) — sem flash no início. */
+    setInterval(function () { compute(); }, 350);
+    /* 5.4.200 — (sem o pointermove do PC e sem o "dedo na base" do celular): a barra
+       de baixo da tela cheia aparece SOMENTE quando a rolagem chega ao fim do texto. */
 
     /* ---------- (b) ⚙️ escolher quais botões aparecem ---------- */
     /* 5.4.171 — catálogo GRANDE (agrupado no painel ⚙️) SEM limite de
@@ -14511,9 +14498,11 @@ window.BibleXPolimento=Object.assign(window.BibleXPolimento||{},{lote528:"concor
 })();
 
 /* =============================================================
-   5.4.197 — TOQUES no texto da Bíblia (assimétricos, celular):
+   5.4.197/5.4.200 — TOQUES no texto da Bíblia (assimétricos, celular):
    DOIS toques rápidos ENTRAM na tela cheia; TRÊS toques rápidos
    SAEM — dois em full não saem mais (evita sair sem querer).
+   5.4.200: a janela do ENTRAR apertou de 320→200ms (o aparelho estava
+   entrando em tela cheia sem querer); o SAIR continua em 320ms.
    Só em aparelhos de toque e só sobre o texto dos versículos
    (não atrapalha botões, inputs nem o duplo-clique do desktop).
    ============================================================= */
@@ -14521,7 +14510,7 @@ window.BibleXPolimento=Object.assign(window.BibleXPolimento||{},{lote528:"concor
   try {
     if (!('ontouchstart' in window)) return;
     var tapCount = 0, lastT = 0, lastX = 0, lastY = 0;
-    var GAP = 320, RAD = 96;
+    var GAP_ENTRY = 200, GAP_EXIT = 320, RAD = 96;
     function isFull() { return !!document.querySelector('.bible-x-shell.bx-reading-full, .bible-x-shell.bx-page-full'); }
     function exitFull() {
       var rd = document.querySelector('.bible-x-shell.bx-reading-full');
@@ -14547,7 +14536,9 @@ window.BibleXPolimento=Object.assign(window.BibleXPolimento||{},{lote528:"concor
       var ch = e.changedTouches && e.changedTouches[0];
       if (!ch) return;
       var now = Date.now();
-      if (lastT && (now - lastT) <= GAP && Math.abs(ch.clientX - lastX) <= RAD && Math.abs(ch.clientY - lastY) <= RAD) {
+      /* 5.4.200 — entrar (2 toques) exige toque BEM rápido; sair (3 toques) continua folgado */
+      var gap = isFull() ? GAP_EXIT : GAP_ENTRY;
+      if (lastT && (now - lastT) <= gap && Math.abs(ch.clientX - lastX) <= RAD && Math.abs(ch.clientY - lastY) <= RAD) {
         tapCount = tapCount + 1;
       } else {
         tapCount = 1;
@@ -14578,7 +14569,7 @@ window.BibleXPolimento=Object.assign(window.BibleXPolimento||{},{lote528:"concor
   const TIPS={
     bible:{mark:"📖",eyebrow:"BÍBLIA X",title:"Comandos rápidos",rows:ph=>ph?[
         R("👈👉","Deslize o dedo: <b>esquerda</b> = próximo capítulo &nbsp;•&nbsp; <b>direita</b> = capítulo anterior"),
-        R("⚡","Dois <b>toques rápidos</b> no texto <b>entram</b> na tela cheia; para sair, <b>três</b> toques rápidos (evita sair sem querer)."),
+        R("⚡","Dois <b>toques bem rápidos</b> no texto <b>entram</b> na tela cheia; para sair, <b>três</b> toques rápidos (evita sair sem querer)."),
         R("🕹️","Na barra de baixo: <b>🏠 Home</b>, <b>▦ Módulos</b>, <b>☰ Painéis</b>, <b>📥 Importar</b> e <b>🎛️ Modos</b>."),
         R("🛠️","Na <b>borda direita</b> há uma <b>aba dourada fina</b>: passe o dedo perto dela (ou toque nela) para abrir as <b>ferramentas de leitura</b>.")
       ]:[
@@ -14587,8 +14578,9 @@ window.BibleXPolimento=Object.assign(window.BibleXPolimento||{},{lote528:"concor
         R("🕹️","A barra do topo troca de módulo; <b>☰ Painéis</b> abre os painéis de estudo e tutoriais.")
       ]},
     full:{mark:"⛶",eyebrow:"BÍBLIA X",title:"Tela cheia",rows:ph=>ph?[
+        R("🕹️","A barra de botões fica <b>escondida</b> durante a leitura e <b>aparece</b> quando você rola até o <b>fim</b> do texto."),
         R("⚡","<b>Três</b> toques rápidos no texto <b>saem</b> da tela cheia e voltam à leitura."),
-        R("⚙️","Toque <b>⚙️</b> para escolher quais botões aparecem na barra; o último, <b>✕ Sair</b>, volta à leitura."),
+        R("⚙️","Na barra, o <b>⚙️</b> escolhe os botões; o último, <b>✕ Sair</b>, volta à leitura."),
         R("👈👉","Deslize para o lado também troca de capítulo aqui na tela cheia.")
       ]:[
         R("⌨️","Pressione <b>Esc</b> (ou <b>✕ Sair</b> na barra) para voltar à leitura."),
