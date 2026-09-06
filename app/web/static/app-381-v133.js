@@ -2081,6 +2081,10 @@ function navigateView(view){
  if(!view)return;if(view==="appearance"){openAppearance();return;}if(view==="updates"){openUpdateCenter();return;}if(view==="dashboard"){goHome();return;}
  if(navigationHistoryReady){const st={logosView:view,logosInternal:true};try{if(App.view==="dashboard")history.pushState(st,"",location.href);else history.replaceState(st,"",location.href);}catch{}}
  render(view);if(innerWidth<=760)closeMobileNav();
+ /* 5.4.202 — abrir uma PÁGINA (ex.: atalhos da barra inferior de baixo, que só
+    aparece no FIM da leitura) sempre começa do TOPO. Sem isto a view abria com a
+    janela ainda no fundo do texto bíblico. Instântaneo (smooth gigante não termina). */
+ try{window.scrollTo({top:0,left:0,behavior:"auto"})}catch{}
 }
 function goHome(){
   closeMobileNav();
@@ -2652,7 +2656,13 @@ async function initBibleUI(){let current=[];
    document.dispatchEvent(new CustomEvent("biblex:pagechange",{detail:{id}}));
    const panel=panels.find(p=>p.dataset.biblePanel===id);
    if(options.scroll!==false&&panel){
-     requestAnimationFrame(()=>panel.scrollIntoView({behavior:options.smooth===false?"auto":"smooth",block:"start"}));
+     /* 5.4.202 — trocar de painel vindo do FIM da leitura (barra inferior só aparece
+        lá embaixo, a ~56.000px): scroll suave de distância enorme NÃO termina e o
+        painel novo "abre de baixo". Se o rolador está longe do topo, vai direto
+        (auto); perto do topo mantém o smooth de sempre. */
+     const scroller=(()=>{let n=panel.parentElement;while(n){const s=getComputedStyle(n);if(n.scrollHeight>n.clientHeight+4&&/(auto|scroll|overlay)/.test(s.overflowY))return n;n=n.parentElement}return document.scrollingElement||document.documentElement})();
+     const far=(scroller&&scroller.scrollTop>0&&scroller.scrollTop>(scroller.clientHeight||innerHeight||900)*1.4)||options.smooth===false;
+     requestAnimationFrame(()=>panel.scrollIntoView({behavior:far?"auto":"smooth",block:"start"}));
    }
    return id;
  };
