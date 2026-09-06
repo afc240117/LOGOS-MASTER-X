@@ -7364,19 +7364,77 @@ Gerado em ${new Date().toLocaleString("pt-BR")}
     'share':'[data-reader-action="share"]'
   };
   const bxGoChapter=n=>{
-    const book=rows[0]?.book;if(!book||n<1){bxV157Toast('Não há capítulo aqui');return}
-    const ref=`${book} ${n}`;
-    if(window.__bxChapterLoading)window.__bxChapterLoading.show(ref);
-    smartBibleRef(ref).then(rr=>{
-      if(!rr.length){window.__bxChapterLoading&&window.__bxChapterLoading.hide();bxV157Toast('Capítulo não encontrado');return}
-      current=rr;if($("#bRef"))$("#bRef").value=ref;renderBibleVerses(rr);
-      if(window.__bxChapterLoading)window.__bxChapterLoading.hide();
-      if(window.matchMedia("(max-width:760px)").matches){const v0=document.querySelector("#bOut .lmx-bible-v3-verse");if(v0)v0.scrollIntoView({block:"start"})}
-      /* RENDER-FIX — troca de capítulo pelo ⏮/⏭ do trilho/barra em TELA CHEIA no PC:
-         subir ao INÍCIO da passagem (no full o container de scroll é o próprio
-         .bible-x-shell). Re-sets 90/360ms cobrem a renderização. */
-      if(!window.matchMedia("(max-width:760px)").matches){const _fs=document.querySelector(".bible-x-shell.bx-reading-full,.bible-x-shell.bx-page-full");if(_fs){const _up=()=>{_fs.scrollTop=0};_up();setTimeout(_up,90);setTimeout(_up,360);}}
-    }).catch(()=>{window.__bxChapterLoading&&window.__bxChapterLoading.hide();bxV157Toast('Não foi possível abrir o capítulo')});
+    const book=rows[0]?.book,cur=Number(rows[0]?.chapter)||0;
+    if(!book||cur<1){bxV157Toast('Não há capítulo aqui');return}
+    const bnd=chapterBounds();const maxC=(bnd&&bnd.max>0)?bnd.max:0;
+    const nm=String(book).trim().toLowerCase();
+    const bi=bookItems.findIndex(x=>[x?.name_pt,x?.name_en,x?.code].some(v=>String(v||"").trim().toLowerCase()===nm));
+    const goRef=ref=>{
+      if(window.__bxChapterLoading)window.__bxChapterLoading.show(ref);
+      smartBibleRef(ref).then(rr=>{
+        if(!rr.length){window.__bxChapterLoading&&window.__bxChapterLoading.hide();bxV157Toast('Capítulo não encontrado');return}
+        current=rr;if($("#bRef"))$("#bRef").value=ref;renderBibleVerses(rr);
+        if(window.__bxChapterLoading)window.__bxChapterLoading.hide();
+        if(window.matchMedia("(max-width:760px)").matches){const v0=document.querySelector("#bOut .lmx-bible-v3-verse");if(v0)v0.scrollIntoView({block:"start"})}
+        /* RENDER-FIX — troca de capítulo/livro (⏮/⏭ do trilho/barra) em TELA CHEIA no PC:
+           subir ao INÍCIO da passagem (no full o scroller é o .bible-x-shell). */
+        if(!window.matchMedia("(max-width:760px)").matches){const _fs=document.querySelector(".bible-x-shell.bx-reading-full,.bible-x-shell.bx-page-full");if(_fs){const _up=()=>{_fs.scrollTop=0};_up();setTimeout(_up,90);setTimeout(_up,360);}}
+      }).catch(()=>{window.__bxChapterLoading&&window.__bxChapterLoading.hide();bxV157Toast('Não foi possível abrir o capítulo')});
+    };
+    const gotoBookCh=(bName,ch)=>{
+      const c=Number(ch)||1;
+      (async()=>{try{await syncBookChapterSelectors(bName,c)}catch(_){}})()
+        .then(()=>{try{setChapterRef(bName,c)}catch(_){}})
+        .then(()=>goRef(bName+" "+c));
+    };
+    const _e0=bi>=0?bookItems[bi]:null;
+    const engReading=!!(_e0&&String(book).trim().toLowerCase()===String(_e0.name_en||"").trim().toLowerCase()&&String(_e0.name_en||"").trim()!==String(_e0.name_pt||"").trim());
+    if(n>cur&&maxC>0&&n>maxC){
+      /* 5.4.201 — FIM do livro atual: pop-up (sem flash "carregando"/erro amarelo).
+         No último livro (Apocalipse) informa o FIM DA BÍBLIA. */
+      if(bi<0){bxV157Toast('Não foi possível abrir o capítulo');return;}
+      if(bi>=bookItems.length-1){
+        const first=engReading?"Genesis":"Gênesis";
+        actionModal({icon:"📖",title:"Fim da Bíblia",message:"Você chegou ao fim da Bíblia — "+book+" "+maxC+" é o último capítulo.",actions:[
+          {label:"↺ Voltar ao "+first+" 1",kind:"primary",run:()=>gotoBookCh(first,1)},
+          {label:"Fechar"}
+        ]});
+        return;
+      }
+      const nx=bookItems[bi+1];
+      const nxName=String(nx?.name_pt||nx?.name_en||"").trim()||"próximo livro";
+      actionModal({icon:"📖",title:"Último capítulo de "+book,message:"Este é o capítulo "+maxC+" — o último de "+book+".",actions:[
+        {label:"▶ Ir para "+nxName+" 1",kind:"primary",run:()=>gotoBookCh(nxName,1)},
+        {label:"Fechar"}
+      ]});
+      return;
+    }
+    if(n<cur&&n<1){
+      /* 5.4.201 — COMEÇO do livro atual: pop-up espelhado (Gênesis 1 = início da Bíblia). */
+      if(bi<=0){
+        if(bi===0){
+          const last=engReading?"Revelation":"Apocalipse";
+          actionModal({icon:"📖",title:"Início da Bíblia",message:"Gênesis 1 é o primeiro capítulo de toda a Bíblia.",actions:[
+            {label:"↺ Ir para "+last+" 22",kind:"primary",run:()=>gotoBookCh(last,22)},
+            {label:"Fechar"}
+          ]});
+        }else{bxV157Toast('Não foi possível abrir o capítulo');}
+        return;
+      }
+      const pv=bookItems[bi-1];
+      const pvName=String(pv?.name_pt||pv?.name_en||"").trim()||"livro anterior";
+      actionModal({icon:"📖",title:"Primeiro capítulo de "+book,message:"Este é o capítulo 1 — o primeiro de "+book+".",actions:[
+        {label:"◀ Ir para "+pvName+" (último capítulo)",kind:"primary",run:()=>{
+          const sel=document.getElementById("bBook");if(sel&&pv?.code){try{sel.value=pv.code}catch(_){}}
+          (async()=>{try{await syncBookChapterSelectors(pvName,1)}catch(_){}})()
+            .then(()=>{const last=chapterBounds().max||1;try{setChapterRef(pvName,last)}catch(_){}goRef(pvName+" "+last)});
+        }},
+        {label:"Fechar"}
+      ]});
+      return;
+    }
+    const ref=book+" "+n;
+    goRef(ref);
   };
   document.querySelectorAll('.bx-v157-rail [data-bx-extra]').forEach(b=>{
     b.addEventListener('click',()=>{
@@ -9881,45 +9939,174 @@ window.BibliaXLocal = window.BibliaXLocal || {
       const details=panel&&panel.querySelector('details.bible-x-import');
       if(!details)return;
       if(!details.open)details.open=true;
-      if(!window.matchMedia("(max-width:760px)").matches){try{details.scrollIntoView({behavior:"smooth",block:"center"});}catch(_){details.scrollIntoView();}}
+      /* 5.4.201 — o <details> abre como painel FIXO centralizado (PC/celular);
+         não se rola até ele (o scroll jogava a janela pro fim do texto). */
     },220);
   };
 
+  /* ================================================================
+     5.4.201 — BARRA INFERIOR DE ATALHOS (dock) no web PC e no celular.
+     Botões na ordem: 1)Home 2)Módulos 3)Painéis 4)⚙️ Botões (configurar)
+     5)Modos 6)Importar. O ⚙️ (4) abre uma caixa seletora para inserir ou
+     remover atalhos da própria barra (Home e ⚙️ ficam SEMPRE fixos),
+     persistindo em localStorage "logosbx:bxDock". A barra lateral de
+     ferramentas (.bx-v157-rail) continua existindo — esta é só a de baixo.
+     ================================================================ */
+  /* 5.4.201 — config INDEPENDENTE por dispositivo: o que se marca no ⚙️ do PC
+     vale só pro PC; no celular vale só pro celular (chaves distintas). */
+  const dockKey=()=>isMobile()?"logosbx:bxDock:m":"logosbx:bxDock:d";
+  const DOCK_CORE=[
+    {k:"home",  i:"🏠", l:"Home",     t:"Página inicial",                                    always:true,  run:()=>goHome()},
+    {k:"extra", i:"▦", l:"Módulos",  t:"Todos os módulos",                                  always:false, run:()=>{(window.LMXBXPages&&typeof window.LMXBXPages.openPageExtra==="function")?window.LMXBXPages.openPageExtra():window.LMXBXPages?.togglePageExtra?.();}},
+    {k:"painel",i:"☰", l:"Painéis",  t:"Painéis e ferramentas de estudo",                   always:false, run:()=>{(window.LMXBXPages&&typeof window.LMXBXPages.togglePagePainel==="function")?window.LMXBXPages.togglePagePainel():window.LMXBXPages?.openPagePainel?.();}},
+    {k:"cfg",   i:"⚙️",l:"Botões",   t:"Escolher quais atalhos aparecem na barra de baixo", always:true,  run:()=>dockCfgToggle()},
+    {k:"pages", i:"🎛️",l:"Modos",    t:"Modos de leitura e ferramentas",                    always:false, run:()=>{(window.__bxV170ModeFanToggle&&window.__bxV170ModeFanToggle())||window.LMXBXPages?.openPageMenu?.();}},
+    {k:"import",i:"📥",l:"Importar", t:"Bíblia local / módulos offline",                    always:false, run:()=>dockImportToggle()}
+  ];
+  /* Atalhos extras do app que o ⚙️ pode acrescentar (navegação própria). */
+  const DOCK_EXTRA=[
+    {k:"studio", i:"🎯", l:"Studio",     t:"Studio X",      view:"studio"},
+    {k:"quick",  i:"⚡", l:"Rápido",     t:"Acesso rápido", view:"quick"},
+    {k:"editor", i:"✏️", l:"Editor",     t:"Editor",        view:"editor"},
+    {k:"library",i:"📚", l:"Biblioteca", t:"Biblioteca",    view:"library"},
+    {k:"history",i:"🕘", l:"Histórico",  t:"Histórico",     view:"history"},
+    {k:"pulpit", i:"🎙️",l:"Púlpito",    t:"Modo Púlpito",  view:"pulpit"}
+  ];
+  const DOCK_ALL=()=>DOCK_CORE.concat(DOCK_EXTRA);
+  const dockFind=k=>DOCK_ALL().find(d=>d.k===k);
+  const dockDefaultKeys=()=>DOCK_CORE.filter(d=>!d.always&&d.k!=="cfg").map(d=>d.k); /* extra,painel,pages,import */
+  const dockRead=()=>{
+    try{
+      const raw=localStorage.getItem(dockKey());
+      if(!raw)return dockDefaultKeys();
+      const arr=JSON.parse(raw);
+      if(!Array.isArray(arr))return dockDefaultKeys();
+      const valid=arr.filter(k=>DOCK_ALL().some(d=>d.k===k&&!d.always&&d.k!=="cfg"));
+      return valid.length?valid:dockDefaultKeys();
+    }catch(e){return dockDefaultKeys();}
+  };
+  const dockSave=arr=>{try{localStorage.setItem(dockKey(),JSON.stringify(arr));}catch(e){}};
+  const dockVisibleKeys=()=>{
+    const en=dockRead();
+    const vis=[];
+    DOCK_CORE.forEach(d=>{if(d.always||en.indexOf(d.k)>=0)vis.push(d.k);});
+    DOCK_EXTRA.forEach(d=>{if(en.indexOf(d.k)>=0)vis.push(d.k);});
+    return vis;
+  };
+  const dockImportToggle=()=>{
+    const _pn=document.querySelector('[data-bible-panel="reader"]');
+    const _det=_pn&&_pn.querySelector('details.bible-x-import');
+    if(_det&&_det.open&&_pn&&_pn.offsetParent!==null){_det.open=false;return;}
+    openLocalImport();
+    setTimeout(()=>{try{window.bxMaybeTip&&window.bxMaybeTip("import");}catch(e){}},520);
+  };
+  /* ---- Configurador (⚙️) ---- */
+  let dockCfgEl=null;
+  const ensureDockCfg=()=>{
+    if(dockCfgEl)return dockCfgEl;
+    dockCfgEl=document.createElement("div");
+    dockCfgEl.className="bx-dock-cfg";
+    dockCfgEl.setAttribute("data-bx-dock-cfg","");
+    dockCfgEl.hidden=true;
+    document.body.appendChild(dockCfgEl);
+    return dockCfgEl;
+  };
+  const fillDockCfg=()=>{
+    const el=ensureDockCfg();
+    const en=dockRead();
+    let h='<div class="bx-dock-cfg-head"><b>Botões da barra de baixo</b><button type="button" data-bx-cfg-close title="Fechar">✕</button></div>';
+    h+='<div class="bx-dock-cfg-sub">Marque os atalhos que aparecem na barra. 🏠 Home e ⚙️ ficam sempre fixos.</div>';
+    h+='<div class="bx-dock-cfg-list">';
+    DOCK_CORE.forEach(d=>{
+      const dis=d.always?" disabled":"";
+      const chk=(d.always||en.indexOf(d.k)>=0)?" checked":"";
+      h+='<label class="bx-dock-cfg-row'+(d.always?" bx-dock-locked":"")+'"><span class="bx-dock-cfg-ico">'+d.i+'</span><span class="bx-dock-cfg-lb">'+d.l+'</span><input type="checkbox" data-bx-cfg-k="'+d.k+'"'+chk+dis+'></label>';
+    });
+    DOCK_EXTRA.forEach(d=>{
+      const chk=en.indexOf(d.k)>=0?" checked":"";
+      h+='<label class="bx-dock-cfg-row"><span class="bx-dock-cfg-ico">'+d.i+'</span><span class="bx-dock-cfg-lb">'+d.l+'</span><input type="checkbox" data-bx-cfg-k="'+d.k+'"'+chk+'></label>';
+    });
+    h+='</div>';
+    el.innerHTML=h;
+  };
+  const dockCfgOpen=()=>{fillDockCfg();dockCfgEl.hidden=false;dockCfgEl.classList.toggle("bx-dock-pc",!isMobile());};
+  const dockCfgClose=()=>{if(dockCfgEl)dockCfgEl.hidden=true;};
+  const dockCfgToggle=()=>{if(dockCfgEl&&!dockCfgEl.hidden){dockCfgClose();return;}dockCfgOpen();};
+  document.addEventListener("click",e=>{
+    const t=e.target;
+    if(!t||!t.closest)return;
+    if(t.closest("[data-bx-cfg-close]")){dockCfgClose();return;}
+    if(t.closest(".bx-dock-cfg")||t.closest('[data-bxm="cfg"]'))return;
+    if(dockCfgEl&&!dockCfgEl.hidden)dockCfgClose();
+  },true);
+  document.addEventListener("change",e=>{
+    const cb=e.target&&e.target.closest?e.target.closest("[data-bx-cfg-k]"):null;
+    if(!cb||cb.disabled)return;
+    let en=dockRead();
+    const k=cb.getAttribute("data-bx-cfg-k");
+    if(cb.checked){if(en.indexOf(k)<0)en.push(k);}
+    else{en=en.filter(x=>x!==k);}
+    dockSave(en);
+    const nav=document.getElementById("bxMobileBottomNav");
+    if(nav)renderDockButtons(nav);
+  },true);
+  let dockDirty=false;
+  const renderDockButtons=nav=>{
+    nav.innerHTML="";
+    const current=bibleShell()?.dataset.bxPage||"reader";
+    dockVisibleKeys().forEach(k=>{
+      const d=dockFind(k);
+      if(!d)return;
+      const b=document.createElement("button");
+      b.type="button";
+      b.dataset.bxm=d.k;
+      b.title=d.t;
+      b.innerHTML="<span>"+d.i+"</span><b>"+d.l+"</b>";
+      if(d.k===current)b.classList.add("active");
+      b.addEventListener("click",d.view?(ev)=>{ev.preventDefault();navigateView(d.view);}:d.run);
+      nav.appendChild(b);
+    });
+  };
+  const dockVisible=()=>{
+    if(!bibleShell())return false;
+    if(document.querySelector(".bible-x-shell.bx-reading-full,.bible-x-shell.bx-page-full"))return false;
+    return true;
+  };
   const mountBottomNav=()=>{
-    let nav=document.querySelector("#bxMobileBottomNav");
-    if(!isMobile() || !bibleShell()){
+    const nav=document.getElementById("bxMobileBottomNav");
+    if(!bibleShell()){
       if(nav)nav.hidden=true;
+      if(dockCfgEl)dockCfgEl.hidden=true;
       document.body.classList.remove("bx-mobile-app");
       return;
     }
-    document.body.classList.add("bx-mobile-app");
-    if(!nav){
-      nav=document.createElement("nav");
-      nav.id="bxMobileBottomNav";
-      nav.className="bx-mobile-bottom-nav";
-      nav.setAttribute("aria-label","Navegação rápida da Bíblia X");
-      nav.innerHTML=`
-        <button type="button" data-bxm="home" title="Página inicial"><span>🏠</span><b>Home</b></button>
-        <button type="button" data-bxm="extra" title="Todos os módulos (grade quadrada)"><span>▦</span><b>Módulos</b></button>
-        <button type="button" data-bxm="painel" title="Painéis e ferramentas de estudo"><span>☰</span><b>Painéis</b></button>
-        <button type="button" data-bxm="import" title="Bíblia local / módulos offline: escolher arquivo e importar"><span>📥</span><b>Importar</b></button>
-        <button type="button" data-bxm="pages" title="Modos de leitura e ferramentas"><span>🎛️</span><b>Modos</b></button>`;
-      document.body.appendChild(nav);
-      nav.querySelector('[data-bxm="home"]')?.addEventListener("click",goHome);
-      nav.querySelector('[data-bxm="extra"]')?.addEventListener("click",()=>{(window.LMXBXPages&&typeof window.LMXBXPages.openPageExtra==="function")?window.LMXBXPages.openPageExtra():window.LMXBXPages?.togglePageExtra?.();});
-      nav.querySelector('[data-bxm="painel"]')?.addEventListener("click",()=>{(window.LMXBXPages&&typeof window.LMXBXPages.togglePagePainel==="function")?window.LMXBXPages.togglePagePainel():window.LMXBXPages?.openPagePainel?.();});
-      nav.querySelector('[data-bxm="import"]')?.addEventListener("click",()=>{
-        const _pn=document.querySelector('[data-bible-panel="reader"]');
-        const _det=_pn&&_pn.querySelector('details.bible-x-import');
-        if(_det&&_det.open&&_pn&&_pn.offsetParent!==null){_det.open=false;return;}
-        openLocalImport();
-        setTimeout(()=>{try{window.bxMaybeTip&&window.bxMaybeTip("import")}catch(e){}},520);
-      });
-      nav.querySelector('[data-bxm="pages"]')?.addEventListener("click",()=>{(window.__bxV170ModeFanToggle&&window.__bxV170ModeFanToggle())||window.LMXBXPages?.openPageMenu?.();});
+    if(document.querySelector(".bible-x-shell.bx-reading-full,.bible-x-shell.bx-page-full")){
+      /* full (qualquer largura): quem esconde a dock é o CSS (display:none).
+         NÃO marcar nav.hidden aqui — assim, ao SAIR do full a dock volta já na
+         hora, sem depender de nova mutação DOM p/ remontar. */
+      if(nav&&nav.hidden)nav.hidden=false;
+      if(dockCfgEl)dockCfgEl.hidden=true;
+      return;
     }
-    nav.hidden=false;
-    const current=bibleShell()?.dataset.bxPage||"reader";
-    nav.querySelectorAll("[data-bxm]").forEach(button=>button.classList.toggle("active",button.dataset.bxm===current));
+    if(isMobile())document.body.classList.add("bx-mobile-app");
+    else document.body.classList.remove("bx-mobile-app");
+    let el=nav;
+    if(!el){
+      el=document.createElement("nav");
+      el.id="bxMobileBottomNav";
+      el.className="bx-mobile-bottom-nav";
+      el.setAttribute("aria-label","Navegação rápida da Bíblia X");
+      document.body.appendChild(el);
+      ensureDockCfg();
+      dockDirty=true;
+    }
+    el.classList.toggle("bx-dock-pc",!isMobile());
+    if(dockDirty){renderDockButtons(el);dockDirty=false;}
+    else{
+      const current=bibleShell()?.dataset.bxPage||"reader";
+      el.querySelectorAll("[data-bxm]").forEach(button=>button.classList.toggle("active",button.dataset.bxm===current));
+    }
+    el.hidden=false;
   };
 
   const enhanceMobilePanels=()=>{
@@ -14922,4 +15109,75 @@ window.BibleXPolimento=Object.assign(window.BibleXPolimento||{},{lote528:"concor
   }
   setTimeout(function(){checkR()},600);
   setInterval(checkR,700);
+})();
+
+/* ============================================================
+   5.4.201 — DOCK do PC: aparece SÓ quando a leitura chega ao FIM
+   do texto (escondida durante a leitura p/ não cobrir o versículo).
+   O celular mantém a dock SEMPRE visível (não é tocado aqui).
+   Controla a classe body.bx-dock-pc-on (a transição/estado é CSS).
+   ============================================================ */
+(function(){
+  const PC=()=>window.matchMedia("(min-width:761px)").matches;
+  const isFull=()=>!!document.querySelector(".bible-x-shell.bx-reading-full,.bible-x-shell.bx-page-full")||document.body.classList.contains("lmx-bx-full");
+  let shown=false;
+  const set=on=>{if(on!==shown){shown=on;document.body.classList.toggle("bx-dock-pc-on",on);}};
+  const compute=()=>{
+    try{
+      if(!PC()||isFull()){set(false);return;}
+      const nav=document.getElementById("bxMobileBottomNav");
+      if(!nav||nav.hidden||!nav.classList.contains("bx-dock-pc")){set(false);return;}
+      if(!document.querySelector('.bible-x-section.active[data-bible-panel="reader"]')){set(false);return;}
+      const sc=document.scrollingElement||document.documentElement;
+      if(!sc)return;
+      const rem=Math.max(0,(sc.scrollHeight-sc.clientHeight-sc.scrollTop));
+      set(shown?rem<=170:rem<=40);
+    }catch(_){/* nunca derruba o app */}
+  };
+  let raf=0;
+  const sched=()=>{if(raf)return;raf=requestAnimationFrame(()=>{raf=0;compute();});};
+  window.addEventListener("scroll",sched,{passive:true});
+  window.addEventListener("resize",compute);
+  /* intervalo curto cobre render de capítulo, Home/End e saídas de tela cheia */
+  setInterval(compute,700);
+})();
+
+/* ============================================================
+   5.4.201 — TECLADO de navegação na leitura NORMAL do PC (sem tela cheia):
+   ↑/↓ (linha a linha), Page Up/Down e Espaço/Shift+Espaço (página),
+   Home/End (início/fim, instantâneo). Espelha o módulo 5.4.199 do full,
+   mas rolando a JANELA (é quem rola na leitura normal do PC). Só age com
+   o painel do leitor ativo, fora de campos/controles e fora do full (no
+   full o 5.4.199 já cuida). ============================================ */
+(function(){
+  const PC=()=>window.matchMedia("(min-width:761px)").matches;
+  const isEditable=function(t){
+    if(!t||!t.tagName)return false;
+    const tag=t.tagName.toLowerCase();
+    return tag==="input"||tag==="textarea"||tag==="select"||t.isContentEditable===true;
+  };
+  const normalReader=function(){
+    if(!PC())return null;
+    if(document.querySelector(".bible-x-shell.bx-reading-full,.bible-x-shell.bx-page-full"))return null;
+    return document.querySelector('.bible-x-section.active[data-bible-panel="reader"]')||null;
+  };
+  document.addEventListener("keydown",function(e){
+    try{
+      if(e.ctrlKey||e.metaKey||e.altKey)return;
+      const sec=normalReader();
+      if(!sec)return;
+      if(isEditable(e.target))return;
+      const key=e.key;
+      const vh=window.innerHeight||document.documentElement.clientHeight||900;
+      const page=Math.max(140,Math.round(vh*0.92));
+      const step=Math.max(48,Math.round(vh*0.06));
+      if(key==="ArrowDown"){e.preventDefault();window.scrollBy({top:step,left:0,behavior:"auto"});return;}
+      if(key==="ArrowUp"){e.preventDefault();window.scrollBy({top:-step,left:0,behavior:"auto"});return;}
+      if(key==="PageDown"){e.preventDefault();window.scrollBy({top:page,left:0,behavior:"auto"});return;}
+      if(key==="PageUp"){e.preventDefault();window.scrollBy({top:-page,left:0,behavior:"auto"});return;}
+      if(key===" "){const t=e.target;if(t&&t.closest&&t.closest("button,a,label,[role=button]"))return;e.preventDefault();window.scrollBy({top:e.shiftKey?-page:page,left:0,behavior:"auto"});return;}
+      if(key==="Home"){e.preventDefault();window.scrollTo(0,0);return;}
+      if(key==="End"){e.preventDefault();const sc=document.scrollingElement||document.documentElement;window.scrollTo(0,sc.scrollHeight);return;}
+    }catch(_){/* nunca derruba o app */}
+  });
 })();
