@@ -1,0 +1,195 @@
+{
+  "version": "5.4.207",
+  "updated": "2026-09-07",
+  "description": "Cenas editoriais da Bíblia Viva — Modo Imersão. Os textos são resumos de navegação; a passagem bíblica exibida vem do leitor.",
+  "scenes": [
+    {
+      "id": "joao-4-sicar",
+      "matches": ["João 4", "Joao 4", "John 4"],
+      "reference": "João 4:4–42",
+      "title": "O poço de Sicar",
+      "subtitle": "Um encontro inesperado na fronteira entre Judeia e Samaria",
+      "theme": "Encontro, água, barreiras culturais e testemunho",
+      "period": "Segundo Templo • provável primeiro século",
+      "sceneClass": "sicar",
+      "badge": "RECONSTRUÇÃO VISUAL",
+      "place": {
+        "name": "Sicar, região de Samaria",
+        "query": "Sicar / região de Siquém",
+        "description": "A cena é apresentada como uma reconstrução visual editorial, conectada ao registro do Atlas X Vivo."
+      },
+      "certainty": "Localização aproximada • reconstrução visual",
+      "mediaQuery": "Sicar poço Samaria João 4",
+      "panoramaQuery": "Samaria Sicar landscape 360",
+      "historicalContext": "Samaria ficava entre a Judeia e a Galileia. O caminho, a água e as tensões entre judeus e samaritanos formam o cenário social da conversa. A identificação exata de Sicar e do poço é apresentada pelo Atlas com a devida cautela.",
+      "culturalNotes": [
+        {"title": "A fronteira cultural", "text": "O encontro atravessa uma separação religiosa e social. A conversa não acontece em um espaço neutro: o caminho passa por uma região marcada por memórias, disputas e desconfiança."},
+        {"title": "O poço como espaço social", "text": "Buscar água envolvia trabalho, horário, deslocamento e convivência. O poço funciona na cena como lugar de necessidade concreta e também de revelação."},
+        {"title": "O cântaro deixado", "text": "O objeto acompanha a virada da personagem: ela chega carregando uma tarefa e retorna carregando uma notícia para a cidade. A leitura visual trata isso como símbolo narrativo, não como prova arqueológica."}
+      ],
+      "objects": [
+        {"name": "Poço", "icon": "⌖", "meaning": "Lugar de água, trabalho e encontro."},
+        {"name": "Cântaro", "icon": "◒", "meaning": "A tarefa cotidiana fica para trás quando a personagem corre para testemunhar."},
+        {"name": "Caminho", "icon": "➜", "meaning": "A passagem de Jesus por Samaria abre uma rota de aproximação."}
+      ],
+      "questions": [
+        "Que barreira social a conversa atravessa antes mesmo de começar?",
+        "O que muda quando uma necessidade cotidiana se torna uma conversa sobre vida?",
+        "Por que a mulher volta para a cidade antes de terminar todas as respostas?"
+      ],
+      "sources": [
+        {"label": "Texto principal", "type": "Bíblia", "value": "João 4:4–42", "certainty": "Texto bíblico"},
+        {"label": "Lugar relacionado", "type": "Atlas X Vivo", "value": "Sicar / região de Siquém", "certainty": "Localização aproximada"},
+        {"label": "Camada visual", "type": "Editorial", "value": "Reconstrução visual sem pretensão arqueológica", "certainty": "Interpretativa"}
+      ],
+      "verseMap": [
+        {"match": "João 4:4–6", "event": 0},
+        {"match": "João 4:7", "event": 1},
+        {"match": "João 4:10", "event": 1},
+        {"match": "João 4:16", "event": 2},
+        {"match": "João 4:25", "event": 2},
+        {"match": "João 4:28", "event": 3},
+        {"match": "João 4:39", "event": 3}
+      ],
+      "people": [
+        {"id": "jesus", "name": "Jesus", "role": "Viajante e interlocutor", "description": "O encontro se desenvolve em torno de uma conversa sobre água, adoração e vida."},
+        {"id": "samaritana", "name": "Mulher samaritana", "role": "Moradora de Sicar", "description": "A personagem central do diálogo; sua perspectiva conduz a virada narrativa da cena."},
+        {"id": "discipulos", "name": "Discípulos", "role": "Retornam da cidade", "description": "A presença deles amplia a tensão cultural e o movimento da cena."}
+      ],
+      "hotspots": [
+        {"id": "poco", "label": "O poço", "kind": "place", "event": 0},
+        {"id": "jesus", "label": "Jesus", "kind": "person", "person": "jesus"},
+        {"id": "samaritana", "label": "A mulher samaritana", "kind": "person", "person": "samaritana"},
+        {"id": "cidade", "label": "A cidade de Sicar", "kind": "place", "event": 3}
+      ],
+      "events": [
+        {"label": "A chegada ao poço", "ref": "João 4:4–6", "focus": "O caminho escolhe atravessar a fronteira", "summary": "Jesus atravessa Samaria e chega ao poço enquanto o dia avança."},
+        {"label": "O pedido de água", "ref": "João 4:7–15", "focus": "Uma necessidade concreta abre a conversa", "summary": "Um pedido simples abre uma conversa sobre água e uma vida que não termina no poço."},
+        {"label": "A conversa se aprofunda", "ref": "João 4:16–26", "focus": "História pessoal, adoração e expectativa", "summary": "O diálogo passa pela história pessoal, pela adoração e pela expectativa messiânica."},
+        {"label": "A cidade é alcançada", "ref": "João 4:27–42", "focus": "O testemunho transforma o caminho em convite", "summary": "A mulher volta à cidade; o testemunho dela movimenta a comunidade até Jesus."}
+      ],
+      "route": [
+        {"label": "Judeia", "query": "Judeia", "type": "region"},
+        {"label": "Samaria", "query": "Samaria", "type": "region"},
+        {"label": "Sicar", "query": "Sicar / região de Siquém", "type": "place"}
+      ]
+    },
+    {
+      "id": "marcos-10-jerico",
+      "matches": ["Marcos 10", "Marcos 10:46", "Mark 10"],
+      "reference": "Marcos 10:46–52",
+      "title": "À saída de Jericó",
+      "subtitle": "Um clamor que interrompe a passagem da multidão",
+      "sceneClass": "jerico",
+      "badge": "CENA NARRATIVA",
+      "place": {
+        "name": "Jericó",
+        "query": "Jericó",
+        "description": "Jericó funciona aqui como ponto de passagem entre o vale do Jordão e a subida para Jerusalém."
+      },
+      "certainty": "Lugar bíblico reconhecido • ambientação interpretativa",
+      "mediaQuery": "Jericho ancient road landscape",
+      "panoramaQuery": "Jericho Jordan valley 360",
+      "people": [
+        {"id": "jesus", "name": "Jesus", "role": "Mestre em trânsito", "description": "A narrativa o apresenta deixando a cidade acompanhado por discípulos e uma grande multidão."},
+        {"id": "bartimeu", "name": "Bartimeu", "role": "Homem que clama à beira do caminho", "description": "O clamor de Bartimeu recebe nome, voz e movimento próprios na passagem."},
+        {"id": "multidao", "name": "A multidão", "role": "Testemunha e barreira", "description": "A multidão tenta controlar o fluxo, mas também presencia a resposta de Jesus."}
+      ],
+      "hotspots": [
+        {"id": "estrada", "label": "Estrada para Jerusalém", "kind": "place", "event": 0},
+        {"id": "bartimeu", "label": "Bartimeu", "kind": "person", "person": "bartimeu"},
+        {"id": "multidao", "label": "A multidão", "kind": "person", "person": "multidao"}
+      ],
+      "events": [
+        {"label": "A passagem", "ref": "Marcos 10:46", "summary": "Jesus sai de Jericó com os discípulos e uma multidão ao redor."},
+        {"label": "O clamor", "ref": "Marcos 10:47–48", "summary": "Bartimeu insiste em ser ouvido, mesmo quando tentam silenciá-lo."},
+        {"label": "O chamado", "ref": "Marcos 10:49–50", "summary": "Jesus para, chama Bartimeu e a multidão muda de postura."},
+        {"label": "O caminho reaberto", "ref": "Marcos 10:51–52", "summary": "A cura encerra a cena com Bartimeu seguindo Jesus pelo caminho."}
+      ],
+      "route": [
+        {"label": "Jericó", "query": "Jericó", "type": "place"},
+        {"label": "Subida", "query": "Jericó a Jerusalém", "type": "route"},
+        {"label": "Jerusalém", "query": "Jerusalém", "type": "place"}
+      ]
+    },
+    {
+      "id": "exodo-14-mar",
+      "matches": ["Êxodo 14", "Exodo 14", "Exodus 14"],
+      "reference": "Êxodo 14",
+      "title": "Entre o mar e o deserto",
+      "subtitle": "A travessia que transforma fuga em caminho",
+      "sceneClass": "exodo",
+      "badge": "LEITURA CINEMÁTICA",
+      "place": {
+        "name": "Mar Vermelho / Mar de Juncos",
+        "query": "Mar Vermelho Êxodo",
+        "description": "A identificação geográfica exata é debatida; a cena preserva essa incerteza no Atlas." 
+      },
+      "certainty": "Localização debatida • leitura esquemática",
+      "mediaQuery": "Red Sea desert coast Exodus",
+      "panoramaQuery": "Red Sea desert coast 360",
+      "people": [
+        {"id": "moises", "name": "Moisés", "role": "Líder do povo", "description": "A cena acompanha a tensão entre o medo do povo e a direção da travessia."},
+        {"id": "israel", "name": "Israel", "role": "Comunidade em fuga", "description": "O povo aparece como personagem coletivo, carregando medo, memória e esperança."},
+        {"id": "farao", "name": "Faraó e o exército", "role": "Força perseguidora", "description": "A ameaça que vem atrás faz o bloqueio geográfico se tornar também um conflito narrativo."}
+      ],
+      "hotspots": [
+        {"id": "mar", "label": "As águas", "kind": "place", "event": 1},
+        {"id": "moises", "label": "Moisés", "kind": "person", "person": "moises"},
+        {"id": "povo", "label": "O povo", "kind": "person", "person": "israel"},
+        {"id": "exercito", "label": "O exército", "kind": "person", "person": "farao"}
+      ],
+      "events": [
+        {"label": "O bloqueio", "ref": "Êxodo 14:1–12", "summary": "O povo percebe o mar à frente e a perseguição atrás."},
+        {"label": "O vento e a abertura", "ref": "Êxodo 14:13–22", "summary": "A narrativa descreve uma passagem aberta em meio às águas."},
+        {"label": "A travessia", "ref": "Êxodo 14:23–29", "summary": "Israel atravessa em terra seca; a perseguição perde seu controle sobre o caminho."},
+        {"label": "O cântico começa", "ref": "Êxodo 14:30–31", "summary": "O medo dá lugar à leitura comunitária do livramento vivido."}
+      ],
+      "route": [
+        {"label": "Ramessés", "query": "Ramessés Êxodo", "type": "place"},
+        {"label": "Mar de Juncos", "query": "Mar Vermelho Êxodo", "type": "place"},
+        {"label": "Deserto", "query": "deserto do Sinai", "type": "region"}
+      ]
+    },
+    {
+      "id": "atos-27-malta",
+      "matches": ["Atos 27", "Atos 28", "Acts 27", "Acts 28"],
+      "reference": "Atos 27–28",
+      "title": "Vento, naufrágio e Malta",
+      "subtitle": "Uma viagem interrompida que ainda chega ao destino",
+      "sceneClass": "malta",
+      "badge": "JORNADA ACOMPANHADA",
+      "place": {
+        "name": "Malta",
+        "query": "Malta Atos 28",
+        "description": "A ilha é o ponto de chegada do relato após a tempestade e o naufrágio." 
+      },
+      "certainty": "Rota marítima aproximada • registro narrativo",
+      "mediaQuery": "Malta coast shipwreck",
+      "panoramaQuery": "Malta coast Mediterranean 360",
+      "people": [
+        {"id": "paulo", "name": "Paulo", "role": "Prisioneiro e testemunha", "description": "Paulo atravessa o risco da viagem e continua servindo as pessoas depois do naufrágio."},
+        {"id": "tripulacao", "name": "Tripulação", "role": "Navegantes", "description": "A tripulação representa o saber prático do mar e a luta para manter o navio vivo."},
+        {"id": "centuriao", "name": "O centurião", "role": "Responsável pela escolta", "description": "A decisão do centurião influencia quem vive e como o grupo alcança a terra."}
+      ],
+      "hotspots": [
+        {"id": "navio", "label": "O navio", "kind": "place", "event": 1},
+        {"id": "paulo", "label": "Paulo", "kind": "person", "person": "paulo"},
+        {"id": "tempestade", "label": "A tempestade", "kind": "event", "event": 1},
+        {"id": "malta", "label": "A costa de Malta", "kind": "place", "event": 3}
+      ],
+      "events": [
+        {"label": "A partida", "ref": "Atos 27:1–13", "summary": "A viagem começa com decisões de rota e sinais de que o tempo não é favorável."},
+        {"label": "A tempestade", "ref": "Atos 27:14–26", "summary": "O vento domina a navegação; a esperança passa a depender de uma palavra de perseverança."},
+        {"label": "O naufrágio", "ref": "Atos 27:27–44", "summary": "O navio se perde, mas as pessoas alcançam a terra conforme o relato."},
+        {"label": "A ilha acolhe", "ref": "Atos 28:1–10", "summary": "Em Malta, o grupo encontra acolhimento e Paulo continua a cuidar dos enfermos."}
+      ],
+      "route": [
+        {"label": "Cesareia", "query": "Cesareia Atos 27", "type": "place"},
+        {"label": "Mar Mediterrâneo", "query": "Mediterrâneo Atos 27", "type": "region"},
+        {"label": "Malta", "query": "Malta Atos 28", "type": "place"},
+        {"label": "Roma", "query": "Roma Atos 28", "type": "place"}
+      ]
+    }
+  ]
+}

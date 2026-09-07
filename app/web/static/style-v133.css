@@ -11227,11 +11227,16 @@ body.lmx150-theme-night #bOut .lmx-bible-v3-verse-number{color:#6ea8ff!important
 body.lmx150-theme-night #bOut a,body.lmx150-theme-night #bxVerseContext a{color:#9dd4ff!important}
 /* ---------- 9. ESCALA DE FONTE DO LEITOR ---------- */
 #bOut .lmx-bible-v3-verse,#bOut .lmx-bible-v3-text{transition:font-size .18s ease}
-body.lmx150-fsize-1 #bOut .lmx-bible-v3-verse,body.lmx150-fsize-1 #bOut .lmx-bible-v3-text{font-size:84%!important}
-body.lmx150-fsize-2 #bOut .lmx-bible-v3-verse,body.lmx150-fsize-2 #bOut .lmx-bible-v3-text{font-size:93%!important}
-body.lmx150-fsize-3 #bOut .lmx-bible-v3-verse,body.lmx150-fsize-3 #bOut .lmx-bible-v3-text{font-size:100%!important}
-body.lmx150-fsize-4 #bOut .lmx-bible-v3-verse,body.lmx150-fsize-4 #bOut .lmx-bible-v3-text{font-size:112%!important}
-body.lmx150-fsize-5 #bOut .lmx-bible-v3-verse,body.lmx150-fsize-5 #bOut .lmx-bible-v3-text{font-size:126%!important}
+body.lmx150-fsize-1 #bOut .lmx-bible-v3-verse{font-size:84%!important}
+body.lmx150-fsize-1 #bOut .lmx-bible-v3-text{font-size:calc(84% * var(--bx-reader-scale,1))!important}
+body.lmx150-fsize-2 #bOut .lmx-bible-v3-verse{font-size:93%!important}
+body.lmx150-fsize-2 #bOut .lmx-bible-v3-text{font-size:calc(93% * var(--bx-reader-scale,1))!important}
+body.lmx150-fsize-3 #bOut .lmx-bible-v3-verse{font-size:100%!important}
+body.lmx150-fsize-3 #bOut .lmx-bible-v3-text{font-size:calc(100% * var(--bx-reader-scale,1))!important}
+body.lmx150-fsize-4 #bOut .lmx-bible-v3-verse{font-size:112%!important}
+body.lmx150-fsize-4 #bOut .lmx-bible-v3-text{font-size:calc(112% * var(--bx-reader-scale,1))!important}
+body.lmx150-fsize-5 #bOut .lmx-bible-v3-verse{font-size:126%!important}
+body.lmx150-fsize-5 #bOut .lmx-bible-v3-text{font-size:calc(126% * var(--bx-reader-scale,1))!important}
 /* ---------- 11. MOBILE â€” leque/topo maiores sem estourar ---------- */
 @media(max-width:760px){
   #bOut .lmx-bible-v3-tools button,#bOut .lmx-bible-v3-extra button{min-height:42px!important;font-size:11.5px!important;padding:7px 10px!important}
@@ -17265,3 +17270,109 @@ body.lmx-bx-full .bx-dock-cfg{display:none!important}
 #workspace .studio-wizard.studio-dna-view-list .dna-create-card h4{font-size:14px!important;margin:0!important}
 }
 
+
+/* ===== 5.4.205 — Compartilhar passagem (pop-up maior + leque) ===== */
+.bx-share-pop{position:fixed;inset:0;z-index:2147483001;display:flex;align-items:center;justify-content:center;padding:14px;background:rgba(2,8,14,.62);backdrop-filter:blur(7px);box-sizing:border-box}
+.bx-share-pop[hidden]{display:none!important}
+.bx-share-card{width:min(600px,96vw);max-height:90vh;overflow:auto;border:1px solid #48677f;border-radius:18px;padding:16px;background:linear-gradient(180deg,#0e2130,#07111c);color:#eef4f7;box-shadow:0 34px 120px rgba(0,0,0,.72);scrollbar-width:thin}
+.bx-share-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding-bottom:12px;border-bottom:1px solid #29485e}
+.bx-share-head>div{min-width:0}
+.bx-share-head small{color:#6fa1c0;font-size:9px;letter-spacing:2px;font-weight:600;display:block}
+.bx-share-head h3{margin:4px 0 2px;font-size:21px;line-height:1.2;color:#fff;word-break:break-word}
+.bx-share-head .bx-share-sub{color:#a9c2d4;font-size:11px;margin:0}
+.bx-share-close{flex:0 0 auto;width:34px;height:34px;border:1px solid #3f5f77;border-radius:10px;background:#0a1722;color:#eaf1f5;font-size:19px;line-height:1;cursor:pointer}
+.bx-share-close:hover{background:#133044;border-color:#5d87a4}
+.bx-share-preview{margin:12px 0;padding:12px 12px 10px;border:1px solid #24415a;border-radius:13px;background:#0a1926;max-height:232px;overflow:auto;display:flex;flex-direction:column;gap:8px}
+.bx-share-preview span{display:block;font-size:12px;line-height:1.55;color:#dbe6ec}
+.bx-share-preview span b{color:#e7c15c;font-weight:700;margin-right:7px}
+.bx-share-preview em{color:#6fa1c0;font-size:10px;font-style:normal}
+.bx-share-actions{display:grid;grid-template-columns:repeat(auto-fit,minmax(158px,1fr));gap:8px;margin:4px 0 10px}
+.bx-share-btn{display:flex;align-items:center;gap:10px;min-height:52px;padding:8px 11px;border-radius:13px;border:1px solid #2c4a61;background:#0a1722;color:#eaf1f5;cursor:pointer;text-align:left;transition:transform .08s ease,border-color .12s ease,background .12s ease}
+.bx-share-btn:hover{transform:translateY(-1px)}
+.bx-share-btn:active{transform:translateY(0) scale(.985)}
+.bx-share-btn i{font-style:normal;font-size:21px;line-height:1}
+.bx-share-btn span{min-width:0}
+.bx-share-btn b{display:block;font-size:12px;color:#fff;font-weight:600}
+.bx-share-btn small{display:block;color:#8fb0c6;font-size:9px;margin-top:1px}
+.bx-share-mail:hover{border-color:#3b7eb8;background:#0d2233}
+.bx-share-wa:hover{border-color:#1fa855;background:#0c241b}
+.bx-share-app:hover{border-color:#8b5bd6;background:#1b1330}
+.bx-share-copy:hover{border-color:#c99a2e;background:#2a2010}
+.bx-share-fav:hover{border-color:#c25ea8;background:#2a1225}
+.bx-share-done{display:none;align-items:center;gap:9px;margin:2px 0 0;padding:11px 13px;border-radius:12px;border:1px solid #2e7d4f;background:linear-gradient(180deg,rgba(31,153,92,.18),rgba(16,83,52,.16));color:#dff3e6;font-size:13px;font-weight:600}
+.bx-share-done[hidden]{display:none!important}
+.bx-share-done:not([hidden]){display:flex}
+.bx-share-done span{font-size:17px;line-height:1}
+@keyframes bxShareFlashKf{0%{background:rgba(233,194,88,.5);box-shadow:0 0 0 3px rgba(233,194,88,.6)}55%{background:rgba(233,194,88,.22);box-shadow:0 0 0 2px rgba(233,194,88,.35)}100%{background:rgba(233,194,88,0);box-shadow:0 0 0 0 rgba(233,194,88,0)}}
+.bx-share-flash{animation:bxShareFlashKf 1.9s ease .0s 1!important;border-radius:9px}
+
+/* 5.4.205b — seletor do compartilhar (texto completo x versiculos especificos) */
+.bx-share-card{width:min(640px,96vw)!important}
+.bx-share-modes{display:flex;gap:6px;margin:10px 0 8px;padding:4px;border:1px solid #24415a;border-radius:12px;background:#08131d}
+.bx-share-mode{flex:1 1 0;display:flex;align-items:center;justify-content:center;gap:6px;padding:8px 6px;border:1px solid transparent;border-radius:9px;background:transparent;color:#a9c2d4;font-size:11px;font-weight:600;cursor:pointer;white-space:nowrap}
+.bx-share-mode.active{background:#123045;color:#fff;border-color:#3b7eb8}
+.bx-share-preview[hidden]{display:none!important}
+.bx-share-picker{margin:0 0 10px;border:1px solid #24415a;border-radius:13px;background:#0a1926;overflow:hidden}
+.bx-share-picker[hidden]{display:none!important}
+.bx-share-picker-head{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:7px 10px;border-bottom:1px solid #1e3a4f;color:#9fc0d4;font-size:10px}
+.bx-share-pick-btns{display:flex;gap:5px}
+.bx-share-pick-btns button{background:#0f2636;color:#cddde6;border:1px solid #2c516b;border-radius:7px;font-size:9px;padding:4px 8px;cursor:pointer}
+.bx-share-pick-btns button:hover{border-color:#4a7390}
+.bx-share-pick-list{max-height:150px;overflow:auto;display:flex;flex-direction:column}
+.bx-share-pick{display:flex;align-items:center;gap:8px;padding:6px 10px;cursor:pointer}
+.bx-share-pick:hover{background:#0e2233}
+.bx-share-pick input{accent-color:#e0b64f;width:15px;height:15px;flex:0 0 auto;cursor:pointer}
+.bx-share-pick-ref{color:#e7c15c;font-size:10px;font-weight:700;min-width:78px;flex:0 0 auto}
+.bx-share-pick-tx{color:#c7d6de;font-size:10px;line-height:1.4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* 5.4.205c — fonte maior dentro do pop-up do compartilhar (inclusive passagem biblica) */
+.bx-share-head small{font-size:11px}
+.bx-share-head h3{font-size:26px;margin:6px 0 3px}
+.bx-share-head .bx-share-sub{font-size:14px}
+.bx-share-close{width:38px;height:38px;font-size:21px}
+.bx-share-preview{max-height:270px;gap:9px;padding:14px 14px 12px}
+.bx-share-preview span{font-size:17px;line-height:1.6;color:#e6eef2}
+.bx-share-preview span b{font-size:15px;font-weight:800;color:#eccb6b;margin-right:8px}
+.bx-share-preview em{font-size:13px}
+.bx-share-mode{font-size:15px;padding:9px 8px}
+.bx-share-mode i,.bx-share-mode em{font-style:normal}
+.bx-share-picker-head{font-size:13px;padding:9px 12px}
+.bx-share-pick-btns button{font-size:12px;padding:6px 11px}
+.bx-share-pick-list{max-height:240px}
+.bx-share-pick{gap:10px;padding:9px 12px}
+.bx-share-pick input{width:18px;height:18px}
+.bx-share-pick-ref{font-size:15px;min-width:88px}
+.bx-share-pick-tx{font-size:15px;line-height:1.5;white-space:normal;overflow:visible;text-overflow:clip}
+.bx-share-btn{min-height:58px;gap:11px;padding:9px 12px}
+.bx-share-btn i{font-size:24px}
+.bx-share-btn b{font-size:15px}
+.bx-share-btn small{font-size:12px;margin-top:2px}
+.bx-share-done{font-size:15px;padding:12px 14px}
+.bx-share-done span{font-size:19px}
+
+/* 5.4.205c2 — vence a regra global button{font-size:12px!important} dentro do share */
+.bx-share-card .bx-share-modes .bx-share-mode{font-size:15px!important}
+.bx-share-card .bx-share-close{font-size:22px!important;width:38px;height:38px}
+.bx-share-card .bx-share-pick-btns button{font-size:12px!important;min-height:0!important;padding:6px 11px!important}
+
+/* 5.4.206 — A+/A-/100% dentro do rail cinza (leitura da Biblia: lateral normal e fim da tela cheia) */
+.bible-x-shell .bx-v157-rail .bx-v157-zoom{width:32px!important;min-width:32px!important;height:32px!important;min-height:32px!important;padding:0!important;border:1px solid #2d4557!important;border-radius:9px!important;background:#08131d!important;color:#dbe5eb!important;font-size:13px!important;font-weight:700!important;line-height:1!important;cursor:pointer!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;flex:0 0 auto!important;margin:0!important}
+.bible-x-shell .bx-v157-rail .bx-v157-zoom-reset{width:auto!important;min-width:46px!important;padding:0 4px!important;font-size:11px!important;letter-spacing:.2px}
+.bible-x-shell .bx-v157-rail .bx-v157-zoom:hover{border-color:#c7a14a!important;color:#f2d77d!important}
+/* 5.4.206 — rail SOMENTE na leitura da Biblia local (normal ou full de LEITURA).
+   Some totalmente quando um OUTRO modulo/pagina abre em tela cheia (.bx-page-full
+   ou o legado body.lmx-bx-full sem leitura). */
+body:has(.bible-x-shell.bx-page-full) .bx-v157-rail,
+body.lmx-bx-full:not(:has(.bible-x-shell.bx-reading-full)) .bx-v157-rail{display:none!important}
+
+/* 5.4.206b — rail SOMENTE na pagina da Biblia local. Fora da view "bible" (Home,
+   Studio, paineis, dashboard...) o rail some por completo, mesmo que o elemento
+   ainda exista no <body> (ele vive fora do .bible-x-shell). */
+body:not(.lmx-hide-global-nav) .bx-v157-rail{display:none!important}
+/* hover dourado nos A-/A+/100% do rail */
+.bx-v157-rail .bx-v157-zoom:hover{border-color:#e0b64f!important;color:#f6df8b!important}
+
+/* 5.4.207 — rail SOMENTE na leitura da Biblia (painel "reader" ativo). Em paineis
+   internos da Biblia X (Pesquisa, Mapas X, Midia X, Atlas, Referencias, ...) o painel
+   ativo NAO e o reader -> o rail some mesmo estando na view da Biblia. */
+body:has(.bible-x-shell [data-bible-panel].active:not([data-bible-panel="reader"])) .bx-v157-rail{display:none!important}

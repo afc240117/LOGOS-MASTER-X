@@ -1834,7 +1834,7 @@ ${homeDesktopControls(actions)}
   <section class="bible-x-section" data-bible-panel="media">
    <div class="bx-media-head"><div><span class="bible-x-stage">ETAPA 7</span><h3>🎥 Mídia X • Biblioteca Bíblica Visual</h3><p>Imagens, vídeos, áudios, apresentações e panoramas 360° ligados a passagens, lugares e estudos.</p></div><span class="bx-media-local">● Arquivos locais + fontes públicas</span></div>
    <div class="bx-media-toolbar"><div class="bx-media-query"><label>Pesquisar sua biblioteca por mídia, referência ou palavra-chave</label><div><input id="bxMediaQuery" placeholder="Jerusalém, João 3:16, templo, áudio..."><button class="btn primary" id="bxMediaFind">Pesquisar</button></div></div><div class="bx-media-filters"><button class="active" data-media-type="all">Todos</button><button data-media-type="image">🖼 Imagens</button><button data-media-type="panorama">🕶️ 360°</button><button data-media-type="video">🎬 Vídeos</button><button data-media-type="audio">🎧 Áudios</button><button data-media-type="document">📄 Outros</button></div></div>
-   <section class="bx-media-discovery"><header><div><span>✨ DESCOBRIR IMAGENS</span><h4>Galeria pública por tema ou lugar</h4><p>Pesquise imagens no Wikimedia Commons. Crédito e licença acompanham cada resultado.</p></div><small>Requer internet • confira a licença individual</small></header><div class="bx-media-public-search"><input id="bxMediaPublicQuery" value="Jerusalém bíblica" placeholder="Jerusalém, Mar da Galileia, Corinto..."><button class="btn primary" id="bxMediaPublicFind">🖼 Buscar imagens</button><button class="btn secondary" id="bxMediaPublic360">🕶️ Buscar 360°</button></div><div id="bxMediaPublicGrid" class="bx-media-public-grid"><div class="bx-media-public-empty">Escolha um tema para montar uma galeria visual dinâmica.</div></div></section>
+   <section class="bx-media-discovery"><header><div><span>✨ DESCOBRIR IMAGENS</span><h4>Galeria pública por tema ou lugar</h4><p>Pesquise imagens relacionadas ao texto e ao lugar em estudo. Crédito e licença acompanham cada resultado.</p></div><small>Requer internet • confira a licença individual</small></header><div class="bx-media-public-search"><input id="bxMediaPublicQuery" value="" placeholder="A passagem ou o lugar em estudo aparecerá aqui..."><button class="btn primary" id="bxMediaPublicFind">🖼 Buscar imagens</button><button class="btn secondary" id="bxMediaPublic360">🕶️ Buscar 360°</button></div><div id="bxMediaPublicGrid" class="bx-media-public-grid"><div class="bx-media-public-empty">Abra uma passagem bíblica ou informe um tema para montar a galeria visual.</div></div></section>
    <section class="bx-media-import-card"><div><h4>Adicionar arquivos locais</h4><p>Os arquivos permanecem neste dispositivo. Imagens equiretangulares próximas de 2:1 são reconhecidas automaticamente como panoramas 360°.</p><small id="bxMediaStorage" class="bx-media-storage" aria-live="polite">Verificando armazenamento local...</small></div><div class="bx-media-form"><input type="file" id="bxMediaFiles" accept="image/*,video/*,audio/*,.pdf,.doc,.docx,.ppt,.pptx,.txt" multiple><input id="bxMediaRef" placeholder="Referência (opcional), ex.: Isaías 6"><input id="bxMediaTags" placeholder="Tags ou lugar, separados por vírgula"><input id="bxMediaCredits" placeholder="Créditos / fonte"><input id="bxMediaLicense" placeholder="Licença / permissão de uso"><textarea id="bxMediaDesc" rows="2" placeholder="Descrição da mídia"></textarea><button class="btn blue" id="bxMediaAdd">＋ Adicionar à Mídia X</button><small id="bxMediaActionStatus" class="bx-media-action-status" aria-live="polite"></small></div></section>
    <div class="bx-media-layout"><section class="bx-media-results"><div class="bx-media-results-head"><div><h4>Sua biblioteca</h4><p id="bxMediaCount">0 itens</p></div><div class="row"><button class="btn secondary" id="bxMediaSlideshow">▶ Apresentação</button><button class="btn secondary" id="bxMediaExample">Carregar exemplos</button><button class="btn secondary" id="bxMediaExport">Exportar índice</button></div></div><div id="bxMediaGrid" class="bx-media-grid"><div class="bx-media-empty">Adicione arquivos locais ou salve uma referência visual pública.</div></div></section><aside class="bx-media-detail" id="bxMediaDetail"><div class="bx-media-detail-empty"><span>🎥</span><h4>Visualização de mídia</h4><p>Selecione um item para ampliar, apresentar, ouvir, assistir ou explorar em 360°.</p></div></aside></div>
    <details class="bible-x-import"><summary>⚙️ Gerenciar Mídia X</summary><p class="muted">O índice pode ser exportado em JSON sem copiar os arquivos binários. Use apenas mídia cuja licença permita armazenamento e uso.</p><div class="row"><button class="btn danger" id="bxMediaClear">Limpar biblioteca de mídia</button></div></details>
@@ -3860,14 +3860,56 @@ REGRAS:
    return bxCopyText(`${bxPassageText(rows)}\n\n${ref} • ${label}`);
  };
 
+ 
  const bxSharePassage=async(rows=[])=>{
-   if(!rows.length)return;
-   const text=bxPassageText(rows);
-   try{
-     if(navigator.share){await navigator.share({title:"Bíblia X",text});return}
-   }catch(_){}
-   await bxCopyText(text);
+   const _r=Array.isArray(rows)?rows:[];
+   if(!_r.length)return;
+   const _label0=($("#bVersion")?.selectedOptions?.[0]?.textContent?.trim())||selectedTranslation()||"Bíblia X";
+   const label=_label0==="porbr2018"?"Português (Bíblia X)":(_label0||"Bíblia X");
+   const esc=escapeHtml;
+   const build=rows=>{
+     if(!rows.length)return null;
+     const a=rows[0],b=rows[rows.length-1];
+     const same=rows.length>1&&a.book===b.book&&String(a.chapter)===String(b.chapter);
+     const ref=rows.length===1?a.ref:(same?`${a.book} ${a.chapter}:${a.verse}-${b.verse}`:`${a.book} ${a.chapter} – ${b.book} ${b.chapter}`);
+     const num=rows.length>1&&same;
+     const body=num?rows.map(v=>`${v.verse} ${v.text}`).join("\n"):rows.map(v=>`${v.ref} — ${v.text}`).join("\n");
+     const head=num?`${a.book} ${a.chapter}`:ref;
+     const pretty=`${head}\n${body}`;
+     return {rows,ref,label,pretty,text:`${pretty}\n\n${ref} • ${label}\nLOGOS MASTER X • Bíblia X`};
+   };
+   let mode="all";
+   let pop=document.getElementById("bxSharePop");
+   if(!pop){pop=document.createElement("div");pop.id="bxSharePop";pop.className="bx-share-pop";pop.hidden=true}
+   if(pop.parentNode!==document.body)document.body.appendChild(pop);
+   try{if(document.querySelector(".bible-x-shell.bx-page-full"))bxPortalFullscreenOverlay(pop)}catch(_e){}
+   const listHtml=_r.map(v=>`<label class="bx-share-pick"><input type="checkbox" data-pick-ref="${esc(v.ref)}" checked><span class="bx-share-pick-ref">${esc(v.ref)}</span><span class="bx-share-pick-tx">${esc(String(v.text).slice(0,190))}${String(v.text).length>92?"…":""}</span></label>`).join("");
+   const previewRows=_r.slice(0,18);
+   let previewHtml=previewRows.map(v=>`<span><b>${esc(v.ref)}</b>${esc(v.text)}</span>`).join("");
+   if(_r.length>previewRows.length)previewHtml+=`<em>+ ${_r.length-previewRows.length} ${_r.length-previewRows.length===1?"versículo":"versículos"} nesta passagem…</em>`;
+   const _base=build(_r);
+   pop.innerHTML=`<section class="bx-share-card" role="dialog" aria-modal="true" aria-labelledby="bxShareTitle"><header class="bx-share-head"><div><small>COMPARTILHAR PASSAGEM</small><h3 id="bxShareTitle">${esc(_base.ref)}</h3><p class="bx-share-sub">${esc(label)} • ${_r.length} ${_r.length===1?"versículo":"versículos"}</p></div><button type="button" class="bx-share-close" data-bx-share-close title="Fechar" aria-label="Fechar compartilhamento">×</button></header><div class="bx-share-modes"><button type="button" class="bx-share-mode active" data-bx-share-mode="all">📄 Texto completo</button><button type="button" class="bx-share-mode" data-bx-share-mode="some">🎯 Escolher versículos</button></div><div class="bx-share-preview" data-share-preview>${previewHtml}</div><div class="bx-share-picker" data-share-picker hidden><div class="bx-share-picker-head"><span id="bxSharePickCount"></span><span class="bx-share-pick-btns"><button type="button" data-pick-all>Marcar todos</button><button type="button" data-pick-none>Nenhum</button></span></div><div class="bx-share-pick-list">${listHtml}</div></div><div class="bx-share-actions"><button type="button" class="bx-share-btn bx-share-mail" data-bx-share-mail><i>✉️</i><span><b>E-mail</b><small>enviar o texto</small></span></button><button type="button" class="bx-share-btn bx-share-wa" data-bx-share-wa><i>🟢</i><span><b>WhatsApp</b><small>abrir conversa</small></span></button><button type="button" class="bx-share-btn bx-share-app" data-bx-share-app><i>📣</i><span><b>Outros apps</b><small>menu nativo</small></span></button><button type="button" class="bx-share-btn bx-share-copy" data-bx-share-copy><i>📋</i><span><b>Copiar</b><small>texto formatado</small></span></button><button type="button" class="bx-share-btn bx-share-fav" data-bx-share-fav><i>⭐</i><span><b>Favoritar</b><small>guardar nos Favoritos X</small></span></button></div><p class="bx-share-done" id="bxShareDone" data-bx-share-done role="status" hidden></p></section>`;
+   pop.hidden=false;
+   if(!pop.__bxBound){pop.addEventListener("click",ev=>{if(ev.target===pop)pop.hidden=true});pop.__bxBound=true}
+   pop.querySelector("[data-bx-share-close]")?.addEventListener("click",()=>pop.hidden=true);
+   const done=(icon,msg)=>{const el=document.getElementById("bxShareDone");if(!el)return;el.innerHTML=`<span>${icon}</span><b>${msg}</b>`;el.hidden=false;clearTimeout(el.__bxT);el.__bxT=setTimeout(()=>{el.hidden=true},6000)};
+   const refreshCount=()=>{const box=document.getElementById("bxSharePickCount");if(!box)return;const n=pop.querySelectorAll("input[data-pick-ref]:checked").length;box.textContent=`${n} de ${_r.length} ${_r.length===1?"versículo selecionado":"versículos selecionados"}`};
+   const setMode=m=>{mode=m;pop.querySelectorAll("[data-bx-share-mode]").forEach(b=>b.classList.toggle("active",b.dataset.bxShareMode===m));const pick=pop.querySelector("[data-share-picker]"),prev=pop.querySelector("[data-share-preview]");if(pick)pick.hidden=m!=="some";if(prev)prev.hidden=m==="some";refreshCount()};
+   const getRows=()=>{if(mode!=="some")return _r;const set=[...pop.querySelectorAll("input[data-pick-ref]:checked")].map(i=>i.dataset.pickRef);return _r.filter(v=>set.indexOf(v.ref)>=0)};
+   const flash=rows=>{const refs=new Set(rows.map(v=>v.ref)),els=[];document.querySelectorAll("#bOut [data-bx-v3-verse]").forEach(el=>{if(el.dataset.ref&&refs.has(el.dataset.ref)){els.push(el);el.classList.add("bx-share-flash")}});if(els.length){setTimeout(()=>els[0].scrollIntoView({behavior:"smooth",block:"center"}),120);setTimeout(()=>els.forEach(el=>el.classList.remove("bx-share-flash")),2100)}};
+   const ready=()=>{const rows=getRows();if(!rows.length){done("⚠️","Selecione ao menos um versículo.");return null}flash(rows);return build(rows)};
+   pop.querySelectorAll("[data-bx-share-mode]").forEach(b=>b.addEventListener("click",()=>setMode(b.dataset.bxShareMode)));
+   pop.querySelectorAll("input[data-pick-ref]").forEach(cb=>cb.addEventListener("change",refreshCount));
+   pop.querySelector("[data-pick-all]")?.addEventListener("click",()=>{pop.querySelectorAll("input[data-pick-ref]").forEach(cb=>cb.checked=true);refreshCount()});
+   pop.querySelector("[data-pick-none]")?.addEventListener("click",()=>{pop.querySelectorAll("input[data-pick-ref]").forEach(cb=>cb.checked=false);refreshCount()});
+   refreshCount();
+   pop.querySelector("[data-bx-share-copy]")?.addEventListener("click",async()=>{const s=ready();if(!s)return;const ok=await bxCopyText(s.text);done(ok?"📋":"⚠️",ok?`Texto de ${s.ref} copiado!`:`Não foi possível copiar ${s.ref}.`)});
+   pop.querySelector("[data-bx-share-mail]")?.addEventListener("click",()=>{const s=ready();if(!s)return;window.location.href=`mailto:?subject=${encodeURIComponent(`Bíblia X — ${s.ref}`)}&body=${encodeURIComponent(s.text)}`;done("✉️",`E-mail aberto com ${s.ref}.`)});
+   pop.querySelector("[data-bx-share-wa]")?.addEventListener("click",()=>{const s=ready();if(!s)return;window.open(`https://wa.me/?text=${encodeURIComponent(s.text)}`,"_blank");done("🟢",`WhatsApp aberto com ${s.ref}.`)});
+   pop.querySelector("[data-bx-share-app]")?.addEventListener("click",async()=>{const s=ready();if(!s)return;if(navigator.share){try{await navigator.share({title:`Bíblia X — ${s.ref}`,text:s.text});done("📣","Compartilhamento aberto.");return}catch(err){if(err&&err.name==="AbortError")return}}const ok=await bxCopyText(s.text);done(ok?"📣":"⚠️",ok?"Menu nativo indisponível — texto copiado.":"Não foi possível compartilhar.")});
+   pop.querySelector("[data-bx-share-fav]")?.addEventListener("click",async()=>{const s=ready();if(!s)return;try{const all=await favoritesAll().catch(()=>[]);const key=normalizeBibleRef(s.ref).toLowerCase();const dup=all.find(x=>x.type==="verse"&&normalizeBibleRef(x.reference||"").toLowerCase()===key);if(dup){done("⭐",`${s.ref} já está nos Favoritos X.`);return}await favoritesPutMany([{type:"verse",title:s.ref,reference:s.ref,summary:s.pretty.slice(0,900),sourceModule:"Bíblia X",tags:["passagem","biblia-x"]}]);done("⭐",`${s.ref} adicionado aos Favoritos X!`)}catch(err){done("⚠️","Falha ao favoritar: "+String(err&&err.message||err))}});
  };
+
 
  const bxPrintPassage=(rows=[])=>{
    if(!rows.length)return;
@@ -5600,6 +5642,10 @@ Gerado em ${new Date().toLocaleString("pt-BR")}
     <button type="button" data-v157-listen title="Ouvir capítulo a partir do versículo atual">🔊</button>
     <button type="button" data-v157-bookmark-current title="Marcar versículo atual">☆</button>
     <button type="button" data-v157-copy-current title="Copiar versículo atual">✂</button>
+    <!-- 5.4.206 zoom no rail -->
+    <button type="button" class="bx-v157-zoom bx-v157-zoom-dec" data-bx-read="smaller" data-v157-zoomdec title="Diminuir zoom do texto">A−</button>
+    <button type="button" class="bx-v157-zoom bx-v157-zoom-inc" data-bx-read="larger" data-v157-zoominc title="Aumentar zoom do texto">A+</button>
+    <button type="button" class="bx-v157-zoom bx-v157-zoom-reset" data-bx-read="reset" data-v157-zoomreset title="Zoom 100%">100%</button>
     <button type="button" data-v157-fullscreen title="Tela cheia">⛶</button>
     <button type="button" data-v157-more title="Mais ações da passagem">＋</button>
     <button type="button" class="bx-v157-extra" data-bx-extra="chap-prev" data-v157-chap-prev title="Capítulo anterior">⏮</button>
@@ -9110,8 +9156,7 @@ window.BibliaXLocal = window.BibliaXLocal || {
       const _cl=clean?"✨ Clean: ON":"✨ Clean";
       if(c.textContent!==_cl)c.textContent=_cl;
     }
-    const r=document.querySelector('[data-bx-read="reset"]');
-    if(r){const _pct=zoom+"%";if(r.textContent!==_pct)r.textContent=_pct;}
+    document.querySelectorAll('[data-bx-read="reset"]').forEach(r=>{const _pct=zoom+"%";if(r.textContent!==_pct)r.textContent=_pct});
   }
 
   window.LMXBibleReader={
@@ -9249,6 +9294,83 @@ window.BibliaXLocal = window.BibliaXLocal || {
     }
   };
 
+  /* 5.4.208 — ZOOM ESTAVEL na tela cheia: A+/A-/100% nao fazem a leitura pular.
+     O scale do texto NAO relayouta na hora: o scrollHeight so cresce um frame/tempo
+     depois de trocar a var. O ajuste roda varias vezes (sync, double-rAF e timeout)
+     ate o layout do novo zoom existir. O overflow-anchor nativo fica desligado ATE o
+     ultimo ajuste: senao o Chrome ancora pelo TOPO da viewport e desfaz o snap do
+     FIM — no fim do texto o usuario dava A+ e ficava ~600px acima do fim novo,
+     perdendo a barra de baixo. */
+  function bxV157ZoomStable(d){
+    const shell=document.querySelector(".bible-x-shell.bx-reading-full");
+    if(!shell){ if(window.LMXBibleReader)window.LMXBibleReader.zoom(d); return; }
+    const endPrev=(shell.scrollHeight-shell.clientHeight-shell.scrollTop)<=150;
+    /* 5.4.210 — âncora DETERMINÍSTICA no verso/textrow mais próximo do centro
+       do shell. O elementFromPoint num único pixel podia cair num vão entre
+       versos (ou num overlay) e âncorar o CONTAINER inteiro (cujo topo quase
+       não se move) → compensação nula → o texto "às vezes" não subia e
+       encavalava na barra. Agora escolhe sempre um bloco de leitura real. */
+    const sr=shell.getBoundingClientRect();
+    const yMid=sr.top+shell.clientHeight*0.5;
+    let anchor=null,v0=0;
+    if(!endPrev){
+      let best=null,bd=1e9;
+      const cand=shell.querySelectorAll('.lmx-bible-v3-textrow,.lmx-bible-v3-verse,.bx-reader-verse');
+      for(const v of cand){
+        if(!((v.textContent||"").trim()))continue;
+        const r=v.getBoundingClientRect();
+        if(r.bottom<=sr.top||r.top>=sr.bottom)continue;
+        const dd=Math.abs(r.top+r.height*0.5-yMid);
+        if(dd<bd){bd=dd;best=v;}
+      }
+      if(!best){
+        /* fallback: texto real sob o centro */
+        const x=sr.left+Math.min(Math.max(sr.width*0.5,70),Math.max(sr.right-70,sr.left+70));
+        let el=document.elementFromPoint(x,yMid);
+        let g=0;
+        while(el&&el!==document.body&&el!==shell&&!((el.textContent||"").trim())&&g++<12)el=el.parentElement;
+        if(el&&el!==document.body&&el!==shell)best=el;
+      }
+      if(best){anchor=best;v0=best.getBoundingClientRect().top-sr.top;}
+    }
+    const prevOA=shell.style.overflowAnchor;
+    shell.style.overflowAnchor="none";
+    if(window.LMXBibleReader)window.LMXBibleReader.zoom(d);
+    let lastSt=-1;
+    const fix=()=>{
+      void shell.scrollHeight; /* força layout (se o do novo zoom já existe) */
+      const m=shell.scrollHeight-shell.clientHeight;
+      if(!anchor){ if(endPrev)shell.scrollTop=m>0?m:0; }
+      else{
+        const v1=anchor.getBoundingClientRect().top-shell.getBoundingClientRect().top;
+        shell.scrollTop=Math.max(0,Math.min(shell.scrollTop+(v1-v0),m>0?m:0));
+      }
+      lastSt=shell.scrollTop;
+    };
+    fix();
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{fix();}));
+    setTimeout(()=>{fix();},90);
+    setTimeout(()=>{
+      /* 5.4.210 — assentamento tardio: só age se o usuário NÃO rolou desde o
+         último ajuste (senão não briga com o leitor). Corrige layout que
+         assenta depois dos 90ms (fonte, barra do navegador, scrollbar que
+         aparece/some e muda a quebra de linha) e que, com o overflow-anchor
+         reativado, puxaria o scroll para o topo e desfaria o snap do fim. */
+      if(Math.abs(shell.scrollTop-lastSt)<=8){
+        const m2=shell.scrollHeight-shell.clientHeight;
+        if(!anchor){
+          if(endPrev&&(m2-shell.scrollTop)>4)shell.scrollTop=m2;
+        }else{
+          const cur=anchor.getBoundingClientRect().top-shell.getBoundingClientRect().top;
+          const need=cur-v0;
+          if(Math.abs(need)>4&&Math.abs(need)<shell.clientHeight*0.6)
+            shell.scrollTop=Math.max(0,Math.min(shell.scrollTop+need,m2>0?m2:0));
+        }
+      }
+      shell.style.overflowAnchor=prevOA||"";
+    },300);
+  }
+
   document.addEventListener("click",function(e){
     const p=e.target.closest("#bxPrimaryReading");
     if(p){e.preventDefault();e.stopImmediatePropagation();window.LMXBibleReader.open();return}
@@ -9260,9 +9382,9 @@ window.BibliaXLocal = window.BibliaXLocal || {
     if(!b)return;
     e.preventDefault();e.stopImmediatePropagation();
     const a=b.dataset.bxRead;
-    if(a==="smaller")window.LMXBibleReader.zoom(-10);
-    if(a==="larger")window.LMXBibleReader.zoom(10);
-    if(a==="reset")window.LMXBibleReader.zoom(0);
+    if(a==="smaller"||a==="larger"||a==="reset")bxV157ZoomStable(a==="smaller"?-10:(a==="larger"?10:0));
+    /* 5.4.207 — full da leitura: manter a barra visivel ~3,8s apos zoom */
+    if((a==="smaller"||a==="larger"||a==="reset")&&document.querySelector('.bible-x-shell.bx-reading-full')&&window.__bxV157PinRail)window.__bxV157PinRail();
     if(a==="fullscreen")window.LMXBibleReader.full(true);
     if(a==="exit")window.LMXBibleReader.full(false);
   },true);
@@ -14465,6 +14587,13 @@ window.BibleXPolimento=Object.assign(window.BibleXPolimento||{},{lote528:"concor
       if (d <= 56) want = true;                     /* fim do texto: mostra */
       else if (d > 150) want = false;               /* longe do fim: esconde */
       else want = railShown;                        /* 56..150: segura o estado atual (anti-pisca) */
+      /* 5.4.207 — pino do zoom na tela cheia: apos A+/A-/100% a barra fica
+         visivel ~3,8s (o zoom cresce o texto, sai do "fim" e sumiria). */
+      /* 5.4.209 — o pino so vale enquanto o usuario NAO rolar: se apos o
+         zoom ele rola pro meio do texto, a barra SOME (nao pode cobrir o que
+         esta lendo). No FIM a barra fica igual (regra d<=56). __bxV157PinSt
+         guarda o scroll do momento do zoom. */
+      if (Date.now() < (window.__bxV157PinT || 0) && sc && Math.abs((sc.scrollTop || 0) - (window.__bxV157PinSt || 0)) < 100) want = true;
       /* 5.4.195 — grava SEMPRE (idempotente): o estado é escrito a cada compute,
          então a barra nasce/esconde e só aparece quando a rolagem chega ao fim. */
       railShown = want;
@@ -14482,6 +14611,14 @@ window.BibleXPolimento=Object.assign(window.BibleXPolimento||{},{lote528:"concor
        largura a barra de baixo nasce escondida e aparece somente ao chegar ao fim.
        compute() grava o estado sempre (idempotente) — sem flash no início. */
     setInterval(function () { compute(); }, 350);
+    /* 5.4.207 — API pino: barra fica ~3,8s no full apos zoom */
+    window.__bxV157PinRail = function () {
+      window.__bxV157PinT = Date.now() + 3800;
+      var _bo = document.querySelector('#bOut'), _sh = document.querySelector('.bible-x-shell.bx-reading-full, .bible-x-shell.bx-page-full');
+      var _sc = (_bo && _bo.scrollHeight > _bo.clientHeight + 1) ? _bo : _sh;
+      window.__bxV157PinSt = _sc ? (_sc.scrollTop || 0) : 0;
+      compute();
+    };
     /* 5.4.200 — (sem o pointermove do PC e sem o "dedo na base" do celular): a barra
        de baixo da tela cheia aparece SOMENTE quando a rolagem chega ao fim do texto. */
 
@@ -14498,6 +14635,11 @@ window.BibleXPolimento=Object.assign(window.BibleXPolimento||{},{lote528:"concor
        = barra de baixo da tela cheia no PC (web). Mexer numa não afeta as outras. */
     var KEYS = { rail: 'logosbx:v157railvis', full: 'logosbx:v157fullvis', fullpc: 'logosbx:v157fullvis-pc' };
     var GROUPS = [
+      { t: 'Zoom do texto', rows: [
+        ['zoomdec','zoomdec','A−','Diminuir zoom',1],
+        ['zoominc','zoominc','A+','Aumentar zoom',1],
+        ['zoomreset','zoomreset','100%','Voltar a 100%',1]
+      ]},
       { t: 'Navegação', rows: [
         ['nav','nav','📖','Trocar passagem',1],
         ['chap-prev','chap-prev','⏮','Capítulo anterior',0],

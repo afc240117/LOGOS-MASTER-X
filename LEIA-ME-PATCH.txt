@@ -1,0 +1,14 @@
+LOGOS MASTER X — PATCH v5.4.207
+
+Este patch atualiza a Bíblia Viva — Modo Imersão com uma camada visual mais viva:
+
+- cores, luz quente, brilho, partículas, profundidade e movimento suave nas cenas;
+- botão "🌄 Carregar imagens" dentro da cena;
+- imagens públicas do Wikimedia Commons carregadas sob demanda;
+- crédito e licença visíveis para cada imagem;
+- navegação entre imagens sem sair da passagem;
+- fallback para a reconstrução editorial quando a internet estiver indisponível;
+- encaminhamento da imagem selecionada ao Studio X junto do contexto da cena.
+
+Arquivos: copie mantendo os caminhos relativos a partir da raiz do projeto.
+Versão acumulativa: 5.4.207.

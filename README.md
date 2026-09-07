@@ -2,6 +2,34 @@
 
 Projeto único e oficial.
 
+## Versão 5.4.205 — Bíblia Viva — Modo Imersão
+
+- entrada pelo versículo com `🕶 Entrar na história` e acesso pelo menu `Bíblia Viva`;
+- cena visual editorial ao lado do texto, com hotspots de lugares, pessoas e etapas narrativas;
+- abas integradas para cena, mapa, personagens e linha do tempo;
+- atalhos para Atlas X Vivo, Mídia X, busca panorâmica 360° e leitura em voz alta do navegador;
+- envio do contexto selecionado ao Studio X por armazenamento local, sem gerar mídia ou consumir créditos nesta camada;
+- catálogo inicial com João 4 em Sicar, Bartimeu em Jericó, Êxodo 14 e Atos 27–28 em Malta;
+- distinção explícita entre texto bíblico, reconstrução visual editorial, tradição e localização debatida;
+- layout responsivo para desktop e celular, mantendo os módulos anteriores acumulados.
+
+## Versão 5.4.206 — João 4 como piloto imersivo rico
+
+- João 4 associa automaticamente versículos selecionados às etapas narrativas correspondentes;
+- progresso anterior/próxima e pontos de etapa podem ser salvos localmente neste dispositivo;
+- novo painel de contexto histórico-cultural com período, barreiras sociais, objetos, perguntas e fontes;
+- cada etapa apresenta foco de leitura e atalho para abrir novamente a referência na Bíblia;
+- Contexto X, Personagens X e Linha do Tempo X podem ser abertos a partir da experiência;
+- o modelo continua preparado para acumular novas cenas sem substituir o catálogo anterior.
+
+## Versão 5.4.207 — Bíblia Viva visual viva
+
+- cenas com luz quente, partículas, profundidade, brilho e movimento suave;
+- botão `🌄 Carregar imagens` dentro do Modo Imersão, sem sair da passagem;
+- galeria pública sob demanda com imagens do Wikimedia Commons, crédito e licença visíveis;
+- carrossel de imagens na própria cena, com fallback editorial quando a internet não estiver disponível;
+- imagens apenas públicas e acionadas pelo usuário; esta camada não usa geração de IA nem consome créditos.
+
 ## Versão 5.3.11 — Pesquisa PRO compacta e legibilidade
 
 - barra da pesquisa bíblica mais baixa, mantendo campos e controles funcionais;

@@ -1,8 +1,8 @@
 {
   "project": "LOGOS MASTER X",
-  "version": "5.3.11",
-  "build": "2026-08-22",
-  "current_release": "Home com valores do Resumo do Sistema centralizados dentro das cápsulas originais nas 17 paletas",
+  "version": "5.4.207",
+  "build": "2026-09-07",
+  "current_release": "Bíblia Viva — visual vivo com cores, luz, partículas, movimento e imagens públicas com crédito dentro da cena",
   "mode": [
     "LOCAL/OFFLINE",
     "ONLINE/API"
@@ -15,6 +15,11 @@
     "Think/roteiros locais",
     "Bíblia importável",
     "Pesquisa bíblica local",
+    "Bíblia Viva — Modo Imersão",
+    "Cenas editoriais com hotspots",
+    "Rotas e lugares conectados ao Atlas X Vivo",
+    "Personagens e linha narrativa contextual",
+    "Mídia X, galeria pública com crédito e busca panorâmica 360°",
     "Concordância local",
     "Editor",
     "Biblioteca",
