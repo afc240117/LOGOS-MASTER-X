@@ -144,12 +144,12 @@
    zonas geográficas didáticas e skin de atlas. Sem mapas raster externos.
    ====================================================================== */
 .atx-shell{
-  --atx-atlas-paper:#E7DFC9;--atx-atlas-paper-2:#DDD4BB;
-  --atx-atlas-land-0:#CDBE98;--atx-atlas-land-1:#C7B98F;--atx-atlas-land-2:#C3B388;--atx-atlas-land-3:#BFAF83;--atx-atlas-land-4:#BDAA7E;
-  --atx-atlas-water-a:#9AC2D3;--atx-atlas-water-b:#82AFC5;--atx-atlas-water-c:#6F9FB8;
-  --atx-atlas-boundary:#887A59;--atx-atlas-boundary-strong:#695D42;--atx-atlas-text:#403A2D;--atx-atlas-soft:#736A55;
-  --atx-relief:#A88955;--atx-relief-strong:#8D7449;--atx-desert:#C7A66A;--atx-valley:#8AA78B;
-  --atx-region-wash:rgba(155,126,72,.10);--atx-river:#5B91AD;
+  --atx-atlas-paper:#D5C6A7;--atx-atlas-paper-2:#B9A77F;
+  --atx-atlas-land-0:#D9BC83;--atx-atlas-land-1:#D0AF73;--atx-atlas-land-2:#C7A368;--atx-atlas-land-3:#BC955D;--atx-atlas-land-4:#B48853;
+  --atx-atlas-water-a:#2A8B98;--atx-atlas-water-b:#217580;--atx-atlas-water-c:#185C69;
+  --atx-atlas-boundary:#816542;--atx-atlas-boundary-strong:#60492F;--atx-atlas-text:#40301F;--atx-atlas-soft:#6C563A;
+  --atx-relief:#93633A;--atx-relief-strong:#704526;--atx-desert:#C99454;--atx-valley:#77916E;
+  --atx-region-wash:rgba(130,91,40,.10);--atx-river:#2D8D9A;
 }
 .atx-paper-noise{fill:#fff;filter:url(#atxPaperNoise);opacity:0;pointer-events:none}
 .atx-map .base-marker.dot-only text{display:none}
@@ -158,6 +158,7 @@
 .atx-map .atx-region-wash{fill:var(--atx-region-wash);stroke:none;pointer-events:none}
 .atx-map .atx-relief ellipse{fill:url(#atxReliefGradient);stroke:rgba(110,91,58,.14);stroke-width:.55;vector-effect:non-scaling-stroke;pointer-events:none}
 .atx-map .atx-relief .inner{fill:none;stroke:rgba(104,85,52,.16);stroke-dasharray:2 4}
+.atx-map .atx-contour{fill:none;stroke:rgba(92,64,34,.23);stroke-width:.72;stroke-dasharray:2.5 3.5;vector-effect:non-scaling-stroke;pointer-events:none}
 .atx-map .atx-relief.desert ellipse{fill:rgba(194,155,86,.13);stroke:rgba(160,121,61,.10)}
 .atx-map .atx-relief.valley ellipse{fill:rgba(72,119,102,.08);stroke:rgba(72,119,102,.14)}
 .atx-map .atx-waterbody{fill:var(--atx-river);fill-opacity:.78;stroke:#527D93;stroke-width:.85;vector-effect:non-scaling-stroke;pointer-events:none}
@@ -216,3 +217,983 @@
  .atx-map .atx-carto-label.region{font-size:11px}.atx-map .atx-carto-label.sea{font-size:13px}
 }
 @media(prefers-reduced-motion:reduce){.atx-paper-noise{filter:none!important}.atx-map .atx-relief ellipse{transition:none!important}}
+
+/* ======================================================================
+   v5.4.5 — CARTOGRAFIA DE ESTUDO
+   Fronteiras limpas, relevo por curvas e sítios atuais/arqueológicos
+   distinguíveis sem transformar uma aproximação editorial em fotografia.
+   ====================================================================== */
+.atx-map .atx-grid-label{fill:rgba(181,222,221,.62);font:700 10px/1 system-ui;letter-spacing:.04em;paint-order:stroke;stroke:#08202b;stroke-width:3px;pointer-events:none}
+.atx-map .atx-grid-label.lat{fill:rgba(181,222,221,.46);font-size:9px}
+.atx-map .atx-ridge{fill:none;pointer-events:none;vector-effect:non-scaling-stroke}
+.atx-map .atx-ridge-shadow{stroke:rgba(0,17,25,.36);stroke-width:7;stroke-linecap:round;stroke-linejoin:round}
+.atx-map .atx-ridge-line{stroke:rgba(151,207,180,.48);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.atx-map .atx-ridge-detail{stroke:rgba(40,95,93,.5);stroke-width:.8;stroke-dasharray:2 5;stroke-linecap:round;stroke-linejoin:round}
+.atx-map .atx-ridge.desert .atx-ridge-line{stroke:rgba(194,177,122,.48)}
+.atx-map .atx-ridge.desert .atx-ridge-detail{stroke:rgba(108,104,76,.48)}
+.atx-map .atx-relief ellipse{opacity:.16}
+.atx-map .atx-relief .inner,.atx-map .atx-contour{opacity:.52}
+.atx-map .base-marker{cursor:pointer}
+.atx-map .base-marker .marker-hit{fill:transparent!important;stroke:none!important;pointer-events:all}
+.atx-map .base-marker .marker-dot{fill:#0b2730;stroke:#9ed7c9;stroke-width:1.8;vector-effect:non-scaling-stroke}
+.atx-map .base-marker .marker-symbol{fill:#9ed7c9;stroke:#06232b;stroke-width:1.1;vector-effect:non-scaling-stroke;pointer-events:none}
+.atx-map .base-marker.site-city .marker-symbol{fill:#e4f6df}
+.atx-map .base-marker.site-ruin .marker-dot{fill:#cc9e57;stroke:#fff0c1}
+.atx-map .base-marker.site-ruin .marker-symbol{fill:#e9bd6f}
+.atx-map .base-marker.site-region .marker-dot{fill:#79c3c1;stroke:#d0f0de}
+.atx-map .base-marker.active .marker-dot{fill:#d4f4dc;stroke:#fffceb;stroke-width:2.6;filter:url(#atxGlowStrong)}
+.atx-map .base-marker.active .marker-symbol{fill:#fff0ae}
+.atx-map .base-marker .marker-label{fill:#e4f4ee;stroke:#08232e;stroke-width:3.6px;font:800 12px system-ui;paint-order:stroke;pointer-events:none}
+.atx-map .base-marker .marker-sub{fill:#a9cfc4;stroke:#08232e;stroke-width:2.7px;font:600 9px system-ui;paint-order:stroke;pointer-events:none}
+.atx-map .base-marker.dot-only .marker-label,.atx-map .base-marker.dot-only .marker-sub{display:none}
+.atx-shell[data-color-mode="atlas"] .atx-map .country{filter:saturate(.94)!important;stroke:rgba(112,165,151,.72);stroke-width:.78}
+.atx-shell[data-color-mode="atlas"] .atx-map .country:hover{filter:saturate(1.04) brightness(1.06)!important}
+.atx-shell[data-color-mode="atlas"] .atx-paper-noise{opacity:.06}
+.atx-shell[data-color-mode="atlas"] .atx-map .atx-relief ellipse{opacity:.12}
+.atx-shell[data-color-mode="atlas"] .atx-map .atx-ridge-line{stroke:rgba(183,224,195,.58)}
+.atx-shell[data-color-mode="atlas"] .atx-map .atx-ridge-detail{stroke:rgba(36,90,89,.62)}
+.atx-shell[data-color-mode="atlas"] .atx-map .base-marker .marker-label{fill:#e9fff2;stroke:#092b34}
+.atx-shell[data-color-mode="atlas"] .atx-map .base-marker .marker-sub{fill:#b6ddd0;stroke:#092b34}
+.atx-shell[data-color-mode="atlas"] .atx-map .base-marker.site-ruin .marker-dot{fill:#e1b568;stroke:#fff0bf}
+.atx-shell[data-color-mode="atlas"] .atx-map .base-marker.site-ruin .marker-symbol{fill:#ffd98b}
+.atx-site-context{margin:0 0 12px;padding:10px;border:1px solid rgba(120,205,190,.25);border-radius:12px;background:linear-gradient(135deg,rgba(41,111,105,.2),rgba(7,28,37,.55));display:grid;gap:4px}
+.atx-site-context>div{display:grid;gap:2px}
+.atx-site-context strong{color:#effff5;font-size:.78rem}
+.atx-site-context p{margin:0;color:#b9d9d0;font-size:.66rem;line-height:1.4}
+.atx-site-context small{color:#8dc6b8;font-size:.58rem;font-weight:800}
+.atx-site-kicker{color:#9de0ce;font-size:.56rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase}
+
+/* Atlas X Vivo 5.4.221 — pele cartográfica fria, sem o mapa sépia/amarelo.
+   A rota continua destacada, mas o território passa a usar água, pedra e
+   vegetação em tons naturais de azul-petróleo e verde-oliva. */
+.atx-shell[data-color-mode="atlas"] {
+  --atx-atlas-paper: #17343f;
+  --atx-atlas-paper-2: #0d2530;
+  --atx-atlas-land-0: #294d50;
+  --atx-atlas-land-1: #315a51;
+  --atx-atlas-land-2: #3b6655;
+  --atx-atlas-land-3: #2c5148;
+  --atx-atlas-land-4: #47715c;
+  --atx-atlas-water-a: #1d7787;
+  --atx-atlas-water-b: #12566a;
+  --atx-atlas-water-c: #0a354b;
+  --atx-atlas-boundary: #66827e;
+  --atx-atlas-boundary-strong: #9cc1b3;
+  --atx-atlas-text: #d9ece5;
+  --atx-atlas-soft: #8eaaa1;
+  --atx-relief: #5f866f;
+  --atx-relief-strong: #91b187;
+  --atx-desert: #73765f;
+  --atx-valley: #4f887b;
+  --atx-region-wash: rgba(143, 188, 151, .09);
+  --atx-river: #5ab8c2;
+  --atx-theme-primary: #4fa8a7;
+  --atx-theme-active: #b8e1c4;
+  --atx-theme-secondary: #7ad5df;
+  --atx-theme-pale: #e0f2e5;
+  --atx-theme-rgb: 79, 168, 167;
+}
+
+.atx-shell[data-color-mode="atlas"] .atx-stage {
+  background:
+    radial-gradient(ellipse at 52% 45%, rgba(99, 178, 164, .15), transparent 48%),
+    linear-gradient(145deg, #1a3e48, #0b222d 76%);
+}
+
+.atx-shell[data-color-mode="atlas"] .atx-stage::before {
+  background:
+    radial-gradient(ellipse at 28% 22%, rgba(185, 224, 203, .08), transparent 34%),
+    radial-gradient(ellipse at 78% 72%, rgba(2, 17, 24, .25), transparent 40%);
+}
+
+.atx-shell[data-color-mode="atlas"] .atx-stage::after {
+  border-color: rgba(126, 218, 218, .2);
+  box-shadow: inset 0 0 90px rgba(1, 13, 19, .3), 0 0 34px rgba(44, 147, 157, .12);
+}
+
+.atx-shell[data-color-mode="atlas"] .atx-paper-noise {
+  opacity: .16;
+}
+
+.atx-shell[data-color-mode="atlas"] .atx-map {
+  filter: saturate(1.02) contrast(1.06) drop-shadow(0 18px 28px rgba(1, 12, 17, .4));
+}
+
+.atx-shell[data-color-mode="atlas"] .atx-map .country {
+  filter: url(#atxLandRelief) saturate(.98);
+  stroke: rgba(112, 151, 139, .62);
+  stroke-width: .72;
+}
+
+.atx-shell[data-color-mode="atlas"] .atx-map .country:hover {
+  fill: #427065;
+  filter: url(#atxLandRelief) saturate(1.08) brightness(1.06);
+  stroke: #a6d0bd;
+}
+
+.atx-shell[data-color-mode="atlas"] .atx-map .gridline {
+  stroke: rgba(135, 201, 204, .16);
+}
+
+.atx-shell[data-color-mode="atlas"] .atx-map .atx-relief ellipse {
+  opacity: .45;
+  stroke: rgba(155, 200, 177, .18);
+}
+
+.atx-shell[data-color-mode="atlas"] .atx-map .atx-relief .inner,
+.atx-shell[data-color-mode="atlas"] .atx-map .atx-contour {
+  stroke: rgba(12, 52, 57, .38);
+}
+
+.atx-shell[data-color-mode="atlas"] .atx-map .atx-relief.desert ellipse {
+  fill: rgba(126, 127, 96, .16);
+  stroke: rgba(177, 178, 133, .14);
+}
+
+.atx-shell[data-color-mode="atlas"] .atx-map .atx-relief.valley ellipse {
+  fill: rgba(67, 133, 119, .16);
+  stroke: rgba(118, 202, 178, .2);
+}
+
+.atx-shell[data-color-mode="atlas"] .atx-map .atx-waterbody {
+  fill: #1f8192;
+  fill-opacity: .88;
+  stroke: #63c2c4;
+}
+
+.atx-shell[data-color-mode="atlas"] .atx-map .atx-river {
+  stroke: #6bc5c5;
+  stroke-opacity: .92;
+}
+
+.atx-shell[data-color-mode="atlas"] .atx-map .atx-carto-label.region {
+  fill: #a5c7b8;
+  stroke: #09232d;
+}
+
+.atx-shell[data-color-mode="atlas"] .atx-map .atx-carto-label.sea,
+.atx-shell[data-color-mode="atlas"] .atx-map .atx-carto-label.water,
+.atx-shell[data-color-mode="atlas"] .atx-map .atx-carto-label.river {
+  fill: #8ed5d5;
+  stroke: #09232d;
+}
+
+.atx-shell[data-color-mode="atlas"] .atx-map .marker circle,
+.atx-shell[data-color-mode="atlas"] .atx-map .base-marker circle {
+  fill: #0b2730;
+  stroke: #86c9c2;
+}
+
+.atx-shell[data-color-mode="atlas"] .atx-map .marker text,
+.atx-shell[data-color-mode="atlas"] .atx-map .base-marker text {
+  fill: #e1f1e9;
+  stroke: #09232d;
+}
+
+.atx-shell[data-color-mode="atlas"] .atx-map .base-marker.active circle,
+.atx-shell[data-color-mode="atlas"] .atx-map .route-marker.active .marker-core {
+  fill: #a8ddd0;
+  stroke: #e5fff3;
+  filter: url(#atxGlowStrong);
+}
+
+.atx-shell[data-color-mode="atlas"] .atx-map .base-marker.active text,
+.atx-shell[data-color-mode="atlas"] .atx-map .route-marker.active text:not(.num) {
+  fill: #eafff4;
+}
+
+.atx-shell[data-color-mode="atlas"] .atx-map .route-segment.future {
+  stroke: #5d9e9e;
+}
+
+.atx-shell[data-color-mode="atlas"] .atx-map .route-segment.visited,
+.atx-shell[data-color-mode="atlas"] .atx-map .route-segment.active {
+  stroke: var(--atx-theme-active);
+}
+
+.atx-shell[data-color-mode="atlas"] .atx-map .route-shadow {
+  stroke: #03151c;
+  stroke-opacity: .62;
+}
+
+.atx-shell[data-color-mode="atlas"] .atx-map .pulse-ring {
+  fill: rgba(104, 211, 198, .08);
+  stroke: #a8ddd0;
+}
+
+.atx-shell[data-color-mode="atlas"] .atx-mapbar .atx-ctl {
+  background: rgba(6, 29, 37, .92);
+  border-color: rgba(118, 207, 207, .34);
+  color: #d8f0e8;
+  box-shadow: 0 3px 12px rgba(0, 8, 13, .28);
+}
+
+.atx-shell[data-color-mode="atlas"] .atx-mapbar .atx-ctl:hover,
+.atx-shell[data-color-mode="atlas"] .atx-mapbar .atx-ctl.active {
+  background: rgba(19, 91, 91, .8);
+  border-color: #9ee2d4;
+  color: #effff6;
+}
+
+.atx-shell[data-color-mode="atlas"] .atx-legend {
+  background: rgba(7, 29, 37, .9);
+  border-color: rgba(118, 207, 207, .3);
+  color: #b8d8d1;
+  box-shadow: 0 7px 20px rgba(0, 9, 14, .3);
+}
+
+.atx-shell[data-color-mode="atlas"] .atx-legend b,
+.atx-shell[data-color-mode="atlas"] .atx-legend-live {
+  color: #a8ddd0;
+  text-shadow: 0 0 9px rgba(104, 211, 198, .42);
+}
+
+.atx-shell[data-color-mode="atlas"] .atx-compass circle {
+  fill: rgba(12, 43, 50, .9);
+  stroke: #82bbb3;
+}
+
+.atx-shell[data-color-mode="atlas"] .atx-compass path {
+  fill: #a8ddd0;
+}
+
+.atx-shell[data-color-mode="atlas"] .atx-compass .south {
+  fill: #497c79;
+}
+
+.atx-shell[data-color-mode="atlas"] .atx-compass text,
+.atx-shell[data-color-mode="atlas"] .atx-scale text,
+.atx-shell[data-color-mode="atlas"] .atx-map-cartouche text {
+  fill: #a7c9be;
+}
+
+.atx-shell[data-color-mode="atlas"] .atx-map-cartouche .title {
+  fill: #d9eee4;
+}
+
+.atx-shell[data-color-mode="atlas"] .atx-map-hud {
+  background: rgba(6, 31, 39, .84);
+  border-color: rgba(126, 218, 218, .28);
+  color: #c7e6de;
+}
+
+.atx-shell[data-color-mode="atlas"] .atx-map-hud > span:nth-child(2) {
+  color: #e3f7ef;
+}
+
+.atx-shell[data-color-mode="atlas"] .atx-color-toggle {
+  background: linear-gradient(180deg, #155d63, #0c3b47);
+  border-color: #77caca;
+  color: #e4fff4;
+}
+
+/* ======================================================================
+   v5.4.4 — ATLAS X VIVO / CARTOGRAFIA PREMIUM
+   Camadas vetoriais próprias, relevo visual e HUD de navegação.
+   ====================================================================== */
+.atx-shell {
+  --atx-premium-glass: rgba(5, 17, 27, .82);
+  --atx-premium-line: rgba(139, 207, 224, .26);
+  --atx-premium-cyan: #8de8ea;
+  --atx-premium-gold: #ffe19a;
+}
+
+@media (min-width: 761px) {
+  .atx-main {
+    min-height: 680px;
+  }
+
+  .atx-stage {
+    min-height: 680px;
+  }
+}
+
+@media (min-width: 1121px) {
+  .atx-main {
+    grid-template-columns: minmax(270px, 330px) minmax(560px, 1fr) minmax(300px, 390px);
+  }
+}
+
+.atx-stage {
+  isolation: isolate;
+  background:
+    radial-gradient(circle at 50% 42%, rgba(67, 177, 194, .16), transparent 34%),
+    radial-gradient(circle at 80% 18%, rgba(244, 199, 107, .1), transparent 25%),
+    linear-gradient(160deg, #061c2a, #041019 72%);
+}
+
+.atx-stage::before {
+  background:
+    linear-gradient(115deg, rgba(255, 255, 255, .035), transparent 28%, transparent 72%, rgba(255, 214, 134, .04)),
+    repeating-linear-gradient(0deg, rgba(142, 213, 228, .035) 0 1px, transparent 1px 38px),
+    repeating-linear-gradient(90deg, rgba(142, 213, 228, .028) 0 1px, transparent 1px 38px);
+  content: "";
+  inset: 0;
+  pointer-events: none;
+  position: absolute;
+  z-index: 0;
+}
+
+.atx-stage::after {
+  border: 1px solid rgba(141, 232, 234, .16);
+  border-radius: 14px;
+  box-shadow: inset 0 0 80px rgba(0, 8, 15, .24), 0 0 40px rgba(49, 149, 166, .06);
+  content: "";
+  inset: 8px;
+  pointer-events: none;
+  position: absolute;
+  z-index: 2;
+}
+
+.atx-map {
+  filter: saturate(1.08) contrast(1.04) drop-shadow(0 18px 30px rgba(0, 0, 0, .22));
+  transition: filter .3s ease, transform .45s ease;
+  z-index: 1;
+}
+
+.atx-shell[data-map-depth="on"] .atx-map {
+  filter: saturate(1.16) contrast(1.08) drop-shadow(0 20px 30px rgba(0, 0, 0, .4));
+  transform: perspective(1400px) rotateX(2.2deg) scale(1.015);
+  transform-origin: 50% 58%;
+}
+
+.atx-shell[data-map-depth="on"] .atx-stage::after {
+  border-color: rgba(255, 225, 154, .28);
+  box-shadow: inset 0 0 100px rgba(2, 8, 14, .32), 0 0 38px rgba(255, 214, 134, .08);
+}
+
+.atx-mapbar {
+  align-items: flex-start;
+  background: var(--atx-premium-glass);
+  border: 1px solid var(--atx-premium-line);
+  border-radius: 13px;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, .26), inset 0 1px rgba(255, 255, 255, .07);
+  gap: .45rem;
+  padding: .42rem;
+  top: 14px;
+  backdrop-filter: blur(16px) saturate(1.2);
+}
+
+.atx-mapbar > div {
+  align-items: center;
+  display: flex;
+  flex-wrap: nowrap;
+  gap: .32rem;
+  max-width: 100%;
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+.atx-mapbar .atx-ctl {
+  border-color: rgba(141, 232, 234, .24);
+  flex: 0 0 auto;
+  font-size: .67rem;
+  min-height: 36px;
+  padding: 0 .68rem;
+}
+
+.atx-mapbar .atx-ctl.active,
+.atx-mapbar .atx-ctl[aria-pressed="true"] {
+  background: linear-gradient(145deg, rgba(29, 105, 115, .52), rgba(104, 75, 27, .32));
+  border-color: rgba(255, 225, 154, .62);
+  color: #fff0bd;
+  box-shadow: 0 0 0 1px rgba(255, 225, 154, .06), 0 5px 14px rgba(0, 0, 0, .14);
+}
+
+.atx-mapbar .atx-ctl:hover,
+.atx-mapbar .atx-ctl:focus-visible {
+  border-color: var(--atx-premium-gold);
+  box-shadow: 0 0 0 3px rgba(255, 225, 154, .08);
+  outline: none;
+}
+
+.atx-map-hud {
+  align-items: center;
+  background: rgba(4, 17, 27, .84);
+  border: 1px solid rgba(141, 232, 234, .18);
+  border-radius: 999px;
+  bottom: 52px;
+  color: #a8c6d0;
+  display: flex;
+  font: 700 .62rem/1 system-ui, sans-serif;
+  gap: .72rem;
+  left: 16px;
+  max-width: calc(100% - 32px);
+  padding: .46rem .7rem;
+  position: absolute;
+  right: 16px;
+  z-index: 4;
+  backdrop-filter: blur(12px);
+}
+
+.atx-map-hud > span:not(.atx-hud-live) {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: .04em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.atx-map-hud > span:nth-child(2) {
+  color: #d8ebef;
+  margin-left: auto;
+}
+
+.atx-map-hud > span:last-child {
+  color: #dfc981;
+  text-transform: uppercase;
+}
+
+.atx-hud-live {
+  align-items: center;
+  color: var(--atx-premium-cyan);
+  display: inline-flex;
+  gap: .35rem;
+  letter-spacing: .12em;
+  white-space: nowrap;
+}
+
+.atx-hud-live i {
+  background: var(--atx-premium-cyan);
+  border-radius: 50%;
+  box-shadow: 0 0 0 4px rgba(141, 232, 234, .1), 0 0 13px rgba(141, 232, 234, .8);
+  display: inline-block;
+  height: .42rem;
+  width: .42rem;
+}
+
+.atx-legend {
+  background: rgba(4, 17, 27, .88);
+  border-color: rgba(141, 232, 234, .22);
+  bottom: 13px;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, .25);
+  left: 16px;
+  padding: .48rem .65rem;
+  backdrop-filter: blur(12px);
+}
+
+.atx-map .country {
+  stroke-width: .9;
+  transition: fill .3s ease, filter .3s ease, stroke .3s ease;
+}
+
+.atx-map .country:hover {
+  filter: brightness(1.16) drop-shadow(0 1px 2px rgba(0, 0, 0, .35));
+  stroke-width: 1.35;
+}
+
+.atx-map .atx-relief ellipse {
+  filter: drop-shadow(0 1px 2px rgba(52, 38, 19, .18));
+  opacity: .92;
+}
+
+.atx-map .atx-relief .inner {
+  stroke-dasharray: 1.5 4;
+  stroke-width: .8;
+}
+
+.atx-map .atx-river {
+  filter: drop-shadow(0 0 3px rgba(83, 174, 197, .42));
+  stroke-width: 2.6;
+}
+
+.atx-map .route-segment.active {
+  stroke-width: 5.4;
+}
+
+.atx-map .route-marker .marker-core {
+  stroke-width: 2.2;
+}
+
+.atx-map .route-marker text.route-label {
+  font-size: 13px;
+  paint-order: stroke;
+  stroke-width: 4.5px;
+}
+
+.atx-map .base-marker text {
+  font-size: 13px;
+}
+
+.atx-results,
+.atx-detail {
+  background: linear-gradient(180deg, rgba(7, 20, 30, .98), rgba(4, 14, 22, .98));
+}
+
+.atx-results-head {
+  padding: .8rem .9rem;
+}
+
+.atx-results-head b {
+  color: #f6df9d;
+  font-size: .82rem;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+
+.atx-result {
+  border-bottom-color: rgba(139, 207, 224, .12);
+  padding: .86rem .9rem;
+  transition: background .2s ease, transform .2s ease, box-shadow .2s ease;
+}
+
+.atx-result:hover,
+.atx-result.active {
+  background: linear-gradient(90deg, rgba(97, 190, 201, .13), rgba(217, 184, 93, .05));
+  box-shadow: inset 3px 0 0 var(--atx-theme-primary);
+}
+
+.atx-result b {
+  font-size: .86rem;
+}
+
+.atx-result small {
+  font-size: .7rem;
+}
+
+.atx-result em {
+  font-size: .72rem;
+  line-height: 1.48;
+}
+
+.atx-detail-card header {
+  padding: 1.1rem 1rem;
+}
+
+.atx-detail-card h4 {
+  font-size: 1.22rem;
+}
+
+.atx-detail-card header p,
+.atx-summary {
+  font-size: .78rem;
+}
+
+.atx-detail-body {
+  padding: 1rem;
+}
+
+.atx-action,
+.atx-search button,
+.atx-chip {
+  min-height: 42px;
+  padding-inline: .85rem;
+}
+
+.atx-action {
+  font-size: .76rem;
+}
+
+.atx-shell[data-layer-places="off"] #atxMarkers,
+.atx-shell[data-layer-route="off"] #atxRoute,
+.atx-shell[data-layer-terrain="off"] #atxTerrain,
+.atx-shell[data-layer-hydro="off"] #atxHydro,
+.atx-shell[data-layer-labels="off"] #atxLabels {
+  display: none !important;
+}
+
+@media (max-width: 760px) {
+  .atx-stage {
+    min-height: 650px;
+  }
+
+  .atx-mapbar {
+    align-items: stretch;
+    flex-direction: column;
+    max-height: 112px;
+    overflow: hidden;
+  }
+
+  .atx-mapbar > div {
+    min-height: 36px;
+  }
+
+  .atx-map-hud {
+    bottom: 48px;
+    font-size: .54rem;
+    gap: .4rem;
+    left: 9px;
+    padding: .42rem .5rem;
+    right: 9px;
+  }
+
+  .atx-map-hud > span:nth-child(2) {
+    margin-left: auto;
+  }
+
+  .atx-map-hud > span:last-child {
+    display: none;
+  }
+
+  .atx-legend {
+    bottom: 10px;
+    left: 9px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .atx-map,
+  .atx-result,
+  .atx-map .country {
+    transition: none !important;
+  }
+}
+
+/* Relevo natural v5.4.219: textura discreta, costa limpa e curvas
+   topográficas sutis. A aparência é inspirada em cartografia física, sem
+   incorporar mapas raster de terceiros. */
+.atx-shell[data-color-mode="atlas"] .atx-stage {
+  background:
+    radial-gradient(ellipse at 52% 45%, rgba(250, 225, 164, .22), transparent 48%),
+    linear-gradient(145deg, #c7b58f, #9e8a63);
+}
+
+.atx-shell[data-color-mode="atlas"] .atx-stage::before {
+  background:
+    radial-gradient(ellipse at 28% 22%, rgba(255, 245, 204, .13), transparent 34%),
+    radial-gradient(ellipse at 78% 72%, rgba(75, 48, 23, .14), transparent 40%);
+}
+
+.atx-shell[data-color-mode="atlas"] .atx-stage::after {
+  border-color: rgba(92, 65, 32, .28);
+  box-shadow: inset 0 0 90px rgba(72, 44, 18, .18), 0 0 34px rgba(49, 36, 19, .18);
+}
+
+.atx-shell[data-color-mode="atlas"] .atx-map {
+  filter: saturate(.96) contrast(1.08) drop-shadow(0 18px 28px rgba(41, 26, 12, .26));
+}
+
+.atx-shell[data-color-mode="atlas"] .atx-map .country {
+  filter: url(#atxLandRelief) saturate(.9);
+  stroke: rgba(91, 66, 36, .58);
+  stroke-width: .72;
+}
+
+.atx-shell[data-color-mode="atlas"] .atx-map .country:hover {
+  filter: url(#atxLandRelief) saturate(1.02) brightness(1.05);
+}
+
+.atx-shell[data-color-mode="atlas"] .atx-map .gridline {
+  opacity: .18;
+}
+
+.atx-shell[data-color-mode="atlas"] .atx-map .atx-relief ellipse {
+  opacity: .78;
+}
+
+.atx-shell[data-color-mode="atlas"] .atx-map .atx-contour {
+  stroke: rgba(83, 54, 27, .26);
+  stroke-width: .62;
+}
+
+.atx-shell[data-color-mode="atlas"] .atx-map .atx-waterbody,
+.atx-shell[data-color-mode="atlas"] .atx-map .atx-river {
+  filter: drop-shadow(0 1px 2px rgba(11, 56, 66, .25));
+}
+
+.atx-shell[data-color-mode="atlas"] .atx-map .atx-waterbody {
+  fill: #258392;
+  fill-opacity: .86;
+  stroke: #17616e;
+}
+
+.atx-shell[data-color-mode="atlas"] .atx-map .atx-river {
+  stroke: #2b8994;
+  stroke-opacity: .92;
+}
+
+.atx-shell[data-color-mode="atlas"] .atx-map-hud {
+  background: rgba(49, 37, 22, .76);
+  border-color: rgba(255, 229, 167, .28);
+  color: #f4e4bc;
+}
+
+.atx-shell[data-color-mode="atlas"] .atx-map-hud > span:nth-child(2) {
+  color: #fff0cb;
+}
+
+@media (max-width: 760px) {
+  .atx-shell[data-color-mode="atlas"] .atx-map .country {
+    filter: saturate(.88);
+  }
+}
+
+/* Fechamento da pele fria após os patches de relevo: vence qualquer regra
+   sépia anterior e deixa o mapa Atlas coerente em desktop e mobile. */
+.atx-shell[data-color-mode="atlas"] {
+  --atx-atlas-paper: #17343f;
+  --atx-atlas-paper-2: #0d2530;
+  --atx-atlas-land-0: #294d50;
+  --atx-atlas-land-1: #315a51;
+  --atx-atlas-land-2: #3b6655;
+  --atx-atlas-land-3: #2c5148;
+  --atx-atlas-land-4: #47715c;
+  --atx-atlas-water-a: #1d7787;
+  --atx-atlas-water-b: #12566a;
+  --atx-atlas-water-c: #0a354b;
+  --atx-atlas-boundary: #66827e;
+  --atx-atlas-boundary-strong: #9cc1b3;
+  --atx-relief: #5f866f;
+  --atx-relief-strong: #91b187;
+  --atx-desert: #73765f;
+  --atx-valley: #4f887b;
+  --atx-region-wash: rgba(143, 188, 151, .09);
+  --atx-river: #5ab8c2;
+  --atx-theme-primary: #4fa8a7;
+  --atx-theme-active: #b8e1c4;
+  --atx-theme-secondary: #7ad5df;
+  --atx-theme-pale: #e0f2e5;
+  --atx-theme-rgb: 79, 168, 167;
+}
+
+.atx-shell[data-color-mode="atlas"] .atx-stage {
+  background:
+    radial-gradient(ellipse at 52% 45%, rgba(99, 178, 164, .15), transparent 48%),
+    linear-gradient(145deg, #1a3e48, #0b222d 76%);
+}
+
+.atx-shell[data-color-mode="atlas"] .atx-stage::before {
+  background:
+    radial-gradient(ellipse at 28% 22%, rgba(185, 224, 203, .08), transparent 34%),
+    radial-gradient(ellipse at 78% 72%, rgba(2, 17, 24, .25), transparent 40%);
+}
+
+.atx-shell[data-color-mode="atlas"] .atx-stage::after {
+  border-color: rgba(126, 218, 218, .2);
+  box-shadow: inset 0 0 90px rgba(1, 13, 19, .3), 0 0 34px rgba(44, 147, 157, .12);
+}
+
+.atx-shell[data-color-mode="atlas"] .atx-paper-noise {
+  opacity: .16;
+}
+
+.atx-shell[data-color-mode="atlas"] .atx-map {
+  filter: saturate(1.02) contrast(1.06) drop-shadow(0 18px 28px rgba(1, 12, 17, .4));
+}
+
+.atx-shell[data-color-mode="atlas"] .atx-map .country {
+  filter: url(#atxLandRelief) saturate(.98);
+  stroke: rgba(112, 151, 139, .62);
+}
+
+.atx-shell[data-color-mode="atlas"] .atx-map .country:hover {
+  fill: #427065;
+  filter: url(#atxLandRelief) saturate(1.08) brightness(1.06);
+  stroke: #a6d0bd;
+}
+
+.atx-shell[data-color-mode="atlas"] .atx-map .gridline {
+  stroke: rgba(135, 201, 204, .16);
+}
+
+.atx-shell[data-color-mode="atlas"] .atx-map .atx-relief ellipse {
+  opacity: .45;
+  stroke: rgba(155, 200, 177, .18);
+}
+
+.atx-shell[data-color-mode="atlas"] .atx-map .atx-relief .inner,
+.atx-shell[data-color-mode="atlas"] .atx-map .atx-contour {
+  stroke: rgba(12, 52, 57, .38);
+}
+
+.atx-shell[data-color-mode="atlas"] .atx-map .atx-relief.desert ellipse {
+  fill: rgba(126, 127, 96, .16);
+  stroke: rgba(177, 178, 133, .14);
+}
+
+.atx-shell[data-color-mode="atlas"] .atx-map .atx-relief.valley ellipse {
+  fill: rgba(67, 133, 119, .16);
+  stroke: rgba(118, 202, 178, .2);
+}
+
+.atx-shell[data-color-mode="atlas"] .atx-map .atx-waterbody {
+  fill: #1f8192;
+  fill-opacity: .88;
+  stroke: #63c2c4;
+}
+
+.atx-shell[data-color-mode="atlas"] .atx-map .atx-river {
+  stroke: #6bc5c5;
+  stroke-opacity: .92;
+}
+
+.atx-shell[data-color-mode="atlas"] .atx-map .atx-carto-label.region {
+  fill: #a5c7b8;
+  stroke: #09232d;
+}
+
+.atx-shell[data-color-mode="atlas"] .atx-map .atx-carto-label.sea,
+.atx-shell[data-color-mode="atlas"] .atx-map .atx-carto-label.water,
+.atx-shell[data-color-mode="atlas"] .atx-map .atx-carto-label.river {
+  fill: #8ed5d5;
+  stroke: #09232d;
+}
+
+.atx-shell[data-color-mode="atlas"] .atx-map .marker circle,
+.atx-shell[data-color-mode="atlas"] .atx-map .base-marker circle {
+  fill: #0b2730;
+  stroke: #86c9c2;
+}
+
+.atx-shell[data-color-mode="atlas"] .atx-map .marker text,
+.atx-shell[data-color-mode="atlas"] .atx-map .base-marker text {
+  fill: #e1f1e9;
+  stroke: #09232d;
+}
+
+.atx-shell[data-color-mode="atlas"] .atx-map .base-marker.active circle,
+.atx-shell[data-color-mode="atlas"] .atx-map .route-marker.active .marker-core {
+  fill: #a8ddd0;
+  stroke: #e5fff3;
+  filter: url(#atxGlowStrong);
+}
+
+.atx-shell[data-color-mode="atlas"] .atx-map .base-marker.active text,
+.atx-shell[data-color-mode="atlas"] .atx-map .route-marker.active text:not(.num) {
+  fill: #eafff4;
+}
+
+.atx-shell[data-color-mode="atlas"] .atx-map .route-segment.future {
+  stroke: #5d9e9e;
+}
+
+.atx-shell[data-color-mode="atlas"] .atx-map .route-segment.visited,
+.atx-shell[data-color-mode="atlas"] .atx-map .route-segment.active {
+  stroke: var(--atx-theme-active);
+}
+
+.atx-shell[data-color-mode="atlas"] .atx-map .route-shadow {
+  stroke: #03151c;
+  stroke-opacity: .62;
+}
+
+.atx-shell[data-color-mode="atlas"] .atx-map .pulse-ring {
+  fill: rgba(104, 211, 198, .08);
+  stroke: #a8ddd0;
+}
+
+.atx-shell[data-color-mode="atlas"] .atx-mapbar .atx-ctl {
+  background: rgba(6, 29, 37, .92);
+  border-color: rgba(118, 207, 207, .34);
+  color: #d8f0e8;
+}
+
+.atx-shell[data-color-mode="atlas"] .atx-mapbar .atx-ctl:hover,
+.atx-shell[data-color-mode="atlas"] .atx-mapbar .atx-ctl.active {
+  background: rgba(19, 91, 91, .8);
+  border-color: #9ee2d4;
+  color: #effff6;
+}
+
+.atx-shell[data-color-mode="atlas"] .atx-legend {
+  background: rgba(7, 29, 37, .9);
+  border-color: rgba(118, 207, 207, .3);
+  color: #b8d8d1;
+  box-shadow: 0 7px 20px rgba(0, 9, 14, .3);
+}
+
+.atx-shell[data-color-mode="atlas"] .atx-legend b,
+.atx-shell[data-color-mode="atlas"] .atx-legend-live {
+  color: #a8ddd0;
+  text-shadow: 0 0 9px rgba(104, 211, 198, .42);
+}
+
+.atx-shell[data-color-mode="atlas"] .atx-compass circle {
+  fill: rgba(12, 43, 50, .9);
+  stroke: #82bbb3;
+}
+
+.atx-shell[data-color-mode="atlas"] .atx-compass path {
+  fill: #a8ddd0;
+}
+
+.atx-shell[data-color-mode="atlas"] .atx-compass .south {
+  fill: #497c79;
+}
+
+.atx-shell[data-color-mode="atlas"] .atx-compass text,
+.atx-shell[data-color-mode="atlas"] .atx-scale text,
+.atx-shell[data-color-mode="atlas"] .atx-map-cartouche text {
+  fill: #a7c9be;
+}
+
+.atx-shell[data-color-mode="atlas"] .atx-map-cartouche .title {
+  fill: #d9eee4;
+}
+
+.atx-shell[data-color-mode="atlas"] .atx-map-hud {
+  background: rgba(6, 31, 39, .84);
+  border-color: rgba(126, 218, 218, .28);
+  color: #c7e6de;
+}
+
+.atx-shell[data-color-mode="atlas"] .atx-map-hud > span:nth-child(2) {
+  color: #e3f7ef;
+}
+
+.atx-shell[data-color-mode="atlas"] .atx-color-toggle {
+  background: linear-gradient(180deg, #155d63, #0c3b47);
+  border-color: #77caca;
+  color: #e4fff4;
+}
+
+@media (max-width: 760px) {
+  .atx-shell[data-color-mode="atlas"] .atx-map .country {
+    filter: url(#atxLandRelief) saturate(.96);
+  }
+}
+
+/* Atlas X Vivo 5.4.6 — exploração atual sem copiar mapas de terceiros para o app */
+.atx-explore {
+  margin: 14px 0 4px;
+  padding: 11px;
+  border: 1px solid rgba(93, 170, 181, .34);
+  border-radius: 13px;
+  background: linear-gradient(145deg, rgba(9, 33, 43, .94), rgba(7, 21, 29, .9));
+}
+.atx-explore-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 9px;
+  margin-bottom: 9px;
+}
+.atx-explore-head > div { display: grid; gap: 3px; }
+.atx-explore-head strong { color: #d9f0eb; font-size: .76rem; }
+.atx-explore-head small { color: #8eb7bc; font-size: .58rem; white-space: nowrap; }
+.atx-explore-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px;
+}
+.atx-explore-link {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  min-width: 0;
+  padding: 8px 7px;
+  border: 1px solid #2c5966;
+  border-radius: 9px;
+  background: rgba(5, 20, 28, .8);
+  color: #d9edf0;
+  text-decoration: none;
+  transition: border-color .16s ease, background .16s ease, transform .16s ease;
+}
+.atx-explore-button { width: 100%; font: inherit; text-align: left; cursor: pointer; }
+.atx-explore-link:hover,
+.atx-explore-link:focus-visible {
+  border-color: #82d5d0;
+  background: rgba(20, 81, 86, .55);
+  color: #f4fff4;
+  transform: translateY(-1px);
+  outline: none;
+}
+.atx-explore-link > :first-child { flex: 0 0 auto; font-size: 1rem; }
+.atx-explore-link span { display: grid; gap: 2px; min-width: 0; }
+.atx-explore-link b { font-size: .65rem; line-height: 1.1; }
+.atx-explore-link small { overflow: hidden; color: #8eb0b8; font-size: .55rem; line-height: 1.15; text-overflow: ellipsis; white-space: nowrap; }
+.atx-explore-note { margin: 9px 1px 0; color: #88a2aa; font-size: .57rem; line-height: 1.35; }
+@media (max-width: 760px) {
+  .atx-explore-grid { grid-template-columns: 1fr 1fr; }
+  .atx-explore-head { align-items: flex-start; flex-direction: column; gap: 3px; }
+}

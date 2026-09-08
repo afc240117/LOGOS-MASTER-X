@@ -5,11 +5,11 @@
      Os handlers existentes continuam sendo os donos de cada recurso; este
      arquivo apenas intercepta a abertura e fornece uma janela comum. */
   const VERSE_BUTTONS = ".lmx-bible-v3-tools button, .lmx-bible-v3-extra button, .bx-live-launcher";
-  /* 5.4.110 — Estudo, Viagem e Studio X também abrem DIRETO (sem a ponte de
+  /* 5.4.221 — Bíblia Viva, Estudo, Viagem e Studio X também abrem DIRETO (sem a ponte de
      pré-visualização que exigia um 2º clique). O Raio-X ([data-verse-tool]) já
      era direto. O usuário pediu: "o primeiro clique deve já abrir da forma
      correta, igual os outros foram arrumados". */
-  const CORE_BUTTON = "[data-verse-tool], [data-verse-atlas], [data-verse-parallel], [data-verse-rayx], [data-verse-live], [data-lmx33='study'], [data-jr-ctx], [data-verse-studio], .bx-live-launcher";
+  const CORE_BUTTON = "[data-verse-tool], [data-verse-atlas], [data-verse-parallel], [data-verse-rayx], [data-verse-live], [data-lmx33='study'], [data-jr-ctx], [data-verse-studio], [data-bx-immersion], [data-bx-immersion-nav], .bx-live-launcher";
   const state = { zoom: 1, trigger: null };
 
   const $ = (selector, root = document) => root?.querySelector?.(selector) || null;
@@ -289,6 +289,9 @@
   document.addEventListener("click", event => {
     const button = event.target.closest?.(VERSE_BUTTONS);
     if (!button || button.dataset.bxPopupBypass === "1" || button.matches("[data-bx-verse-more]")) return;
+    /* Bíblia Viva owns the original trusted click so it can enter fullscreen
+       immediately; do not route this trigger through the preview bridge. */
+    if (button.matches("[data-bx-immersion], [data-bx-immersion-nav]")) return;
     event.preventDefault();
     event.stopImmediatePropagation();
     const popup = $("#bxVerseToolPopup");

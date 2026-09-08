@@ -15,7 +15,7 @@
 <link rel="apple-touch-icon" href="/static/logo-180.png">
 <title>LOGOS MASTER X</title><link rel="icon" href="/favicon.ico" type="image/x-icon">
 <link rel="manifest" href="/static/manifest.webmanifest?v=5.4.24-polimento-150">
-<link rel="stylesheet" href="/static/style-v133.css?v=5.4.209">
+<link rel="stylesheet" href="/static/style-v133.css?v=5.4.240">
 <link rel="stylesheet" href="/static/bible-x-visual-media.css?v=5.3.9">
 <link rel="stylesheet" href="/static/bible-x-dynamic-controls.css?v=5.4.40-full-100">
 <link rel="stylesheet" href="/static/bible-x-live-explorer.css?v=5.4.39-no-vod">
@@ -23,7 +23,7 @@
 <link rel="stylesheet" href="/static/bible-x-module-enrichment.css?v=5.4.23-biblia-viva">
 <link rel="stylesheet" href="/static/bible-x-global-enrichment.css?v=5.4.23-biblia-viva">
 <link rel="stylesheet" href="/static/atlas-x-vivo.css?v=5.4.3">
-<link rel="stylesheet" href="/static/bible-x-immersion.css?v=5.4.207-modo-imersao-visual-vivo">
+<link rel="stylesheet" href="/static/bible-x-immersion.css?v=5.4.240-main-thread-repair">
 <link rel="stylesheet" href="/static/biblia-x-raio-x-restaurado.css?v=5.4.2.1">
 <link rel="stylesheet" href="/static/lmx-ui-polish.css?v=5.4.68-popups-fix">
 <style>
@@ -37,6 +37,76 @@ html.logos-ready .app{visibility:visible}
   var raw=localStorage.getItem("logosx:studioProcessing");
   if(raw){var p=JSON.parse(raw);if(p&&p.status==="running"){var age=p.started?(Date.now()-Date.parse(p.started)):Infinity;if(!isFinite(age)||age>120000){p.status="error";p.progress=0;p.phase=0;p.started=null;p.finished=new Date().toISOString();p.message="Sess&#227;o anterior destravada antes da inicializa&#231;&#227;o.";p.error="Processamento &#243;rf&#227;o recuperado.";p.generationId="";localStorage.setItem("logosx:studioProcessing",JSON.stringify(p));if(Number(JSON.parse(localStorage.getItem("logosx:studioStep")||"1"))===6)localStorage.setItem("logosx:studioStep","5");}}}
  }catch(e){}
+})();
+</script>
+<script id="logos-quick-guide-repair">
+(function(){
+  /* 5.4.240 — fechador independente do pop-up de comandos rápidos.
+     Ele nasce antes dos módulos para não depender de ordem de listeners,
+     cache antigo ou de um handler que tenha parado a propagação do evento. */
+  function persistGuideChoice(overlay){
+    try{
+      var cb=overlay&&overlay.querySelector&&overlay.querySelector(".bxq-never input");
+      if(!cb||!cb.checked)return;
+      var area=overlay.__area;
+      if(area)localStorage.setItem("logosx:tip:"+area,JSON.stringify("1"));
+      if(area==="bible"||!area)localStorage.setItem("logosx:bxQuickGuideNever",JSON.stringify("1"));
+    }catch(_){ }
+  }
+  function removeGuide(overlay){
+    if(!overlay)return false;
+    persistGuideChoice(overlay);
+    try{
+      overlay.hidden=true;
+      overlay.setAttribute("aria-hidden","true");
+      overlay.style.pointerEvents="none";
+      if(overlay.parentNode)overlay.parentNode.removeChild(overlay);
+    }catch(_){try{if(overlay.remove)overlay.remove()}catch(__){}}
+    try{window.__bxTipOpen=null;window.__bxQuickGuideShown=true}catch(_){ }
+    return true;
+  }
+  function closestGuide(target){
+    try{return target&&target.closest?target.closest(".bx-guide-overlay"):null}catch(_){return null}
+  }
+  function dismiss(event){
+    try{
+      var overlay=null,target=event&&event.target;
+      if(event.type==="keydown"){
+        if(event.key!=="Escape")return;
+        overlay=document.querySelector(".bx-guide-overlay:not([hidden])");
+      }else{
+        overlay=closestGuide(target);
+        if(!overlay)return;
+        var button=target&&target.closest?target.closest(".bxq-close,.bxq-ok"):null;
+        if(target!==overlay&&!button)return;
+      }
+      if(!overlay)return;
+      if(event.cancelable)event.preventDefault();
+      if(event.stopImmediatePropagation)event.stopImmediatePropagation();
+      removeGuide(overlay);
+    }catch(_){ }
+  }
+  window.__logosDismissQuickGuide=removeGuide;
+  window.addEventListener("pointerup",dismiss,true);
+  window.addEventListener("click",dismiss,true);
+  window.addEventListener("keydown",dismiss,true);
+})();
+</script>
+<script id="logos-cache-repair">
+(function(){
+  /* Remove apenas caches/worker antigos deste app uma vez por build.
+     IndexedDB, localStorage da Bíblia e arquivos do usuário não são tocados. */
+  var marker="logosx:cache-repair:5.4.240";
+  try{
+    if(localStorage.getItem(marker)==="1")return;
+    localStorage.setItem(marker,"1");
+    if(window.caches&&caches.keys)caches.keys().then(function(keys){
+      return Promise.all(keys.filter(function(key){return /logos-master-x|bible-x/i.test(key)}).map(function(key){return caches.delete(key)}));
+    }).catch(function(){});
+    if(navigator.serviceWorker&&navigator.serviceWorker.getRegistrations){
+      navigator.serviceWorker.getRegistrations().then(function(regs){return Promise.all(regs.map(function(reg){return reg.unregister()}))}).catch(function(){});
+    }
+  }catch(_){ }
 })();
 </script>
 <script>
@@ -164,4 +234,4 @@ html.logos-ready .app{visibility:visible}
 </div>
 
 
-<script src="/static/prompt-library.js?v=378"></script><script src="/static/bible-x-visual-media.js?v=5.3.9"></script><script src="/static/bible-pericopes.js?v=5.4.162-epigrafes-toda-biblia"></script><script src="/static/app-381-v133.js?v=5.4.210"></script><script src="/static/bible-x-immersion.js?v=5.4.207-modo-imersao-visual-vivo"></script><script src="/static/bible-x-dynamic-controls.js?v=5.4.164-barra-sair-fullscreen"></script><script src="/static/bible-x-live-explorer.js?v=5.4.39-no-vod"></script><script src="/static/bible-x-infinite-explorer.js?v=5.4.23-biblia-viva"></script><script src="/static/bible-x-module-enrichment.js?v=5.4.23-biblia-viva"></script><script src="/static/bible-x-global-enrichment.js?v=5.4.23-biblia-viva"></script><script src="/static/atlas-x-vivo.js?v=5.4.3"></script><script src="/static/biblia-x-raio-x-restaurado.js?v=5.4.2.1"></script><script src="/static/audio_x/audio-x-menu-plugin.js?v=modular-3-v5.3.9"></script><script src="/static/audio_x/audio-x-studio-loader-v5433.js?v=5.4.3.3"></script><script src="/static/ui_x/ui-controls-zoom-fullscreen-v5434.js?v=5.4.163-tela-cheia-back"></script><script src="/static/bible-x-verse-popups.js?v=5.4.163-tela-cheia-back"></script></body></html>
+<script src="/static/prompt-library.js?v=378"></script><script src="/static/bible-x-visual-media.js?v=5.3.9"></script><script src="/static/bible-pericopes.js?v=5.4.162-epigrafes-toda-biblia"></script><script src="/static/app-381-v133.js?v=5.4.240-main-thread-repair"></script><script src="/static/bible-x-immersion.js?v=5.4.240-main-thread-repair"></script><script src="/static/bible-x-dynamic-controls.js?v=5.4.164-barra-sair-fullscreen"></script><script src="/static/bible-x-live-explorer.js?v=5.4.39-no-vod"></script><script src="/static/bible-x-infinite-explorer.js?v=5.4.23-biblia-viva"></script><script src="/static/bible-x-module-enrichment.js?v=5.4.23-biblia-viva"></script><script src="/static/bible-x-global-enrichment.js?v=5.4.23-biblia-viva"></script><script src="/static/atlas-x-vivo.js?v=5.4.3"></script><script src="/static/biblia-x-raio-x-restaurado.js?v=5.4.2.1"></script><script src="/static/audio_x/audio-x-menu-plugin.js?v=modular-3-v5.3.9"></script><script src="/static/audio_x/audio-x-studio-loader-v5433.js?v=5.4.3.3"></script><script src="/static/ui_x/ui-controls-zoom-fullscreen-v5434.js?v=5.4.163-tela-cheia-back"></script><script src="/static/bible-x-verse-popups.js?v=5.4.163-tela-cheia-back"></script></body></html>

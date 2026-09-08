@@ -9,6 +9,15 @@
   const text = (value, fallback = "") => String(value == null || value === "" ? fallback : value);
   const array = (value) => Array.isArray(value) ? value : [];
   const currentTranslation = () => $("#bVersion")?.value || "porbr2018";
+  const MAX_PUBLIC_QUERY = 120;
+  const cleanPublicQuery = (value) => String(value == null ? "" : value).replace(/\s+/g, " ").trim().slice(0, MAX_PUBLIC_QUERY);
+  const apiErrorMessage = (payload, status, fallback) => {
+    const detail = payload?.detail;
+    if (status === 422) return "A consulta foi ajustada ao limite de 120 caracteres. Tente pesquisar novamente.";
+    if (Array.isArray(detail)) return detail.map((item) => item?.msg || item?.message || JSON.stringify(item)).join(" • ");
+    if (detail && typeof detail === "object") return detail.message || detail.msg || JSON.stringify(detail);
+    return String(detail || fallback || `Fonte local indisponível (HTTP ${status || "erro"}).`);
+  };
 
   function currentReference() {
     const verse = $("#bOut [data-bx-v3-verse][data-ref]") || $("#bOut [data-ref]");
@@ -112,8 +121,8 @@
     panel.innerHTML = `<div class="bx-live-loading"><span class="bx-live-spinner">◌</span><div><b>Mapeando ${esc(ref)}</b><small>Temas, palavras, conexões, contexto e recursos locais…</small></div></div>`;
     try {
       const response = await fetch(`/api/bible/live?ref=${encodeURIComponent(ref)}&translation=${encodeURIComponent(translation)}`, { headers: { Accept: "application/json" } });
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.detail || "A API da Bíblia Viva respondeu com erro.");
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(apiErrorMessage(data, response.status, "A API da Bíblia Viva respondeu com erro."));
       if (token !== state.request) return;
       render(data, ref);
     } catch (error) {
@@ -152,10 +161,20 @@
     if (target.hasAttribute("data-live-retry")) { state.lastRef = ""; state.lastTranslation = ""; load(currentReference()); return; }
     if (target.hasAttribute("data-live-open-ref")) { openReference(target.dataset.liveOpenRef); return; }
     if (target.dataset.liveAction === "media-search") {
-      openPanel("media", target.dataset.liveQuery || currentReference());
-      const query = target.dataset.liveQuery || currentReference();
-      if ($("#bxMediaPublicQuery")) $("#bxMediaPublicQuery").value = query;
-      setTimeout(() => $("#bxMediaPublicFind")?.click(), 120);
+      const query = cleanPublicQuery(target.dataset.liveQuery || currentReference());
+      openPanel("media", query);
+      const trigger = (attempt = 0) => {
+        const input = $("#bxMediaPublicQuery");
+        const button = $("#bxMediaPublicFind");
+        if (input && button) {
+          input.value = query;
+          input.dispatchEvent(new Event("input", { bubbles: true }));
+          button.click();
+          return;
+        }
+        if (attempt < 18) window.setTimeout(() => trigger(attempt + 1), 90);
+      };
+      trigger();
       return;
     }
     if (target.dataset.liveGo) openPanel(target.dataset.liveGo, target.dataset.liveQuery || currentReference());

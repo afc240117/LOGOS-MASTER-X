@@ -1,10 +1,10 @@
 /* LOGOS MASTER X — Atlas X Vivo v5.4.3 | Mapa Real / Atlas Bíblico + Color System + JourneyPlayer, offline */
 (()=>{
 'use strict';
-if(window.__ATLAS_X_VIVO_543__) return;
-window.__ATLAS_X_VIVO_543__=true;
+if(window.__ATLAS_X_VIVO_546__) return;
+window.__ATLAS_X_VIVO_546__=true;
 
-const VERSION='5.4.3';
+const VERSION='5.4.6';
 const DEBUG=localStorage.getItem('logosx:atlasDebug')==='1';
 const reduceMotion=window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches===true;
 const storedColorMode=localStorage.getItem('logosx:atlasColorMode');
@@ -26,6 +26,7 @@ const shell=()=>$('.atx-shell');
 const S={
   data:null,basemap:null,cartography:null,results:[],selected:null,route:null,period:'all',year:null,
   view:{minLng:10,maxLng:47,minLat:27,maxLat:43},drag:null,colorMode:DEFAULT_COLOR_MODE,themeKey:'atlas',
+  layers:{places:true,route:true,terrain:true,hydro:true,labels:true},mapStyle:'relief',depthMode:false,
   camera:null,raf:null,lastTs:0,
   player:{
     status:'idle',phase:'dwell',journeyId:null,currentStop:0,totalStops:0,
@@ -73,6 +74,15 @@ function setColorMode(mode,persist=true){
   drawMap();
 }
 function toggleColorMode(){const order=['atlas','vivid','classic'];setColorMode(order[(order.indexOf(S.colorMode)+1)%order.length])}
+function applyMapPresentation(){
+  const root=shell();if(!root)return;
+  root.dataset.mapStyle=S.mapStyle;root.dataset.mapDepth=S.depthMode?'on':'off';
+  Object.entries(S.layers).forEach(([key,enabled])=>root.dataset[`layer${key[0].toUpperCase()+key.slice(1)}`]=enabled?'on':'off');
+  $$('[data-layer]',root).forEach(b=>{const enabled=S.layers[b.dataset.layer]!==false;b.classList.toggle('active',enabled);b.setAttribute('aria-pressed',enabled?'true':'false')});
+  const depth=$('#atxDepth');if(depth){depth.textContent=S.depthMode?'◒ 3D ativo':'◐ Relevo';depth.setAttribute('aria-pressed',S.depthMode?'true':'false');depth.title=S.depthMode?'Desligar perspectiva de relevo':'Ativar perspectiva de relevo'}
+  const mode=$('#atxMapModeLabel');if(mode)mode.textContent=S.depthMode?'PERSPECTIVA 3D':'RELEVO PREMIUM';
+  const scale=$('#atxMapScale');if(scale){const width=S.view.maxLng-S.view.minLng;scale.textContent=width>28?'escala regional':width>13?'escala de rota':'escala local'}
+}
 function toneForName(name=''){let h=0;for(const ch of String(name))h=(h*33+ch.charCodeAt(0))>>>0;return h%5}
 
 function html(){return `<section class="atx-shell" data-color-mode="atlas" data-atx-theme="atlas" aria-label="Atlas X Vivo">
@@ -80,18 +90,20 @@ function html(){return `<section class="atx-shell" data-color-mode="atlas" data-
  <div class="atx-toolbar"><div class="atx-search"><input id="atxQuery" aria-label="Pesquisar no Atlas X" placeholder="Jericó, Bartimeu, Paulo, última semana, Êxodo..."><button id="atxSearch">Pesquisar</button></div><select class="atx-period" id="atxPeriod" aria-label="Período bíblico"><option>Carregando períodos...</option></select><div class="atx-timeline"><input id="atxYear" aria-label="Ano aproximado" type="range" min="-2100" max="100" step="25" value="30"><span class="atx-year" id="atxYearLabel">30 d.C.</span><button class="atx-ctl" id="atxYearOff" title="Desligar filtro anual" aria-label="Desligar filtro anual">∞</button></div></div>
  <div class="atx-chips" id="atxChips"></div>
  <div class="atx-main"><aside class="atx-results"><div class="atx-results-head"><b>Resultados</b><small id="atxCount">—</small></div><div id="atxResults" class="atx-loading">Preparando o atlas...</div></aside>
- <section class="atx-stage"><div class="atx-mapbar"><div><button class="atx-ctl" id="atxFit">⌖ Ajustar</button><button class="atx-ctl" id="atxZoomIn" aria-label="Aumentar zoom">＋</button><button class="atx-ctl" id="atxZoomOut" aria-label="Diminuir zoom">−</button></div><div><button class="atx-ctl active" data-layer="places">📍 Lugares</button><button class="atx-ctl active" data-layer="route">➜ Rota</button><button class="atx-ctl atx-color-toggle active" id="atxColorMode" aria-pressed="true" title="Visual do mapa: Atlas Bíblico → Vivo Premium → Clássico">🗺 Atlas</button><button class="atx-ctl atx-mobile-toggle" id="atxOpenDetail">☰ Ficha</button></div></div>
+ <section class="atx-stage"><div class="atx-mapbar"><div><button class="atx-ctl" id="atxFit">⌖ Foco</button><button class="atx-ctl" id="atxZoomIn" aria-label="Aumentar zoom">＋</button><button class="atx-ctl" id="atxZoomOut" aria-label="Diminuir zoom">−</button><button class="atx-ctl" id="atxDepth" aria-pressed="false" title="Ativar perspectiva de relevo">◐ Relevo</button></div><div><button class="atx-ctl active" data-layer="places" aria-pressed="true">📍 Lugares</button><button class="atx-ctl active" data-layer="route" aria-pressed="true">➜ Rota</button><button class="atx-ctl active atx-optional-layer" data-layer="terrain" aria-pressed="true">⛰ Relevo</button><button class="atx-ctl active atx-optional-layer" data-layer="hydro" aria-pressed="true">≈ Águas</button><button class="atx-ctl active atx-optional-layer" data-layer="labels" aria-pressed="true">Aa Nomes</button><button class="atx-ctl atx-color-toggle active" id="atxColorMode" aria-pressed="true" title="Visual do mapa: Atlas Bíblico → Vivo Premium → Clássico">🗺 Atlas</button><button class="atx-ctl atx-mobile-toggle" id="atxOpenDetail">☰ Ficha</button></div></div>
  <svg class="atx-map" id="atxMap" viewBox="0 0 1000 620" role="img" aria-label="Mapa bíblico interativo"><defs><linearGradient id="atxOceanGradient" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" style="stop-color:var(--atx-sea-a)"/><stop offset="55%" style="stop-color:var(--atx-sea-b)"/><stop offset="100%" style="stop-color:var(--atx-sea-c)"/></linearGradient><radialGradient id="atxReliefGradient"><stop offset="0%" stop-color="var(--atx-relief-strong)" stop-opacity=".42"/><stop offset="58%" stop-color="var(--atx-relief)" stop-opacity=".20"/><stop offset="100%" stop-color="var(--atx-relief)" stop-opacity="0"/></radialGradient><filter id="atxPaperNoise" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency=".72" numOctaves="2" seed="17" result="noise"/><feColorMatrix in="noise" type="saturate" values="0"/><feComponentTransfer><feFuncA type="table" tableValues="0 .055"/></feComponentTransfer></filter><filter id="atxGlow"><feGaussianBlur stdDeviation="2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter><filter id="atxGlowStrong"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs><rect class="atx-ocean-bg" x="0" y="0" width="1000" height="620"/><rect class="atx-paper-noise" x="0" y="0" width="1000" height="620"/><g id="atxGrid"></g><g id="atxWorld"><g id="atxLand"></g><g id="atxRegions"></g><g id="atxTerrain"></g><g id="atxHydro"></g><g id="atxRoute"></g><g id="atxMarkers"></g><g id="atxLabels"></g></g><g id="atxDecor"></g></svg>
- <div class="atx-legend"><span class="atx-legend-live">●</span><b id="atxThemeLabel">Atlas</b><span class="atx-legend-sep">•</span><span class="atx-legend-key"><i class="visited"></i>visitado</span><span class="atx-legend-key"><i class="active"></i>agora</span><span class="atx-legend-key"><i class="future"></i>adiante</span></div></section>
+ <div class="atx-map-hud" aria-live="polite"><span class="atx-hud-live"><i></i><b id="atxMapModeLabel">RELEVO PREMIUM</b></span><span id="atxMapCoordinates">Passe o cursor pelo mapa</span><span id="atxMapScale">escala regional</span></div><div class="atx-legend"><span class="atx-legend-live">●</span><b id="atxThemeLabel">Atlas</b><span class="atx-legend-sep">•</span><span class="atx-legend-key"><i class="visited"></i>visitado</span><span class="atx-legend-key"><i class="active"></i>agora</span><span class="atx-legend-key"><i class="future"></i>adiante</span></div></section>
  <aside class="atx-detail" id="atxDetail"><div class="atx-detail-empty"><div style="font-size:2rem">🧭</div><b>Escolha um lugar ou jornada</b><p>O Atlas conectará passagem, personagens, eventos e Studio X.</p></div></aside></div>
  <footer class="atx-note">Nota acadêmica: rotas, cronologias e alguns sítios bíblicos possuem graus diferentes de certeza. O Atlas identifica registros tradicionais, aproximados, esquemáticos ou debatidos.</footer></section>`}
 
 async function init(){
   const panel=$('[data-bible-panel="maps"]');
   if(!panel||panel.querySelector('.atx-shell'))return;
-  panel.insertAdjacentHTML('afterbegin',html());
-  setColorMode(S.colorMode,false);applyTheme('atlas');
-  bind();
+ panel.insertAdjacentHTML('afterbegin',html());
+ const defs=$('#atxMap defs');
+ if(defs&&!defs.querySelector('#atxLandRelief'))defs.insertAdjacentHTML('beforeend','<filter id="atxLandRelief" x="-20%" y="-20%" width="140%" height="140%" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency=".018 .05" numOctaves="2" seed="29" result="terrainNoise"/><feColorMatrix in="terrainNoise" type="saturate" values="0" result="terrainGray"/><feDiffuseLighting in="terrainGray" surfaceScale="3" diffuseConstant=".65" lighting-color="#b8d8ca" result="terrainLight"><feDistantLight azimuth="225" elevation="42"/></feDiffuseLighting><feBlend in="SourceGraphic" in2="terrainLight" mode="soft-light"/></filter>');
+ setColorMode(S.colorMode,false);applyTheme('atlas');
+  bind();applyMapPresentation();
   try{
     const [periods,journeys,cartography]=await Promise.all([api('/api/atlas/periods'),api('/api/atlas/journeys'),api('/api/atlas/cartography')]);
     S.data={periods:periods.items,journeys:journeys.items};S.cartography=cartography;
@@ -149,6 +161,16 @@ function journeyPlayerHtml(x){return `<div class="atx-route-player" aria-label="
  <div class="atx-speed" aria-label="Velocidade da jornada"><span>Velocidade</span>${[.5,1,1.5,2].map(v=>`<button data-speed="${v}" class="${v===1?'active':''}">${v}x</button>`).join('')}</div>
  <div class="atx-stop-card" id="atxStopCard"><div class="atx-stop-kicker">PRONTO PARA REPRODUZIR</div><strong>${esc(x.stop_rows[0]?.name||'Jornada')}</strong><p>${esc(x.summary||'')}</p></div>
  </div>`}
+function externalPlaceLinks(x){
+  const label=String(x?.name||x?.title||'Lugar bíblico').trim()||'Lugar bíblico';
+  const lat=Number(x?.lat),lng=Number(x?.lng),hasCoords=Number.isFinite(lat)&&Number.isFinite(lng);
+  const location=hasCoords?`${lat.toFixed(5)},${lng.toFixed(5)}`:label;
+  const earth=`https://earth.google.com/web/search/${encodeURIComponent(location)}`;
+  const maps=`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(location)}`;
+  const street=hasCoords?`https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=${encodeURIComponent(`${lat.toFixed(5)},${lng.toFixed(5)}`)}`:maps;
+  const openBible='https://www.openbible.info/geo/atlas/all';
+  return `<section class="atx-explore" aria-label="Exploração geográfica atual"><div class="atx-explore-head"><div><span class="atx-site-kicker">EXPLORAÇÃO ATUAL</span><strong>Conheça o lugar no mundo de hoje</strong></div><small>${hasCoords?'coordenadas do registro':'busca pelo nome'}</small></div><div class="atx-explore-grid"><a class="atx-explore-link" href="${esc(earth)}" target="_blank" rel="noopener noreferrer" title="Abrir ${esc(label)} no Google Earth">🌍 <span><b>Google Earth</b><small>globo e relevo atual</small></span></a><a class="atx-explore-link" href="${esc(maps)}" target="_blank" rel="noopener noreferrer" title="Abrir ${esc(label)} no Google Maps">🗺️ <span><b>Google Maps</b><small>mapa e localização</small></span></a><a class="atx-explore-link" href="${esc(street)}" target="_blank" rel="noopener noreferrer" title="Abrir ${esc(label)} no Google Street View">🚶 <span><b>Street View</b><small>${hasCoords?'panorama quando disponível':'buscar no Maps'}</small></span></a><a class="atx-explore-link" href="${openBible}" target="_blank" rel="noopener noreferrer" title="Abrir o atlas geográfico do OpenBible.info">📚 <span><b>OpenBible</b><small>atlas e geocodificação</small></span></a><button type="button" class="atx-explore-link atx-explore-button" data-atx-world-explore title="Abrir uma exploração Mapbox dentro do Logos">🗺️ <span><b>Mapbox 3D</b><small>mapa interno opcional</small></span></button></div><p class="atx-explore-note">Fontes externas mostram o mundo atual. Mapbox interno depende de token público restrito. Não confundir satélite, relevo ou Street View com reconstrução histórica.</p></section>`;
+}
 function showDetail(x){
   const box=$('#atxDetail');if(!box)return;
   if(x.kind==='journey'){
@@ -157,8 +179,9 @@ function showDetail(x){
     $$('[data-speed]',box).forEach(b=>b.onclick=()=>setSpeed(+b.dataset.speed));
     bindRefs(box);return;
   }
-  box.innerHTML=`<article class="atx-detail-card"><header><small>${esc((x.type||'LUGAR').toUpperCase())} • ${esc(x.region||'')}</small><h4>${esc(x.name||x.title)}</h4><p>${esc(x.period||'')} ${x.from_year!=null?'• '+yearLabel(x.from_year)+' → '+yearLabel(x.to_year):''}</p></header><div class="atx-detail-body"><span class="atx-cert">⌖ ${esc(certaintyLabel(x.certainty))}</span><p class="atx-summary">${esc(x.summary||x.description||'')}</p>${block('Referências',x.refs,'ref')}${block('Personagens',x.people)}${block('Acontecimentos',x.events)}<div class="atx-actions"><button class="atx-action primary" id="atxBible">📖 Abrir na Bíblia X</button><button class="atx-action" id="atxMedia">🎥 Mídia X</button><button class="atx-action" id="atxStudio">🧬 Enviar ao Studio X</button><button class="atx-action" id="atxLegacy">🗺️ Atlas clássico</button></div></div></article>`;
-  $('#atxBible').onclick=()=>openBible(x.refs?.[0]);$('#atxMedia').onclick=()=>openLegacy('media',x.name);$('#atxStudio').onclick=()=>sendStudio(x);$('#atxLegacy').onclick=()=>{shell()?.scrollIntoView({behavior:reduceMotion?'auto':'smooth',block:'end'});setTimeout(()=>$('#bxMapQuery')?.focus(),300)};bindRefs(box);
+  const meta=siteMeta(x);
+  box.innerHTML=`<article class="atx-detail-card"><header><small>${esc((x.type||'LUGAR').toUpperCase())} • ${esc(x.region||'')}</small><h4>${esc(x.name||x.title)}</h4><p>${esc(x.period||'')} ${x.from_year!=null?'• '+yearLabel(x.from_year)+' → '+yearLabel(x.to_year):''}</p></header><div class="atx-detail-body"><span class="atx-cert">⌖ ${esc(certaintyLabel(x.certainty))}</span>${meta?`<section class="atx-site-context"><div><span class="atx-site-kicker">${esc(siteKindLabel(meta.kind))}</span><strong>${esc(meta.current||x.name||'')}</strong></div><p>${esc(meta.subtitle||'Camada atual relacionada ao lugar bíblico.')}</p><small>Leitura: ${esc(certaintyLabel(meta.certainty||x.certainty))}</small></section>`:''}<p class="atx-summary">${esc(x.summary||x.description||'')}</p>${block('Referências',x.refs,'ref')}${block('Personagens',x.people)}${block('Acontecimentos',x.events)}${externalPlaceLinks(x)}<div class="atx-actions"><button class="atx-action primary" id="atxBible">📖 Abrir na Bíblia X</button><button class="atx-action" id="atxMedia">🎥 Mídia X</button><button class="atx-action" id="atxStudio">🧬 Enviar ao Studio X</button><button class="atx-action" id="atxLegacy">🗺️ Atlas clássico</button></div></div></article>`;
+  $('#atxBible').onclick=()=>openBible(x.refs?.[0]);$('#atxMedia').onclick=()=>openLegacy('media',x.name);$('#atxStudio').onclick=()=>sendStudio(x);$('#atxLegacy').onclick=()=>{shell()?.scrollIntoView({behavior:reduceMotion?'auto':'smooth',block:'end'});setTimeout(()=>$('#bxMapQuery')?.focus(),300)};box.querySelector('[data-atx-world-explore]')?.addEventListener('click',()=>{const context={label:x.name||x.title||'Lugar bíblico',query:x.name||x.title||'',lat:Number.isFinite(+x.lat)?+x.lat:null,lng:Number.isFinite(+x.lng)?+x.lng:null};if(window.BibleXVisualMedia?.openWorldExplorer)window.BibleXVisualMedia.openWorldExplorer(context);else window.open('https://www.mapbox.com/maps','_blank','noopener')});bindRefs(box);
 }
 function block(title,items,kind='tag'){if(!items?.length)return'';return `<section class="atx-block"><h5>${esc(title)}</h5><div class="atx-tags">${items.map(v=>kind==='ref'?`<button data-atx-ref="${esc(v)}">${esc(v)}</button>`:`<span>${esc(v)}</span>`).join('')}</div></section>`}
 function bindRefs(box){$$('[data-atx-ref]',box).forEach(b=>b.onclick=()=>openBible(b.dataset.atxRef))}
@@ -191,27 +214,64 @@ function applyWorldTransform(base,view){
   world.setAttribute('transform',`matrix(${sx.toFixed(6)} 0 0 ${sy.toFixed(6)} ${tx.toFixed(3)} ${ty.toFixed(3)})`);
 }
 function projection(lng,lat){const v=S.view;return {x:(+lng-v.minLng)/(v.maxLng-v.minLng)*1000,y:(v.maxLat-(+lat))/(v.maxLat-v.minLat)*620}}
+function updateMapHud(){
+  const width=S.view.maxLng-S.view.minLng,scale=$('#atxMapScale');
+  if(scale)scale.textContent=width>28?'escala regional':width>13?'escala de rota':'escala local';
+  const mode=$('#atxMapModeLabel');if(mode)mode.textContent=S.depthMode?'PERSPECTIVA 3D':'RELEVO PREMIUM';
+}
+function updateMapCoordinates(event){
+  const svg=$('#atxMap'),label=$('#atxMapCoordinates');if(!svg||!label)return;
+  const rect=svg.getBoundingClientRect(),x=clamp((event.clientX-rect.left)/Math.max(1,rect.width),0,1),y=clamp((event.clientY-rect.top)/Math.max(1,rect.height),0,1),lng=S.view.minLng+x*(S.view.maxLng-S.view.minLng),lat=S.view.maxLat-y*(S.view.maxLat-S.view.minLat);
+  label.textContent=`${Math.abs(lat).toFixed(1)}° ${lat>=0?'N':'S'} • ${Math.abs(lng).toFixed(1)}° ${lng>=0?'E':'W'}`;
+}
 function pathFromCoords(coords){return coords.map((c,i)=>{const p=projection(c[0],c[1]);return `${i?'L':'M'}${p.x.toFixed(1)},${p.y.toFixed(1)}`}).join(' ')}
 function geomPath(g){if(!g)return'';if(g.type==='Polygon')return g.coordinates.map(r=>pathFromCoords(r)+' Z').join(' ');if(g.type==='MultiPolygon')return g.coordinates.map(poly=>poly.map(r=>pathFromCoords(r)+' Z').join(' ')).join(' ');return''}
 
 function mapDetailLevel(){const w=S.view.maxLng-S.view.minLng;return w>28?0:w>13?1:2}
+function siteMeta(row){
+  const id=String(row?.id||'');
+  const match=(S.cartography?.site_overlays||[]).find(item=>item.id===id);
+  if(match)return match;
+  const type=String(row?.type||'').toLowerCase();
+  if(type==='city')return {kind:'city',current:`${row.name||'Cidade'} atual`,subtitle:'cidade moderna relacionada ao registro histórico',certainty:row.certainty||'medium'};
+  if(type==='region')return {kind:'region',current:row.name||'Região',subtitle:'região geográfica de referência',certainty:row.certainty||'schematic'};
+  return {kind:'site',current:row.name||'Lugar',subtitle:'ponto de interesse para estudo',certainty:row.certainty||'medium'};
+}
+function siteKindLabel(kind){return ({city:'cidade atual',ruin:'sítio arqueológico',site:'lugar de estudo',region:'região'})[kind]||'lugar'}
+function markerSymbol(kind){
+  if(kind==='ruin')return '<path class="marker-symbol ruin" d="M0-7 7 0 0 7-7 0Z"/>';
+  if(kind==='site')return '<path class="marker-symbol site" d="M0-8 7 5-7 5Z"/>';
+  if(kind==='region')return '<path class="marker-symbol region" d="M-7-3 0-8 7-3 7 4 0 8-7 4Z"/>';
+  return '<circle class="marker-symbol city" r="4"/>';
+}
 function projectedEllipse(row){
   const c=projection(row.lng,row.lat),px=projection(+row.lng+(+row.rx_deg||.5),row.lat),py=projection(row.lng,+row.lat+(+row.ry_deg||.5));
   return {cx:c.x,cy:c.y,rx:Math.abs(px.x-c.x),ry:Math.abs(py.y-c.y)};
+}
+function reliefContours(row,e){
+  const seed=toneForName(`${row?.id||''}${row?.name||''}`);
+  return Array.from({length:5},(_,i)=>{
+    const factor=.28+i*.13,wobble=1+(((seed+i*7)%9)-4)/100;
+    const cx=e.cx+Math.sin(seed+i)*e.rx*.035,cy=e.cy+Math.cos(seed+i*1.7)*e.ry*.035;
+    return `<ellipse class="atx-contour" cx="${cx.toFixed(1)}" cy="${cy.toFixed(1)}" rx="${Math.max(2,e.rx*factor*wobble).toFixed(1)}" ry="${Math.max(2,e.ry*factor/wobble).toFixed(1)}" transform="rotate(${+(row.angle||0)+i*3} ${cx.toFixed(1)} ${cy.toFixed(1)})"/>`;
+  }).join('');
 }
 function renderCartography(){
   const regions=$('#atxRegions'),terrain=$('#atxTerrain'),hydro=$('#atxHydro'),labels=$('#atxLabels'),decor=$('#atxDecor');
   if(!regions||!terrain||!hydro||!labels||!decor)return;
   const C=S.cartography||{},level=mapDetailLevel(),atlas=S.colorMode==='atlas';
   regions.innerHTML=(C.regions||[]).filter(r=>(r.level||0)<=level).map(r=>{const e=projectedEllipse(r);return `<ellipse class="atx-region-wash" data-region="${esc(r.id)}" cx="${e.cx.toFixed(1)}" cy="${e.cy.toFixed(1)}" rx="${e.rx.toFixed(1)}" ry="${e.ry.toFixed(1)}"><title>${esc(r.name)} • zona geográfica didática</title></ellipse>`}).join('');
-  terrain.innerHTML=(C.relief_zones||[]).filter(r=>(r.level||0)<=level).map(r=>{const e=projectedEllipse(r),cls=r.valley?' valley':r.desert?' desert':'';return `<g class="atx-relief${cls}" transform="rotate(${+(r.angle||0)} ${e.cx.toFixed(1)} ${e.cy.toFixed(1)})"><ellipse cx="${e.cx.toFixed(1)}" cy="${e.cy.toFixed(1)}" rx="${e.rx.toFixed(1)}" ry="${e.ry.toFixed(1)}"/><ellipse class="inner" cx="${e.cx.toFixed(1)}" cy="${e.cy.toFixed(1)}" rx="${(e.rx*.68).toFixed(1)}" ry="${(e.ry*.68).toFixed(1)}"/><title>${esc(r.name)} • relevo estilizado</title></g>`}).join('');
+  const relief=(C.relief_zones||[]).filter(r=>(r.level||0)<=level).map(r=>{const e=projectedEllipse(r),cls=r.valley?' valley':r.desert?' desert':'';return `<g class="atx-relief${cls}" transform="rotate(${+(r.angle||0)} ${e.cx.toFixed(1)} ${e.cy.toFixed(1)})"><ellipse cx="${e.cx.toFixed(1)}" cy="${e.cy.toFixed(1)}" rx="${e.rx.toFixed(1)}" ry="${e.ry.toFixed(1)}"/><ellipse class="inner" cx="${e.cx.toFixed(1)}" cy="${e.cy.toFixed(1)}" rx="${(e.rx*.68).toFixed(1)}" ry="${(e.ry*.68).toFixed(1)}"/>${reliefContours(r,e)}<title>${esc(r.name)} • relevo editorial aproximado</title></g>`}).join('');
+  const ridges=(C.terrain_ridges||[]).filter(r=>(r.level||0)<=level).map(r=>{const d=pathFromCoords(r.points||[]);return `<g class="atx-ridge ${esc(r.kind||'mountain')}"><path class="atx-ridge-shadow" d="${d}"/><path class="atx-ridge-line" d="${d}"/><path class="atx-ridge-detail" d="${d}" transform="translate(0 3)"/><title>${esc(r.name)} • linha de relevo didática</title></g>`}).join('');
+  terrain.innerHTML=relief+ridges;
   const water=(C.waterbodies||[]).filter(r=>(r.label_level||0)<=level).map(r=>{const e=projectedEllipse(r);return `<ellipse class="atx-waterbody" cx="${e.cx.toFixed(1)}" cy="${e.cy.toFixed(1)}" rx="${Math.max(2,e.rx).toFixed(1)}" ry="${Math.max(3,e.ry).toFixed(1)}"><title>${esc(r.name)}</title></ellipse>`}).join('');
   const rivers=(C.rivers||[]).filter(r=>(r.label_level||0)<=level).map(r=>`<path class="atx-river" d="${pathFromCoords(r.points)}"><title>${esc(r.name)} • curso estilizado</title></path>`).join('');
   hydro.innerHTML=water+rivers;
   const regionLabels=(C.regions||[]).filter(r=>(r.level||0)<=level).map(r=>{const z=projection(r.lng,r.lat);return `<text class="atx-carto-label region" x="${z.x.toFixed(1)}" y="${z.y.toFixed(1)}">${esc(r.name)}</text>`});
   const mapLabels=(C.labels||[]).filter(r=>(r.level||0)<=level).map(r=>{const z=projection(r.lng,r.lat);return `<text class="atx-carto-label ${esc(r.kind||'region')}" x="${z.x.toFixed(1)}" y="${z.y.toFixed(1)}">${esc(r.name)}</text>`});
   labels.innerHTML=regionLabels.concat(mapLabels).join('');
-  decor.innerHTML=`<g class="atx-compass" transform="translate(930 535)"><circle r="28"/><path d="M0 -22 L5 -4 L0 0 L-5 -4 Z"/><path class="south" d="M0 22 L5 4 L0 0 L-5 4 Z"/><text x="0" y="-33">N</text></g><g class="atx-scale" transform="translate(35 566)"><text x="0" y="-9">ESCALA VISUAL</text><path d="M0 0 H110 M0 -4 V4 M55 -4 V4 M110 -4 V4"/><text x="0" y="18">regional</text></g><g class="atx-map-cartouche" transform="translate(790 40)"><text class="title" x="0" y="0">ATLAS BÍBLICO</text><text x="0" y="15">base vetorial • offline</text></g>`;
+  const focus=S.route?.name||S.selected?.name||S.selected?.title||'Terra bíblica';
+  decor.innerHTML=`<g class="atx-compass" transform="translate(930 535)"><circle r="28"/><path d="M0 -22 L5 -4 L0 0 L-5 -4 Z"/><path class="south" d="M0 22 L5 4 L0 0 L-5 4 Z"/><text x="0" y="-33">N</text></g><g class="atx-scale" transform="translate(35 566)"><text x="0" y="-9">ESCALA VISUAL</text><path d="M0 0 H110 M0 -4 V4 M55 -4 V4 M110 -4 V4"/><text x="0" y="18">regional</text></g><g class="atx-map-cartouche" transform="translate(765 40)"><text class="title" x="0" y="0">ATLAS BÍBLICO</text><text x="0" y="15">${esc(focus).slice(0,30)}</text><text x="0" y="29">vetorial • relevo editorial • offline</text></g>`;
   shell()?.classList.toggle('atlas-cartographic',atlas);
 }
 
@@ -229,13 +289,16 @@ function markerState(i){
   return 'future';
 }
 function drawMap(){
+  updateMapHud();
   const land=$('#atxLand'),grid=$('#atxGrid'),markers=$('#atxMarkers'),route=$('#atxRoute');if(!land||!grid||!markers||!route)return;
   const level=mapDetailLevel(),major=new Set(S.cartography?.major_places||[]),routeIds=new Set(S.route?.stop_rows?.map(x=>x.id)||[]);
-  grid.innerHTML=Array.from({length:9},(_,i)=>`<line class="gridline" x1="${i*125}" y1="0" x2="${i*125}" y2="620"/>`).join('')+Array.from({length:6},(_,i)=>`<line class="gridline" x1="0" y1="${i*124}" x2="1000" y2="${i*124}"/>`).join('');
+  const gridX=Array.from({length:8},(_,i)=>{const x=i*1000/7,lng=S.view.minLng+(S.view.maxLng-S.view.minLng)*(i/7);return `<line class="gridline" x1="${x.toFixed(1)}" y1="0" x2="${x.toFixed(1)}" y2="620"/><text class="atx-grid-label" x="${(x+4).toFixed(1)}" y="18">${Math.round(lng)}°E</text>`}).join('');
+  const gridY=Array.from({length:6},(_,i)=>{const y=i*620/5,lat=S.view.maxLat-(S.view.maxLat-S.view.minLat)*(i/5);return `<line class="gridline" x1="0" y1="${y.toFixed(1)}" x2="1000" y2="${y.toFixed(1)}"/><text class="atx-grid-label lat" x="8" y="${(y-5).toFixed(1)}">${Math.round(lat)}°N</text>`}).join('');
+  grid.innerHTML=gridX+gridY;
   if(S.basemap)land.innerHTML=S.basemap.features.map(f=>{const n=f.properties?.name||f.properties?.NAME||'';return `<path class="country land-tone-${toneForName(n)}" d="${geomPath(f.geometry)}"><title>${esc(n)}</title></path>`}).join('');
   renderCartography();
   const pts=S.results.filter(x=>x.kind==='place'&&Number.isFinite(+x.lat)&&Number.isFinite(+x.lng));
-  markers.innerHTML=pts.map(p=>{const z=projection(p.lng,p.lat),active=S.selected?.id===p.id,showLabel=active||routeIds.has(p.id)||level>=2||major.has(p.id);return `<g class="marker base-marker ${active?'active':''} ${showLabel?'show-label':'dot-only'}" data-marker="${esc(p.id)}" transform="translate(${z.x.toFixed(1)} ${z.y.toFixed(1)})"><circle r="${showLabel?6.5:4.2}"/><text x="10" y="4">${esc(p.name)}</text></g>`}).join('');
+  markers.innerHTML=pts.map(p=>{const z=projection(p.lng,p.lat),meta=siteMeta(p),kind=safeClass(meta.kind),active=S.selected?.id===p.id,showLabel=active||routeIds.has(p.id)||level>=2||major.has(p.id),label=showLabel?`<text class="marker-label" x="11" y="4">${esc(p.name)}</text>${meta.current&&showLabel?`<text class="marker-sub" x="11" y="15">${esc(meta.current).slice(0,26)}</text>`:''}`:'';return `<g class="marker base-marker site-${kind} ${active?'active':''} ${showLabel?'show-label':'dot-only'}" data-marker="${esc(p.id)}" data-marker-kind="${kind}" transform="translate(${z.x.toFixed(1)} ${z.y.toFixed(1)})"><title>${esc(p.name)} • ${esc(siteKindLabel(meta.kind))}${meta.current?` • ${esc(meta.current)}`:''}</title><circle class="marker-hit" r="${showLabel?10:7}"/><circle class="marker-dot" r="${showLabel?6.5:4.2}"/>${markerSymbol(meta.kind)}${label}</g>`}).join('');
   $$('[data-marker]',markers).forEach(g=>g.addEventListener('click',()=>{const p=S.results.find(x=>x.kind==='place'&&x.id===g.dataset.marker);if(p)select(p,false)}));
   $('#atxWorld')?.removeAttribute('transform');
   if(S.route?.stop_rows?.length){
@@ -358,11 +421,14 @@ function bind(){
   $('#atxColorMode').onclick=toggleColorMode;
   $('#atxFit').onclick=()=>{cancelCamera();if(S.route?.stop_rows)fitPoints(S.route.stop_rows);else if(S.selected?.lat)fitPoints([S.selected]);else S.view={minLng:10,maxLng:47,minLat:27,maxLat:43};drawMap()};
   $('#atxZoomIn').onclick=()=>zoom(.72);$('#atxZoomOut').onclick=()=>zoom(1.38);$('#atxOpenDetail').onclick=()=>root.classList.toggle('detail-open');
-  $$('[data-layer]',root).forEach(b=>b.onclick=()=>{b.classList.toggle('active');const layer=b.dataset.layer==='places'?$('#atxMarkers'):$('#atxRoute');if(layer)layer.style.display=b.classList.contains('active')?'':'none'});
-  const svg=$('#atxMap');svg.addEventListener('wheel',e=>{e.preventDefault();zoom(e.deltaY>0?1.16:.86)},{passive:false});
+  $$('[data-layer]',root).forEach(b=>b.onclick=()=>{const key=b.dataset.layer;if(!(key in S.layers))return;S.layers[key]=!S.layers[key];applyMapPresentation();drawMap()});
+  $('#atxDepth').onclick=()=>{S.depthMode=!S.depthMode;applyMapPresentation();drawMap()};
+  const svg=$('#atxMap');svg.addEventListener('wheel',e=>{e.preventDefault();e.stopPropagation();zoom(e.deltaY>0?1.16:.86)},{passive:false});
   svg.addEventListener('pointerdown',e=>{S.drag={x:e.clientX,y:e.clientY};svg.classList.add('dragging');svg.setPointerCapture(e.pointerId)});
   svg.addEventListener('pointermove',e=>{if(!S.drag)return;const dx=e.clientX-S.drag.x,dy=e.clientY-S.drag.y;S.drag={x:e.clientX,y:e.clientY};pan(dx,dy)});
   svg.addEventListener('pointerup',e=>{S.drag=null;svg.classList.remove('dragging');try{svg.releasePointerCapture(e.pointerId)}catch(_){}});
+  svg.addEventListener('pointermove',updateMapCoordinates);
+  svg.addEventListener('pointerleave',()=>{$('#atxMapCoordinates')?.replaceChildren(document.createTextNode('Passe o cursor pelo mapa'))});
   document.addEventListener('keydown',e=>{
     if(!shell()||!S.route)return;const tag=(e.target?.tagName||'').toLowerCase();if(['input','textarea','select'].includes(tag)||e.target?.isContentEditable)return;
     if(e.code==='Space'){e.preventDefault();togglePlay()}else if(e.key==='ArrowLeft'){e.preventDefault();previousStop()}else if(e.key==='ArrowRight'){e.preventDefault();nextStop()}else if(e.key==='Escape'){e.preventDefault();stopPlayer()}

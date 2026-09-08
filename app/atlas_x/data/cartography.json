@@ -1,6 +1,6 @@
 {
-  "version": "5.4.3",
-  "note": "Camada cartográfica didática offline. Hidrografia e zonas de relevo são estilizadas; fronteiras políticas históricas não são reivindicadas nesta versão.",
+  "version": "5.4.5",
+  "note": "Camada cartográfica didática offline. A base territorial usa geometria vetorial pública; relevo, hidrografia histórica e fronteiras antigas são aproximações editoriais e não substituem uma carta arqueológica especializada.",
   "waterbodies": [
     {
       "id": "sea-galilee",
@@ -451,6 +451,73 @@
       "kind": "river",
       "level": 0
     }
+  ],
+  "terrain_ridges": [
+    {
+      "id": "lebanon-ridge",
+      "name": "Cordilheira do Líbano",
+      "kind": "mountain",
+      "level": 0,
+      "points": [[35.42, 34.22], [35.38, 33.92], [35.32, 33.60], [35.28, 33.25], [35.22, 32.94]]
+    },
+    {
+      "id": "galilee-ridge",
+      "name": "Montanhas da Galileia",
+      "kind": "mountain",
+      "level": 1,
+      "points": [[35.05, 33.18], [35.18, 32.99], [35.28, 32.82], [35.30, 32.62], [35.24, 32.43]]
+    },
+    {
+      "id": "samaria-ridge",
+      "name": "Serra de Samaria",
+      "kind": "mountain",
+      "level": 1,
+      "points": [[35.04, 32.56], [35.16, 32.37], [35.22, 32.17], [35.18, 31.98], [35.10, 31.81]]
+    },
+    {
+      "id": "judean-ridge",
+      "name": "Montanhas da Judeia",
+      "kind": "mountain",
+      "level": 1,
+      "points": [[34.98, 31.95], [35.08, 31.77], [35.12, 31.58], [35.04, 31.38], [34.94, 31.18]]
+    },
+    {
+      "id": "transjordan-ridge",
+      "name": "Planalto da Transjordânia",
+      "kind": "mountain",
+      "level": 0,
+      "points": [[35.78, 33.08], [35.88, 32.78], [35.94, 32.48], [35.86, 32.15], [35.72, 31.84], [35.68, 31.51]]
+    },
+    {
+      "id": "edom-ridge",
+      "name": "Montanhas de Edom",
+      "kind": "mountain",
+      "level": 0,
+      "points": [[35.42, 31.20], [35.54, 30.93], [35.66, 30.68], [35.72, 30.40], [35.66, 30.15]]
+    },
+    {
+      "id": "sinai-ridge",
+      "name": "Maciço do Sinai",
+      "kind": "desert",
+      "level": 0,
+      "points": [[33.36, 29.62], [33.62, 29.30], [33.88, 28.92], [34.04, 28.55], [34.12, 28.18]]
+    }
+  ],
+  "site_overlays": [
+    { "id": "jerusalem", "kind": "city", "current": "Jerusalém atual", "subtitle": "cidade histórica e sítios do centro antigo", "certainty": "high" },
+    { "id": "jericho", "kind": "ruin", "current": "Jericó / Tell es-Sultan", "subtitle": "sítio arqueológico associado à cidade antiga", "certainty": "high" },
+    { "id": "bethlehem", "kind": "city", "current": "Belém atual", "subtitle": "cidade moderna e tradição do nascimento de Jesus", "certainty": "high" },
+    { "id": "nazareth", "kind": "city", "current": "Nazaré atual", "subtitle": "cidade moderna da Galileia", "certainty": "high" },
+    { "id": "capernaum", "kind": "ruin", "current": "Cafarnaum / Kfar Nahum", "subtitle": "ruínas visitáveis junto ao Mar da Galileia", "certainty": "high" },
+    { "id": "cana", "kind": "site", "current": "Kafr Kanna / Caná tradicional", "subtitle": "identificação tradicional; há debate sobre a localização", "certainty": "traditional" },
+    { "id": "sychar", "kind": "ruin", "current": "Siquém / Nablus", "subtitle": "área arqueológica e cidade moderna na região de Samaria", "certainty": "medium" },
+    { "id": "caesarea-maritima", "kind": "ruin", "current": "Cesareia Marítima", "subtitle": "parque arqueológico na costa mediterrânea", "certainty": "high" },
+    { "id": "ephesus", "kind": "ruin", "current": "Éfeso / Selçuk", "subtitle": "sítio arqueológico de uma cidade do mundo romano", "certainty": "high" },
+    { "id": "babylon", "kind": "ruin", "current": "Babilônia / Hillah", "subtitle": "sítio arqueológico no Iraque atual", "certainty": "high" },
+    { "id": "ur", "kind": "ruin", "current": "Ur / Tell el-Muqayyar", "subtitle": "sítio arqueológico; associação tradicional ao Ur dos Caldeus", "certainty": "traditional" },
+    { "id": "damascus", "kind": "city", "current": "Damasco atual", "subtitle": "cidade histórica e capital moderna da Síria", "certainty": "high" },
+    { "id": "rome", "kind": "city", "current": "Roma atual", "subtitle": "cidade moderna sobre o centro do mundo romano", "certainty": "high" },
+    { "id": "sinai", "kind": "site", "current": "Sinai / área do mosteiro de Santa Catarina", "subtitle": "localização tradicional do Monte Sinai; identificação debatida", "certainty": "traditional" }
   ],
   "major_places": [
     "jerusalem",

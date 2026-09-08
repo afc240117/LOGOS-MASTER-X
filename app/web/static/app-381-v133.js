@@ -2248,7 +2248,7 @@ function installStudioStepNavigation(){
    com ✕/Entendi e opção "Não mostrar novamente" (persistida). Só reaparece
    uma vez por sessão enquanto o usuário não marcar "não mostrar". */
 function maybeBibleQuickGuide(){
-  const never=(()=>{try{return Store.get("logosx:bxQuickGuideNever")==="1"}catch(_){return false}})();
+  const never=(()=>{try{return Store.get("bxQuickGuideNever")==="1"||Store.get("logosx:bxQuickGuideNever")==="1"}catch(_){return false}})();
   if(never||window.__bxQuickGuideShown)return;
   const shell=document.querySelector(".bible-x-shell");
   if(!shell||!document.querySelector('[data-bible-panel="reader"]'))return;
@@ -2277,7 +2277,7 @@ function maybeBibleQuickGuide(){
       <button type="button" class="bxq-ok">Entendi</button>
     </footer>
    </div>`;
-  const close=()=>{try{const cb=wrap.querySelector(".bxq-never input");if(cb&&cb.checked)Store.set("logosx:bxQuickGuideNever","1")}catch(_){}wrap.remove()};
+  const close=()=>{try{const cb=wrap.querySelector(".bxq-never input");if(cb&&cb.checked)Store.set("bxQuickGuideNever","1")}catch(_){}try{wrap.hidden=true;wrap.setAttribute("aria-hidden","true");if(wrap.parentNode)wrap.parentNode.removeChild(wrap)}catch(_){try{wrap.remove()}catch(__){}}};
   wrap.querySelector(".bxq-ok").addEventListener("click",close);
   wrap.querySelector(".bxq-close").addEventListener("click",close);
   wrap.addEventListener("click",e=>{if(e.target===wrap)close()});
@@ -5974,7 +5974,7 @@ Gerado em ${new Date().toLocaleString("pt-BR")}
       out.querySelectorAll('.lmx-bible-v3-extra[data-bx116-forced]').forEach(x=>{delete x.dataset.bx116Forced;x.setAttribute('hidden','')});
       out.querySelectorAll('[data-bx-verse-more]').forEach(b=>b.textContent='＋');
     }
-    bxV157Toast({reading:'Modo leitura limpa',study:'Modo estudo completo',originals:'Modo originais',geography:'Modo geografia',sermon:'Modo pregação',all:'Modo tudo aberto'}[mode]);
+    /* 5.4.216 - toast de troca de modo REMOVIDO (pedido: sumir a mensagem "Modo estudo completo"). */
     bxV170CompactMores();
   };
   out.querySelectorAll('[data-v170-mode]').forEach(b=>b.addEventListener('click',()=>bxV170Apply(b.dataset.v170Mode)));
@@ -7384,7 +7384,7 @@ Gerado em ${new Date().toLocaleString("pt-BR")}
     if(btn.disabled)return;
     const ref=`${rows[0].book} ${btn.dataset.chapterNav}`;
     if(window.__bxChapterLoading)window.__bxChapterLoading.show(ref);
-    try{const rr=await smartBibleRef(ref);if(!rr.length){if(window.__bxChapterLoading)window.__bxChapterLoading.hide();return}current=rr;if($("#bRef"))$("#bRef").value=ref;renderBibleVerses(rr);if(window.__bxChapterLoading)window.__bxChapterLoading.hide();$("#bOut")?.scrollIntoView({behavior:"smooth",block:"start"})}catch(_){if(window.__bxChapterLoading)window.__bxChapterLoading.hide();}
+    try{const rr=await smartBibleRef(ref);if(!rr.length){if(window.__bxChapterLoading)window.__bxChapterLoading.hide();return}current=rr;if($("#bRef"))$("#bRef").value=ref;renderBibleVerses(rr);if(window.__bxChapterLoading)window.__bxChapterLoading.hide();bxV213GoTop()}catch(_){if(window.__bxChapterLoading)window.__bxChapterLoading.hide();}
   });
   out.querySelectorAll("[data-bx-v3-verse]").forEach(el=>el.addEventListener("dblclick",()=>{
     const sel=String(window.getSelection?.()||"").trim();
@@ -7431,10 +7431,7 @@ Gerado em ${new Date().toLocaleString("pt-BR")}
         if(!rr.length){window.__bxChapterLoading&&window.__bxChapterLoading.hide();bxV157Toast('Capítulo não encontrado');return}
         current=rr;if($("#bRef"))$("#bRef").value=ref;renderBibleVerses(rr);
         if(window.__bxChapterLoading)window.__bxChapterLoading.hide();
-        if(window.matchMedia("(max-width:760px)").matches){const v0=document.querySelector("#bOut .lmx-bible-v3-verse");if(v0)v0.scrollIntoView({block:"start"})}
-        /* RENDER-FIX — troca de capítulo/livro (⏮/⏭ do trilho/barra) em TELA CHEIA no PC:
-           subir ao INÍCIO da passagem (no full o scroller é o .bible-x-shell). */
-        if(!window.matchMedia("(max-width:760px)").matches){const _fs=document.querySelector(".bible-x-shell.bx-reading-full,.bible-x-shell.bx-page-full");if(_fs){const _up=()=>{_fs.scrollTop=0};_up();setTimeout(_up,90);setTimeout(_up,360);}}
+        bxV213GoTop(); /* 5.4.213/214 - topo do capitulo em qualquer largura (desktop #bOut, celular 1o verso, full shell) */
       }).catch(()=>{window.__bxChapterLoading&&window.__bxChapterLoading.hide();bxV157Toast('Não foi possível abrir o capítulo')});
     };
     const gotoBookCh=(bName,ch)=>{
@@ -7497,7 +7494,7 @@ Gerado em ${new Date().toLocaleString("pt-BR")}
       const k=b.dataset.bxExtra;
       if(k==='chap-prev'||k==='chap-next'){
         const navEl=document.getElementById(k==='chap-prev'?'bPrevChapter':'bNextChapter');
-        if(navEl&&typeof navEl.onclick==='function'){navEl.click();return}
+        if(navEl){navEl.click();return}
         bxGoChapter((Number(rows[0]?.chapter)||0)+(k==='chap-prev'?-1:1));
         return;
       }
@@ -7711,11 +7708,9 @@ const smartBibleRef=async(q)=>{try{return await apiBibleRef(q)}catch(e){const lo
    // começa logo no versículo 1 (o CSS mobile dá scroll-margin-top para
    // ficar abaixo do header/topbar fixos). (isMobile não existe neste
    // escopo — por isso o matchMedia direto.)
-   if(window.__bxScrollTopNext&&window.matchMedia("(max-width:760px)").matches){
+   if(window.__bxScrollTopNext){
      window.__bxScrollTopNext=0;
-     const _v=$("#bOut .lmx-bible-v3-verse");
-     if(_v)_v.scrollIntoView({block:"start"});
-     else{const _bo=$("#bOut");if(_bo)_bo.scrollIntoView({block:"start"});}
+     bxV213GoTop();
    }
  };
  $("#bOpenChapter")?.addEventListener("click",async()=>{const book=selectedBookName(),chapter=Number($("#bChapter")?.value)||1;setChapterRef(book,chapter);$("#bOpen")?.click()});
@@ -8570,7 +8565,7 @@ async function clearOldFrontendCache(){
  }catch(e){}
 }
 
-const APP_BUILD_VERSION="5.3.11";
+const APP_BUILD_VERSION="5.4.240";
 function publicAsset(path){return "/"+String(path).replace(/^\/+/,"");}
 const PRODUCTION_VERSION_URL="https://logos-master-x-api.onrender.com/static/version.json";
 function showUpdateBanner(remoteVersion){
@@ -10091,7 +10086,7 @@ window.BibliaXLocal = window.BibliaXLocal || {
     {k:"home",  i:"🏠", l:"Home",     t:"Página inicial",                                    always:true,  run:()=>goHome()},
     {k:"extra", i:"▦", l:"Módulos",  t:"Todos os módulos",                                  always:false, run:()=>{(window.LMXBXPages&&typeof window.LMXBXPages.openPageExtra==="function")?window.LMXBXPages.openPageExtra():window.LMXBXPages?.togglePageExtra?.();}},
     {k:"painel",i:"☰", l:"Painéis",  t:"Painéis e ferramentas de estudo",                   always:false, run:()=>{(window.LMXBXPages&&typeof window.LMXBXPages.togglePagePainel==="function")?window.LMXBXPages.togglePagePainel():window.LMXBXPages?.openPagePainel?.();}},
-    {k:"cfg",   i:"⚙️",l:"Botões",   t:"Escolher quais atalhos aparecem na barra de baixo", always:true,  run:()=>dockCfgToggle()},
+    {k:"cfg",   i:"⚙️",l:"Botões",   t:"Escolher quais atalhos aparecem em cada barra", always:true,  run:()=>{if(window.__bxBarsCfg&&window.__bxBarsCfg.openPanel)window.__bxBarsCfg.openPanel("dock");else dockCfgToggle();}},
     {k:"pages", i:"🎛️",l:"Modos",    t:"Modos de leitura e ferramentas",                    always:false, run:()=>{(window.__bxV170ModeFanToggle&&window.__bxV170ModeFanToggle())||window.LMXBXPages?.openPageMenu?.();}},
     {k:"import",i:"📥",l:"Importar", t:"Bíblia local / módulos offline",                    always:false, run:()=>dockImportToggle()}
   ];
@@ -10105,7 +10100,19 @@ window.BibliaXLocal = window.BibliaXLocal || {
     {k:"pulpit", i:"🎙️",l:"Púlpito",    t:"Modo Púlpito",  view:"pulpit"}
   ];
   const DOCK_ALL=()=>DOCK_CORE.concat(DOCK_EXTRA);
-  const dockFind=k=>DOCK_ALL().find(d=>d.k===k);
+  /* 5.4.218 — a dock tambem hospeda ferramentas de LEITURA do catalogo mestre
+     (__bxBarsCfg). Um item de leitura vira um atalho de 2 linhas como os demais;
+     o clique dele roda __bxBarsCfg.dockRun (age sobre a passagem/leitor reais). */
+  const bxDockReadingDef=k=>{
+    const B=window.__bxBarsCfg;
+    if(!B)return null;
+    const it=B.find(k);
+    if(!it||it.kind!=="reading")return null;
+    const _id=it.id;
+    return {k:_id,i:it.i,l:it.l,t:it.l,always:false,_reading:true,
+            run:()=>{try{if(window.__bxBarsCfg&&window.__bxBarsCfg.dockRun)window.__bxBarsCfg.dockRun(_id);}catch(_e){}}};
+  };
+  const dockFind=k=>DOCK_ALL().find(d=>d.k===k)||bxDockReadingDef(k);
   const dockDefaultKeys=()=>DOCK_CORE.filter(d=>!d.always&&d.k!=="cfg").map(d=>d.k); /* extra,painel,pages,import */
   const dockRead=()=>{
     try{
@@ -10113,16 +10120,21 @@ window.BibliaXLocal = window.BibliaXLocal || {
       if(!raw)return dockDefaultKeys();
       const arr=JSON.parse(raw);
       if(!Array.isArray(arr))return dockDefaultKeys();
-      const valid=arr.filter(k=>DOCK_ALL().some(d=>d.k===k&&!d.always&&d.k!=="cfg"));
+      const valid=arr.filter(k=>{
+        const core=DOCK_ALL().some(d=>d.k===k&&!d.always&&d.k!=="cfg");
+        return core||!!bxDockReadingDef(k);
+      });
       return valid.length?valid:dockDefaultKeys();
     }catch(e){return dockDefaultKeys();}
   };
   const dockSave=arr=>{try{localStorage.setItem(dockKey(),JSON.stringify(arr));}catch(e){}};
   const dockVisibleKeys=()=>{
+    /* 5.4.216 - ordem = array guardado (dockRead): 1º 🏠 Home (fixo), depois os
+       atalhos marcados NA ORDEM guardada e por fim ⚙️ (cfg, fixo). */
     const en=dockRead();
-    const vis=[];
-    DOCK_CORE.forEach(d=>{if(d.always||en.indexOf(d.k)>=0)vis.push(d.k);});
-    DOCK_EXTRA.forEach(d=>{if(en.indexOf(d.k)>=0)vis.push(d.k);});
+    const vis=['home'];
+    en.forEach(k=>{ if(k!=='cfg') vis.push(k); });
+    vis.push('cfg');
     return vis;
   };
   const dockImportToggle=()=>{
@@ -10159,6 +10171,7 @@ window.BibliaXLocal = window.BibliaXLocal || {
       h+='<label class="bx-dock-cfg-row"><span class="bx-dock-cfg-ico">'+d.i+'</span><span class="bx-dock-cfg-lb">'+d.l+'</span><input type="checkbox" data-bx-cfg-k="'+d.k+'"'+chk+'></label>';
     });
     h+='</div>';
+    h+='<button type="button" class="bx-v216-restore-dock bx-dock-cfg-restore" data-bx-dock-restore title="Voltar à ordem padrão dos atalhos">↺ Restaurar ordem padrão</button>';
     el.innerHTML=h;
   };
   const dockCfgOpen=()=>{fillDockCfg();dockCfgEl.hidden=false;dockCfgEl.classList.toggle("bx-dock-pc",!isMobile());};
@@ -10299,6 +10312,8 @@ window.BibliaXLocal = window.BibliaXLocal || {
     if(!t.closest(".lmx-bible-v3-extra:not([hidden])"))bxCloseVerseExtras(true);
   },{capture:true,passive:true});
   window.addEventListener("scroll",bxCloseVerseExtras,{capture:true,passive:true});
+  /* 5.4.218 — re-render publico da dock (painel unificado / religado do gear usa). */
+  window.__bxDockRender=()=>{dockDirty=true;try{mountBottomNav();}catch(_e){}};
 })();
 
 /* ============================================================
@@ -14782,7 +14797,11 @@ window.BibleXPolimento=Object.assign(window.BibleXPolimento||{},{lote528:"concor
       var t = e.target;
       if (!t || !t.closest) return;
       var gear = t.closest('[data-v157-settings]');
-      if (gear) { e.preventDefault(); e.stopPropagation(); if (panel.hidden) openPanel(); else closePanel(); return; }
+      if (gear) { e.preventDefault(); e.stopPropagation();
+        var _bxu = window.__bxBarsCfg;
+        if (_bxu && _bxu.openPanel) _bxu.openPanel(ctxNow());
+        else { if (panel.hidden) openPanel(); else closePanel(); }
+        return; }
       if (!panel.hidden && !t.closest('[data-bx-rail-panel]')) closePanel();
     }, true);
     document.addEventListener('change', function (e) {
@@ -14956,10 +14975,20 @@ window.BibleXPolimento=Object.assign(window.BibleXPolimento||{},{lote528:"concor
       ]}
   };
   const isPhone=()=>{try{return window.matchMedia("(max-width:760px)").matches}catch(_){return false}};
-  function bxTipDismissed(area){try{if(Store.get("tip:"+area)==="1")return true;if(area==="bible"&&Store.get("logosx:bxQuickGuideNever")==="1")return true}catch(_){}return false}
+  function bxTipDismissed(area){try{if(Store.get("tip:"+area)==="1")return true;if(area==="bible"&&(Store.get("bxQuickGuideNever")==="1"||Store.get("logosx:bxQuickGuideNever")==="1"))return true}catch(_){}return false}
   function bxTipClose(wrap){
-    try{const cb=wrap&&wrap.querySelector(".bxq-never input");if(cb&&cb.checked)Store.set("tip:"+wrap.__area,"1")}catch(_){}
-    window.__bxTipOpen=null;if(wrap&&wrap.remove)wrap.remove();
+    if(wrap&&wrap.__bxClosed)return;
+    try{
+      const cb=wrap&&wrap.querySelector(".bxq-never input");
+      if(cb&&cb.checked){
+        const area=wrap.__area;
+        if(area)Store.set("tip:"+area,"1");
+        if(area==="bible")Store.set("bxQuickGuideNever","1");
+        if(!area)Store.set("bxQuickGuideNever","1");
+      }
+    }catch(_){}
+    try{if(wrap)wrap.__bxClosed=true;window.__bxTipOpen=null;window.__bxQuickGuideShown=true}catch(_){ }
+    try{if(wrap){wrap.hidden=true;wrap.setAttribute("aria-hidden","true");wrap.style.pointerEvents="none";if(wrap.parentNode)wrap.parentNode.removeChild(wrap)}}catch(_){try{wrap&&wrap.remove&&wrap.remove()}catch(__){}}
   }
   function bxTipShow(area){
     try{
@@ -14985,7 +15014,31 @@ window.BibleXPolimento=Object.assign(window.BibleXPolimento||{},{lote528:"concor
       (host||document.body).appendChild(wrap);
     }catch(e){}
   }
+  /* 5.4.238 — fechamento de emergência no nível da janela. Alguns handlers
+     antigos da Bíblia X usam captura e podiam impedir que o listener do
+     próprio botão chegasse ao alvo. A janela captura primeiro e remove o
+     overlay diretamente, inclusive o popup legado sem __area. */
+  function bxQuickGuideEventDismiss(e){
+    try{
+      const node=e&&e.target;
+      const overlay=node&&typeof node.closest==="function"?node.closest(".bx-guide-overlay"):null;
+      if(!overlay)return;
+      const button=node&&typeof node.closest==="function"?node.closest(".bxq-close,.bxq-ok"):null;
+      if(e.type!=="keydown"&&node!==overlay&&!button)return;
+      if(e.type==="keydown"&&e.key!=="Escape")return;
+      if(e.cancelable)e.preventDefault();
+      if(e.stopImmediatePropagation)e.stopImmediatePropagation();
+      bxTipClose(overlay);
+    }catch(_){ }
+  }
+  if(!window.__bxQuickGuideEventsBound){
+    window.__bxQuickGuideEventsBound=true;
+    window.addEventListener("pointerup",bxQuickGuideEventDismiss,true);
+    window.addEventListener("click",bxQuickGuideEventDismiss,true);
+    window.addEventListener("keydown",bxQuickGuideEventDismiss,true);
+  }
   window.bxMaybeTip=bxTipShow;
+  window.__bxCloseQuickGuides=bxTipClose;
   /* fecha a janelinha de importar pelo ✕ injetado no <details> */
   document.addEventListener("click",function(e){
     const t=e.target&&e.target.closest?e.target.closest(".bx-import-x"):null;
@@ -15332,4 +15385,1007 @@ window.BibleXPolimento=Object.assign(window.BibleXPolimento||{},{lote528:"concor
       if(key==="End"){e.preventDefault();const sc=document.scrollingElement||document.documentElement;window.scrollTo(0,sc.scrollHeight);return;}
     }catch(_){/* nunca derruba o app */}
   });
+})();
+
+/* ===== 5.4.213 - qualquer troca de capitulo volta ao topo (versiculo 1), em todas as larguras ===== */
+function bxV213GoTop(){
+  try{
+    var sh=document.querySelector('.bible-x-shell.bx-reading-full,.bible-x-shell.bx-page-full');
+    var doIt=function(){
+      try{
+        if(sh&&sh.scrollTop>0){sh.scrollTop=0;return;}
+        var bo=document.querySelector('#bOut');
+        if(!bo)return;
+        if(window.matchMedia&&window.matchMedia('(max-width:760px)').matches){
+          var fv=bo.querySelector('.lmx-bible-v3-verse');
+          if(fv){fv.scrollIntoView({block:'start'});return;}
+        }
+        bo.scrollIntoView({block:'start'});
+      }catch(e){}
+    };
+    doIt();
+    try{requestAnimationFrame(function(){requestAnimationFrame(doIt);});}catch(e){}
+    setTimeout(doIt,90);setTimeout(doIt,360);
+  }catch(e){}
+}
+
+/* ===== 5.4.215 - 'Entrar na historia' por ULTIMO antes do '+' (inverte com o RAIO X) ===== */
+function bxV215OrderTools(){
+  try{
+    var rows=document.querySelectorAll('#bOut .lmx-bible-v3-tools');
+    for(var i=0;i<rows.length;i++){
+      var tEl=rows[i];
+      if(!tEl.querySelector||!tEl.querySelector('.bx-immersion-trigger'))continue;
+      var imm=tEl.querySelector('.bx-immersion-trigger');
+      var more=tEl.querySelector('.lmx-bible-v3-more');
+      if(more){ if(imm.nextElementSibling!==more)tEl.insertBefore(imm,more); }
+      else if(imm!==tEl.lastElementChild){ tEl.appendChild(imm); }
+    }
+  }catch(e){}
+}
+function bxV215EnsureOrder(){
+  bxV215OrderTools();
+  if(document.body&&!document.body.__bxv215obs){
+    try{document.body.__bxv215obs=1;}catch(e){}
+    var mo=new MutationObserver(function(muts){
+      for(var k=0;k<muts.length;k++){
+        var ad=muts[k].addedNodes;
+        for(var a=0;a<ad.length;a++){
+          var n=ad[a];
+          if(n&&n.nodeType===1){
+            var hit=(n.matches&&(n.matches('.bx-immersion-trigger')||n.matches('.lmx-bible-v3-tools')))||(n.querySelector&&n.querySelector('.bx-immersion-trigger'));
+            if(hit){bxV215OrderTools();break;}
+          }
+        }
+      }
+    });
+    mo.observe(document.body,{childList:true,subtree:true});
+  }
+}
+if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',bxV215EnsureOrder);}else{bxV215EnsureOrder();}
+
+/* ============================================================
+   5.4.216 — BARRAS PERSONALIZÁVEIS (arrastar-para-ordenar).
+   As 3 barras ganham a MESMA capacidade:
+     .bx-v157-rail  → lateral da leitura normal E barra de baixo da tela
+                      cheia (é a MESMA barra: a ordem vale nas duas).
+     #bxMobileBottomNav → barra horizontal da tela normal (dock).
+   - Segurar + arrastar = mexer o botão (igual ícone de celular).
+     No PC (mouse) basta arrastar; no celular segure ~420ms e arraste.
+   - ⚙️ e ✕ Sair (rail) e 🏠 Home e ⚙️ (dock) ficam SEMPRE fixos (nunca somem).
+   - Ordem persistida: rail em "logosbx:v157order"; dock na própria chave
+     por dispositivo (logosbx:bxDock:m / :d).
+   - "↺ Restaurar ordem padrão" dentro de cada engrenagem.
+   ============================================================ */
+(function () {
+  "use strict";
+  try {
+    var LS_RAIL_ORDER = 'logosbx:v157order';
+    var LS_RAIL_DEF   = 'logosbx:v157order-def';
+    var LS_DOCK_DEF   = 'logosbx:bxdock-def';
+    var BUSY = false;                 /* reordenação em andamento (observer) */
+    var DRAG = null;                  /* estado do arrastar ativo            */
+
+    /* ---------- utilitários ---------- */
+    function $(s, r) { return (r || document).querySelector(s); }
+    function $$(s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); }
+    function railEl() { return document.querySelector('.bx-v157-rail'); }
+    function dockEl() { return document.getElementById('bxMobileBottomNav'); }
+    function isMobile() { try { return !!window.matchMedia && window.matchMedia('(max-width:760px)').matches; } catch (_) { return false; } }
+    function dockStoreKey() { return isMobile() ? 'logosbx:bxDock:m' : 'logosbx:bxDock:d'; }
+    function isRailFixed(b) { return !b || !b.attributes ? false : (b.hasAttribute('data-v157-settings') || b.hasAttribute('data-v157-exit')); }
+    function isDockFixed(b) { var k = b && b.getAttribute ? b.getAttribute('data-bxm') : null; return k === 'home' || k === 'cfg'; }
+    function railKey(b) {
+      if (!b || !b.attributes) return null;
+      for (var i = 0; i < b.attributes.length; i++) {
+        var n = b.attributes[i].name;
+        if (n.indexOf('data-v157-') === 0) {
+          var s = n.slice(10);
+          if (s !== 'settings' && s !== 'exit') return s;
+        }
+      }
+      return null;
+    }
+    function dockKey(b) { return b && b.getAttribute ? b.getAttribute('data-bxm') : null; }
+    function movables(which) {
+      if (which === 'dock') return $$('#bxMobileBottomNav [data-bxm]').filter(function (b) { return !isDockFixed(b); });
+      return $$('.bx-v157-rail button').filter(function (b) { return !isRailFixed(b); });
+    }
+    function orderNow(which) {
+      return movables(which).map(function (b) { return which === 'dock' ? dockKey(b) : railKey(b); }).filter(Boolean);
+    }
+    function arrEq(a, b) {
+      if (!a || !b || a.length !== b.length) return false;
+      for (var i = 0; i < a.length; i++) if (a[i] !== b[i]) return false;
+      return true;
+    }
+    function storeGet(k) { try { var v = localStorage.getItem(k); return v ? JSON.parse(v) : null; } catch (_) { return null; } }
+    function storeSet(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (_) {} }
+
+    function railOrderStored() { var a = storeGet(LS_RAIL_ORDER); return Array.isArray(a) ? a : null; }
+    function saveRailOrder(arr) { if (Array.isArray(arr) && arr.length) storeSet(LS_RAIL_ORDER, arr); else { try { localStorage.removeItem(LS_RAIL_ORDER); } catch (_) {} } }
+    function dockOrderStored() { var a = storeGet(dockStoreKey()); return Array.isArray(a) ? a : null; }
+    function saveDockOrder(arr) { storeSet(dockStoreKey(), arr); }
+
+    /* ---------- ordem padrão do rail (linha de base para Restaurar) ---------- */
+    function ensureRailDef() {
+      if (DRAG || BUSY) return;
+      if (localStorage.getItem(LS_RAIL_DEF)) return;
+      var o = orderNow('rail');
+      if (o && o.length) storeSet(LS_RAIL_DEF, o);
+    }
+    function ensureDockDef() {
+      if (DRAG || BUSY) return;
+      if (storeGet(LS_DOCK_DEF)) return;
+      var o = orderNow('dock');
+      if (o && o.length) storeSet(LS_DOCK_DEF, o);
+    }
+    function applyRailOrder() {
+      var rail = railEl();
+      if (!rail || DRAG || BUSY) return;
+      var stored = railOrderStored();
+      if (!stored || !stored.length) return;
+      var cur = orderNow('rail');
+      if (arrEq(cur, stored)) return;
+      BUSY = true;
+      try {
+        var byKey = {};
+        $$('.bx-v157-rail button').forEach(function (b) { if (!isRailFixed(b)) { var k = railKey(b); if (k) byKey[k] = b; } });
+        var frag = document.createDocumentFragment();
+        stored.forEach(function (k) { if (byKey[k]) { frag.appendChild(byKey[k]); delete byKey[k]; } });
+        $$('.bx-v157-rail button').forEach(function (b) { if (!isRailFixed(b)) { var k = railKey(b); if (k && byKey[k]) { frag.appendChild(b); delete byKey[k]; } } });
+        rail.appendChild(frag);
+      } finally { BUSY = false; }
+    }
+    function restoreRailOrder() {
+      try {
+        var d = localStorage.getItem(LS_RAIL_DEF);
+        if (d) { localStorage.setItem(LS_RAIL_ORDER, d); applyRailOrder(); }
+      } catch (_) {}
+    }
+    function dockDefaultCatalog() {
+      return ['extra', 'painel', 'pages', 'import', 'studio', 'quick', 'editor', 'library', 'history', 'pulpit'];
+    }
+    function restoreDockOrder() {
+      var nav = dockEl();
+      if (!nav) return;
+      /* preserva QUAIS atalhos estão ligados; devolve a ORDEM padrão do catálogo. */
+      var cur = orderNow('dock');
+      var dfl = storeGet(LS_DOCK_DEF);
+      if (!Array.isArray(dfl) || !dfl.length) dfl = dockDefaultCatalog();
+      var ordered = [];
+      dfl.forEach(function (k) { if (cur.indexOf(k) >= 0 && ordered.indexOf(k) < 0) ordered.push(k); });
+      cur.forEach(function (k) { if (ordered.indexOf(k) < 0) ordered.push(k); });
+      storeSet(dockStoreKey(), ordered);
+      rebuildDock(ordered);
+    }
+    /* remonta o DOM da dock em [home] + order + [cfg] */
+    function rebuildDock(order) {
+      var nav = dockEl();
+      if (!nav) return;
+      var by = {};
+      $$('#bxMobileBottomNav [data-bxm]').forEach(function (b) { by[dockKey(b)] = b; });
+      var seq = ['home'].concat(order || []).concat(['cfg']);
+      var frag = document.createDocumentFragment();
+      seq.forEach(function (k) { if (by[k]) { frag.appendChild(by[k]); delete by[k]; } });
+      Object.keys(by).forEach(function (k) { var el = by[k]; if (el && el.parentNode) el.parentNode.removeChild(el); });
+      nav.appendChild(frag);
+    }
+
+    /* ---------- ARRASTAR (comum às duas barras) ---------- */
+    function onScreen(c) {
+      if (!c) return false;
+      var r = c.getBoundingClientRect();
+      return r.width > 0 && r.height > 0 && r.left < window.innerWidth && r.top < window.innerHeight && r.right > 0 && r.bottom > 0;
+    }
+    function axisOf(c) {
+      try { var fd = getComputedStyle(c).flexDirection || ''; return (/row/.test(fd)) ? 'x' : 'y'; } catch (_) { return 'y'; }
+    }
+    function visibleFor(c, skipPh) {
+      return $$('button, .bx-v216-ph', c).filter(function (el) {
+        if (el === skipPh) return false;
+        if (isRailFixed(el)) return false;
+        if (c.id === 'bxMobileBottomNav' && isDockFixed(el)) return false;
+        try { var cs = getComputedStyle(el); if (cs.display === 'none' || cs.visibility === 'hidden') return false; } catch (_) { return false; }
+        var r = el.getBoundingClientRect();
+        return r.width > 2 && r.height > 2;
+      });
+    }
+    function scrollableOf(c) {
+      var n = c;
+      for (var i = 0; n && i < 4; i++) {
+        if (n.scrollHeight > n.clientHeight + 4 || n.scrollWidth > n.clientWidth + 4) return n;
+        n = n.parentElement;
+      }
+      return c.scrollHeight > c.clientHeight + 4 ? c : null;
+    }
+    function indexIn(c, el) { return Array.prototype.indexOf.call(c.children, el); }
+
+    function startDrag(which, btn, ev) {
+      var c = which === 'dock' ? dockEl() : railEl();
+      if (!c || !btn || !c.contains(btn)) return;
+      if (!onScreen(c)) return;                 /* barra escondida/fora da tela: nada */
+      var axis = axisOf(c);
+      var r = btn.getBoundingClientRect();
+      var grabX = ev.clientX - r.left, grabY = ev.clientY - r.top;
+
+      /* 1) ghost: clone do botão no body seguindo o ponteiro */
+      var ghost = btn.cloneNode(true);
+      ghost.classList.add('bx-v216-ghost');
+      ghost.setAttribute('aria-hidden', 'true');
+      ghost.style.left = r.left + 'px';
+      ghost.style.top = r.top + 'px';
+      ghost.style.width = Math.max(30, r.width) + 'px';
+      ghost.style.height = Math.max(30, r.height) + 'px';
+      try { ghost.style.fontSize = getComputedStyle(btn).fontSize; } catch (_) {}
+      document.body.appendChild(ghost);
+
+      /* 2) placeholder: mesmo tamanho, marca a vaga */
+      var ph = btn.cloneNode(true);
+      ph.classList.add('bx-v216-ph');
+      ph.setAttribute('aria-hidden', 'true');
+      ph.removeAttribute('title');
+      btn.parentNode.insertBefore(ph, btn.nextSibling);
+      var origRef = ph.nextSibling;   /* vizinho original do botão (p/ cancelar) */
+
+      /* 3) o botão original some do fluxo (vira a “casa vazia”) */
+      btn.classList.add('bx-v216-src');
+      btn.style.setProperty('display', 'none', 'important');
+
+      c.classList.add('bx-v216-act');
+      try { c.style.touchAction = 'none'; } catch (_) {}
+      var startOrder = orderNow(which);
+      var guard = Date.now() + 550;
+      window.__bx216GuardT = window.__bx216GuardT ? Math.max(window.__bx216GuardT, guard) : guard;
+
+      function moveGhostTo(e) {
+        ghost.style.left = (e.clientX - grabX) + 'px';
+        ghost.style.top = (e.clientY - grabY) + 'px';
+      }
+      function slotIndex(e) {
+        var coord = axis === 'x' ? e.clientX : e.clientY;
+        var others = visibleFor(c, ph);
+        var count = 0;
+        for (var i = 0; i < others.length; i++) {
+          var rr = others[i].getBoundingClientRect();
+          var mid = axis === 'x' ? (rr.left + rr.width / 2) : (rr.top + rr.height / 2);
+          if (mid < coord) count++; else break;
+        }
+        return count;
+      }
+      function placePhAt(slot) {
+        var list = visibleFor(c, ph);
+        if (slot < list.length) c.insertBefore(ph, list[slot]);
+        else if (list.length) c.insertBefore(ph, list[list.length - 1].nextSibling);
+        else c.appendChild(ph);
+      }
+      function autoScroll(e) {
+        var sc = scrollableOf(c);
+        if (!sc) return;
+        var sr = sc.getBoundingClientRect();
+        var edge = 26;
+        if (axis === 'y' && sc.scrollHeight > sc.clientHeight + 4) {
+          if (e.clientY < sr.top + edge) sc.scrollTop -= 8;
+          else if (e.clientY > sr.bottom - edge) sc.scrollTop += 8;
+        } else if (axis === 'x' && sc.scrollWidth > sc.clientWidth + 4) {
+          if (e.clientX < sr.left + edge) sc.scrollLeft -= 8;
+          else if (e.clientX > sr.right - edge) sc.scrollLeft += 8;
+        }
+      }
+      function onMove(e) {
+        if (!DRAG) return;
+        if (e.cancelable) e.preventDefault();
+        moveGhostTo(e);
+        autoScroll(e);
+        var slot = slotIndex(e);
+        var cur = indexIn(c, ph);
+        if (slot !== cur) { placePhAt(slot); }
+      }
+      function drop() {
+        cleanup();
+        if (btn) {
+          if (ph && ph.parentNode) {
+            try { c.insertBefore(btn, ph); } catch (_) { c.appendChild(btn); }
+            ph.parentNode.removeChild(ph);
+          } else {
+            c.appendChild(btn);
+          }
+          btn.classList.remove('bx-v216-src');
+          btn.style.removeProperty('display');
+        }
+        var endOrder = orderNow(which);
+        if (!arrEq(startOrder, endOrder)) {
+          if (which === 'rail') saveRailOrder(endOrder);
+          else saveDockOrder(endOrder);
+        }
+      }
+      function revert() {
+        cleanup();
+        if (ph && ph.parentNode) ph.parentNode.removeChild(ph);
+        if (btn && c) {
+          try {
+            if (origRef && origRef.parentNode) c.insertBefore(btn, origRef);
+            else c.appendChild(btn);
+          } catch (_) { c.appendChild(btn); }
+          btn.classList.remove('bx-v216-src');
+          btn.style.removeProperty('display');
+        }
+      }
+      function cleanup() {
+        DRAG = null;
+        if (ghost && ghost.parentNode) ghost.parentNode.removeChild(ghost);
+        if (c) { c.classList.remove('bx-v216-act'); try { c.style.touchAction = ''; } catch (_) {} }
+      }
+      function docMove(e) { onMove(e); }
+      function docTouchMove(e) { if (DRAG && e.cancelable) e.preventDefault(); }
+      function docUp(e) {
+        document.removeEventListener('pointermove', docMove, true);
+        document.removeEventListener('pointerup', docUp, true);
+        document.removeEventListener('pointercancel', docUp, true);
+        document.removeEventListener('touchmove', docTouchMove, true);
+        if (e.cancelable) e.preventDefault();
+        if (DRAG) { if (onScreen(c)) drop(); else revert(); }
+      }
+      document.addEventListener('pointermove', docMove, true);
+      document.addEventListener('pointerup', docUp, true);
+      document.addEventListener('pointercancel', docUp, true);
+      document.addEventListener('touchmove', docTouchMove, true, { passive: false });
+      DRAG = { which: which, c: c };
+      moveGhostTo(ev);
+    }
+
+    function bindDrag(c, which) {
+      if (!c || c.getAttribute('data-bx216-bound')) return;
+      c.setAttribute('data-bx216-bound', '1');
+      c.addEventListener('pointerdown', function (ev) {
+        if (DRAG) return;
+        if (ev.button !== undefined && ev.button !== 0) return;
+        if (ev.isPrimary === false) return;
+        var btn = ev.target && ev.target.closest ? ev.target.closest('button') : null;
+        if (!btn || !c.contains(btn)) return;
+        if (which === 'dock') { if (isDockFixed(btn)) return; }
+        else if (isRailFixed(btn)) return;
+        var isMouse = ev.pointerType === 'mouse';
+        var sx = ev.clientX, sy = ev.clientY;
+        var actTimer = null, armed = false;
+        function begin(e) {
+          if (armed) return; armed = true;
+          startDrag(which, btn, e || ev);
+        }
+        if (!isMouse) {
+          actTimer = setTimeout(function () { begin(ev); }, 420);
+        }
+        function pMove(e) {
+          if (DRAG) return;
+          var dx = e.clientX - sx, dy = e.clientY - sy;
+          if (isMouse) {
+            if (Math.abs(dx) > 8 || Math.abs(dy) > 8) begin(e);
+          } else {
+            if (Math.abs(dx) > 10 || Math.abs(dy) > 10) { if (actTimer) clearTimeout(actTimer); actTimer = null; }
+          }
+        }
+        function pUp() {
+          if (actTimer) clearTimeout(actTimer);
+          document.removeEventListener('pointermove', pMove, true);
+          document.removeEventListener('pointerup', pUp, true);
+          document.removeEventListener('pointercancel', pUp, true);
+        }
+        document.addEventListener('pointermove', pMove, true);
+        document.addEventListener('pointerup', pUp, true);
+        document.addEventListener('pointercancel', pUp, true);
+      });
+    }
+
+    /* ---------- suprime o clique sintético logo após um arrasto ---------- */
+    document.addEventListener('click', function (e) {
+      if (window.__bx216GuardT && Date.now() < window.__bx216GuardT) {
+        if (e && e.stopImmediatePropagation) e.stopImmediatePropagation();
+        if (e && e.preventDefault) e.preventDefault();
+      }
+    }, true);
+
+    /* ---------- botão Restaurar do rail (vive no painel ⚙️) ---------- */
+    function ensureRailRestore() {
+      var panel = document.querySelector('[data-bx-rail-panel]');
+      if (!panel) return;
+      if (panel.querySelector('.bx-v216-restore-rail')) return;
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'bx-v216-restore-rail';
+      b.setAttribute('data-bx-rail-restore', '');
+      b.textContent = '↺ Restaurar ordem padrão dos botões';
+      b.addEventListener('click', function () { restoreRailOrder(); });
+      panel.appendChild(b);
+    }
+    /* ---------- botão Restaurar da dock (delegado; markup injetado no fillDockCfg) ---------- */
+    document.addEventListener('click', function (e) {
+      var t = e.target && e.target.closest ? e.target.closest('[data-bx-dock-restore]') : null;
+      if (t) { e.preventDefault(); e.stopPropagation(); restoreDockOrder(); }
+    }, true);
+
+    /* ---------- boot + reaplicar ordem guardada após montagens ---------- */
+    function boot() {
+      ensureRailDef();
+      ensureDockDef();
+      applyRailOrder();
+      bindDrag(railEl(), 'rail');
+      bindDrag(dockEl(), 'dock');
+      ensureRailRestore();
+    }
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
+    else boot();
+    if (window.MutationObserver) {
+      var t2 = null;
+      new MutationObserver(function () {
+        if (t2) return;
+        t2 = requestAnimationFrame(function () {
+          t2 = null;
+          if (DRAG || BUSY) return;
+          ensureRailDef();
+          ensureDockDef();
+          applyRailOrder();
+          bindDrag(railEl(), 'rail');
+          bindDrag(dockEl(), 'dock');
+          ensureRailRestore();
+        });
+      }).observe(document.body, { childList: true, subtree: true });
+    }
+    setInterval(function () { ensureRailDef(); ensureDockDef(); applyRailOrder(); }, 900);
+
+    window.__bx216 = {
+      railOrderStored: railOrderStored,
+      dockOrderStored: dockOrderStored,
+      orderNow: orderNow,
+      applyRailOrder: applyRailOrder,
+      restoreRailOrder: restoreRailOrder,
+      restoreDockOrder: restoreDockOrder,
+      railKey: railKey,
+      isRailFixed: isRailFixed,
+      isDockFixed: isDockFixed
+    };
+  } catch (err) { if (window.console) console.error('bx216:', err); }
+})();
+
+/* ====================================================================
+   5.4.218 — ⚙️ UNIFICADO DAS BARRAS — FASE 1: CATÁLOGO MESTRE + STORES
+   --------------------------------------------------------------------
+   Catálogo MISTO TOTAL: qualquer ferramenta em qualquer barra.
+   • kind 'reading' = ferramenta da leitura (hoje na barra lateral,
+     .bx-v157-rail, a MESMA que vira a barra de baixo na tela cheia);
+   • kind 'app'     = atalho de app (hoje na barra de baixo
+     #bxMobileBottomNav, a "dock").
+   'pulpit' é ÚNICO no catálogo (deduplicado): na barra lateral age como
+   ferramenta de leitura [data-v157-pulpit]; na dock age como a view
+   'pulpit' do app. A linha mora no grupo Ferramentas de estudo.
+
+   Fase 1 é INVISÍVEL: só define DADOS + LEITORES de store. Não grava
+   localStorage, não observa DOM, não altera a interface. As fases 2+
+   constroem em cima (dock hospeda leitura, rail hospeda app, painel único).
+   ==================================================================== */
+(function () {
+  try {
+    function isMobile() { try { return !!window.matchMedia && window.matchMedia('(max-width:760px)').matches; } catch (_) { return false; } }
+    function lsGet(k) { try { var v = localStorage.getItem(k); if (v === null) return null; return JSON.parse(v); } catch (_) { return null; } }
+
+    /* ---- grupos de leitura (espelham GROUPS do módulo do rail: mesmas
+       linhas, mesma ordem, mesmos padrões por contexto rail/full/fullpc) ---- */
+    var READING_GROUPS = [
+      { t: 'Zoom do texto', rows: [
+        { id: 'zoomdec',    i: 'A−',    l: 'Diminuir zoom',    d: 1 },
+        { id: 'zoominc',    i: 'A+',    l: 'Aumentar zoom',    d: 1 },
+        { id: 'zoomreset',  i: '100%',  l: 'Voltar a 100%',    d: 1 }
+      ]},
+      { t: 'Navegação', rows: [
+        { id: 'nav',        i: '📖', l: 'Trocar passagem',     d: 1 },
+        { id: 'chap-prev',  i: '⏮', l: 'Capítulo anterior',   d: 0 },
+        { id: 'chap-next',  i: '⏭', l: 'Capítulo seguinte',   d: 0 },
+        { id: 'hist-prev',  i: '↩', l: 'Passagem anterior',   d: 0 },
+        { id: 'hist-next',  i: '↪', l: 'Passagem seguinte',   d: 0 }
+      ]},
+      { t: 'Versículo atual', rows: [
+        { id: 'listen',     i: '🔊', l: 'Ouvir capítulo',      d: 1 },
+        { id: 'bookmark',   i: '☆', l: 'Marcar versículo',    d: 1 },
+        { id: 'bookmarks',  i: '🔖', l: 'Lista de marcadores', d: 0 },
+        { id: 'copy',       i: '✂', l: 'Copiar versículo',    d: 1 },
+        { id: 'share',      i: '↗', l: 'Compartilhar',        d: 0 },
+        { id: 'cite',       i: '❞', l: 'Citar X',             d: 0 },
+        { id: 'fullscreen', i: '⛶', l: 'Tela cheia',          d: 1 },
+        { id: 'more',       i: '＋', l: 'Mais ações',         d: 1 }
+      ]},
+      { t: 'Ferramentas de estudo', rows: [
+        { id: 'guide',      i: '🧭', l: 'Guia da passagem',    d: 0 },
+        { id: 'discover',   i: '🔭', l: 'Descobertas',         d: 0 },
+        { id: 'words',      i: '🔤', l: 'Palavra X',           d: 0 },
+        { id: 'atlas',      i: '🗺', l: 'Atlas Instantâneo',   d: 0 },
+        { id: 'context7',   i: '7×7', l: 'Contexto 7×7',       d: 0 },
+        { id: 'cadeia',     i: '⛓', l: 'Cadeia X',            d: 0 },
+        { id: 'duas',       i: 'Ⅱ', l: 'Duas Passagens',      d: 0 },
+        { id: 'biblioteca', i: '🏛', l: 'Biblioteca Pessoal',  d: 0 },
+        { id: 'comparex',   i: '▥', l: 'Comparador X',        d: 0 },
+        { id: 'mesa',       i: '▦', l: 'Mesa X',              d: 0 },
+        { id: 'network',    i: '🕸', l: 'Rede X',              d: 0 },
+        { id: 'tempo',      i: '🕰', l: 'Tempo X',             d: 0 },
+        { id: 'journey',    i: '🧭', l: 'Jornada X',           d: 0 },
+        { id: 'notebook',   i: '📓', l: 'Caderno X',           d: 0 },
+        { id: 'questions',  i: '❓', l: 'Perguntas X',         d: 0 },
+        { id: 'pulpit',     i: '🎤', l: 'Púlpito',            d: 0 },
+        { id: 'painel360',  i: '◉', l: 'Painel 360',          d: 0 },
+        { id: 'central',    i: '✦', l: 'Central X',           d: 0 },
+        { id: 'memoria',    i: '🧠', l: 'Memória X',          d: 0 }
+      ]}
+    ];
+
+    /* ---- atalhos de APP (espelho do catálogo da dock #bxMobileBottomNav) ----
+       Os 4 móveis atuais da dock (Módulos/Painéis/Modos/Importar) nascem ON na
+       dock; Studio/Rápido/Editor/Biblioteca/Histórico nascem OFF. 'pulpit' NÃO
+       se repete aqui — é a mesma linha de Ferramentas de estudo (deduplicado),
+       e o padrão dele na dock também é OFF (era extra da dock). */
+    var APP_ROWS = [
+      { id: 'extra',   i: '▦', l: 'Módulos',    d: 1 },
+      { id: 'painel',  i: '☰', l: 'Painéis',    d: 1 },
+      { id: 'pages',   i: '🎛️', l: 'Modos',    d: 1 },
+      { id: 'import',  i: '📥', l: 'Importar',  d: 1 },
+      { id: 'studio',  i: '🎯', l: 'Studio',    d: 0 },
+      { id: 'quick',   i: '⚡', l: 'Rápido',    d: 0 },
+      { id: 'editor',  i: '✏️', l: 'Editor',    d: 0 },
+      { id: 'library', i: '📚', l: 'Biblioteca',d: 0 },
+      { id: 'history', i: '🕘', l: 'Histórico', d: 0 }
+    ];
+    /* ids de APP que originalmente navegam para uma view própria (Fases 2/3) */
+    var APP_VIEW = { studio: 'studio', quick: 'quick', editor: 'editor', library: 'library', history: 'history' };
+
+    /* ---- catálogo plano (ordem de exibição = grupos de leitura + App) ---- */
+    var CAT = [];
+    READING_GROUPS.forEach(function (g) {
+      g.rows.forEach(function (r) {
+        CAT.push({ id: r.id, kind: 'reading', group: g.t, i: r.i, l: r.l, suffix: r.id,
+                   def: { rail: r.d, full: r.d, fullpc: r.d, dock: 0 } });
+      });
+    });
+    /* sufixo do data-v157-* no template do rail: 2 ids diferem do nome do botão */
+    var SUFFIX = { bookmark: 'bookmark-current', copy: 'copy-current' };
+    CAT.forEach(function (it) { if (SUFFIX[it.id]) it.suffix = SUFFIX[it.id]; });
+    APP_ROWS.forEach(function (a) {
+      CAT.push({ id: a.id, kind: 'app', group: 'App', i: a.i, l: a.l, suffix: a.id,
+                 view: APP_VIEW[a.id], def: { rail: 0, full: 0, fullpc: 0, dock: a.d } });
+    });
+
+    function find(id) { for (var i = 0; i < CAT.length; i++) if (CAT[i].id === id) return CAT[i]; return null; }
+
+    /* ---- chaves atuais de cada barra (sem migração) ---- */
+    var KEYS = { rail: 'logosbx:v157railvis', full: 'logosbx:v157fullvis', fullpc: 'logosbx:v157fullvis-pc' };
+    function dockKey(dev) { return 'logosbx:bxDock:' + (dev || (isMobile() ? 'm' : 'd')); }
+    var DEF_DOCK = ['extra', 'painel', 'pages', 'import'];
+
+    function dockValidate(arr) {
+      var out = [];
+      (arr || []).forEach(function (k) {
+        var it = find(k);
+        if (it && out.indexOf(k) < 0 && k !== 'home' && k !== 'cfg') out.push(k);
+      });
+      return out;
+    }
+    /* array da dock = membros + ordem (home/cfg implícitos, nunca no store) */
+    function dockRead(dev) {
+      var raw = lsGet(dockKey(dev));
+      if (raw === null) return DEF_DOCK.slice();
+      var v = dockValidate(Array.isArray(raw) ? raw : []);
+      return v.length ? v : DEF_DOCK.slice();
+    }
+    /* mapa id->visível de um contexto do rail (rail|full|fullpc), default do
+       catálogo + mesclado do que o store guardou (espelha visFor do rail,
+       agora ciente de itens de app que a Fase 3 passa a hospedar) */
+    function visMap(ctx) {
+      ctx = ctx || 'rail';
+      var obj = {};
+      CAT.forEach(function (it) { obj[it.id] = it.def[ctx] || 0; });
+      var raw = lsGet(KEYS[ctx]);
+      if (raw && typeof raw === 'object') { for (var k in raw) if (Object.prototype.hasOwnProperty.call(obj, k)) obj[k] = raw[k] ? 1 : 0; }
+      return obj;
+    }
+
+    /* 5.4.218 — aciona ferramenta de LEITURA a partir da dock. A dock fica
+       visivel mesmo sem a barra lateral (celular). O modo mais fiel de acionar
+       e clicar o botao REAL [data-v157-<suffix>] que o leitor mantem no DOM:
+       os handlers (diretos e delegados) reagem como se fosse a propria barra.
+       Fora da leitura avisa. (Ancoras de popover sao tratadas na Fase 5.) */
+    function dockRun(id) {
+      try {
+        var it = find(id); if (!it || it.kind !== 'reading') return;
+        var btn = document.querySelector('.bx-v157-rail [data-v157-' + it.suffix + ']');
+        if (!btn) btn = document.querySelector('[data-v157-' + it.suffix + ']');
+        if (btn) { btn.click(); return; }
+        if (typeof bxV157Toast === 'function') bxV157Toast('Abra a passagem para usar \u201c' + it.l + '\u201d');
+      } catch (_e) {}
+    }
+
+    /* ---- Fase 3 — o RAIL (barra lateral / barra de baixo do full) hospeda APP ----
+       Itens de app ligados no contexto atual viram botoes [data-bx-appitem] criados
+       pelo reconciliador (o template do rail nao os tem; ele e recriado a cada
+       render). O item desligado/outro contexto some; cada contexto (rail/full/
+       fullpc) guarda a propria selecao. O clique e DELEGADO (railAppRun) para
+       nao depender do rebind de cada render. */
+    function railCtxNow() {
+      var full = !!(document.body && document.body.classList && document.body.classList.contains('lmx-bx-full')) ||
+                 !!document.querySelector('.bible-x-shell.bx-reading-full, .bible-x-shell.bx-page-full');
+      if (!full) return 'rail';
+      var pc = window.matchMedia && window.matchMedia('(min-width:761px)').matches;
+      return pc ? 'fullpc' : 'full';
+    }
+    var APP_TO_VIEW = { studio: 'studio', quick: 'quick', editor: 'editor', library: 'library', history: 'history', pulpit: 'pulpit' };
+    function railAppRun(id) {
+      try {
+        if (id === 'extra') { if (window.LMXBXPages) { if (typeof window.LMXBXPages.openPageExtra === 'function') window.LMXBXPages.openPageExtra(); else if (window.LMXBXPages.togglePageExtra) window.LMXBXPages.togglePageExtra(); } return; }
+        if (id === 'painel') { if (window.LMXBXPages) { if (typeof window.LMXBXPages.togglePagePainel === 'function') window.LMXBXPages.togglePagePainel(); else if (window.LMXBXPages.openPagePainel) window.LMXBXPages.openPagePainel(); } return; }
+        if (id === 'pages') { if (window.__bxV170ModeFanToggle) window.__bxV170ModeFanToggle(); else if (window.LMXBXPages && window.LMXBXPages.openPageMenu) window.LMXBXPages.openPageMenu(); return; }
+        if (id === 'import') { if (typeof openLocalImport === 'function') { openLocalImport(); try { window.bxMaybeTip && window.bxMaybeTip('import'); } catch (_e) {} } return; }
+        var v = APP_TO_VIEW[id];
+        if (v && typeof navigateView === 'function') navigateView(v);
+      } catch (_e) {}
+    }
+    var _railSig = { rail: null, ctx: '', set: '' };
+    function ensureRailAppItems() {
+      try {
+        if (!document.body) return;
+        if (document.querySelector('.bx-v216-ghost,.bx-v216-act')) return;   /* nao durante drag */
+        var rail = document.querySelector('.bx-v157-rail');
+        if (!rail) { _railSig.rail = null; return; }
+        var ctx = railCtxNow();
+        var vis = window.__bxBarsCfg && window.__bxBarsCfg.visMap ? window.__bxBarsCfg.visMap(ctx) : null;
+        if (!vis) return;
+        var set = [];
+        CAT.forEach(function (it) { if (it.kind === 'app' && vis[it.id] === 1) set.push(it.id); });
+        var sig = set.join(',');
+        if (_railSig.rail === rail && _railSig.ctx === ctx && _railSig.set === sig) return;
+        _railSig.rail = rail; _railSig.ctx = ctx; _railSig.set = sig;
+        Array.prototype.slice.call(rail.querySelectorAll('button[data-bx-appitem]')).forEach(function (b) { if (b.parentNode) b.parentNode.removeChild(b); });
+        if (!set.length) return;
+        var gear = rail.querySelector('[data-v157-settings]');
+        var anchor = gear || rail.lastElementChild;
+        set.forEach(function (id) {
+          var it = find(id); if (!it) return;
+          var b = document.createElement('button');
+          b.type = 'button';
+          b.className = 'bx-v157-extra bx-v157-appitem';
+          b.setAttribute('data-bx-extra', id);
+          b.setAttribute('data-bx-appitem', id);
+          b.setAttribute('data-v157-' + it.suffix, '');
+          b.title = it.l;
+          b.textContent = it.i;
+          rail.insertBefore(b, anchor);
+        });
+      } catch (_e) {}
+    }
+    function bxStartRailApp() {
+      if (window.__bxBarsRailAppStarted) return;
+      window.__bxBarsRailAppStarted = true;
+      try {
+        document.addEventListener('click', function (e) {
+          var t = e.target; if (!t || !t.closest) return;
+          var ab = t.closest('button[data-bx-appitem]');
+          if (!ab) return;
+          e.preventDefault(); e.stopPropagation();
+          railAppRun(ab.getAttribute('data-bx-appitem'));
+        }, true);
+        if (window.MutationObserver) {
+          var deb = null;
+          function sched() { if (deb) return; deb = requestAnimationFrame(function () { deb = null; try { ensureRailAppItems(); } catch (_e) {} }); }
+          new MutationObserver(sched).observe(document.body, { childList: true, subtree: true });
+          new MutationObserver(sched).observe(document.body, { attributes: true, attributeFilter: ['class'], subtree: true });
+        }
+        ensureRailAppItems();
+      } catch (_e) {}
+    }
+    if (document.body) bxStartRailApp();
+    else if (document.addEventListener) document.addEventListener('DOMContentLoaded', bxStartRailApp);
+
+    function diag() {
+      var readingIds = [], readingDup = {};
+      READING_GROUPS.forEach(function (g) { g.rows.forEach(function (r) { readingIds.push(r.id); readingDup[r.id] = (readingDup[r.id] || 0) + 1; }); });
+      var appOrig = ['extra', 'painel', 'pages', 'import', 'studio', 'quick', 'editor', 'library', 'history', 'pulpit'];
+      var shared = appOrig.filter(function (k) { return readingDup[k]; });
+      var catIds = {}, catDup = [];
+      CAT.forEach(function (it) { if (catIds[it.id]) catDup.push(it.id); catIds[it.id] = 1; });
+      function defMap(ctx) { var o = {}; CAT.forEach(function (it) { o[it.id] = it.def[ctx] || 0; }); return o; }
+      return {
+        catCount: CAT.length,
+        readingCount: readingIds.length,
+        appMovable: appOrig,
+        appMovableCount: appOrig.length,
+        masterUnique: Object.keys(catIds).length,
+        masterDup: catDup,
+        sharedOriginal: shared,
+        groups: READING_GROUPS.map(function (g) { return g.t; }).concat(['App']),
+        suffix: SUFFIX,
+        findOK: { bookmark: find('bookmark').suffix === 'bookmark-current', copy: find('copy').suffix === 'copy-current', pulpit: !!(find('pulpit') && find('pulpit').suffix === 'pulpit') },
+        defDock: defMap('dock'),
+        defRail: defMap('rail'),
+        defFull: defMap('full'),
+        defFullPc: defMap('fullpc'),
+        dockDefaultOrder: DEF_DOCK.slice(),
+        homeCfgAbsent: !find('home') && !find('cfg')
+      };
+    }
+
+    window.__bxBarsCfg = {
+      CAT: CAT,
+      find: find,
+      isReading: function (id) { var it = find(id); return !!it && it.kind === 'reading'; },
+      isApp: function (id) { var it = find(id); return !!it && it.kind === 'app'; },
+      groupOf: function (id) { var it = find(id); return it ? it.group : ''; },
+      def: function (id, host) { var it = find(id); return it ? (it.def[host] || 0) : 0; },
+      dockRun: dockRun,
+      ensureRail: ensureRailAppItems,
+      railAppRun: railAppRun,
+      railCtx: railCtxNow,
+      dockKey: dockKey,
+      dockRead: dockRead,
+      dockValidate: dockValidate,
+      dockDefaultOrder: DEF_DOCK.slice(),
+      ctxKeys: KEYS,
+      visMap: visMap,
+      _diag: diag
+    };
+  } catch (e) { if (window.console) console.error('bxBarsCfg:', e); }
+})();
+
+/* ====================================================================
+   5.4.218 — ⚙️ UNIFICADO DAS BARRAS — FASE 4: PAINEL ÚNICO COM ABAS
+   --------------------------------------------------------------------
+   Um ÚNICO painel .bx-barscfg configura as 3 barras:
+     • Barra de baixo  (dock #bxMobileBottomNav — celular & PC)
+     • Lateral         (.bx-v157-rail na leitura normal)
+     • Full            (a MESMA .bx-v157-rail quando vira a barra de
+                        baixo da tela cheia — chip 📱 Celular / 🖥 PC,
+                        porque full do celular e do PC guardam seleção
+                        independente: v157fullvis / v157fullvis-pc)
+   Aberto por QUALQUER ⚙️ (da dock ou do rail) na aba da barra clicada.
+   O catálogo é o MESTRE (__bxBarsCfg.CAT): as MESMAS linhas em toda aba,
+   cada barra refletindo o próprio store. Ordem = só ao vivo (arrastar na
+   barra real, motor bx216). "↺ Restaurar padrão" por aba = reset de
+   fábrica da SELEÇÃO daquela aba (dock → extra/painel/pages/import;
+   rail/full → padrões de leitura do catálogo) + da ORDEM (v157order).
+   Os painéis antigos (.bx-v157-settings / .bx-dock-cfg) continuam
+   DEFINIDOS mas nunca são abertos; o [data-bx-rail-panel] segue montado
+   no DOM p/ o Restaurar do bx216 continuar passando (probe-216).
+   ==================================================================== */
+(function () {
+  try {
+    var cfg = window.__bxBarsCfg;
+    if (!cfg) return;
+
+    function isMQ(mq) { try { return !!(window.matchMedia && window.matchMedia(mq).matches); } catch (_) { return false; } }
+    function isMobileNow() { return isMQ('(max-width:760px)'); }
+    function dockDevNow() { return isMobileNow() ? 'm' : 'd'; }
+    function railCtxNow() { try { return (cfg.railCtx) ? cfg.railCtx() : 'rail'; } catch (_) { return 'rail'; } }
+    function lsGet(k) { try { var v = localStorage.getItem(k); if (v === null) return null; return JSON.parse(v); } catch (_) { return null; } }
+    function lsSet(k, o) { try { localStorage.setItem(k, (typeof o === 'string') ? o : JSON.stringify(o)); } catch (_) {} }
+    function dockKeyNow() { return cfg.dockKey(dockDevNow()); }
+    function ctxForTab() { return state.tab === 'rail' ? 'rail' : state.sub; }
+
+    var state = { tab: 'dock', sub: isMobileNow() ? 'full' : 'fullpc' };
+    var el = null;
+
+    function rowHtml(id, i, l) {
+      return '<label class="bx-barscfg-row" data-bx-barscfg-row="' + id + '">' +
+             '<span class="bx-barscfg-ico">' + i + '</span>' +
+             '<span class="bx-barscfg-lb">' + l + '</span>' +
+             '<input type="checkbox" data-bx-barscfg-k="' + id + '"></label>';
+    }
+    function lockedRow(id, i, l) {
+      return '<label class="bx-barscfg-row bx-barscfg-locked" data-bx-barscfg-row="' + id + '">' +
+             '<span class="bx-barscfg-ico">' + i + '</span>' +
+             '<span class="bx-barscfg-lb">' + l + '</span>' +
+             '<input type="checkbox" data-bx-barscfg-k="' + id + '" checked disabled></label>';
+    }
+    function bodyHtml(tab) {
+      var h = '';
+      if (tab === 'dock') {
+        h += lockedRow('home', '🏠', 'Home');
+        h += lockedRow('cfg', '⚙️', 'Botões da barra de baixo (fixo)');
+      }
+      var prev = '';
+      cfg.CAT.forEach(function (it) {
+        if (it.group !== prev) { h += '<div class="bx-barscfg-group-t">' + it.group + '</div>'; prev = it.group; }
+        h += rowHtml(it.id, it.i, it.l);
+      });
+      return h;
+    }
+    function ensureEl() {
+      if (el && el.isConnected) return el;
+      el = document.createElement('div');
+      el.className = 'bx-barscfg';
+      el.setAttribute('data-bx-bars-cfg', '');
+      el.hidden = true;
+      el.innerHTML =
+        '<div class="bx-barscfg-head"><b>Botões das barras</b>' +
+        '<button type="button" class="bx-barscfg-close" data-bx-barscfg-close title="Fechar">✕</button></div>' +
+        '<div class="bx-barscfg-tabs" role="tablist">' +
+        '<button type="button" class="bx-barscfg-tab" data-bx-barstab="dock">Barra de baixo</button>' +
+        '<button type="button" class="bx-barscfg-tab" data-bx-barstab="rail">Lateral</button>' +
+        '<button type="button" class="bx-barscfg-tab" data-bx-barstab="full">Full <small>cel/PC</small></button>' +
+        '</div>' +
+        '<div class="bx-barscfg-chiprow" data-bx-barscfg-chiprow hidden>' +
+        '<button type="button" class="bx-barscfg-chip" data-bx-bars-chip="full">📱 Celular</button>' +
+        '<button type="button" class="bx-barscfg-chip" data-bx-bars-chip="fullpc">🖥 PC</button>' +
+        '</div>' +
+        '<div class="bx-barscfg-body" data-bx-barscfg-body></div>' +
+        '<div class="bx-barscfg-foot">' +
+        '<span class="bx-barscfg-hint">Ligar/desligar aqui; a ORDEM você ajusta arrastando na própria barra.</span>' +
+        '<button type="button" class="bx-barscfg-restore" data-bx-barscfg-restore title="Voltar à seleção e ordem padrão desta barra">↺ Restaurar padrão</button>' +
+        '</div>';
+      document.body.appendChild(el);
+    }
+    function refreshBody() {
+      var body = el.querySelector('[data-bx-barscfg-body]');
+      body.innerHTML = bodyHtml(state.tab);
+      var chip = el.querySelector('[data-bx-barscfg-chiprow]');
+      if (chip) chip.hidden = state.tab !== 'full';
+    }
+    function setTabs() {
+      var nm = { dock: 'Barra de baixo', rail: 'Lateral', full: state.sub === 'fullpc' ? 'Full · PC' : 'Full · Celular' }[state.tab];
+      var head = el.querySelector('.bx-barscfg-head b');
+      if (head) head.textContent = 'Botões · ' + nm;
+      el.querySelectorAll('[data-bx-barstab]').forEach(function (b) {
+        b.classList.toggle('active', b.getAttribute('data-bx-barstab') === state.tab);
+      });
+      el.querySelectorAll('[data-bx-bars-chip]').forEach(function (b) {
+        b.classList.toggle('active', b.getAttribute('data-bx-bars-chip') === state.sub);
+      });
+    }
+    function isOn(id) {
+      if (id === 'home' || id === 'cfg') return true;
+      if (state.tab === 'dock') return cfg.dockRead(dockDevNow()).indexOf(id) >= 0;
+      var ctx = ctxForTab();
+      return cfg.visMap(ctx)[id] === 1;
+    }
+    function refreshChecks() {
+      el.querySelectorAll('[data-bx-barscfg-k]').forEach(function (cb) {
+        var id = cb.getAttribute('data-bx-barscfg-k');
+        var locked = state.tab === 'dock' && (id === 'home' || id === 'cfg');
+        cb.checked = locked ? true : isOn(id);
+        cb.disabled = locked;
+      });
+    }
+
+    /* ---- reaplica o estado VISUAL de um contexto do rail no DOM real:
+       itens de leitura ganham/perdem .bx-v157-off; itens de app somem/surgem
+       via o reconciliador (ensureRail). Só roda quando o contexto editado é
+       o ATIVO agora (senão só grava o store e o estado aparece quando aquele
+       contexto entrar — o observer do rail reaplica na troca). */
+    function applyCtx(ctx) {
+      var m = cfg.visMap(ctx);
+      var rows = cfg.CAT;
+      var rail = document.querySelector('.bx-v157-rail');
+      if (rail) {
+        var btns = rail.querySelectorAll('button');
+        for (var i = 0; i < btns.length; i++) {
+          var b = btns[i];
+          for (var r = 0; r < rows.length; r++) {
+            var it = rows[r];
+            if (it.kind !== 'reading') continue;
+            if (b.hasAttribute('data-v157-' + it.suffix)) {
+              b.classList.toggle('bx-v157-off', m[it.id] !== 1);
+              break;
+            }
+          }
+        }
+      }
+      try { if (cfg.ensureRail) cfg.ensureRail(); } catch (_) {}
+    }
+
+    function setOn(id, on) {
+      if (state.tab === 'dock') {
+        var dev = dockDevNow(), key = cfg.dockKey(dev);
+        var list = lsGet(key);
+        if (!Array.isArray(list) || !list.length) list = cfg.dockRead(dev).slice();
+        list = list.filter(function (x) { return x !== 'home' && x !== 'cfg'; });
+        if (on) { if (list.indexOf(id) < 0) list.push(id); }
+        else { list = list.filter(function (x) { return x !== id; }); }
+        lsSet(key, list);
+        try { if (window.__bxDockRender) window.__bxDockRender(); } catch (_) {}
+        return;
+      }
+      var ctx = ctxForTab();
+      var key = cfg.ctxKeys[ctx];
+      var obj = lsGet(key);
+      if (!obj || typeof obj !== 'object') obj = {};
+      if (on) obj[id] = 1; else delete obj[id];
+      lsSet(key, obj);
+      if (railCtxNow() === ctx) applyCtx(ctx);
+    }
+
+    function close() { if (el) el.hidden = true; }
+
+    function openPanel(tabOrCtx) {
+      ensureEl();
+      var tab;
+      if (tabOrCtx === 'dock') tab = 'dock';
+      else if (tabOrCtx === 'rail') tab = 'rail';
+      else if (tabOrCtx === 'full' || tabOrCtx === 'fullpc') tab = 'full';
+      else tab = 'rail';
+      var subCtx = null;
+      if (tab === 'full') subCtx = (tabOrCtx === 'full' || tabOrCtx === 'fullpc') ? tabOrCtx : (isMobileNow() ? 'full' : 'fullpc');
+      var same = !el.hidden && state.tab === tab && (tab !== 'full' || state.sub === subCtx);
+      if (same) { close(); return; }
+      state.tab = tab;
+      if (tab === 'full') state.sub = subCtx;
+      refreshBody();
+      setTabs();
+      var act = railCtxNow();
+      if (act === 'full' || act === 'fullpc') el.style.bottom = 'calc(118px + env(safe-area-inset-bottom,0px))';
+      else el.style.bottom = isMobileNow() ? 'calc(84px + env(safe-area-inset-bottom,0px))' : '30px';
+      el.hidden = false;
+      refreshChecks();
+      var body = el.querySelector('[data-bx-barscfg-body]');
+      if (body) body.scrollTop = 0;
+    }
+
+    document.addEventListener('click', function (e) {
+      var t = e.target;
+      if (!t || !t.closest || !el || el.hidden) return;
+      var inside = t.closest('.bx-barscfg');
+      if (!inside) {
+        /* cliques nos 2 ⚙️ que ABREM este painel já foram tratados pelos
+           handlers dos módulos (dock/rail) — não fechar aqui */
+        if (t.closest('[data-v157-settings]')) return;
+        if (t.closest('[data-bxm="cfg"]')) return;
+        /* painéis antigos (.bx-v157-settings montado-oculto com o
+           [data-bx-rail-panel]/[data-bx-rail-panel] .bx-v216-restore-rail, e
+           .bx-dock-cfg) ficam SEMPRE ocultos — o único jeito de um clique
+           chegar neles é o nosso .click() programático no Restaurar padrão
+           (reseta a ordem v157order). Ignorar p/ não fechar o painel. */
+        if (t.closest('.bx-v157-settings')) return;
+        if (t.closest('.bx-dock-cfg')) return;
+        close();
+        return;
+      }
+      var tb = t.closest('[data-bx-barstab]');
+      if (tb) {
+        state.tab = tb.getAttribute('data-bx-barstab');
+        if (state.tab === 'full') state.sub = isMobileNow() ? 'full' : 'fullpc';
+        refreshBody(); setTabs(); refreshChecks();
+        return;
+      }
+      var chip = t.closest('[data-bx-bars-chip]');
+      if (chip) { state.sub = chip.getAttribute('data-bx-bars-chip'); setTabs(); refreshChecks(); return; }
+      if (t.closest('[data-bx-barscfg-close]')) { close(); }
+    }, true);
+
+    document.addEventListener('click', function (e) {
+      var t = e.target;
+      if (!t || !t.closest) return;
+      if (t.closest('[data-bx-barscfg-restore]')) {
+        try {
+          if (state.tab === 'dock') {
+            lsSet(cfg.dockKey(dockDevNow()), cfg.dockDefaultOrder.slice());
+            try { if (window.__bxDockRender) window.__bxDockRender(); } catch (_) {}
+            refreshChecks();
+            return;
+          }
+          var ctx = ctxForTab();
+          lsSet(cfg.ctxKeys[ctx], {});
+          try {
+            var ob = document.querySelector('[data-bx-rail-panel] .bx-v216-restore-rail');
+            if (ob && typeof ob.click === 'function') ob.click();
+          } catch (_) {}
+          if (railCtxNow() === ctx) applyCtx(ctx);
+          refreshChecks();
+        } catch (_e) {}
+      }
+    }, true);
+
+    document.addEventListener('change', function (e) {
+      var cb = e.target;
+      if (!cb || !cb.hasAttribute || !cb.hasAttribute('data-bx-barscfg-k')) return;
+      if (!el || el.hidden) return;
+      if (cb.disabled) return;
+      setOn(cb.getAttribute('data-bx-barscfg-k'), cb.checked);
+      refreshChecks();
+    }, true);
+
+    cfg.openPanel = openPanel;
+    cfg.barsClose = close;
+    cfg._barsState = function () { return { tab: state.tab, sub: state.sub, open: !!(el && !el.hidden) }; };
+  } catch (e) { if (window.console) console.error('bxBarsPanel:', e); }
 })();

@@ -1,5 +1,5 @@
 {
-  "version": "5.4.207",
+  "version": "5.4.230",
   "updated": "2026-09-07",
   "description": "Cenas editoriais da Bíblia Viva — Modo Imersão. Os textos são resumos de navegação; a passagem bíblica exibida vem do leitor.",
   "scenes": [
@@ -11,6 +11,7 @@
       "subtitle": "Um encontro inesperado na fronteira entre Judeia e Samaria",
       "theme": "Encontro, água, barreiras culturais e testemunho",
       "period": "Segundo Templo • provável primeiro século",
+      "timelineNote": "A sequência segue o movimento narrativo de João; a ambientação temporal é aproximada.",
       "sceneClass": "sicar",
       "badge": "RECONSTRUÇÃO VISUAL",
       "place": {
@@ -21,7 +22,19 @@
       "certainty": "Localização aproximada • reconstrução visual",
       "mediaQuery": "Sicar poço Samaria João 4",
       "panoramaQuery": "Samaria Sicar landscape 360",
+      "externalPanoramaUrl": "https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=32.20717,35.27333",
+      "externalMapUrl": "https://www.google.com/maps/search/?api=1&query=Jacob%27s+Well+Nablus",
+      "externalPanoramaLabel": "Poço de Jacó / Nablus • vista atual",
+      "externalPanoramaNote": "Vista atual do local tradicionalmente associado ao poço de Sicar; não é uma reconstrução do primeiro século e depende da cobertura 360° do serviço externo.",
       "historicalContext": "Samaria ficava entre a Judeia e a Galileia. O caminho, a água e as tensões entre judeus e samaritanos formam o cenário social da conversa. A identificação exata de Sicar e do poço é apresentada pelo Atlas com a devida cautela.",
+      "geography": [
+        {"title": "Terreno e deslocamento", "text": "A rota entre Judeia, Samaria e Galileia atravessa uma região de transição; a passagem ganha força justamente porque o caminho passa por uma fronteira social."},
+        {"title": "Água e relevo", "text": "Um poço concentra a necessidade da cena. A paisagem, o calor e a distância ajudam a visualizar por que buscar água era uma tarefa concreta e diária."}
+      ],
+      "curiosities": [
+        {"title": "O nome do lugar", "text": "Sicar é associado à região de Siquém em diferentes leituras; a experiência mantém essa identificação como camada aproximada, não como certeza absoluta."},
+        {"title": "Uma conversa no caminho", "text": "A narrativa transforma um ponto de passagem em espaço de encontro: a geografia deixa de ser apenas cenário e passa a participar da mensagem."}
+      ],
       "culturalNotes": [
         {"title": "A fronteira cultural", "text": "O encontro atravessa uma separação religiosa e social. A conversa não acontece em um espaço neutro: o caminho passa por uma região marcada por memórias, disputas e desconfiança."},
         {"title": "O poço como espaço social", "text": "Buscar água envolvia trabalho, horário, deslocamento e convivência. O poço funciona na cena como lugar de necessidade concreta e também de revelação."},
@@ -88,6 +101,38 @@
         "description": "Jericó funciona aqui como ponto de passagem entre o vale do Jordão e a subida para Jerusalém."
       },
       "certainty": "Lugar bíblico reconhecido • ambientação interpretativa",
+      "period": "Segundo Templo • provável primeiro século",
+      "timelineNote": "A ordem acompanha o relato de Marcos; a datação do episódio não é preenchida como um dia exato.",
+      "historicalContext": "Jericó aparece como passagem no vale do Jordão, antes da subida em direção a Jerusalém. A estrada, a multidão e a margem do caminho organizam a tensão da cena.",
+      "geography": [
+        {"title": "Vale e subida", "text": "Jericó está associada ao vale do Jordão; o caminho para Jerusalém muda de altitude e ajuda a explicar o sentido de passagem e esforço."},
+        {"title": "Margem da estrada", "text": "A cena se concentra na borda do fluxo de viajantes. O caminho funciona ao mesmo tempo como espaço público e lugar de vulnerabilidade."}
+      ],
+      "curiosities": [
+        {"title": "Um nome preservado", "text": "A narrativa identifica Bartimeu, dando rosto e voz a alguém que poderia permanecer anônimo à margem da multidão."},
+        {"title": "O manto", "text": "O manto é tratado como objeto narrativo ligado ao gesto de levantar-se e seguir o caminho, não como reconstrução arqueológica comprovada."},
+        {"title": "A direção da história", "text": "Depois do encontro, Bartimeu não apenas sai de um lugar: ele passa a acompanhar a direção do caminho."}
+      ],
+      "culturalNotes": [
+        {"title": "A margem da estrada", "text": "A beira do caminho era espaço de passagem e também de exposição para quem dependia da atenção dos viajantes."},
+        {"title": "O clamor público", "text": "Bartimeu não pede em silêncio; sua voz disputa espaço com a multidão e força o grupo a decidir se vai ouvi-lo."},
+        {"title": "Manto e movimento", "text": "O manto acompanha a mudança da cena: o homem deixa a posição de espera e se levanta para encontrar Jesus."}
+      ],
+      "objects": [
+        {"name": "Manto", "icon": "◇", "meaning": "Objeto ligado à posição de espera e ao gesto de levantar-se."},
+        {"name": "Estrada", "icon": "➜", "meaning": "Lugar de passagem onde o clamor interrompe o fluxo."},
+        {"name": "Multidão", "icon": "👥", "meaning": "Presença coletiva que pode silenciar ou conduzir alguém até Jesus."}
+      ],
+      "questions": [
+        "Quem está sendo silenciado pela multidão ao redor?",
+        "Que clamor precisa ser levado para o centro da conversa?",
+        "O que você deixaria para trás se o caminho fosse reaberto?"
+      ],
+      "sources": [
+        {"label": "Texto principal", "type": "Bíblia", "value": "Marcos 10:46–52", "certainty": "Texto bíblico"},
+        {"label": "Lugar relacionado", "type": "Atlas X Vivo", "value": "Jericó e subida para Jerusalém", "certainty": "Rota associada ao relato"},
+        {"label": "Camada visual", "type": "Editorial", "value": "Estrada e margem reconstruídas para estudo", "certainty": "Interpretativa"}
+      ],
       "mediaQuery": "Jericho ancient road landscape",
       "panoramaQuery": "Jericho Jordan valley 360",
       "people": [
@@ -126,6 +171,37 @@
         "description": "A identificação geográfica exata é debatida; a cena preserva essa incerteza no Atlas." 
       },
       "certainty": "Localização debatida • leitura esquemática",
+      "period": "Tradição do êxodo • ambientação do antigo Oriente",
+      "timelineNote": "O percurso é apresentado como sequência do relato; propostas de data e localização permanecem debatidas.",
+      "historicalContext": "O relato coloca uma comunidade entre a água e a perseguição. Como a identificação do local é debatida, a visualização usa uma paisagem esquemática e deixa a incerteza visível.",
+      "geography": [
+        {"title": "Mar, costa ou pântano", "text": "A expressão traduzida como Mar Vermelho também é discutida em relação ao Mar de Juncos; por isso o Atlas deve apresentar alternativas, não uma coordenada única."},
+        {"title": "Fronteira de fuga", "text": "A paisagem funciona como bloqueio físico: de um lado as águas, do outro a força que persegue. A travessia reconfigura o espaço como caminho."}
+      ],
+      "curiosities": [
+        {"title": "Um personagem coletivo", "text": "Israel aparece como comunidade em movimento, com medo, memória e decisão compartilhados."},
+        {"title": "O vento como agente narrativo", "text": "O vento é apresentado no relato como parte decisiva da mudança das águas e do tempo da travessia."}
+      ],
+      "culturalNotes": [
+        {"title": "Memória de escravidão e liberdade", "text": "A travessia é narrada como ruptura com a opressão e como nascimento de uma comunidade em caminho."},
+        {"title": "Moisés e o povo", "text": "O líder não aparece separado da comunidade; a tensão da cena é compartilhada por quem conduz e por quem teme."},
+        {"title": "Travessia como linguagem", "text": "A água deixa de ser apenas obstáculo e passa a ser descrita como espaço de passagem e livramento."}
+      ],
+      "objects": [
+        {"name": "Cajado", "icon": "╱", "meaning": "Sinal visual da liderança de Moisés na narrativa da travessia."},
+        {"name": "Águas", "icon": "≈", "meaning": "Obstáculo e caminho na mesma paisagem narrativa."},
+        {"name": "Nuvem e fogo", "icon": "✦", "meaning": "Imagens de direção e presença no percurso do povo."}
+      ],
+      "questions": [
+        "Qual bloqueio parece maior: o mar à frente ou o medo atrás?",
+        "Como uma comunidade aprende a caminhar depois de ser libertada?",
+        "Que memória de livramento sustenta o próximo passo?"
+      ],
+      "sources": [
+        {"label": "Texto principal", "type": "Bíblia", "value": "Êxodo 14", "certainty": "Texto bíblico"},
+        {"label": "Lugar relacionado", "type": "Atlas X Vivo", "value": "Mar Vermelho / Mar de Juncos", "certainty": "Localização debatida"},
+        {"label": "Camada visual", "type": "Editorial", "value": "Mar, deserto e travessia em esquema visual", "certainty": "Interpretativa"}
+      ],
       "mediaQuery": "Red Sea desert coast Exodus",
       "panoramaQuery": "Red Sea desert coast 360",
       "people": [
@@ -165,6 +241,37 @@
         "description": "A ilha é o ponto de chegada do relato após a tempestade e o naufrágio." 
       },
       "certainty": "Rota marítima aproximada • registro narrativo",
+      "period": "Período romano • viagem marítima do primeiro século",
+      "timelineNote": "A viagem segue a ordem narrativa de Atos; a rota marítima é aproximada.",
+      "historicalContext": "O relato de Atos combina navegação, tempestade, decisões de tripulação e acolhimento em terra. A rota exata é uma reconstrução de percurso, não uma trilha GPS do episódio.",
+      "geography": [
+        {"title": "O Mediterrâneo", "text": "Vento, corrente, abrigo e visibilidade mudam rapidamente no mar. A viagem é melhor entendida como uma sequência de decisões sob pressão."},
+        {"title": "A costa de Malta", "text": "A ilha entra na narrativa como lugar de sobrevivência e hospitalidade depois do naufrágio; a costa conecta perigo, chegada e recomeço."}
+      ],
+      "curiosities": [
+        {"title": "Um mapa com incerteza", "text": "As escalas e o ponto exato do naufrágio devem aparecer como aproximações editoriais, acompanhadas de legenda de certeza."},
+        {"title": "Depois do naufrágio", "text": "A história não termina quando o navio se perde: o foco muda para o cuidado, a hospitalidade e o serviço na ilha."}
+      ],
+      "culturalNotes": [
+        {"title": "Navegação antiga", "text": "A viagem dependia de vento, observação, experiência e decisões coletivas; não havia uma rota automatizada como em um mapa moderno."},
+        {"title": "Prisioneiro e tripulação", "text": "A presença de Paulo dentro de um navio romano coloca autoridade, risco e cuidado em uma mesma situação de crise."},
+        {"title": "Hospitalidade na ilha", "text": "A chegada em Malta desloca o foco do perigo para o acolhimento oferecido aos sobreviventes."}
+      ],
+      "objects": [
+        {"name": "Navio", "icon": "⌁", "meaning": "Espaço de convivência e risco compartilhado durante a viagem."},
+        {"name": "Cordas e carga", "icon": "◈", "meaning": "Elementos de trabalho que tornam a luta contra a tempestade concreta."},
+        {"name": "Fogueira na ilha", "icon": "✦", "meaning": "Imagem de acolhimento depois da chegada dos sobreviventes."}
+      ],
+      "questions": [
+        "Que tipo de esperança permanece quando o plano de viagem fracassa?",
+        "Quem assume cuidado quando o navio já não oferece segurança?",
+        "Como um lugar de chegada se torna lugar de serviço?"
+      ],
+      "sources": [
+        {"label": "Texto principal", "type": "Bíblia", "value": "Atos 27–28", "certainty": "Texto bíblico"},
+        {"label": "Rota relacionada", "type": "Atlas X Vivo", "value": "Mediterrâneo e Malta", "certainty": "Rota marítima aproximada"},
+        {"label": "Camada visual", "type": "Editorial", "value": "Navio, tempestade e costa reconstruídos para estudo", "certainty": "Interpretativa"}
+      ],
       "mediaQuery": "Malta coast shipwreck",
       "panoramaQuery": "Malta coast Mediterranean 360",
       "people": [
@@ -189,6 +296,940 @@
         {"label": "Mar Mediterrâneo", "query": "Mediterrâneo Atos 27", "type": "region"},
         {"label": "Malta", "query": "Malta Atos 28", "type": "place"},
         {"label": "Roma", "query": "Roma Atos 28", "type": "place"}
+      ]
+    },
+    {
+      "id": "joao-20-portas-fechadas",
+      "matches": ["João 20", "Joao 20", "John 20"],
+      "reference": "João 20:19–29",
+      "title": "A sala de portas fechadas",
+      "subtitle": "Quando o medo encontra uma presença que traz paz",
+      "theme": "Medo, paz, comunidade e reconhecimento",
+      "period": "Segundo Templo • provável primeiro século",
+      "timelineNote": "A sequência segue o relato de João; o cômodo exato e a data do encontro não são preenchidos como certezas.",
+      "sceneClass": "generic",
+      "badge": "CENA DE ENCONTRO",
+      "place": {
+        "name": "Jerusalém",
+        "query": "Jerusalém sala doméstica primeiro século",
+        "description": "A cidade é histórica, mas o interior da reunião é apresentado como reconstrução editorial aproximada."
+      },
+      "certainty": "Cidade histórica • interior reconstruído editorialmente",
+      "historicalContext": "A narrativa apresenta os discípulos reunidos com as portas fechadas. Como o texto não identifica o cômodo, a cena visual usa elementos de uma casa do primeiro século apenas para apoiar a leitura.",
+      "geography": [
+        {"title": "Jerusalém como centro", "text": "A cidade concentra tensão, memória e expectativa depois dos acontecimentos narrados na paixão."},
+        {"title": "Um espaço interno", "text": "Portas, paredes, luz e proximidade criam um ambiente de proteção, mas também revelam o medo do grupo."}
+      ],
+      "culturalNotes": [
+        {"title": "A saudação de paz", "text": "A saudação funciona na cena como palavra de acolhimento e reorganização da comunidade assustada."},
+        {"title": "A casa como abrigo", "text": "A reconstrução usa uma sala simples, iluminação de lamparina e portas de madeira como linguagem visual, não como planta arqueológica comprovada."},
+        {"title": "O testemunho da comunidade", "text": "A experiência não fica isolada: os discípulos contam o que viram, e Tomé participa da conversa a partir de sua própria dúvida."}
+      ],
+      "objects": [
+        {"name": "Porta", "icon": "▣", "meaning": "Marca o limite entre o medo do lado de dentro e o mundo do lado de fora."},
+        {"name": "Lamparina", "icon": "✦", "meaning": "A luz baixa reforça a intimidade da reunião sem transformar o cenário em espetáculo."},
+        {"name": "Mesa", "icon": "⌂", "meaning": "Um ponto de reunião para uma comunidade que tenta compreender o que aconteceu."}
+      ],
+      "curiosities": [
+        {"title": "Oito dias depois", "text": "O relato marca uma nova reunião e faz da ausência e do retorno de Tomé parte importante da narrativa."},
+        {"title": "Do medo à missão", "text": "A cena começa com portas fechadas e termina com uma comunidade recebendo direção para continuar."}
+      ],
+      "questions": [
+        "Que portas emocionais permanecem fechadas no início da cena?",
+        "Como a paz recebida reorganiza a comunidade?",
+        "O que muda quando a dúvida de Tomé é tratada dentro do encontro?"
+      ],
+      "sources": [
+        {"label": "Texto principal", "type": "Bíblia", "value": "João 20:19–29", "certainty": "Texto bíblico"},
+        {"label": "Cidade relacionada", "type": "Atlas X Vivo", "value": "Jerusalém", "certainty": "Lugar histórico"},
+        {"label": "Camada visual", "type": "Editorial", "value": "Interior doméstico reconstruído para estudo", "certainty": "Interpretativa"}
+      ],
+      "mediaQuery": "Jerusalem first century room John 20",
+      "panoramaQuery": "Jerusalem old city 360",
+      "people": [
+        {"id": "jesus", "name": "Jesus", "role": "Presença que traz paz", "description": "Sua chegada reorganiza a reunião e desloca o foco do medo para a missão."},
+        {"id": "discipulos", "name": "Discípulos", "role": "Comunidade reunida", "description": "O grupo aparece como comunidade assustada, testemunha e destinatária de uma nova direção."},
+        {"id": "tome", "name": "Tomé", "role": "Discípulo que pergunta", "description": "Tomé participa da cena a partir da ausência, da dúvida e do encontro posterior."}
+      ],
+      "hotspots": [
+        {"id": "porta", "label": "Portas fechadas", "kind": "place", "event": 0},
+        {"id": "jesus", "label": "Jesus", "kind": "person", "person": "jesus"},
+        {"id": "tome", "label": "Tomé", "kind": "person", "person": "tome"}
+      ],
+      "verseMap": [
+        {"match": "João 20:19", "event": 0},
+        {"match": "João 20:20", "event": 1},
+        {"match": "João 20:24", "event": 2},
+        {"match": "João 20:26", "event": 3},
+        {"match": "João 20:28", "event": 3}
+      ],
+      "events": [
+        {"label": "A reunião com medo", "ref": "João 20:19", "focus": "Portas fechadas não encerram a história", "summary": "Os discípulos se reúnem em Jerusalém com as portas fechadas por medo."},
+        {"label": "A paz no centro", "ref": "João 20:19–23", "focus": "A presença reorganiza a sala", "summary": "A saudação de paz transforma o ambiente e devolve direção à comunidade."},
+        {"label": "A dúvida de Tomé", "ref": "João 20:24–25", "focus": "A pergunta também entra na sala", "summary": "Tomé ouve o testemunho dos outros e expressa sua dificuldade de crer."},
+        {"label": "O encontro de Tomé", "ref": "João 20:26–29", "focus": "Dúvida, reconhecimento e fé", "summary": "A nova reunião acolhe Tomé e conclui a cena com reconhecimento e confissão."}
+      ],
+      "route": [
+        {"label": "Jerusalém", "query": "Jerusalém", "type": "city"},
+        {"label": "Casa reunida", "query": "sala doméstica Jerusalém primeiro século", "type": "interior editorial"},
+        {"label": "Comunidade enviada", "query": "Jerusalém disciples first century", "type": "movimento narrativo"}
+      ]
+    },
+    {
+      "id": "lucas-15-caminho-volta",
+      "matches": ["Lucas 15", "Lucas 15:11", "Luke 15"],
+      "reference": "Lucas 15:11–32",
+      "title": "O caminho de volta",
+      "subtitle": "Uma casa, dois filhos e um pai que corre ao encontro",
+      "theme": "Perda, retorno, reconciliação e pertencimento",
+      "period": "Parábola • cenário rural do primeiro século",
+      "timelineNote": "A sequência acompanha a parábola; o lugar e as personagens não devem ser tratados como um registro biográfico específico.",
+      "sceneClass": "generic",
+      "badge": "PARÁBOLA EM CAMADAS",
+      "place": {
+        "name": "Aldeia não especificada",
+        "query": "aldeia rural antiga Judeia parábola Lucas 15",
+        "description": "O texto não nomeia a aldeia. A cena usa casa, estrada e campo como elementos de ambientação cultural."
+      },
+      "certainty": "Parábola • ambientação cultural interpretativa",
+      "historicalContext": "A parábola usa imagens de herança, casa, trabalho rural, fome e festa. A visualização não inventa uma cidade: ela cria uma ambientação mínima para que os movimentos da história possam ser acompanhados.",
+      "geography": [
+        {"title": "Casa e campo", "text": "A distância entre a casa, o caminho e o campo organiza os três espaços emocionais da parábola: saída, espera e retorno."},
+        {"title": "Uma aldeia sem nome", "text": "Como o texto não fornece coordenadas, o Atlas deve exibir a cena como ambiente cultural, não como ponto histórico exato."}
+      ],
+      "culturalNotes": [
+        {"title": "Herança e ruptura", "text": "O pedido do filho rompe a expectativa familiar e coloca a relação entre patrimônio, autonomia e pertencimento no centro da narrativa."},
+        {"title": "O pai que corre", "text": "O gesto do pai é apresentado como movimento de acolhimento. A reconstrução visual evita transformar a parábola em fotografia de um evento documentado."},
+        {"title": "A festa e o irmão mais velho", "text": "A casa também é espaço de tensão: a alegria do retorno convive com a dificuldade de quem permaneceu e se sente não reconhecido."}
+      ],
+      "objects": [
+        {"name": "Manto", "icon": "◇", "meaning": "Sinal narrativo de acolhimento e dignidade restaurada."},
+        {"name": "Anel", "icon": "○", "meaning": "Objeto associado ao pertencimento na linguagem da parábola."},
+        {"name": "Mesa", "icon": "⌂", "meaning": "A festa torna visível a alegria do reencontro e a pergunta sobre quem se sente dentro da casa."}
+      ],
+      "curiosities": [
+        {"title": "A parábola tem dois conflitos", "text": "O retorno do filho mais novo não encerra a história: a reação do irmão mais velho abre uma segunda conversa sobre graça e justiça."},
+        {"title": "O movimento do pai", "text": "O pai aparece saindo da casa em direção aos filhos, primeiro para acolher e depois para convidar o mais velho a entrar."}
+      ],
+      "questions": [
+        "Em qual espaço da história você se reconhece: estrada, casa ou campo?",
+        "O que o pai restaura antes mesmo de ouvir uma explicação completa?",
+        "Por que a parábola termina com o convite ao irmão mais velho?"
+      ],
+      "sources": [
+        {"label": "Texto principal", "type": "Bíblia", "value": "Lucas 15:11–32", "certainty": "Parábola registrada no texto"},
+        {"label": "Cenário", "type": "Contexto X", "value": "Casa, campo e aldeia rural do primeiro século", "certainty": "Ambientação cultural"},
+        {"label": "Camada visual", "type": "Editorial", "value": "Reconstrução de espaços narrativos sem localização exata", "certainty": "Interpretativa"}
+      ],
+      "mediaQuery": "ancient village home father son Luke 15",
+      "panoramaQuery": "ancient village Israel landscape 360",
+      "people": [
+        {"id": "pai", "name": "O pai", "role": "Anfitrião e reconciliador", "description": "Seu movimento organiza a parábola: ele acolhe o filho que retorna e sai para conversar com o filho mais velho."},
+        {"id": "filho-mais-novo", "name": "Filho mais novo", "role": "Aquele que parte e retorna", "description": "A jornada exterior se transforma em retorno para a casa e para a relação."},
+        {"id": "filho-mais-velho", "name": "Filho mais velho", "role": "Aquele que permanece e questiona", "description": "Sua reação torna explícita a tensão entre permanência, mérito e alegria pelo outro."}
+      ],
+      "hotspots": [
+        {"id": "casa", "label": "A casa", "kind": "place", "event": 0},
+        {"id": "filho-novo", "label": "Filho mais novo", "kind": "person", "person": "filho-mais-novo"},
+        {"id": "pai", "label": "O pai", "kind": "person", "person": "pai"},
+        {"id": "campo", "label": "O campo", "kind": "place", "event": 3}
+      ],
+      "verseMap": [
+        {"match": "Lucas 15:12", "event": 0},
+        {"match": "Lucas 15:17", "event": 1},
+        {"match": "Lucas 15:20", "event": 2},
+        {"match": "Lucas 15:25", "event": 3},
+        {"match": "Lucas 15:31", "event": 3}
+      ],
+      "events": [
+        {"label": "A partida", "ref": "Lucas 15:11–16", "focus": "Quando a distância começa dentro de casa", "summary": "O filho mais novo parte e experimenta a queda longe da casa do pai."},
+        {"label": "A decisão de voltar", "ref": "Lucas 15:17–19", "focus": "A memória abre um caminho", "summary": "Em meio à necessidade, o filho se lembra da casa e decide retornar."},
+        {"label": "O pai corre", "ref": "Lucas 15:20–24", "focus": "A restauração vem ao encontro", "summary": "O pai vê o filho de longe, corre, abraça e prepara uma festa de reencontro."},
+        {"label": "A conversa do lado de fora", "ref": "Lucas 15:25–32", "focus": "O convite também alcança quem ficou", "summary": "O irmão mais velho permanece do lado de fora e recebe o convite para entrar na alegria."}
+      ],
+      "route": [
+        {"label": "A casa", "query": "casa aldeia antiga parábola Lucas 15", "type": "casa"},
+        {"label": "A terra distante", "query": "estrada antiga Judeia parábola Lucas 15", "type": "jornada"},
+        {"label": "O campo", "query": "campo rural antigo Israel", "type": "trabalho"},
+        {"label": "A mesa da festa", "query": "banquete casa antiga Israel", "type": "reencontro"}
+      ]
+    },
+    {
+      "id": "1-samuel-17-ela",
+      "matches": ["1 Samuel 17", "1Samuel 17", "1 Samuel 17:1", "1 Samuel 17:45"],
+      "reference": "1 Samuel 17",
+      "title": "O vale entre os acampamentos",
+      "subtitle": "Um voluntário entra numa batalha que todos temiam",
+      "theme": "Coragem, identidade, ameaça e confiança",
+      "period": "Monarquia israelita • datação debatida",
+      "timelineNote": "A cena segue a ordem narrativa de 1 Samuel; a reconstrução não fixa uma data absoluta para o episódio.",
+      "sceneClass": "generic",
+      "badge": "CONFRONTO NO VALE",
+      "place": {
+        "name": "Vale de Elá",
+        "query": "Vale de Elá Israel",
+        "description": "O vale é associado ao cenário do relato; a disposição exata dos acampamentos é apresentada de forma aproximada."
+      },
+      "certainty": "Vale associado ao relato • disposição visual aproximada",
+      "historicalContext": "O capítulo organiza o conflito entre dois exércitos em torno de um vale e de um desafio público. A visualização usa relevo, tendas e distância entre grupos sem afirmar a posição arqueológica exata de cada elemento.",
+      "geography": [
+        {"title": "O vale como palco", "text": "A depressão entre os acampamentos cria distância, exposição e suspense antes do confronto."},
+        {"title": "Belém e o campo de batalha", "text": "Davi chega vindo de Belém para levar provisões aos irmãos; o deslocamento liga a vida cotidiana ao conflito nacional."}
+      ],
+      "culturalNotes": [
+        {"title": "O desafio público", "text": "A ameaça é construída diante dos dois grupos, transformando o medo individual em vergonha e paralisia coletiva."},
+        {"title": "Armadura e identidade", "text": "Davi experimenta a armadura de Saul, mas decide não usá-la; a cena visual trata isso como escolha narrativa de identidade, não como manual militar."},
+        {"title": "A funda", "text": "A funda era uma ferramenta conhecida no antigo Oriente. A reconstrução evita garantir medidas ou técnicas que o texto não fornece."}
+      ],
+      "objects": [
+        {"name": "Provisões", "icon": "◈", "meaning": "Uma tarefa familiar coloca Davi no lugar onde o desafio será ouvido."},
+        {"name": "Armadura", "icon": "⬡", "meaning": "Símbolo de uma solução que não corresponde à experiência de Davi."},
+        {"name": "Funda e pedras", "icon": "◌", "meaning": "Elementos do confronto narrado, apresentados sem transformar a cena em tutorial de violência."}
+      ],
+      "curiosities": [
+        {"title": "O voluntário aparece", "text": "Davi não chega procurando uma posição militar: ele chega para entregar provisões e se oferece quando escuta o desafio."},
+        {"title": "O vale muda de sentido", "text": "O mesmo espaço que parecia lugar de ameaça se torna memória de coragem para a comunidade."}
+      ],
+      "questions": [
+        "Que voz de medo domina o acampamento antes de Davi falar?",
+        "Qual armadura você está tentando usar que não corresponde à sua história?",
+        "O que muda quando alguém se oferece enquanto todos recuam?"
+      ],
+      "sources": [
+        {"label": "Texto principal", "type": "Bíblia", "value": "1 Samuel 17", "certainty": "Texto bíblico"},
+        {"label": "Lugar relacionado", "type": "Atlas X Vivo", "value": "Vale de Elá", "certainty": "Cenário associado ao relato"},
+        {"label": "Camada visual", "type": "Editorial", "value": "Acampamentos e relevo reconstruídos de forma aproximada", "certainty": "Interpretativa"}
+      ],
+      "mediaQuery": "Elah Valley biblical landscape David Goliath",
+      "panoramaQuery": "Elah Valley Israel 360",
+      "people": [
+        {"id": "davi", "name": "Davi", "role": "Jovem voluntário", "description": "Davi chega com uma tarefa familiar e entra no conflito depois de ouvir o desafio."},
+        {"id": "golias", "name": "Golias", "role": "Desafiante filisteu", "description": "Sua presença concentra o medo do acampamento e dá forma pública à ameaça."},
+        {"id": "saul", "name": "Saul", "role": "Rei de Israel", "description": "Saul representa a estrutura militar e oferece a Davi uma armadura que ele não consegue usar."}
+      ],
+      "hotspots": [
+        {"id": "vale", "label": "O vale", "kind": "place", "event": 0},
+        {"id": "davi", "label": "Davi", "kind": "person", "person": "davi"},
+        {"id": "golias", "label": "Golias", "kind": "person", "person": "golias"},
+        {"id": "acampamento", "label": "O acampamento", "kind": "place", "event": 3}
+      ],
+      "verseMap": [
+        {"match": "1 Samuel 17:4", "event": 0},
+        {"match": "1 Samuel 17:11", "event": 0},
+        {"match": "1 Samuel 17:26", "event": 1},
+        {"match": "1 Samuel 17:38", "event": 2},
+        {"match": "1 Samuel 17:45", "event": 3}
+      ],
+      "events": [
+        {"label": "O desafio", "ref": "1 Samuel 17:1–11", "focus": "O medo ocupa o vale", "summary": "O desafio de Golias paralisa os dois lados e transforma o vale em palco de ameaça."},
+        {"label": "O voluntário", "ref": "1 Samuel 17:12–30", "focus": "Uma tarefa simples encontra uma crise", "summary": "Davi chega com provisões, ouve o desafio e pergunta por que todos recuam."},
+        {"label": "A armadura recusada", "ref": "1 Samuel 17:31–40", "focus": "Identidade antes da estratégia", "summary": "Davi experimenta a armadura de Saul, mas escolhe seguir com aquilo que conhece."},
+        {"label": "O confronto", "ref": "1 Samuel 17:41–51", "focus": "O vale não decide sozinho o futuro", "summary": "Davi entra no confronto e o medo que dominava o acampamento perde sua voz."}
+      ],
+      "route": [
+        {"label": "Belém", "query": "Belém Israel", "type": "origem"},
+        {"label": "Acampamento de Israel", "query": "ancient Israelite military camp", "type": "acampamento"},
+        {"label": "Vale de Elá", "query": "Vale de Elá", "type": "campo de confronto"},
+        {"label": "Acampamento filisteu", "query": "ancient Philistine camp Elah Valley", "type": "acampamento"}
+      ]
+    },
+    {
+      "id": "lucas-10-bom-samaritano",
+      "matches": ["Lucas 10", "Lucas 10:25", "Lucas 10:30", "Luke 10"],
+      "reference": "Lucas 10:25–37",
+      "title": "A estrada entre Jerusalém e Jericó",
+      "subtitle": "Uma parábola que transforma o caminho em responsabilidade",
+      "theme": "Vulnerabilidade, compaixão, risco e cuidado",
+      "period": "Parábola • cenário de estrada do primeiro século",
+      "timelineNote": "A sequência acompanha a parábola; a visualização da estrada é cultural e não reconstitui um assalto específico.",
+      "sceneClass": "jerico",
+      "badge": "PARÁBOLA NA ESTRADA",
+      "place": {
+        "name": "Estrada Jerusalém–Jericó",
+        "query": "estrada antiga Jerusalém Jericó",
+        "description": "A rota era conhecida como caminho de descida; o ponto exato da cena da parábola não é indicado."
+      },
+      "certainty": "Rota histórica • ponto exato não indicado na parábola",
+      "historicalContext": "A parábola usa uma estrada conhecida para falar de vulnerabilidade, proximidade e cuidado. A reconstrução apresenta relevo e abrigo de estrada como contexto, sem tratar o episódio como boletim histórico.",
+      "geography": [
+        {"title": "Descida para o vale", "text": "A diferença de altitude entre Jerusalém e Jericó ajuda a compreender a imagem de uma viagem exigente e exposta."},
+        {"title": "Um caminho vulnerável", "text": "Curvas, desníveis e pontos de abrigo tornam a estrada um cenário de risco, mas não permitem identificar um local único para a parábola."}
+      ],
+      "culturalNotes": [
+        {"title": "Sacerdote e levita", "text": "As figuras religiosas aparecem na parábola como pessoas que passam pelo ferido; o foco da leitura é a ação concreta, não uma acusação contra uma profissão inteira."},
+        {"title": "O samaritano", "text": "A escolha de um samaritano como aquele que age desloca expectativas sociais e coloca a compaixão no centro da definição de próximo."},
+        {"title": "Hospedaria e cuidado", "text": "O cuidado inclui primeiros gestos, transporte, abrigo e pagamento, mostrando que compaixão também envolve continuidade."}
+      ],
+      "objects": [
+        {"name": "Feridas", "icon": "✚", "meaning": "A vulnerabilidade concreta impede que a pergunta fique apenas no campo das ideias."},
+        {"name": "Animal de carga", "icon": "◒", "meaning": "Recurso de transporte que permite levar o ferido até um lugar seguro."},
+        {"name": "Hospedaria", "icon": "⌂", "meaning": "Espaço de cuidado continuado depois do primeiro socorro."}
+      ],
+      "curiosities": [
+        {"title": "A pergunta muda", "text": "A discussão começa perguntando quem é o próximo e termina perguntando quem agiu como próximo."},
+        {"title": "Cuidado em etapas", "text": "A parábola não descreve apenas emoção: ela encadeia aproximação, tratamento, transporte, abrigo e compromisso."}
+      ],
+      "questions": [
+        "Quem está vulnerável na estrada que você costuma atravessar?",
+        "Qual é o primeiro gesto de cuidado possível nesta situação?",
+        "Como transformar compaixão momentânea em responsabilidade continuada?"
+      ],
+      "sources": [
+        {"label": "Texto principal", "type": "Bíblia", "value": "Lucas 10:25–37", "certainty": "Parábola registrada no texto"},
+        {"label": "Rota relacionada", "type": "Atlas X Vivo", "value": "Jerusalém–Jericó", "certainty": "Estrada histórica associada"},
+        {"label": "Camada visual", "type": "Editorial", "value": "Relevo e hospedaria reconstruídos para estudo", "certainty": "Interpretativa"}
+      ],
+      "mediaQuery": "ancient road Jerusalem Jericho Good Samaritan",
+      "panoramaQuery": "Jerusalem Jericho road landscape 360",
+      "people": [
+        {"id": "viajante", "name": "O viajante ferido", "role": "Pessoa vulnerável", "description": "Sua condição concreta interrompe a discussão abstrata e exige cuidado."},
+        {"id": "samaritano", "name": "O samaritano", "role": "Aquele que se aproxima", "description": "Ele transforma compaixão em ações sucessivas até que o ferido tenha proteção."},
+        {"id": "hospedeiro", "name": "O hospedeiro", "role": "Cuidador da hospedaria", "description": "Recebe a responsabilidade de continuar o cuidado depois da estrada."}
+      ],
+      "hotspots": [
+        {"id": "estrada", "label": "A estrada", "kind": "place", "event": 0},
+        {"id": "viajante", "label": "O viajante", "kind": "person", "person": "viajante"},
+        {"id": "samaritano", "label": "O samaritano", "kind": "person", "person": "samaritano"},
+        {"id": "hospedaria", "label": "A hospedaria", "kind": "place", "event": 3}
+      ],
+      "verseMap": [
+        {"match": "Lucas 10:30", "event": 0},
+        {"match": "Lucas 10:31", "event": 1},
+        {"match": "Lucas 10:33", "event": 2},
+        {"match": "Lucas 10:34", "event": 2},
+        {"match": "Lucas 10:37", "event": 3}
+      ],
+      "events": [
+        {"label": "A pessoa caída", "ref": "Lucas 10:30", "focus": "A estrada revela a vulnerabilidade", "summary": "Um viajante é assaltado e deixado ferido no caminho entre Jerusalém e Jericó."},
+        {"label": "Os que passam", "ref": "Lucas 10:31–32", "focus": "Ver não é o mesmo que se aproximar", "summary": "Duas pessoas veem o ferido e passam adiante, mantendo a distância."},
+        {"label": "A aproximação", "ref": "Lucas 10:33–34", "focus": "Compaixão ganha mãos e tempo", "summary": "O samaritano se aproxima, trata as feridas e organiza o transporte."},
+        {"label": "O cuidado continua", "ref": "Lucas 10:35–37", "focus": "O próximo é quem pratica misericórdia", "summary": "A hospedaria recebe o ferido e a pergunta termina com um chamado à prática."}
+      ],
+      "route": [
+        {"label": "Jerusalém", "query": "Jerusalém", "type": "origem"},
+        {"label": "Estrada de descida", "query": "estrada antiga Jerusalém Jericó", "type": "rota"},
+        {"label": "Ponto de vulnerabilidade", "query": "deserto Judeia estrada antiga", "type": "ambientação editorial"},
+        {"label": "Hospedaria", "query": "ancient roadside inn Judea", "type": "abrigo"},
+        {"label": "Jericó", "query": "Jericó", "type": "destino"}
+      ]
+    },
+    {
+      "id": "lucas-24-emaus",
+      "matches": ["Lucas 24", "Lucas 24:13", "Lucas 24:32", "Luke 24"],
+      "reference": "Lucas 24:13–35",
+      "title": "O caminho de Emaús",
+      "subtitle": "Do coração abatido ao reconhecimento no caminho",
+      "theme": "Luto, escuta, hospitalidade e reconhecimento",
+      "period": "Segundo Templo • provável primeiro século",
+      "timelineNote": "A sequência acompanha o relato de Lucas; a identificação exata de Emaús permanece debatida.",
+      "sceneClass": "jerusalem",
+      "badge": "CAMINHO DE RECONHECIMENTO",
+      "place": {
+        "name": "Estrada para Emaús",
+        "query": "Emaús estrada antiga",
+        "description": "A tradição relaciona o episódio a diferentes possíveis localidades; a cena mantém a localização como camada de investigação."
+      },
+      "certainty": "Lugar debatido • caminho reconstruído editorialmente",
+      "mediaQuery": "Emmaus ancient road first century Luke 24",
+      "panoramaQuery": "Emmaus landscape Jerusalem road 360",
+      "historicalContext": "A narrativa coloca dois discípulos em deslocamento depois dos acontecimentos em Jerusalém. O caminho, a conversa e a mesa formam uma progressão: primeiro a dor é ouvida, depois a presença é reconhecida.",
+      "geography": [
+        {"title": "Um caminho de saída", "text": "A estrada funciona como espaço de transição entre a cidade e a aldeia; a paisagem acompanha uma esperança que ainda não foi reorganizada."},
+        {"title": "Emaús sem ponto único", "text": "As propostas de localização variam. A visualização não fixa uma coordenada como certeza e deixa a pesquisa aberta no Atlas X Vivo."}
+      ],
+      "culturalNotes": [
+        {"title": "Caminhar acompanhado", "text": "A conversa durante o percurso mostra como deslocamento e memória se misturam em uma experiência de perda e expectativa."},
+        {"title": "Hospitalidade no fim do dia", "text": "O convite para permanecer e a refeição expressam práticas sociais de acolhimento; a mesa se torna espaço de reconhecimento."},
+        {"title": "Partir o pão", "text": "O gesto é apresentado como âncora narrativa do reconhecimento, sem transformar uma reconstrução de mesa em prova arqueológica."}
+      ],
+      "objects": [
+        {"name": "Estrada", "icon": "➜", "meaning": "Lugar de conversa, transição e mudança de perspectiva."},
+        {"name": "Pão", "icon": "◒", "meaning": "Gesto à mesa que concentra o momento de reconhecimento."},
+        {"name": "A casa", "icon": "⌂", "meaning": "O pedido para permanecer transforma uma parada em encontro."}
+      ],
+      "curiosities": [
+        {"title": "A tristeza fala primeiro", "text": "Antes de reconhecerem Jesus, os discípulos narram o que esperavam e o que perderam; a escuta prepara a virada."},
+        {"title": "O caminho continua depois da mesa", "text": "O reconhecimento não encerra a história: ele devolve direção e faz os discípulos retornarem a Jerusalém."}
+      ],
+      "questions": [
+        "Que parte da sua história você precisa conseguir contar antes de perceber uma nova esperança?",
+        "Quem caminha com você quando a fé parece não fazer sentido?",
+        "O que muda quando a hospitalidade abre espaço para reconhecer?"
+      ],
+      "sources": [
+        {"label": "Texto principal", "type": "Bíblia", "value": "Lucas 24:13–35", "certainty": "Texto bíblico"},
+        {"label": "Lugar relacionado", "type": "Atlas X Vivo", "value": "Emaús", "certainty": "Localização debatida"},
+        {"label": "Camada visual", "type": "Editorial", "value": "Estrada e mesa reconstruídas para estudo", "certainty": "Interpretativa"}
+      ],
+      "people": [
+        {"id": "cleopas", "name": "Cléopas", "role": "Discípulo em caminho", "description": "Um dos discípulos identificados no relato; sua conversa ajuda a tornar audível a dor do caminho."},
+        {"id": "companheiro", "name": "O outro discípulo", "role": "Companheiro de jornada", "description": "Sua presença representa a experiência compartilhada de caminhar, perguntar e reconhecer."},
+        {"id": "jesus", "name": "Jesus", "role": "Viajante reconhecido à mesa", "description": "O relato constrói sua presença por meio da escuta, da explicação e do gesto de partir o pão."}
+      ],
+      "hotspots": [
+        {"id": "estrada", "label": "A estrada", "kind": "place", "event": 0},
+        {"id": "cleopas", "label": "Cléopas", "kind": "person", "person": "cleopas"},
+        {"id": "jesus", "label": "O viajante", "kind": "person", "person": "jesus"},
+        {"id": "mesa", "label": "A mesa", "kind": "place", "event": 3}
+      ],
+      "verseMap": [
+        {"match": "Lucas 24:13–17", "event": 0},
+        {"match": "Lucas 24:18–27", "event": 1},
+        {"match": "Lucas 24:28–29", "event": 2},
+        {"match": "Lucas 24:30–35", "event": 3}
+      ],
+      "events": [
+        {"label": "A saída de Jerusalém", "ref": "Lucas 24:13–17", "focus": "A dor ocupa o caminho", "summary": "Dois discípulos deixam Jerusalém conversando sobre tudo o que aconteceu."},
+        {"label": "A conversa é ouvida", "ref": "Lucas 24:18–27", "focus": "A história ganha nova leitura", "summary": "O viajante se aproxima, pergunta e percorre com eles a história que parecia sem saída."},
+        {"label": "O convite para permanecer", "ref": "Lucas 24:28–29", "focus": "Hospitalidade abre espaço", "summary": "Ao chegar perto do destino, os discípulos convidam o companheiro a permanecer com eles."},
+        {"label": "O reconhecimento à mesa", "ref": "Lucas 24:30–35", "focus": "A esperança devolve direção", "summary": "O gesto à mesa abre os olhos; eles retornam a Jerusalém para contar o que viveram."}
+      ],
+      "route": [
+        {"label": "Jerusalém", "query": "Jerusalém", "type": "origem"},
+        {"label": "Estrada para Emaús", "query": "Emaús estrada antiga", "type": "caminho"},
+        {"label": "Casa de acolhimento", "query": "ancient first century Judean house", "type": "hospitalidade"},
+        {"label": "Retorno a Jerusalém", "query": "Jerusalém antiga cidade", "type": "retorno"}
+      ]
+    },
+    {
+      "id": "atos-2-pentecostes",
+      "matches": ["Atos 2", "Atos 2:1", "Acts 2"],
+      "reference": "Atos 2:1–41",
+      "title": "O dia em que a casa se encheu",
+      "subtitle": "Uma comunidade reunida atravessa portas e idiomas",
+      "theme": "Reunião, testemunho, línguas e nascimento comunitário",
+      "period": "Segundo Templo • festa de Pentecostes",
+      "timelineNote": "A ordem acompanha a narrativa de Atos; a reconstrução espacial da casa é aproximada.",
+      "sceneClass": "jerusalem",
+      "badge": "COMUNIDADE EM MOVIMENTO",
+      "place": {
+        "name": "Jerusalém, casa de reunião",
+        "query": "Jerusalem first century house upper room",
+        "description": "O texto situa os discípulos reunidos em um lugar; a reconstrução não identifica um edifício atual como o local comprovado."
+      },
+      "certainty": "Jerusalém reconhecida • edifício específico não identificado",
+      "mediaQuery": "Jerusalem Pentecost first century gathering Acts 2",
+      "panoramaQuery": "Jerusalem Old City 360",
+      "historicalContext": "A festa de Pentecostes atraía pessoas de diferentes regiões a Jerusalém. A cena é organizada como encontro entre uma comunidade reunida, a cidade festiva e a comunicação que alcança diversos povos.",
+      "geography": [
+        {"title": "A cidade em festa", "text": "Jerusalém recebe peregrinos e sotaques diferentes durante a celebração; a geografia amplia a audiência da mensagem."},
+        {"title": "De uma casa para a rua", "text": "A narrativa se move do espaço reunido para o espaço público. A transição é visualizada como expansão da comunidade, não como planta arquitetônica exata."}
+      ],
+      "culturalNotes": [
+        {"title": "Pentecostes", "text": "A festa judaica está ligada à colheita e, na tradição posterior, à entrega da Lei. O texto de Atos conecta esse calendário a uma nova etapa do testemunho."},
+        {"title": "Idiomas reconhecidos", "text": "A lista de povos enfatiza que pessoas de várias origens ouvem a mensagem em sua própria referência cultural."},
+        {"title": "Comunidade e partilha", "text": "A sequência posterior descreve uma comunidade que aprende, convive, reparte e ora; a experiência não fica reduzida ao fenômeno inicial."}
+      ],
+      "objects": [
+        {"name": "Casa", "icon": "⌂", "meaning": "Espaço de reunião que se torna ponto de partida para o testemunho."},
+        {"name": "Vento e fogo", "icon": "✦", "meaning": "Imagens narrativas do acontecimento, apresentadas sem tentar reproduzir o sobrenatural como efeito físico."},
+        {"name": "Mesa compartilhada", "icon": "◒", "meaning": "Sinal da vida comunitária descrita após o discurso."}
+      ],
+      "curiosities": [
+        {"title": "A audiência já estava reunida", "text": "A diversidade dos ouvintes não é adicionada por uma reconstrução moderna; ela faz parte da própria lista de povos do relato."},
+        {"title": "O milagre vira responsabilidade", "text": "Depois do assombro, a narrativa passa a falar de arrependimento, batismo, ensino, comunhão e cuidado mútuo."}
+      ],
+      "questions": [
+        "Que pessoas diferentes conseguem se reconhecer na mesma mensagem?",
+        "Como uma experiência espiritual se transforma em cuidado comunitário?",
+        "Que portas a comunidade precisa atravessar para ser compreendida?"
+      ],
+      "sources": [
+        {"label": "Texto principal", "type": "Bíblia", "value": "Atos 2:1–41", "certainty": "Texto bíblico"},
+        {"label": "Cidade relacionada", "type": "Atlas X Vivo", "value": "Jerusalém", "certainty": "Lugar reconhecido"},
+        {"label": "Camada visual", "type": "Editorial", "value": "Casa e praça reconstruídas de forma aproximada", "certainty": "Interpretativa"}
+      ],
+      "people": [
+        {"id": "pedro", "name": "Pedro", "role": "Testemunha e pregador", "description": "Interpreta o acontecimento para a multidão e chama os ouvintes a uma resposta."},
+        {"id": "discipulos", "name": "A comunidade reunida", "role": "Grupo de testemunhas", "description": "O coletivo está no centro da cena; a experiência é narrada como acontecimento comunitário."},
+        {"id": "peregrinos", "name": "Peregrinos de muitos lugares", "role": "Audiência multicultural", "description": "A lista de povos mostra que a mensagem é ouvida por pessoas com origens e línguas diferentes."}
+      ],
+      "hotspots": [
+        {"id": "casa", "label": "A casa", "kind": "place", "event": 0},
+        {"id": "comunidade", "label": "A comunidade", "kind": "person", "person": "discipulos"},
+        {"id": "pedro", "label": "Pedro", "kind": "person", "person": "pedro"},
+        {"id": "praca", "label": "A multidão", "kind": "place", "event": 3}
+      ],
+      "verseMap": [
+        {"match": "Atos 2:1–4", "event": 0},
+        {"match": "Atos 2:5–13", "event": 1},
+        {"match": "Atos 2:14–36", "event": 2},
+        {"match": "Atos 2:37–41", "event": 3}
+      ],
+      "events": [
+        {"label": "A comunidade reunida", "ref": "Atos 2:1–4", "focus": "A espera acontece em conjunto", "summary": "Os discípulos estão juntos quando o relato descreve vento, fogo e a experiência de falar em outras línguas."},
+        {"label": "A cidade percebe", "ref": "Atos 2:5–13", "focus": "A diversidade encontra uma linguagem", "summary": "Peregrinos de várias regiões ouvem e se perguntam como aquela mensagem pode ser compreendida."},
+        {"label": "Pedro interpreta", "ref": "Atos 2:14–36", "focus": "O acontecimento recebe testemunho", "summary": "Pedro se levanta, relaciona o acontecimento às Escrituras e anuncia Jesus à multidão."},
+        {"label": "Uma comunidade nasce", "ref": "Atos 2:37–41", "focus": "A resposta vira compromisso", "summary": "O chamado alcança os ouvintes e a narrativa descreve uma nova comunidade reunida."}
+      ],
+      "route": [
+        {"label": "Casa de reunião", "query": "Jerusalem first century house", "type": "origem"},
+        {"label": "Jerusalém em festa", "query": "Jerusalem Second Temple festival", "type": "cidade"},
+        {"label": "Praça e multidão", "query": "Jerusalem ancient street crowd", "type": "audiência"}
+      ]
+    },
+    {
+      "id": "1-reis-18-carmelo",
+      "matches": ["1 Reis 18", "1 Reis 18:20", "1 Kings 18"],
+      "reference": "1 Reis 18:20–39",
+      "title": "O altar no monte Carmelo",
+      "subtitle": "Quando uma nação precisa decidir a quem ouvir",
+      "theme": "Confronto público, seca, altar e resposta",
+      "period": "Monarquia dividida • Reino do Norte",
+      "timelineNote": "A sequência acompanha o relato de 1 Reis; a reconstrução não fixa data absoluta nem reproduz o milagre como espetáculo.",
+      "sceneClass": "carmelo",
+      "badge": "CONFRONTO NO MONTE",
+      "place": {
+        "name": "Monte Carmelo",
+        "query": "Monte Carmelo Israel",
+        "description": "O monte é associado ao episódio; a visualização destaca relevo e altar como camadas de estudo."
+      },
+      "certainty": "Monte Carmelo associado ao relato • ambientação interpretativa",
+      "mediaQuery": "Mount Carmel Israel Elijah altar 1 Kings 18",
+      "panoramaQuery": "Mount Carmel Israel panorama 360",
+      "historicalContext": "O relato de 1 Reis situa o confronto em um período de seca e crise de lealdade. O monte, o altar e a multidão organizam uma cena pública de decisão religiosa e política.",
+      "geography": [
+        {"title": "Monte e visibilidade", "text": "Um ponto elevado favorece a reunião pública e a observação do que acontece; a paisagem é tratada como reconstrução aproximada."},
+        {"title": "A seca no território", "text": "A falta de chuva aparece como pressão social e política na narrativa, não apenas como detalhe climático."}
+      ],
+      "culturalNotes": [
+        {"title": "Altar e sacrifício", "text": "O altar funciona como centro ritual do confronto. A visualização é educativa e evita transformar práticas antigas em instruções atuais."},
+        {"title": "A multidão como testemunha", "text": "A pergunta dirigida ao povo transforma uma disputa privada em decisão pública diante da comunidade."},
+        {"title": "Água em tempo de seca", "text": "O uso de água ao redor do altar ganha peso narrativo por causa da escassez descrita no capítulo."}
+      ],
+      "objects": [
+        {"name": "Altar", "icon": "✦", "meaning": "Centro visível da decisão e da resposta esperada."},
+        {"name": "Pedras", "icon": "◈", "meaning": "Sinal de restauração do altar e de memória comunitária."},
+        {"name": "Água", "icon": "≈", "meaning": "Elemento escasso usado para destacar a resposta narrada."}
+      ],
+      "curiosities": [
+        {"title": "A pergunta é coletiva", "text": "O profeta não trata a crise apenas como disputa de especialistas: ele convoca o povo a decidir sua direção."},
+        {"title": "O silêncio também participa", "text": "A narrativa constrói contraste entre o clamor dos profetas e a resposta que não vem, antes da oração de Elias."}
+      ],
+      "questions": [
+        "Que vozes disputam a sua atenção quando você está em tempo de seca?",
+        "O que precisa ser restaurado antes de uma nova resposta?",
+        "Como uma decisão pública pode nascer de uma convicção verdadeira?"
+      ],
+      "sources": [
+        {"label": "Texto principal", "type": "Bíblia", "value": "1 Reis 18:20–39", "certainty": "Texto bíblico"},
+        {"label": "Lugar relacionado", "type": "Atlas X Vivo", "value": "Monte Carmelo", "certainty": "Lugar associado ao relato"},
+        {"label": "Camada visual", "type": "Editorial", "value": "Altar, relevo e multidão reconstruídos para estudo", "certainty": "Interpretativa"}
+      ],
+      "people": [
+        {"id": "elias", "name": "Elias", "role": "Profeta", "description": "Conduz o confronto, restaura o altar e ora diante do povo."},
+        {"id": "acabe", "name": "Acabe", "role": "Rei de Israel", "description": "Representa a autoridade do reino no contexto da crise narrada."},
+        {"id": "povo", "name": "O povo reunido", "role": "Testemunha e público da decisão", "description": "A multidão é chamada a responder à pergunta sobre quem deve ser seguido."}
+      ],
+      "hotspots": [
+        {"id": "altar", "label": "O altar", "kind": "place", "event": 2},
+        {"id": "elias", "label": "Elias", "kind": "person", "person": "elias"},
+        {"id": "povo", "label": "O povo", "kind": "person", "person": "povo"},
+        {"id": "montanha", "label": "O monte", "kind": "place", "event": 0}
+      ],
+      "verseMap": [
+        {"match": "1 Reis 18:20–24", "event": 0},
+        {"match": "1 Reis 18:25–29", "event": 1},
+        {"match": "1 Reis 18:30–35", "event": 2},
+        {"match": "1 Reis 18:36–39", "event": 3}
+      ],
+      "events": [
+        {"label": "A reunião no monte", "ref": "1 Reis 18:20–24", "focus": "A crise chega ao espaço público", "summary": "O povo se reúne no Carmelo e Elias apresenta a pergunta que exige uma decisão."},
+        {"label": "O silêncio do altar", "ref": "1 Reis 18:25–29", "focus": "Muito clamor, nenhuma resposta", "summary": "Os profetas clamam e esperam, mas o relato descreve silêncio diante do altar preparado."},
+        {"label": "O altar restaurado", "ref": "1 Reis 18:30–35", "focus": "Memória e confiança são reconstruídas", "summary": "Elias chama o povo, restaura o altar e organiza a cena antes da oração."},
+        {"label": "A resposta", "ref": "1 Reis 18:36–39", "focus": "A decisão nasce diante de todos", "summary": "A oração de Elias e a resposta narrada levam o povo a reconhecer o Deus de Israel."}
+      ],
+      "route": [
+        {"label": "Samaria", "query": "Samaria ancient kingdom", "type": "contexto do reino"},
+        {"label": "Monte Carmelo", "query": "Monte Carmelo Israel", "type": "local do confronto"},
+        {"label": "Altar restaurado", "query": "ancient Israelite altar Mount Carmel", "type": "centro ritual"}
+      ]
+    },
+    {
+      "id": "rute-2-campo-belem",
+      "matches": ["Rute 2", "Rute 2:1", "Ruth 2"],
+      "reference": "Rute 2:1–23",
+      "title": "Entre as espigas de Belém",
+      "subtitle": "Uma estrangeira encontra proteção no campo da colheita",
+      "theme": "Trabalho, provisão, estrangeiro e redenção cotidiana",
+      "period": "Período dos juízes • ambientação rural de Belém",
+      "timelineNote": "A sequência acompanha o capítulo de Rute; práticas agrícolas e costumes são descritos em linguagem de estudo.",
+      "sceneClass": "campo",
+      "badge": "CAMPO DE PROVISÃO",
+      "place": {
+        "name": "Campos de Belém",
+        "query": "Belém campos de cevada Israel",
+        "description": "Belém funciona como lugar do campo e da família; a colheita é reconstruída de modo editorial."
+      },
+      "certainty": "Belém reconhecida • campo específico não identificado",
+      "mediaQuery": "Bethlehem barley fields Ruth 2 ancient Israel",
+      "panoramaQuery": "Bethlehem countryside fields 360",
+      "historicalContext": "O capítulo de Rute aproxima fome, trabalho rural, migração e cuidado social. A lei e os costumes de colheita formam o pano de fundo para a dignidade encontrada no campo.",
+      "geography": [
+        {"title": "Belém e os campos", "text": "A cidade e sua zona agrícola aparecem conectadas; o trabalho da colheita depende de sair da casa e entrar no campo."},
+        {"title": "Tempo de colheita", "text": "A estação organiza o ritmo da narrativa: há oportunidade de alimento, mas também exposição e vulnerabilidade para quem trabalha sem proteção."}
+      ],
+      "culturalNotes": [
+        {"title": "Respigar", "text": "A prática permitia recolher o que ficava para trás na colheita e aparece como mecanismo de provisão para pessoas vulneráveis."},
+        {"title": "Uma estrangeira no campo", "text": "Rute é apresentada como moabita; sua condição social e nacional torna a proteção oferecida por Boaz parte importante da cena."},
+        {"title": "Refeição e dignidade", "text": "Sentar-se para comer e receber porção separada comunica inclusão concreta, não apenas discurso de acolhimento."}
+      ],
+      "objects": [
+        {"name": "Espigas", "icon": "✧", "meaning": "Alimento recolhido com trabalho e sinal de provisão diária."},
+        {"name": "Campo", "icon": "⌁", "meaning": "Espaço de trabalho, risco e encontro entre proprietários e trabalhadores."},
+        {"name": "Porção de alimento", "icon": "◒", "meaning": "Gesto simples que transforma uma estrangeira em convidada protegida."}
+      ],
+      "curiosities": [
+        {"title": "A iniciativa começa com o trabalho", "text": "Rute não espera uma solução abstrata: ela pede para ir ao campo e começa a recolher espigas."},
+        {"title": "Generosidade com limites", "text": "Boaz orienta seus trabalhadores a deixar espigas para Rute e estabelece proteção concreta no espaço de trabalho."}
+      ],
+      "questions": [
+        "Quem está tentando sobreviver com o que sobra ao redor de você?",
+        "Como criar proteção concreta para quem chega de fora?",
+        "Que gesto cotidiano devolve dignidade a alguém vulnerável?"
+      ],
+      "sources": [
+        {"label": "Texto principal", "type": "Bíblia", "value": "Rute 2:1–23", "certainty": "Texto bíblico"},
+        {"label": "Região relacionada", "type": "Atlas X Vivo", "value": "Belém e campos de Judá", "certainty": "Ambientação regional"},
+        {"label": "Camada visual", "type": "Editorial", "value": "Campo de cevada e colheita reconstruídos para estudo", "certainty": "Interpretativa"}
+      ],
+      "people": [
+        {"id": "rute", "name": "Rute", "role": "Trabalhadora moabita", "description": "Vai ao campo para respigar e encontra proteção enquanto sustenta a casa com Noemi."},
+        {"id": "boaz", "name": "Boaz", "role": "Proprietário do campo", "description": "Percebe a história de Rute e estabelece medidas de cuidado para que ela trabalhe em segurança."},
+        {"id": "noemi", "name": "Noemi", "role": "Sogra de Rute", "description": "Recebe o alimento levado do campo e acompanha a interpretação do que aconteceu."}
+      ],
+      "hotspots": [
+        {"id": "campo", "label": "O campo", "kind": "place", "event": 0},
+        {"id": "rute", "label": "Rute", "kind": "person", "person": "rute"},
+        {"id": "boaz", "label": "Boaz", "kind": "person", "person": "boaz"},
+        {"id": "colheita", "label": "A colheita", "kind": "place", "event": 3}
+      ],
+      "verseMap": [
+        {"match": "Rute 2:1–3", "event": 0},
+        {"match": "Rute 2:4–13", "event": 1},
+        {"match": "Rute 2:14–16", "event": 2},
+        {"match": "Rute 2:17–23", "event": 3}
+      ],
+      "events": [
+        {"label": "Rute vai ao campo", "ref": "Rute 2:1–3", "focus": "A provisão começa com um passo", "summary": "Rute pede para respigar e chega ao campo onde a história de cuidado começará."},
+        {"label": "Boaz percebe", "ref": "Rute 2:4–13", "focus": "A estrangeira recebe proteção", "summary": "Boaz pergunta por Rute, ouve sua história e orienta que ela permaneça naquele campo."},
+        {"label": "Uma mesa sem humilhação", "ref": "Rute 2:14–16", "focus": "Cuidado também é inclusão", "summary": "Rute é convidada a comer e recebe acesso a uma porção e a espigas deixadas de propósito."},
+        {"label": "A casa recebe esperança", "ref": "Rute 2:17–23", "focus": "O trabalho volta para casa como testemunho", "summary": "Rute retorna com alimento e Noemi reconhece que a provisão abriu uma nova possibilidade."}
+      ],
+      "route": [
+        {"label": "Casa de Noemi", "query": "ancient Bethlehem house", "type": "origem"},
+        {"label": "Campos de Belém", "query": "Belém campos de cevada Israel", "type": "trabalho"},
+        {"label": "Campo de Boaz", "query": "ancient barley field Judah", "type": "proteção"},
+        {"label": "Retorno para casa", "query": "Bethlehem ancient village", "type": "provisão"}
+      ]
+    },
+    {
+      "id": "lucas-19-zaqueu-jerico",
+      "matches": ["Lucas 19", "Lucas 19:1", "Luke 19"],
+      "reference": "Lucas 19:1–10",
+      "title": "A árvore sobre Jericó",
+      "subtitle": "Um homem sobe para ver Jesus e desce transformado",
+      "theme": "Visibilidade, vergonha, acolhimento e reparação",
+      "period": "Segundo Templo • provável primeiro século",
+      "timelineNote": "A sequência acompanha o relato de Lucas; a ambientação de Jericó é editorial e não fixa o ponto exato da árvore.",
+      "sceneClass": "jerico",
+      "badge": "ENCONTRO NA ESTRADA",
+      "place": {
+        "name": "Jericó",
+        "query": "Jericó estrada antiga",
+        "description": "Jericó aparece como cidade de passagem no vale do Jordão; o local exato da árvore não é identificado pela narrativa."
+      },
+      "certainty": "Jericó reconhecida • ponto específico não identificado",
+      "mediaQuery": "Jericho ancient road sycamore tree Luke 19",
+      "panoramaQuery": "Jericho Jordan valley 360",
+      "historicalContext": "A cena combina uma cidade movimentada, um cobrador de impostos rico e uma multidão que controla o acesso visual a Jesus. A casa e a mesa se tornam espaços de acolhimento e reparação.",
+      "geography": [
+        {"title": "Cidade de passagem", "text": "Jericó está ligada à rota entre o vale do Jordão e a subida para Jerusalém; pessoas e interesses se cruzam no caminho."},
+        {"title": "A árvore junto à estrada", "text": "A árvore funciona como ponto de observação na narrativa. Sua espécie e posição exatas não são tratadas como dado arqueológico comprovado."}
+      ],
+      "culturalNotes": [
+        {"title": "Cobradores e reputação", "text": "O texto apresenta Zaqueu como chefe dos cobradores e rico; a reação da multidão mostra o peso social de sua reputação."},
+        {"title": "A casa como sinal", "text": "Entrar na casa de Zaqueu comunica aproximação e abre espaço para uma mudança pública de postura."},
+        {"title": "Reparação concreta", "text": "A promessa de devolver e repartir liga arrependimento a ações verificáveis, sem transformar a cena em fórmula financeira."}
+      ],
+      "objects": [
+        {"name": "Árvore", "icon": "♧", "meaning": "Ponto de observação para quem queria ver sem ser visto."},
+        {"name": "Estrada", "icon": "➜", "meaning": "Lugar onde a multidão e o encontro se movimentam."},
+        {"name": "Mesa", "icon": "◒", "meaning": "Espaço doméstico em que acolhimento e mudança ganham forma."}
+      ],
+      "curiosities": [
+        {"title": "Pequeno na multidão", "text": "A narrativa combina uma limitação física com uma barreira social: Zaqueu precisa encontrar outra maneira de enxergar."},
+        {"title": "Jesus chama pelo nome", "text": "O encontro deixa de ser observação à distância e se torna convite pessoal para descer e receber Jesus."}
+      ],
+      "questions": [
+        "Que barreira impede você de enxergar com clareza hoje?",
+        "Que mudança precisa sair da intenção e chegar à reparação?",
+        "Quem é recebido à mesa quando a comunidade prefere manter distância?"
+      ],
+      "sources": [
+        {"label": "Texto principal", "type": "Bíblia", "value": "Lucas 19:1–10", "certainty": "Texto bíblico"},
+        {"label": "Lugar relacionado", "type": "Atlas X Vivo", "value": "Jericó e vale do Jordão", "certainty": "Cidade e rota associadas ao relato"},
+        {"label": "Camada visual", "type": "Editorial", "value": "Estrada, árvore e casa reconstruídas para estudo", "certainty": "Interpretativa"}
+      ],
+      "people": [
+        {"id": "zaqueu", "name": "Zaqueu", "role": "Chefe dos cobradores", "description": "Homem rico que procura ver Jesus e responde ao encontro com uma decisão de reparação."},
+        {"id": "jesus", "name": "Jesus", "role": "Visitante e mestre", "description": "Interrompe a distância, chama Zaqueu e leva o encontro para dentro da casa."},
+        {"id": "multidao", "name": "A multidão", "role": "Barreira e testemunha", "description": "Controla o acesso visual e depois reage à escolha de Jesus de entrar na casa."}
+      ],
+      "hotspots": [
+        {"id": "arvore", "label": "A árvore", "kind": "place", "event": 0},
+        {"id": "zaqueu", "label": "Zaqueu", "kind": "person", "person": "zaqueu"},
+        {"id": "jesus", "label": "Jesus", "kind": "person", "person": "jesus"},
+        {"id": "casa", "label": "A casa", "kind": "place", "event": 2}
+      ],
+      "verseMap": [
+        {"match": "Lucas 19:1–4", "event": 0},
+        {"match": "Lucas 19:5–6", "event": 1},
+        {"match": "Lucas 19:7–8", "event": 2},
+        {"match": "Lucas 19:9–10", "event": 3}
+      ],
+      "events": [
+        {"label": "A árvore e a multidão", "ref": "Lucas 19:1–4", "focus": "O desejo de ver vence a barreira", "summary": "Zaqueu corre à frente e sobe numa árvore para conseguir enxergar Jesus."},
+        {"label": "O chamado pelo nome", "ref": "Lucas 19:5–6", "focus": "A distância vira convite", "summary": "Jesus olha para cima, chama Zaqueu e anuncia que ficará em sua casa."},
+        {"label": "A casa questionada", "ref": "Lucas 19:7–8", "focus": "A graça produz resposta", "summary": "A multidão murmura, enquanto Zaqueu apresenta uma decisão concreta diante de Jesus."},
+        {"label": "Salvação nesta casa", "ref": "Lucas 19:9–10", "focus": "O perdido volta a ser procurado", "summary": "Jesus interpreta o encontro como restauração e busca do que estava perdido."}
+      ],
+      "route": [
+        {"label": "Entrada de Jericó", "query": "Jericó antiga entrada da cidade", "type": "chegada"},
+        {"label": "Estrada e árvore", "query": "Jericho ancient road sycamore", "type": "observação"},
+        {"label": "Casa de Zaqueu", "query": "ancient Jericho house", "type": "encontro"}
+      ]
+    },
+    {
+      "id": "2-reis-5-naama",
+      "matches": ["2 Reis 5", "2 Reis 5:1", "2 Kings 5"],
+      "reference": "2 Reis 5:1–14",
+      "title": "Sete mergulhos no Jordão",
+      "subtitle": "Um comandante aprende que humildade também é caminho de cura",
+      "theme": "Doença, orgulho, obediência e testemunho",
+      "period": "Monarquia dividida • relações entre Arã e Israel",
+      "timelineNote": "A sequência segue o relato de 2 Reis; o número de mergulhos pertence à narrativa e não é uma prescrição médica.",
+      "sceneClass": "campo",
+      "badge": "O RIO E A HUMILDADE",
+      "place": {
+        "name": "Rio Jordão",
+        "query": "Rio Jordão Israel antigo",
+        "description": "O Jordão é o rio associado ao episódio; o ponto exato do mergulho não é identificado no texto."
+      },
+      "certainty": "Rio Jordão reconhecido • ponto específico aproximado",
+      "mediaQuery": "Jordan River ancient Israel Naaman 2 Kings 5",
+      "panoramaQuery": "Jordan River landscape 360",
+      "historicalContext": "A narrativa contrasta poder militar e vulnerabilidade física. Um comandante estrangeiro depende da palavra de uma menina, de um profeta e de um rio que ele considera simples demais.",
+      "geography": [
+        {"title": "Da Síria ao Jordão", "text": "A viagem cruza fronteiras políticas e culturais; o deslocamento de Naamã mostra que a necessidade pode fazer um poderoso procurar ajuda fora de seu território."},
+        {"title": "Rios comparados", "text": "Naamã compara o Jordão com rios de Damasco; a comparação revela como expectativa, paisagem e orgulho participam da cena."}
+      ],
+      "culturalNotes": [
+        {"title": "Uma menina como mensageira", "text": "A informação decisiva chega por uma serva sem nome, o que desloca a atenção do poder oficial para uma voz vulnerável."},
+        {"title": "Honra e posição", "text": "A reação de Naamã mostra o peso de esperar uma cerimônia compatível com sua posição social."},
+        {"title": "O profeta e a distância", "text": "Eliseu não sai para realizar uma demonstração pública; envia uma instrução e deixa a resposta depender da obediência de Naamã."}
+      ],
+      "objects": [
+        {"name": "Carta", "icon": "▤", "meaning": "Documento que leva a autoridade do rei, mas não resolve a doença."},
+        {"name": "Rio", "icon": "≈", "meaning": "Paisagem comum que se torna lugar de uma decisão humilde."},
+        {"name": "Manto", "icon": "◇", "meaning": "Sinal visual de posição e viagem no ambiente antigo."}
+      ],
+      "curiosities": [
+        {"title": "O mensageiro improvável", "text": "A história começa a se mover pela palavra de uma serva, não pela estratégia do comandante."},
+        {"title": "A raiva quase encerra o caminho", "text": "Naamã quase vai embora quando a resposta não corresponde ao espetáculo que imaginava."}
+      ],
+      "questions": [
+        "Que resposta simples você rejeita por parecer pequena demais?",
+        "Quem tem sido uma voz de direção mesmo sem ocupar posição de poder?",
+        "O que precisa ser deixado no rio junto com o orgulho?"
+      ],
+      "sources": [
+        {"label": "Texto principal", "type": "Bíblia", "value": "2 Reis 5:1–14", "certainty": "Texto bíblico"},
+        {"label": "Lugar relacionado", "type": "Atlas X Vivo", "value": "Rio Jordão e Damasco", "certainty": "Rota regional associada"},
+        {"label": "Camada visual", "type": "Editorial", "value": "Rio, viagem e acampamento reconstruídos para estudo", "certainty": "Interpretativa"}
+      ],
+      "people": [
+        {"id": "naama", "name": "Naamã", "role": "Comandante de Arã", "description": "Homem poderoso que precisa atravessar orgulho, fronteira e expectativa para obedecer."},
+        {"id": "menina", "name": "A menina israelita", "role": "Serva e mensageira", "description": "Sua palavra aponta para o profeta e abre a possibilidade de cuidado para Naamã."},
+        {"id": "eliseu", "name": "Eliseu", "role": "Profeta", "description": "Envia uma instrução simples que coloca a decisão nas mãos do comandante."}
+      ],
+      "hotspots": [
+        {"id": "naama", "label": "Naamã", "kind": "person", "person": "naama"},
+        {"id": "menina", "label": "A menina", "kind": "person", "person": "menina"},
+        {"id": "jordao", "label": "O Jordão", "kind": "place", "event": 2},
+        {"id": "eliseu", "label": "Eliseu", "kind": "person", "person": "eliseu"}
+      ],
+      "verseMap": [
+        {"match": "2 Reis 5:1–5", "event": 0},
+        {"match": "2 Reis 5:6–9", "event": 1},
+        {"match": "2 Reis 5:10–12", "event": 2},
+        {"match": "2 Reis 5:13–14", "event": 3}
+      ],
+      "events": [
+        {"label": "O comandante ferido", "ref": "2 Reis 5:1–5", "focus": "Poder não elimina vulnerabilidade", "summary": "Naamã é honrado e vitorioso, mas carrega uma doença que nenhum prestígio consegue esconder."},
+        {"label": "A palavra da serva", "ref": "2 Reis 5:6–9", "focus": "Uma voz pequena abre uma rota", "summary": "A menina aponta para Eliseu e Naamã viaja até Israel com cartas e presentes."},
+        {"label": "A instrução simples", "ref": "2 Reis 5:10–12", "focus": "O orgulho rejeita o caminho comum", "summary": "Naamã se irrita porque esperava um gesto grandioso e considera o Jordão inferior aos rios de Damasco."},
+        {"label": "A descida ao rio", "ref": "2 Reis 5:13–14", "focus": "Humildade se torna movimento", "summary": "Depois de ouvir seus servos, Naamã obedece e a narrativa descreve sua restauração."}
+      ],
+      "route": [
+        {"label": "Damasco", "query": "Damasco antiga Síria", "type": "origem"},
+        {"label": "Samaria", "query": "Samaria Israel antigo", "type": "fronteira"},
+        {"label": "Rio Jordão", "query": "Rio Jordão Israel antigo", "type": "mergulho"}
+      ]
+    },
+    {
+      "id": "atos-9-damasco",
+      "matches": ["Atos 9", "Atos 9:1", "Acts 9"],
+      "reference": "Atos 9:1–19",
+      "title": "A estrada para Damasco",
+      "subtitle": "Quando a viagem de perseguição vira um chamado",
+      "theme": "Luz, queda, cegueira, cuidado e nova direção",
+      "period": "Primeiro século • expansão inicial da igreja",
+      "timelineNote": "A sequência acompanha Atos 9; a estrada é uma reconstrução regional e não identifica um ponto arqueológico exato.",
+      "sceneClass": "damasco",
+      "badge": "MUDANÇA DE ROTA",
+      "place": {
+        "name": "Estrada para Damasco",
+        "query": "Damasco estrada antiga Síria",
+        "description": "Damasco é cidade histórica reconhecida; a localização exata do encontro na estrada permanece aproximada."
+      },
+      "certainty": "Damasco reconhecida • ponto da estrada aproximado",
+      "mediaQuery": "Damascus ancient road Acts 9",
+      "panoramaQuery": "Damascus Syria ancient road panorama 360",
+      "historicalContext": "Saulo viaja com autoridade para perseguir seguidores de Jesus. A narrativa muda o sentido da viagem por meio de uma experiência de luz, uma espera na cidade e o cuidado de Ananias.",
+      "geography": [
+        {"title": "A rota regional", "text": "Damasco era um importante centro urbano da Síria; viajar até lá significava atravessar caminhos, autoridade e fronteiras de comunidade."},
+        {"title": "A cidade como espera", "text": "Depois do impacto na estrada, Damasco deixa de ser apenas destino de perseguição e se torna lugar de jejum, acolhimento e recomeço."}
+      ],
+      "culturalNotes": [
+        {"title": "Cartas de autoridade", "text": "Saulo carrega autorização para agir contra seguidores de Jesus; o documento representa poder institucional na cena."},
+        {"title": "Hospitalidade e risco", "text": "Ananias precisa discernir como receber alguém conhecido por perseguir a comunidade, tornando o cuidado uma decisão corajosa."},
+        {"title": "O toque e a visão", "text": "A recuperação da visão acontece em uma rede de pessoas, oração e imposição de mãos, não como ação isolada do viajante."}
+      ],
+      "objects": [
+        {"name": "Cartas", "icon": "▤", "meaning": "Símbolo da autoridade com que Saulo inicia a viagem."},
+        {"name": "Luz", "icon": "✦", "meaning": "Imagem narrativa de interrupção e revelação na estrada."},
+        {"name": "Cesto", "icon": "⌂", "meaning": "Objeto associado à saída posterior de Damasco em outra etapa da história de Paulo."}
+      ],
+      "curiosities": [
+        {"title": "A voz pergunta pelo nome", "text": "A experiência não é descrita apenas como fenômeno luminoso; ela se torna diálogo e confronto com a direção da vida de Saulo."},
+        {"title": "Ananias também precisa mudar", "text": "A conversão narrativa inclui a comunidade: Ananias precisa chamar de irmão alguém que temia."}
+      ],
+      "questions": [
+        "Que caminho parece certo até ser interrompido por uma verdade maior?",
+        "Quem precisa de coragem para acolher sua nova fase?",
+        "Como uma comunidade distingue prudência de medo permanente?"
+      ],
+      "sources": [
+        {"label": "Texto principal", "type": "Bíblia", "value": "Atos 9:1–19", "certainty": "Texto bíblico"},
+        {"label": "Lugar relacionado", "type": "Atlas X Vivo", "value": "Damasco e estrada regional", "certainty": "Cidade reconhecida; ponto aproximado"},
+        {"label": "Camada visual", "type": "Editorial", "value": "Estrada, luz e casa de acolhimento reconstruídas", "certainty": "Interpretativa"}
+      ],
+      "people": [
+        {"id": "saulo", "name": "Saulo", "role": "Perseguidor em viagem", "description": "Viaja com autorização para prender seguidores de Jesus e se torna o centro de uma mudança radical de direção."},
+        {"id": "ananias", "name": "Ananias", "role": "Discípulo em Damasco", "description": "Recebe a tarefa de procurar Saulo e agir com cuidado, fé e discernimento."},
+        {"id": "companheiros", "name": "Companheiros de viagem", "role": "Testemunhas da estrada", "description": "Acompanham Saulo e percebem a interrupção sem controlar o significado completo do que aconteceu."}
+      ],
+      "hotspots": [
+        {"id": "saulo", "label": "Saulo", "kind": "person", "person": "saulo"},
+        {"id": "luz", "label": "A luz", "kind": "place", "event": 1},
+        {"id": "ananias", "label": "Ananias", "kind": "person", "person": "ananias"},
+        {"id": "damasco", "label": "Damasco", "kind": "place", "event": 3}
+      ],
+      "verseMap": [
+        {"match": "Atos 9:1–2", "event": 0},
+        {"match": "Atos 9:3–9", "event": 1},
+        {"match": "Atos 9:10–16", "event": 2},
+        {"match": "Atos 9:17–19", "event": 3}
+      ],
+      "events": [
+        {"label": "A viagem de perseguição", "ref": "Atos 9:1–2", "focus": "Uma rota pode carregar uma intenção errada", "summary": "Saulo recebe autorização e parte em direção a Damasco para prender seguidores de Jesus."},
+        {"label": "A luz na estrada", "ref": "Atos 9:3–9", "focus": "A direção é interrompida", "summary": "Uma luz e uma voz derrubam o viajante e deixam seus companheiros diante de algo que não conseguem explicar."},
+        {"label": "O medo de Ananias", "ref": "Atos 9:10–16", "focus": "A comunidade precisa discernir", "summary": "Ananias ouve a tarefa e apresenta seu temor antes de aceitar procurar Saulo."},
+        {"label": "A casa do recomeço", "ref": "Atos 9:17–19", "focus": "Cuidado devolve visão e direção", "summary": "Ananias impõe as mãos, Saulo recupera a visão, recebe alimento e começa uma nova etapa."}
+      ],
+      "route": [
+        {"label": "Jerusalém", "query": "Jerusalém primeiro século", "type": "partida"},
+        {"label": "Estrada regional", "query": "ancient road Jerusalem Damascus", "type": "interrupção"},
+        {"label": "Damasco", "query": "Damasco antiga Síria", "type": "recomeço"}
+      ]
+    },
+    {
+      "id": "genesis-12-abraao",
+      "matches": ["Gênesis 12", "Genesis 12", "Gênesis 12:1"],
+      "reference": "Gênesis 12:1–9",
+      "title": "A tenda que parte",
+      "subtitle": "Abrão deixa uma terra conhecida e aprende a caminhar pela promessa",
+      "theme": "Chamado, deslocamento, altar e promessa",
+      "period": "Patriarcas • ambientação do antigo Oriente",
+      "timelineNote": "A sequência acompanha Gênesis 12; rotas e datas patriarcais são apresentadas como reconstrução tradicional e aproximada.",
+      "sceneClass": "campo",
+      "badge": "CAMINHO DA PROMESSA",
+      "place": {
+        "name": "De Harã a Canaã",
+        "query": "Harã Canaã rota antiga",
+        "description": "A rota é apresentada como percurso tradicional entre regiões; coordenadas e datas exatas permanecem debatidas."
+      },
+      "certainty": "Rota tradicional • localização e data aproximadas",
+      "mediaQuery": "Haran Canaan ancient caravan route Genesis 12",
+      "panoramaQuery": "ancient Canaan landscape 360",
+      "historicalContext": "A narrativa apresenta uma família em deslocamento, com tendas, rebanhos, parentesco e altares. A promessa é recebida antes que o destino esteja completamente visível.",
+      "geography": [
+        {"title": "Harã e Canaã", "text": "A rota conecta o norte da Mesopotâmia a Canaã em uma reconstrução regional; caminhos antigos dependiam de água, pasto e segurança."},
+        {"title": "Acampamento e movimento", "text": "Tendas e rebanhos tornam o deslocamento visível: partir envolve reorganizar pessoas, bens e relações familiares."}
+      ],
+      "culturalNotes": [
+        {"title": "Família ampliada", "text": "A partida não é individual; Abrão leva Sarai, Ló, servos e bens, fazendo do chamado uma mudança comunitária."},
+        {"title": "Altar em terra estrangeira", "text": "Construir um altar marca presença, memória e adoração em lugares ainda não transformados em casa."},
+        {"title": "Promessa e hospitalidade", "text": "A bênção recebida por Abrão é ligada ao impacto que sua família terá sobre outros povos, não apenas ao seu conforto."}
+      ],
+      "objects": [
+        {"name": "Tenda", "icon": "⌂", "meaning": "Casa móvel de uma família em deslocamento."},
+        {"name": "Altar", "icon": "✦", "meaning": "Marco de adoração e memória ao longo da rota."},
+        {"name": "Rebanho", "icon": "♧", "meaning": "Patrimônio e responsabilidade que tornam a viagem concreta."}
+      ],
+      "curiosities": [
+        {"title": "A ordem vem antes do mapa completo", "text": "Abrão recebe o chamado sem que a narrativa entregue todas as coordenadas do futuro."},
+        {"title": "A rota tem paradas", "text": "O texto não descreve uma viagem instantânea; apresenta movimentos, altares e permanência em diferentes lugares."}
+      ],
+      "questions": [
+        "Que segurança conhecida está impedindo um novo passo?",
+        "Que pessoas serão afetadas positivamente pela sua obediência?",
+        "Que altar de memória você precisa construir no caminho?"
+      ],
+      "sources": [
+        {"label": "Texto principal", "type": "Bíblia", "value": "Gênesis 12:1–9", "certainty": "Texto bíblico"},
+        {"label": "Rota relacionada", "type": "Atlas X Vivo", "value": "Harã, Siquém e Canaã", "certainty": "Rota tradicional e aproximada"},
+        {"label": "Camada visual", "type": "Editorial", "value": "Tendas, caravana e altares reconstruídos para estudo", "certainty": "Interpretativa"}
+      ],
+      "people": [
+        {"id": "abraao", "name": "Abrão", "role": "Patriarca em chamado", "description": "Recebe a ordem de partir e conduz a família por uma rota que ainda não conhece completamente."},
+        {"id": "sarai", "name": "Sarai", "role": "Esposa de Abrão", "description": "Participa do deslocamento familiar e da mudança de vida descrita na narrativa."},
+        {"id": "lo", "name": "Ló", "role": "Parente e companheiro de viagem", "description": "Segue com Abrão e integra a rede familiar que se move em direção a Canaã."}
+      ],
+      "hotspots": [
+        {"id": "tenda", "label": "As tendas", "kind": "place", "event": 0},
+        {"id": "abraao", "label": "Abrão", "kind": "person", "person": "abraao"},
+        {"id": "sarai", "label": "Sarai", "kind": "person", "person": "sarai"},
+        {"id": "altar", "label": "O altar", "kind": "place", "event": 3}
+      ],
+      "verseMap": [
+        {"match": "Gênesis 12:1–3", "event": 0},
+        {"match": "Gênesis 12:4–5", "event": 1},
+        {"match": "Gênesis 12:6–7", "event": 2},
+        {"match": "Gênesis 12:8–9", "event": 3}
+      ],
+      "events": [
+        {"label": "A ordem de partir", "ref": "Gênesis 12:1–3", "focus": "O chamado abre uma rota", "summary": "Abrão ouve a ordem de sair da terra, da parentela e da casa conhecida."},
+        {"label": "A caravana se move", "ref": "Gênesis 12:4–5", "focus": "Obediência envolve pessoas e bens", "summary": "Abrão parte levando Sarai, Ló, servos e tudo o que havia reunido."},
+        {"label": "A terra ainda é promessa", "ref": "Gênesis 12:6–7", "focus": "Chegar não encerra o caminho", "summary": "Em Canaã, a promessa é anunciada enquanto a família ainda vive como estrangeira."},
+        {"label": "O altar na rota", "ref": "Gênesis 12:8–9", "focus": "Memória acompanha o deslocamento", "summary": "Abrão arma a tenda, constrói um altar e continua avançando pelo sul."}
+      ],
+      "route": [
+        {"label": "Harã", "query": "Haran ancient city", "type": "partida"},
+        {"label": "Siquém", "query": "Sichem ancient Canaan", "type": "primeira parada"},
+        {"label": "Betel", "query": "Bethel ancient Canaan", "type": "altar e acampamento"},
+        {"label": "Neguebe", "query": "Negev ancient landscape", "type": "continuação"}
       ]
     }
   ]

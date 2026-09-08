@@ -2,7 +2,7 @@ import json,os,sqlite3,subprocess,re
 from pathlib import Path
 from fastapi import FastAPI,HTTPException,Header,Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse,Response
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel,Field
 from app.core.env import load_project_env
@@ -15,12 +15,25 @@ from app.audio_x.router import router as audio_x_router
 # (including empty/stale values) masking keys restored into the project .env.
 ENV_FILE = load_project_env(override=True)
 from app.ai.hub import AIHub
+from app.ai.media_generation import MediaGenerationError,configured as media_configured,generate as generate_media,models as media_models,status as media_status,video_content,video_status
 from app.prompt_engine import PromptEngine,PromptRequest
 from app.think.engine import build_plan
 from app.quality.gate import evaluate
 from app.quality.reviewer import independent_review
 BASE=Path(__file__).resolve().parent;STATIC=BASE/"web"/"static";DB=BASE.parent/"data"/"sync.sqlite3";AI=AIHub();PROMPTS=PromptEngine()
 app=FastAPI(title="LOGOS MASTER X API",version="5.3.11");app.add_middleware(CORSMiddleware,allow_origins=["*"],allow_methods=["*"],allow_headers=["*"]);app.mount("/static",StaticFiles(directory=STATIC),name="static")
+
+@app.middleware("http")
+async def prevent_stale_frontend(request:Request,call_next):
+    """Em desenvolvimento local, nunca deixa JS/CSS/HTML ficar preso no cache."""
+    response=await call_next(request)
+    path=request.url.path
+    frontend_file=path=="/" or path=="/version.json" or (path.startswith("/static/") and path.endswith((".js",".css",".html",".json",".webmanifest")))
+    if frontend_file:
+        response.headers["Cache-Control"]="no-store, max-age=0, must-revalidate"
+        response.headers["Pragma"]="no-cache"
+        response.headers["Expires"]="0"
+    return response
 app.include_router(biblia_x_router)
 app.include_router(atlas_x_router)
 app.include_router(audio_x_router)
@@ -32,6 +45,21 @@ class BibleCommentAI(BaseModel):
  expert:str=Field(min_length=1)
  objective:str=""
  format:str="brief"
+class BibleMediaGenerate(BaseModel):
+    provider:str="auto"
+    kind:str="image"
+    prompt:str=Field(min_length=3,max_length=8000)
+    model:str|None=None
+    aspect_ratio:str="16:9"
+    image_size:str="1K"
+    resolution:str="720p"
+    size:str="1280x720"
+    seconds:int=8
+    reference_image_data_url:str|None=None
+    visual_title:str="Cena bíblica"
+    visual_reference:str="Passagem em estudo"
+    visual_place:str="Lugar bíblico relacionado"
+    visual_stage:str="Leitura da passagem"
 class SyncPayload(BaseModel): payload:dict
 def robj(r):return PromptRequest(r.mode,r.text,r.theme or "",r.duration,r.cult,r.audience,r.intensity,r.objective or "",r.notes or "")
 
@@ -310,6 +338,43 @@ def health():
  c=AI.configured();return {"status":"ok","version":"LOGOS-MASTER-X-5.3.10","ai":any(c.values()),"providers":c,"models":AI.models(),"modes":["rapido","economico","automatico","qualidade","manual"],"orders":{m:AI.order(m) for m in ["rapido","economico","automatico","qualidade"]},"prompt_engine":"modular-2.0","think_engine":"14-stage","dna_k7":"engine","quality_gate":True,"capabilities":["studio","studio-clean-dna-views","studio-direct-step-navigation","home-editable-actions","home-live-theme-dashboard","home-original-art-hotspots","home-context-editing","home-native-system-values","home-summary-values-aligned","home-summary-per-theme-alignment","home-summary-pill-fit","home-tooltip-free-hotspots","ai-hub","think-engine","dna-k7","quality-gate","bible-local","bible-search","bible-concordance","bible-commentary","bible-commentary-ai-15","bible-maps","bible-media","bible-visual-gallery","bible-panorama-360","bible-route-player","bible-dynamic-reading","bible-module-selector","bible-central-layout","bible-command-center","bible-cross-reference-popup-reader","bible-fullscreen-resource-overlay","bible-fullscreen-shared-zoom","bible-control-repair","bible-module-preferences","bible-fullscreen","audio-x","library","projects","editor","pulpit","backup"]}
 @app.get("/api/ai-metrics")
 def ai_metrics(): return AI.metrics()
+
+@app.get("/api/bible/ai/media/status")
+def bible_media_status():
+    """Retorna somente capacidades e presença das chaves, nunca as chaves."""
+    payload=media_status()
+    payload["configured_providers"]=[provider for provider,ready in media_configured().items() if ready]
+    payload["models"]=media_models()
+    payload["environment"]={"project_env_loaded":bool(ENV_FILE),"project_env_file":".env"}
+    return payload
+
+@app.post("/api/bible/ai/media/generate")
+def bible_media_generate(r:BibleMediaGenerate):
+    try:
+        return generate_media(
+            provider=r.provider,kind=r.kind,prompt=r.prompt,model=r.model,
+            aspect_ratio=r.aspect_ratio,image_size=r.image_size,resolution=r.resolution,
+            size=r.size,seconds=r.seconds,reference_image=r.reference_image_data_url,
+            visual_title=r.visual_title,visual_reference=r.visual_reference,
+            visual_place=r.visual_place,visual_stage=r.visual_stage,
+        )
+    except MediaGenerationError as error:
+        raise HTTPException(502,detail=str(error)) from error
+
+@app.get("/api/bible/ai/media/video/{video_id}")
+def bible_media_video_status(video_id:str):
+    try:
+        return video_status(video_id)
+    except MediaGenerationError as error:
+        raise HTTPException(502,detail=str(error)) from error
+
+@app.get("/api/bible/ai/media/video/{video_id}/content")
+def bible_media_video_content(video_id:str):
+    try:
+        content,mime_type=video_content(video_id)
+        return Response(content=content,media_type=mime_type,headers={"Content-Disposition":f'inline; filename="logos-master-x-{video_id}.mp4"'})
+    except MediaGenerationError as error:
+        raise HTTPException(502,detail=str(error)) from error
 
 
 

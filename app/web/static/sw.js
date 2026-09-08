@@ -1,4 +1,4 @@
-const CACHE_VERSION="logos-master-x-v539-home-summary-per-theme-tooltip-free-studio-clean-biblia-x-mapas-midia-360-audio-x";
+const CACHE_VERSION="logos-master-x-v539-home-summary-per-theme-tooltip-free-studio-clean-biblia-x-mapas-midia-360-audio-x-v240";
 self.addEventListener("install",event=>{self.skipWaiting();});
 self.addEventListener("activate",event=>{event.waitUntil((async()=>{
   const keys=await caches.keys();

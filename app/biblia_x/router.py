@@ -1,4 +1,5 @@
 
+import os
 import re
 
 from fastapi import APIRouter, HTTPException, Query
@@ -18,16 +19,36 @@ def health():
 def public_media_search(
     q: str = Query(min_length=2, max_length=120),
     kind: str = Query(default="image", max_length=16),
+    provider: str = Query(default="all", max_length=16),
     limit: int = Query(default=8, ge=1, le=16),
     offset: int = Query(default=0, ge=0, le=100000),
 ):
     """Search public imagery while preserving source/license metadata."""
     try:
-        return media_service.search_public_media(q, kind, limit, offset)
+        return media_service.search_public_media(q, kind, limit, offset, provider)
     except ValueError as exc:
         raise HTTPException(400, str(exc)) from exc
     except RuntimeError as exc:
         raise HTTPException(503, str(exc)) from exc
+
+
+@router.get("/geo/mapbox-config")
+def mapbox_config():
+    """Return only the optional browser-safe Mapbox public token.
+
+    Mapbox GL JS is intentionally optional: the Atlas and Mídia X remain
+    usable without it, falling back to links for Google Earth/Street View.
+    Secret tokens are never exposed to the browser.
+    """
+    token = str(os.getenv("MAPBOX_PUBLIC_TOKEN") or "").strip()
+    public_token = token if token.startswith("pk.") else ""
+    return {
+        "configured": bool(public_token),
+        "provider": "Mapbox GL JS",
+        "token": public_token,
+        "web_url": "https://www.mapbox.com/maps",
+        "note": "Use somente um token público pk.* com restrição de domínio; nunca coloque um sk.* no navegador.",
+    }
 
 
 @router.get("/status")

@@ -1,7 +1,7 @@
 (function () {
   "use strict";
 
-  const VERSION = "5.3.9";
+  const VERSION = "5.4.235";
   const $ = (selector, root = document) => root.querySelector(selector);
   const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
   const isRemote = value => /^https?:\/\//i.test(String(value || ""));
@@ -40,9 +40,191 @@
     return link;
   }
 
+  function publicSourceUrl(provider, kind, query) {
+    const q = encodeURIComponent(String(query || "").replace(/\s+/g, " ").trim());
+    if (!q) return "";
+    if (provider === "pexels") {
+      return `https://www.pexels.com/pt-br/procurar/${kind === "video" ? "videos/" : ""}?q=${q}`;
+    }
+    return `https://commons.wikimedia.org/w/index.php?search=${q}&title=Special%3AMediaSearch&type=${kind === "video" ? "video" : "image"}`;
+  }
+
+  function sourceAction(label, action, title) {
+    const node = document.createElement("button");
+    node.type = "button";
+    node.className = "bxvm-public-source-link";
+    node.dataset.bxvmSourceAction = action;
+    node.textContent = label;
+    node.title = title || label;
+    return node;
+  }
+
+  function currentWorldContext(query = "") {
+    const context = window.BibleXImmersion?.getContext?.() || {};
+    const scene = context.scene || {};
+    const place = scene.place || {};
+    const lat = Number(place.lat ?? scene.lat ?? context.lat);
+    const lng = Number(place.lng ?? scene.lng ?? context.lng);
+    return {
+      label: String(place.name || scene.title || context.currentNarrativeRef || query || "Lugar bíblico").trim(),
+      query: String(query || place.query || scene.mediaQuery || scene.panoramaQuery || place.name || scene.title || "").trim(),
+      lat: Number.isFinite(lat) ? lat : null,
+      lng: Number.isFinite(lng) ? lng : null,
+      reference: String(context.currentNarrativeRef || context.reference || "").trim(),
+      currentNarrativeRef: String(context.currentNarrativeRef || context.reference || "").trim(),
+      scene,
+      event: context.event || {},
+    };
+  }
+
+  function runInternalMediaSearch(kind, query, provider = "all") {
+    const input = $("#bxMediaPublicQuery");
+    if (!input) return false;
+    const value = String(query || input.value || "").trim();
+    if (!value) return false;
+    input.value = value;
+    input.dataset.bxImmersionQuery = value;
+    input.dispatchEvent(new Event("input", { bubbles: true }));
+    input.dataset.bxMediaProvider = provider;
+    const button = kind === "panorama" ? $("#bxMediaPublic360") : $("#bxMediaPublicFind");
+    if (button) {
+      button.click();
+      input.scrollIntoView?.({ behavior: "smooth", block: "center" });
+      return true;
+    }
+    return false;
+  }
+
+  let aiMediaLoader = null;
+  function openAiMedia(context = {}) {
+    if (window.BibleXAIMedia?.open) {
+      window.BibleXAIMedia.open(context);
+      return true;
+    }
+    if (!aiMediaLoader) {
+      aiMediaLoader = new Promise((resolve, reject) => {
+        const script = document.createElement("script");
+        script.src = "/static/bible-x-ai-media.js?v=5.4.235";
+        script.dataset.bxAiMedia = "1";
+        script.onload = () => window.BibleXAIMedia?.open ? resolve(window.BibleXAIMedia) : reject(new Error("Ateliê IA não ficou disponível."));
+        script.onerror = () => reject(new Error("Não foi possível carregar o Ateliê IA."));
+        document.head.appendChild(script);
+      }).catch(error => { aiMediaLoader = null; throw error; });
+    }
+    aiMediaLoader.then(api => api.open(context)).catch(error => window.alert(error.message));
+    return true;
+  }
+
+  function mountPublicSourceHub() {
+    const grid = $("#bxMediaPublicGrid");
+    const discovery = grid?.closest(".bx-media-discovery");
+    if (!grid || !discovery) return null;
+    const legacyEmpty = grid.querySelector(".bx-media-public-empty");
+    if (legacyEmpty && /Abra uma passagem|ðŸ|\uFFFD/.test(legacyEmpty.textContent || "")) legacyEmpty.remove();
+    let hub = $("[data-bxvm-source-hub]", discovery);
+    if (!hub) {
+      hub = document.createElement("section");
+      hub.className = "bxvm-public-source-hub";
+      hub.dataset.bxvmSourceHub = "1";
+      grid.before(hub);
+    }
+    const input = $("#bxMediaPublicQuery");
+    const query = String(input?.value || "").replace(/\s+/g, " ").trim().slice(0, 120);
+    if (hub.dataset.bxvmQuery === query && hub.childNodes.length) {
+      hub.hidden = !query;
+      return hub;
+    }
+    hub.dataset.bxvmQuery = query;
+    hub.replaceChildren();
+    const copy = document.createElement("div");
+    copy.className = "bxvm-public-source-copy";
+    const label = document.createElement("span");
+    label.textContent = "FONTES PÚBLICAS COMPLEMENTARES";
+    const title = document.createElement("strong");
+    title.textContent = query ? `Continue pesquisando “${query}” em outras bibliotecas` : "Pesquise o tema da passagem em outras bibliotecas";
+    const note = document.createElement("small");
+    note.textContent = "Wikimedia e Pexels entram na galeria quando disponíveis; crédito e licença permanecem visíveis em cada arquivo.";
+    copy.append(label, title, note);
+    const nav = document.createElement("nav");
+    nav.className = "bxvm-public-source-links";
+    nav.appendChild(sourceAction("Wikimedia • imagens aqui", "commons-image", "Pesquisar Wikimedia dentro da Mídia X"));
+    nav.appendChild(sourceAction("Wikimedia • 360° aqui", "commons-panorama", "Pesquisar panoramas dentro da Mídia X"));
+    nav.appendChild(sourceAction("Pexels • fotos aqui", "pexels-image", "Pesquisar fotos do Pexels dentro da Mídia X (requer PEXELS_API_KEY)"));
+    nav.appendChild(sourceAction("✨ Ateliê IA", "ai", "Gerar imagem ou vídeo para esta passagem"));
+    [
+      ["Pexels • vídeos ↗", publicSourceUrl("pexels", "video", query)]
+    ].forEach(([text, href]) => {
+      const link = externalLink(text, href || "#");
+      link.className = "bxvm-public-source-link";
+      if (!href) {
+        link.setAttribute("aria-disabled", "true");
+        link.addEventListener("click", event => event.preventDefault());
+      }
+      nav.appendChild(link);
+    });
+    nav.appendChild(sourceAction("🌍 Mundo atual / Mapbox", "world", "Abrir Google Earth, Street View e Mapbox"));
+    const licenses = document.createElement("div");
+    licenses.className = "bxvm-public-source-licenses";
+    const pexelsLicense = externalLink("Licença Pexels ↗", "https://www.pexels.com/pt-br/licenca/");
+    const commonsLicense = externalLink("Política do Commons ↗", "https://commons.wikimedia.org/wiki/Main_Page");
+    if (pexelsLicense) licenses.appendChild(pexelsLicense);
+    if (commonsLicense) licenses.appendChild(commonsLicense);
+    hub.append(copy, nav, licenses);
+    nav.addEventListener("click", event => {
+      const action = event.target.closest("[data-bxvm-source-action]")?.dataset.bxvmSourceAction;
+      if (!action) return;
+      event.preventDefault();
+      if (action === "commons-image") runInternalMediaSearch("image", query, "commons");
+      else if (action === "commons-panorama") runInternalMediaSearch("panorama", query, "commons");
+      else if (action === "pexels-image") runInternalMediaSearch("image", query, "pexels");
+      else if (action === "world") window.BibleXVisualMedia?.openWorldExplorer?.(currentWorldContext(query));
+      else if (action === "ai") openAiMedia(currentWorldContext(query));
+    });
+    hub.hidden = !query;
+    if (input && !input.dataset.bxvmSourceBound) {
+      input.dataset.bxvmSourceBound = "1";
+      input.addEventListener("input", () => {
+        // A manually typed query returns to the combined catalog. Source
+        // buttons set the provider immediately after this event is dispatched.
+        input.dataset.bxMediaProvider = "all";
+        mountPublicSourceHub();
+      });
+    }
+    return hub;
+  }
+
+  function initPublicSourceHub() {
+    const mount = () => mountPublicSourceHub();
+    mount();
+    document.addEventListener("input", event => {
+      if (event.target?.id === "bxMediaPublicQuery") mount();
+    });
+    window.addEventListener("biblex:media-context", mount);
+    const observer = new MutationObserver(mount);
+    observer.observe(document.body, { childList: true, subtree: true });
+  }
+
   function requestFullScreen(node) {
     if (document.fullscreenElement) return document.exitFullscreen?.();
     return node.requestFullscreen?.();
+  }
+
+  function openImmersionFromVisual(item = {}) {
+    const api = window.BibleXImmersion;
+    if (!api || typeof api.open !== "function") return false;
+    const context = typeof api.getContext === "function" ? (api.getContext() || {}) : {};
+    const input = document.querySelector("#bRef, input[name='reference'], [data-bible-reference]");
+    const reference = String(
+      item.reference ||
+      context.currentNarrativeRef ||
+      context.reference ||
+      input?.value ||
+      "Passagem selecionada"
+    ).trim();
+    const text = String(item.verseText || context.verseText || "").trim();
+    const fullscreenTrigger = { matches: selector => /data-bx-immersion/.test(String(selector || "")) };
+    api.open(reference, text, fullscreenTrigger);
+    return true;
   }
 
   function shell(kind, eyebrow) {
@@ -98,6 +280,7 @@
     next.className = "bxvm-nav bxvm-next";
     stage.append(previous, viewport, next);
     [
+      button("🕶 História", "immersion", "Entrar na história"),
       button("−", "zoom-out", "Diminuir zoom"),
       button("+", "zoom-in", "Aumentar zoom"),
       button("Ajustar", "fit", "Ajustar à tela"),
@@ -206,6 +389,10 @@
       if (action === "fit") setScale(1);
       if (action === "play") toggleSlides();
       if (action === "fullscreen") requestFullScreen(dialog);
+      if (action === "immersion") {
+        close();
+        openImmersionFromVisual(item);
+      }
       if (action === "close") close();
     });
     previous.addEventListener("click", () => show(index - 1));
@@ -260,6 +447,7 @@
     loading.innerHTML = "Preparando panorama 360°...<small>Arraste para olhar ao redor • use a roda ou ± para aproximar</small>";
     stage.append(canvas, loading);
     [
+      button("🕶 História", "immersion", "Entrar na história"),
       button("−", "zoom-out", "Afastar"),
       button("+", "zoom-in", "Aproximar"),
       button("↺", "reset", "Centralizar visão"),
@@ -349,6 +537,10 @@
       if (action === "reset") { yaw = pitch = 0; fov = 72; }
       if (action === "rotate") toggleRotate();
       if (action === "fullscreen") requestFullScreen(dialog);
+      if (action === "immersion") {
+        close();
+        openImmersionFromVisual(item);
+      }
       if (action === "close") close();
     });
     canvas.addEventListener("wheel", event => { event.preventDefault(); setFov(fov + event.deltaY * .035); }, { passive: false });
@@ -437,13 +629,208 @@
     return { close, reset: () => { yaw = pitch = 0; fov = 72; } };
   }
 
+  let mapboxLoader = null;
+  let mapboxConfigPromise = null;
+
+  function loadMapbox() {
+    if (window.mapboxgl) return Promise.resolve(window.mapboxgl);
+    if (mapboxLoader) return mapboxLoader;
+    mapboxLoader = new Promise((resolve, reject) => {
+      if (!document.querySelector("link[data-bx-mapbox-css]")) {
+        const css = document.createElement("link");
+        css.rel = "stylesheet";
+        css.href = "https://api.mapbox.com/mapbox-gl-js/v3.15.0/mapbox-gl.css";
+        css.dataset.bxMapboxCss = "1";
+        document.head.appendChild(css);
+      }
+      const script = document.createElement("script");
+      script.src = "https://api.mapbox.com/mapbox-gl-js/v3.15.0/mapbox-gl.js";
+      script.async = true;
+      script.onload = () => window.mapboxgl ? resolve(window.mapboxgl) : reject(new Error("Mapbox GL JS não ficou disponível."));
+      script.onerror = () => reject(new Error("Não foi possível carregar o Mapbox GL JS. Verifique a internet."));
+      document.head.appendChild(script);
+    }).catch(error => {
+      mapboxLoader = null;
+      throw error;
+    });
+    return mapboxLoader;
+  }
+
+  async function mapboxConfig() {
+    if (mapboxConfigPromise) return mapboxConfigPromise;
+    mapboxConfigPromise = (async () => {
+      const inline = String(window.LOGOS_MAPBOX_TOKEN || "").trim();
+      if (inline.startsWith("pk.")) return { configured: true, token: inline, web_url: "https://www.mapbox.com/maps" };
+      try {
+        const response = await fetch("/api/bible/geo/mapbox-config", { headers: { Accept: "application/json" }, cache: "no-store" });
+        if (!response.ok) throw new Error(`Mapbox: HTTP ${response.status}`);
+        return await response.json();
+      } catch (_) {
+        return { configured: false, token: "", web_url: "https://www.mapbox.com/maps" };
+      }
+    })();
+    return mapboxConfigPromise;
+  }
+
+  function worldUrls(context = {}) {
+    const label = String(context.label || context.name || context.query || "Lugar bíblico").trim();
+    const lat = Number(context.lat), lng = Number(context.lng);
+    const hasCoords = Number.isFinite(lat) && Number.isFinite(lng);
+    const location = hasCoords ? `${lat.toFixed(5)},${lng.toFixed(5)}` : label;
+    return {
+      label,
+      hasCoords,
+      earth: `https://earth.google.com/web/search/${encodeURIComponent(location)}`,
+      maps: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(location)}`,
+      street: hasCoords
+        ? `https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=${encodeURIComponent(location)}`
+        : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(location)}`,
+      mapbox: "https://www.mapbox.com/maps",
+      openBible: "https://www.openbible.info/geo/atlas/all",
+    };
+  }
+
+  async function findMapboxCenter(context, token) {
+    const lat = Number(context.lat), lng = Number(context.lng);
+    if (Number.isFinite(lat) && Number.isFinite(lng)) return [lng, lat];
+    const query = String(context.query || context.label || "").trim();
+    if (!query) return null;
+    const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(query)}.json?access_token=${encodeURIComponent(token)}&limit=1&language=pt-BR`;
+    const response = await fetch(url, { headers: { Accept: "application/json" } });
+    if (!response.ok) throw new Error(`Mapbox geocoding: HTTP ${response.status}`);
+    const data = await response.json();
+    const center = data?.features?.[0]?.center;
+    return Array.isArray(center) && center.length >= 2 ? [Number(center[0]), Number(center[1])] : null;
+  }
+
+  function openWorldExplorer(rawContext = {}) {
+    const context = { ...rawContext };
+    const urls = worldUrls(context);
+    const overlay = shell("world", "MAPAS X • EXPLORAÇÃO ATUAL");
+    const dialog = $(".bxvm-dialog", overlay);
+    const stage = $(".bxvm-stage", overlay);
+    const tools = $(".bxvm-tools", overlay);
+    const heading = $(".bxvm-heading h2", overlay);
+    const caption = $(".bxvm-caption", overlay);
+    const links = $(".bxvm-links", overlay);
+    heading.textContent = urls.label;
+    tools.append(button("⛶", "fullscreen", "Tela cheia"), button("×", "close", "Fechar"));
+    stage.innerHTML = `
+      <div class="bxvm-world-layout">
+        <section class="bxvm-world-map-panel">
+          <div class="bxvm-world-map" data-bx-world-map>
+            <div class="bxvm-world-loading"><strong>Preparando exploração geográfica…</strong><small>Mapbox 3D, quando configurado, aparece aqui dentro.</small></div>
+          </div>
+          <div class="bxvm-world-disclosure">Camada atual para orientação. Google Earth, Street View e relevo não são reconstruções do primeiro século.</div>
+        </section>
+        <aside class="bxvm-world-side">
+          <span class="bxvm-world-kicker">ESCOLHA A CAMADA</span>
+          <h3>Conheça o lugar hoje</h3>
+          <p>Compare a geografia atual com a leitura bíblica sem misturar evidência moderna e ambientação histórica.</p>
+          <nav class="bxvm-world-actions">
+            <a class="bxvm-world-link is-primary" href="${urls.earth}" target="_blank" rel="noopener noreferrer">🌍 <b>Google Earth</b><small>satélite, relevo e cidades 3D</small></a>
+            <a class="bxvm-world-link" href="${urls.street}" target="_blank" rel="noopener noreferrer">🚶 <b>Google Street View</b><small>panorama atual quando disponível</small></a>
+            <a class="bxvm-world-link" href="${urls.maps}" target="_blank" rel="noopener noreferrer">📍 <b>Google Maps</b><small>localização e pesquisa do lugar</small></a>
+            <button type="button" class="bxvm-world-link" data-bx-world-retry>🗺️ <b>Mapbox 3D</b><small>mapa interno com token público</small></button>
+            <a class="bxvm-world-link" href="${urls.openBible}" target="_blank" rel="noopener noreferrer">📚 <b>OpenBible Atlas</b><small>atlas e geocodificação bíblica</small></a>
+          </nav>
+          <div class="bxvm-world-status" data-bx-world-status>Verificando se o Mapbox interno está configurado…</div>
+        </aside>
+      </div>`;
+    caption.textContent = "Fontes atuais abertas por link; Mapbox interno é opcional e usa somente token público restrito.";
+    [
+      ["Google Earth ↗", urls.earth],
+      ["Street View ↗", urls.street],
+      ["Mapbox ↗", urls.mapbox],
+      ["OpenBible ↗", urls.openBible],
+    ].forEach(([label, href]) => {
+      const link = externalLink(label, href);
+      if (link) links.appendChild(link);
+    });
+    let map = null;
+    let closed = false;
+    const mapContainer = $("[data-bx-world-map]", stage);
+    const status = $("[data-bx-world-status]", stage);
+    const close = () => {
+      closed = true;
+      try { map?.remove?.(); } catch (_) {}
+      document.removeEventListener("keydown", onKey);
+      overlay.remove();
+      if (!document.querySelector(".bxvm-overlay,.bx-route-visual-modal")) document.body.classList.remove("bxvm-lock");
+    };
+    const onKey = event => { if (event.key === "Escape") close(); };
+    const setStatus = (message, tone = "") => {
+      if (!status || closed) return;
+      status.className = `bxvm-world-status ${tone}`.trim();
+      status.textContent = message;
+    };
+    const renderMapbox = async () => {
+      if (closed || !mapContainer) return;
+      setStatus("Verificando token público do Mapbox…");
+      const config = await mapboxConfig();
+      const token = String(config?.token || "").trim();
+      if (!config?.configured || !token.startsWith("pk.")) {
+        mapContainer.innerHTML = `<div class="bxvm-world-no-map"><span>🗺️</span><strong>Mapbox interno está opcional</strong><p>Para mostrar o mapa dentro do Logos, configure <code>MAPBOX_PUBLIC_TOKEN=pk.*</code> no servidor. Sem isso, os botões Google Earth, Street View e Mapbox continuam funcionando por link.</p><a href="${urls.mapbox}" target="_blank" rel="noopener noreferrer">Abrir Mapbox ↗</a></div>`;
+        setStatus("Mapbox não configurado • links externos disponíveis", "warn");
+        return;
+      }
+      try {
+        const center = await findMapboxCenter(context, token);
+        if (closed) return;
+        if (!center) throw new Error("Não encontrei coordenadas para este lugar.");
+        const mapboxgl = await loadMapbox();
+        if (closed) return;
+        mapboxgl.accessToken = token;
+        mapContainer.replaceChildren();
+        map = new mapboxgl.Map({
+          container: mapContainer,
+          style: "mapbox://styles/mapbox/satellite-streets-v12",
+          center,
+          zoom: urls.hasCoords ? 8.2 : 6.5,
+          pitch: 48,
+          bearing: -12,
+          antialias: true,
+        });
+        map.addControl(new mapboxgl.NavigationControl({ visualizePitch: true }), "top-right");
+        map.addControl(new mapboxgl.FullscreenControl(), "top-right");
+        new mapboxgl.Marker({ color: "#d4a63a" }).setLngLat(center).setPopup(new mapboxgl.Popup({ offset: 18 }).setText(urls.label)).addTo(map);
+        map.once("load", () => {
+          if (closed || !map) return;
+          try {
+            map.addSource("bx-terrain", { type: "raster-dem", url: "mapbox://mapbox.mapbox-terrain-dem-v1", tileSize: 512, maxzoom: 14 });
+            map.setTerrain({ source: "bx-terrain", exaggeration: 1.12 });
+          } catch (_) {}
+          setStatus("Mapbox 3D ativo • relevo atual", "ok");
+        });
+        map.on("error", event => { if (event?.error?.message) setStatus(`Mapbox: ${event.error.message}`, "warn"); });
+      } catch (error) {
+        mapContainer.innerHTML = `<div class="bxvm-world-no-map"><span>⚠️</span><strong>Mapbox não pôde ser carregado</strong><p>${String(error?.message || error)}</p><a href="${urls.mapbox}" target="_blank" rel="noopener noreferrer">Abrir Mapbox ↗</a></div>`;
+        setStatus("Falha no Mapbox • usando links externos", "warn");
+      }
+    };
+    tools.addEventListener("click", event => {
+      const action = event.target.closest("[data-bxvm-action]")?.dataset.bxvmAction;
+      if (action === "fullscreen") requestFullScreen(dialog);
+      if (action === "close") close();
+    });
+    $("[data-bx-world-retry]", stage)?.addEventListener("click", renderMapbox);
+    overlay.addEventListener("click", event => { if (event.target === overlay) close(); });
+    document.addEventListener("keydown", onKey);
+    renderMapbox();
+    return { close, reload: renderMapbox };
+  }
+
   window.BibleXVisualMedia = {
     version: VERSION,
     openGallery,
     openPanorama,
+    openWorldExplorer,
+    mountPublicSourceHub,
     present(items, startIndex = 0, options = {}) {
       return openGallery(items, startIndex, { ...options, autoplay: true, eyebrow: options.eyebrow || "MÍDIA X • APRESENTAÇÃO" });
     },
     fullscreen: requestFullScreen,
   };
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", initPublicSourceHub, { once: true });
+  else initPublicSourceHub();
 })();

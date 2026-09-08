@@ -1,6 +1,6 @@
 {
-  "version": "5.4.207",
-  "channel": "biblia-viva-modo-imersao-visual-vivo-imagens-cores-midia-publica",
-  "build": "v207-visual-vivo",
-  "hotfix": "Bíblia Viva — Modo Imersão acumulativo: cenas com luz, partículas, profundidade e movimento, além de imagens públicas carregadas sob demanda com crédito e licença visíveis."
+  "version": "5.4.240",
+  "channel": "biblia-viva-modo-imersao-visual-vivo-mapas-midia-ia",
+  "build": "v240-immersion-observer-and-quick-guide-repair",
+  "hotfix": "Corrige ciclo infinito do observador global da Bíblia Viva que travava a aba ao renderizar mídia salva; renderização idempotente da miniatura; fechamento independente do pop-up Comandos rápidos; reparo de cache e service worker legado para Ctrl+F5; correção isolada na pasta app; arquivos protegidos preservados."
 }

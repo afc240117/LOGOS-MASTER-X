@@ -1,10 +1,57 @@
-/* Bíblia X — Contexto da passagem para Mídia X | v5.4.208 */
+/* Bíblia X — Contexto da passagem para Mídia X | v5.4.219 */
 (function () {
   "use strict";
 
   const $ = (selector, root = document) => root.querySelector(selector);
   const clean = (value) => String(value || "").replace(/\s+/g, " ").trim();
+  const key = (value) => clean(value).normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+  const BIBLE_REFERENCE_ONLY_RE = /^(?:[123]\s*)?[\p{L}]+(?:\s+[\p{L}]+){0,3}\s+\d{1,3}(?:(?:[:.]\s*\d{1,3}(?:\s*-\s*\d{1,3})?)|(?:\s*[-–]\s*\d{1,3}))?\s*$/u;
+  const NON_VISUAL_QUERY_RE = /^(?:localiza(?:c|ç)[aã]o(?:\s+aproximada)?\s+a\s+investigar|passagem(?:\s+b[ií]blica)?\s+(?:selecionada|em\s+explora[cç][aã]o\s+contextual)|entrar\s+na\s+hist[oó]ria|leitura\s+guiada|etapa\s+atual|per[ií]odo\s+a\s+confirmar(?:\s+no\s+estudo)?|cena\s+editorial)$/i;
   const state = { publicManual: false, topManual: false, lastKey: "", bridge: null };
+
+  function isBibleReferenceOnly(value) {
+    const text = clean(value);
+    return Boolean(text && /\d/.test(text) && BIBLE_REFERENCE_ONLY_RE.test(text));
+  }
+
+  function usableVisual(value) {
+    const text = clean(value);
+    return text.length >= 3 && !isBibleReferenceOnly(text) && !NON_VISUAL_QUERY_RE.test(text);
+  }
+
+  function fallbackVisualQuery(seed, kind = "image") {
+    const text = key(seed);
+    const rules = [
+      [/sicar|siquem|shechem|sychar|samarit/, "Sicar Samaria poço de Jacó ruínas bíblicas"],
+      [/jerusalem|golgota|calvario|pilatos|templo|muro ocidental/, "Jerusalém bíblica Cidade Antiga ruínas arqueológicas"],
+      [/galileia|galilee|cafarnaum|capernaum|nazare|nazareth|mar da galileia/, "Galileia Cafarnaum ruínas bíblicas paisagem atual"],
+      [/jordao|jordan|betania|bethany/, "Rio Jordão Betânia sítio bíblico paisagem atual"],
+      [/jerico|jericho/, "Jericó Tell es-Sultan ruínas arqueológicas"],
+      [/sinai|horebe|horeb|exodo|exodus/, "Sinai deserto rota bíblica paisagem atual"],
+      [/damasco|damascus|paulo|paul|efeso|ephesus/, "Éfeso cidades bíblicas ruínas arqueológicas"],
+      [/\bjoao\s+4(?:[:\s]|$)/, "Sicar Samaria poço de Jacó ruínas bíblicas"],
+      [/\b(?:joao|mateus|marcos|lucas)\b/, "Jerusalém e Galileia cidades bíblicas ruínas arqueológicas"],
+      [/\b(?:atos|romanos|corintios|galatas)\b/, "Éfeso cidades bíblicas ruínas arqueológicas"]
+    ];
+    let result = rules.find(([pattern]) => pattern.test(text))?.[1] || "cidades e ruínas bíblicas Israel antigo";
+    if (kind === "panorama" && !/panorama|360/i.test(result)) result += " panorama 360";
+    return result;
+  }
+
+  function contextualVisualQuery(scene, event, ref, verseText, kind = "image") {
+    const candidates = [
+      scene?.place?.name,
+      scene?.place?.query,
+      scene?.mediaQuery,
+      scene?.panoramaQuery,
+      scene?.title,
+      event?.label
+    ];
+    const selected = candidates.map(clean).find(usableVisual);
+    if (selected) return kind === "panorama" && !/panorama|360/i.test(selected) ? `${selected} panorama 360` : selected;
+    const fromImmersion = window.BibleXImmersion?.getVisualQuery?.(`${ref || ""} ${verseText || ""}`, kind);
+    return usableVisual(fromImmersion) ? fromImmersion : fallbackVisualQuery(`${ref || ""} ${verseText || ""}`, kind);
+  }
 
   function verseNode() {
     return $("#bOut [data-bx-v3-verse][data-ref]") ||
@@ -14,7 +61,9 @@
 
   function currentContext() {
     const liveImmersion = window.BibleXImmersion?.getContext?.() || null;
-    const immersion = state.bridge || (liveImmersion?.open ? liveImmersion : null);
+    const immersion = state.bridge || liveImmersion || null;
+    const candidateIntegration = immersion?.integration || window.BibleXImmersion?.getIntegrationModel?.() || null;
+    const integration = candidateIntegration?.active ? candidateIntegration : null;
     const verse = verseNode();
     const ref = clean(
       immersion?.currentNarrativeRef ||
@@ -29,21 +78,25 @@
     );
     const scene = immersion?.scene || null;
     const event = immersion?.event || null;
-    const place = clean(scene?.place?.name || scene?.place?.query);
+    const place = [scene?.place?.name, scene?.place?.query].map(clean).find(usableVisual) || "";
     const label = clean(event?.label);
     const display = clean(
+      integration?.queries?.media ||
       immersion?.mediaQuery ||
       [ref, label, place].filter(Boolean).join(" • ") ||
       ref ||
       place
     ).slice(0, 120);
     const search = clean(
-      immersion?.searchQuery ||
-      [scene?.mediaQuery || place, label, ref].filter(Boolean).join(" ") ||
-      ref ||
-      verseText.slice(0, 90)
+      (usableVisual(integration?.queries?.images) && integration.queries.images) ||
+      (usableVisual(immersion?.searchQuery) && immersion.searchQuery) ||
+      contextualVisualQuery(scene, event, ref, verseText, "image")
     ).slice(0, 120);
-    return { ref, verseText, scene, event, place, label, display, search };
+    const panorama = clean(
+      (usableVisual(integration?.queries?.panorama) && integration.queries.panorama) ||
+      contextualVisualQuery(scene, event, ref, verseText, "panorama")
+    ).slice(0, 120);
+    return { ref, verseText, scene, event, place, label, display, search, panorama, integration };
   }
 
   function ensureContextRibbon() {
@@ -81,9 +134,9 @@
     const detail = $("[data-bx-media-context-detail]", ribbon);
     title.textContent = context.display || "Aguardando uma passagem";
     detail.textContent = context.verseText
-      ? `Texto conectado: ${context.verseText.slice(0, 180)}${context.verseText.length > 180 ? "…" : ""}`
+      ? `${context.label ? `${context.label} • ` : ""}Texto conectado: ${context.verseText.slice(0, 180)}${context.verseText.length > 180 ? "…" : ""}`
       : context.place
-        ? `Lugar conectado: ${context.place}. Você pode editar a busca antes de pesquisar.`
+        ? `${context.label ? `${context.label} • ` : ""}Lugar conectado: ${context.place}. Você pode editar a busca antes de pesquisar.`
         : "Abra um versículo para conectar imagens, cultura, geografia e curiosidades.";
     ribbon.classList.toggle("is-ready", !!context.display);
   }
@@ -98,18 +151,28 @@
     const publicInput = $("#bxMediaPublicQuery");
     const topInput = $("#bxMediaQuery");
     if (!context.display) return;
-    const key = `${context.display}|${context.search}`;
-    const defaultValue = !clean(publicInput?.value) || clean(publicInput?.value).toLowerCase() === "jerusalém bíblica";
-    const shouldWrite = force || !state.publicManual || defaultValue || state.lastKey !== key;
-    if (publicInput && shouldWrite) {
-      publicInput.value = context.display;
-      publicInput.dataset.bxContextValue = context.display;
+    const key = `${context.ref}|${context.label}|${context.search}|${context.panorama}`;
+    const changedContext = state.lastKey !== key;
+    if (changedContext && !force) {
+      state.publicManual = false;
+      state.topManual = false;
     }
-    if (topInput && (force || !state.topManual || !clean(topInput.value))) {
-      topInput.value = context.display;
-      topInput.dataset.bxContextValue = context.display;
-    }
+    const genericValues = new Set(["jerusalém bíblica", "jerusalem biblica", "jerusalém", "jerusalem"]);
+    const defaultValue = !clean(publicInput?.value) || genericValues.has(clean(publicInput?.value).toLowerCase());
+    const contextualSearch = context.search || context.display;
+    const shouldWritePublic = force || changedContext || !state.publicManual || defaultValue;
+    const shouldWriteTop = force || changedContext || !state.topManual || !clean(topInput?.value);
+    if (publicInput && shouldWritePublic) writeContextValue(publicInput, contextualSearch);
+    if (topInput && shouldWriteTop) writeContextValue(topInput, contextualSearch);
     state.lastKey = key;
+  }
+
+  function writeContextValue(input, value) {
+    const next = clean(value);
+    if (!input || !next) return;
+    input.value = next;
+    input.dataset.bxContextValue = next;
+    input.dispatchEvent(new Event("input", { bubbles: true }));
   }
 
   function bindInputs() {
@@ -127,8 +190,9 @@
         if (topInput.value !== topInput.dataset.bxContextValue) state.topManual = true;
         const publicField = $("#bxMediaPublicQuery");
         if (publicField && !state.publicManual && clean(topInput.value)) {
-          publicField.value = topInput.value;
-          publicField.dataset.bxContextValue = topInput.value;
+          const next = usableVisual(topInput.value) ? clean(topInput.value) : contextualVisualQuery(null, null, topInput.value, "", "image");
+          publicField.value = next;
+          publicField.dataset.bxContextValue = next;
         }
       });
     }
