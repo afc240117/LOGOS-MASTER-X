@@ -1,6 +1,6 @@
 {
-  "version": "5.4.240",
+  "version": "5.4.241",
   "channel": "biblia-viva-modo-imersao-visual-vivo-mapas-midia-ia",
-  "build": "v240-immersion-observer-and-quick-guide-repair",
-  "hotfix": "Corrige ciclo infinito do observador global da Bíblia Viva que travava a aba ao renderizar mídia salva; renderização idempotente da miniatura; fechamento independente do pop-up Comandos rápidos; reparo de cache e service worker legado para Ctrl+F5; correção isolada na pasta app; arquivos protegidos preservados."
+  "build": "v241-reader-full-tick-and-explorer-guard",
+  "hotfix": "Tela cheia do leitor volta a (re)inicializar a barra de progresso e o menu ▲◉▼ sem ReferenceError do lm150 (agora via gancho público BibleXPolimento.readerFullTick); observador global da Bíblia Viva deixa de lançar exceção quando o painel de mapas não está no DOM (guarda antecipada em bible-x-infinite-explorer.js), o que reativa bindPublicInput/syncImmersionContext/watchMedia; versão unificada em 5.4.241 (version.json, APP_BUILD_VERSION, /api/health, /api/diagnostics e OpenAPI leem a mesma fonte); cache-bust dos 30 assets padronizado em ?v=5.4.241; removidos 6 snapshots mortos (app-381-v114/115/116.js, style-v114/115.css, index.html.PRE-AUDIO-X-MODULAR.bak)."
 }

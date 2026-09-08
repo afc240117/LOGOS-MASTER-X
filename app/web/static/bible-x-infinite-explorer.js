@@ -313,7 +313,12 @@
     let sentinel=$(".bx-infinite-sentinel",grid);if(!sentinel){mediaState.observer?.disconnect();sentinel=document.createElement("div");sentinel.className="bx-infinite-sentinel";grid.appendChild(sentinel);mediaState.observer=new IntersectionObserver(es=>{if(es.some(e=>e.isIntersecting))moreMedia()},{rootMargin:"700px"});mediaState.observer.observe(sentinel)}
   }
   function mountHistory(){
-    const panel=$("[data-bible-panel=\"maps\"]"),toolbar=$(".bx-map-toolbar",panel);if(!panel||!toolbar||$("#bxMapHistory",panel))return;
+    /* 5.4.241 — guarda a raiz ANTES de $() com ela: sem o painel de mapas no
+       DOM, `panel` é null e $(".bx-map-toolbar", null) explodia aqui dentro do
+       MutationObserver global (spam de exceções e o resto do callback —
+       bindPublicInput/syncImmersionContext/watchMedia — nunca rodava). */
+    const panel=$("[data-bible-panel=\"maps\"]");if(!panel)return;
+    const toolbar=$(".bx-map-toolbar",panel);if(!toolbar||$("#bxMapHistory",panel))return;
     const box=document.createElement("section");box.id="bxMapHistory";box.className="bx-map-history";
     box.innerHTML='<div><b>🧭 Camadas históricas</b><small>Explore mapas por tempo bíblico, reinos, lugares e viagens</small></div><nav>'+[['Antigo Testamento','Antigo Testamento'],['Patriarcas','Patriarcas'],['Êxodo','Êxodo'],['Reinos','monarquia'],['Exílio','exílio'],['Evangelhos','jesus'],['Viagens missionárias','paulo'],['Rotas','rota']].map(x=>`<button type="button" data-map-history="${esc(x[1])}">${esc(x[0])}</button>`).join('')+'<button type="button" data-map-open-timeline>🕰 Linha do Tempo</button></nav>';
     toolbar.after(box);

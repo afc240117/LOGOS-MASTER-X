@@ -1147,7 +1147,7 @@ function homeArtHotspot(actions,id,extra=""){
 function homeArtLiveValues(extra=""){
  return `<div class="home-art-live-values ${extra}" aria-live="polite" aria-label="Resumo do sistema atualizado em tempo real">
   <span class="home-art-value-online" data-home-status="online">● Local</span>
-  <span class="home-art-value-version" data-home-status="version">5.3.11</span>
+  <span class="home-art-value-version" data-home-status="version">5.4.241</span>
   <span class="home-art-value-dna" data-home-status="dna">1–10</span>
   <span class="home-art-value-quality" data-home-status="quality">20/20</span>
   <span class="home-art-value-update" data-home-status="update">Ativo</span>
@@ -1242,7 +1242,7 @@ ${homeDesktopControls(actions)}
    </header>
    <div class="mobile-summary-grid">
     <div class="mobile-summary-item mobile-summary-online"><small>Status</small><b data-home-status="online">● Local</b></div>
-    <div class="mobile-summary-item"><small>Versão do app</small><b data-home-status="version">5.3.11</b></div>
+    <div class="mobile-summary-item"><small>Versão do app</small><b data-home-status="version">5.4.241</b></div>
     <div class="mobile-summary-item"><small>DNA K7</small><b data-home-status="dna">1–10</b></div>
     <div class="mobile-summary-item"><small>Modelos de IA</small><b data-home-status="quality">20/20</b></div>
     <div class="mobile-summary-item"><small>Atualizações</small><b data-home-status="update">Ativo</b></div>
@@ -8565,7 +8565,7 @@ async function clearOldFrontendCache(){
  }catch(e){}
 }
 
-const APP_BUILD_VERSION="5.4.240";
+const APP_BUILD_VERSION="5.4.241";
 function publicAsset(path){return "/"+String(path).replace(/^\/+/,"");}
 const PRODUCTION_VERSION_URL="https://logos-master-x-api.onrender.com/static/version.json";
 function showUpdateBanner(remoteVersion){
@@ -9284,8 +9284,10 @@ window.BibliaXLocal = window.BibliaXLocal || {
          reposicionamento nem restauração aqui. */
       if(on)setTimeout(()=>document.querySelector("#bOut")?.scrollIntoView({block:"start"}),30);
       /* 5.4.124 — ao entrar no full, (re)inicializar a barra amarela de progresso
-         e o menu ▲◉▼ para acompanhar o scroll interno do shell. */
-      if(on)setTimeout(()=>{lm150.ensureProgress();lm150.ensureTop();lm150.updateProgress();lm150.syncTopStack()},120);
+         e o menu ▲◉▼ para acompanhar o scroll interno do shell.
+         5.4.241 — via gancho público (o `lm150` lexical mora numa IIFE irmã e
+         lançava ReferenceError aqui ao entrar na tela cheia). */
+      if(on)setTimeout(()=>{try{if(window.BibleXPolimento&&typeof window.BibleXPolimento.readerFullTick==="function")window.BibleXPolimento.readerFullTick()}catch(_e){}},120);
     }
   };
 
@@ -10472,7 +10474,10 @@ window.BibleXPolimento={
   toast:lm150.toast,focusMode:lm150.focusMode,shareVerse:lm150.shareVerse,copyQuote:lm150.copyQuote,
   resumeReading:lm150.resumeReading,verseOfDay:lm150.verseOfDay,vibrate:lm150.vibrate,
   setHash(ref){try{history.replaceState(null,"",`#ref=${encodeURIComponent(ref)}`)}catch(e){}},
-  copyCurrentQuote(){lm150.copyQuote()},shareCurrentVerse(){lm150.shareVerse()}
+  copyCurrentQuote(){lm150.copyQuote()},shareCurrentVerse(){lm150.shareVerse()},
+  /* 5.4.241 — hook p/ o leitor (IIFE irmã, não vê o `lm150` lexical) reiniciar a
+     barra de progresso ▲◉▼ ao entrar no full sem ReferenceError. */
+  readerFullTick(){try{lm150.ensureProgress();lm150.ensureTop();lm150.updateProgress();lm150.syncTopStack()}catch(e){}}
 };
 })();
 /* ============================================================

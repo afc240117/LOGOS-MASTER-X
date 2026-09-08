@@ -3,6 +3,7 @@ from pathlib import Path
 from fastapi import FastAPI,HTTPException,Header,Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse,Response
+from starlette.middleware.gzip import GZipMiddleware
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel,Field
 from app.core.env import load_project_env
@@ -21,7 +22,9 @@ from app.think.engine import build_plan
 from app.quality.gate import evaluate
 from app.quality.reviewer import independent_review
 BASE=Path(__file__).resolve().parent;STATIC=BASE/"web"/"static";DB=BASE.parent/"data"/"sync.sqlite3";AI=AIHub();PROMPTS=PromptEngine()
-app=FastAPI(title="LOGOS MASTER X API",version="5.3.11");app.add_middleware(CORSMiddleware,allow_origins=["*"],allow_methods=["*"],allow_headers=["*"]);app.mount("/static",StaticFiles(directory=STATIC),name="static")
+VERSION=json.loads((STATIC/"version.json").read_text(encoding="utf-8"))["version"]
+app=FastAPI(title="LOGOS MASTER X API",version=VERSION);app.add_middleware(CORSMiddleware,allow_origins=["*"],allow_methods=["*"],allow_headers=["*"]);app.mount("/static",StaticFiles(directory=STATIC),name="static")
+app.add_middleware(GZipMiddleware,minimum_size=512)
 
 @app.middleware("http")
 async def prevent_stale_frontend(request:Request,call_next):
@@ -335,7 +338,7 @@ def frontend_version():return FileResponse(STATIC/"version.json",media_type="app
 def favicon():return FileResponse(STATIC/"brand"/"app-icon-fixed-192.png",media_type="image/png",headers={"Cache-Control":"public, max-age=86400"})
 @app.get("/api/health")
 def health():
- c=AI.configured();return {"status":"ok","version":"LOGOS-MASTER-X-5.3.10","ai":any(c.values()),"providers":c,"models":AI.models(),"modes":["rapido","economico","automatico","qualidade","manual"],"orders":{m:AI.order(m) for m in ["rapido","economico","automatico","qualidade"]},"prompt_engine":"modular-2.0","think_engine":"14-stage","dna_k7":"engine","quality_gate":True,"capabilities":["studio","studio-clean-dna-views","studio-direct-step-navigation","home-editable-actions","home-live-theme-dashboard","home-original-art-hotspots","home-context-editing","home-native-system-values","home-summary-values-aligned","home-summary-per-theme-alignment","home-summary-pill-fit","home-tooltip-free-hotspots","ai-hub","think-engine","dna-k7","quality-gate","bible-local","bible-search","bible-concordance","bible-commentary","bible-commentary-ai-15","bible-maps","bible-media","bible-visual-gallery","bible-panorama-360","bible-route-player","bible-dynamic-reading","bible-module-selector","bible-central-layout","bible-command-center","bible-cross-reference-popup-reader","bible-fullscreen-resource-overlay","bible-fullscreen-shared-zoom","bible-control-repair","bible-module-preferences","bible-fullscreen","audio-x","library","projects","editor","pulpit","backup"]}
+ c=AI.configured();return {"status":"ok","version":f"LOGOS-MASTER-X-{VERSION}","ai":any(c.values()),"providers":c,"models":AI.models(),"modes":["rapido","economico","automatico","qualidade","manual"],"orders":{m:AI.order(m) for m in ["rapido","economico","automatico","qualidade"]},"prompt_engine":"modular-2.0","think_engine":"14-stage","dna_k7":"engine","quality_gate":True,"capabilities":["studio","studio-clean-dna-views","studio-direct-step-navigation","home-editable-actions","home-live-theme-dashboard","home-original-art-hotspots","home-context-editing","home-native-system-values","home-summary-values-aligned","home-summary-per-theme-alignment","home-summary-pill-fit","home-tooltip-free-hotspots","ai-hub","think-engine","dna-k7","quality-gate","bible-local","bible-search","bible-concordance","bible-commentary","bible-commentary-ai-15","bible-maps","bible-media","bible-visual-gallery","bible-panorama-360","bible-route-player","bible-dynamic-reading","bible-module-selector","bible-central-layout","bible-command-center","bible-cross-reference-popup-reader","bible-fullscreen-resource-overlay","bible-fullscreen-shared-zoom","bible-control-repair","bible-module-preferences","bible-fullscreen","audio-x","library","projects","editor","pulpit","backup"]}
 @app.get("/api/ai-metrics")
 def ai_metrics(): return AI.metrics()
 
@@ -434,7 +437,7 @@ def diagnostics():
     cfg=AI.configured()
     return {
         "status":"ok",
-        "version":"LOGOS-MASTER-X-5.3.10",
+        "version":f"LOGOS-MASTER-X-{VERSION}",
         "configured_providers":[k for k,v in cfg.items() if v],
         "provider_count":sum(1 for v in cfg.values() if v),
         "default_models":AI.models(),

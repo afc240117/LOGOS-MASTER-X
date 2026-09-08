@@ -2,7 +2,7 @@
 (function () {
   "use strict";
 
-  const VERSION = "5.4.240";
+  const VERSION = "5.4.242";
   const DATA_URL = "/static/immersion-scenes.json?v=" + VERSION;
   const SCENES_CACHE_KEY = `logosx:bibleVivaScenes:${VERSION}`;
   const MEDIA_CACHE_PREFIX = `logosx:bibleVivaMedia:${VERSION}:`;
@@ -2833,7 +2833,24 @@
   }
 
   function readPassageMedia(ref, callback) {
-    try { const request = indexedDB.open("logosx-bible", 15); request.onsuccess = () => { const tx = request.result.transaction("media", "readonly"); const get = tx.objectStore("media").getAll(); get.onsuccess = () => callback((get.result || []).filter(row => [row.reference, ...(Array.isArray(row.relatedReferences) ? row.relatedReferences : [])].some(value => mediaRefMatches(value || "", ref)))); }; } catch (_) { callback([]); }
+    /* 5.4.242 — o try antigo só cobria o open; o transaction rodava no onsuccess,
+       fora do try, e estourava "object store was not found" quando nenhuma mídia
+       tinha sido salva ainda (a store só nasce no onupgradeneeded do módulo de IA).
+       Espelhamos o mediaDB() do ai-media e garantimos callback([]) em qualquer falha. */
+    try {
+      const request = indexedDB.open("logosx-bible", 15);
+      request.onupgradeneeded = () => { if (!request.result.objectStoreNames.contains("media")) request.result.createObjectStore("media", { keyPath: "id" }); };
+      request.onerror = () => callback([]);
+      request.onsuccess = () => {
+        try {
+          const tx = request.result.transaction("media", "readonly");
+          const get = tx.objectStore("media").getAll();
+          get.onerror = () => callback([]);
+          tx.onerror = () => callback([]);
+          get.onsuccess = () => callback((get.result || []).filter(row => [row.reference, ...(Array.isArray(row.relatedReferences) ? row.relatedReferences : [])].some(value => mediaRefMatches(value || "", ref))));
+        } catch (_) { callback([]); }
+      };
+    } catch (_) { callback([]); }
   }
 
   function openVerseSavedMedia(ref) {
@@ -3124,6 +3141,30 @@
     document.addEventListener("keydown", onKeydown);
     document.addEventListener("biblex:pagechange", () => scheduleInjectAll(30));
     document.addEventListener("biblex:media-changed", () => { verseMediaRevision += 1; scheduleInjectAll(80); });
+    /* 5.4.242 — rede de segurança para a remontagem do leitor. O app dispara
+       biblex:pagechange antes de os versos existirem no DOM em alguns fluxos
+       (ex.: abrir capítulo por #bOpen/bRef), então a injeção per-verso nunca
+       rodava depois que a lista era montada. Observamos só ADIÇÕES de
+       versos/linhas de ferramentas e re-agendamos. Diferente do observador
+       removido no 5.4.240, isto é seguro: (1) o filtro ignora os próprios
+       botões/dock que injetamos (não são .lmx-bible-v3-tools nem versos),
+       então não há ciclo; (2) injectAll é idempotente e só lê o IndexedDB
+       quando ref/revisão muda (scanKey), então não há leitura repetida. */
+    const verseMountSel = ".lmx-bible-v3-verse[data-ref], .lmx-bible-v3-tools, [data-bx-v3-verse][data-ref]";
+    const armVerseObserver = () => {
+      if (window.__bxImmersionVerseObserver) window.__bxImmersionVerseObserver.disconnect();
+      const observer = new MutationObserver((records) => {
+        for (const record of records) {
+          for (const node of record.addedNodes) {
+            if (node.nodeType !== 1) continue;
+            if (node.matches?.(verseMountSel) || node.querySelector?.(verseMountSel)) { scheduleInjectAll(40); return; }
+          }
+        }
+      });
+      observer.observe(document.body, { childList: true, subtree: true });
+      window.__bxImmersionVerseObserver = observer;
+    };
+    armVerseObserver();
     window.addEventListener("hashchange", openFromHash);
     const syncImmersionFullscreen = () => {
       const dialog = $(".bx-immersion-dialog", modal);
