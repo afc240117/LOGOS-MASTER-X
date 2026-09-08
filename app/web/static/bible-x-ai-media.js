@@ -1,8 +1,8 @@
-/* Bíblia Viva • Ateliê de mídia IA | v5.4.235 */
+/* Bíblia Viva • Ateliê de mídia IA | v5.4.243 */
 (function () {
   "use strict";
 
-  const VERSION = "5.4.235";
+  const VERSION = "5.4.243";
   let layer = null;
   let current = null;
   let objectUrl = "";
@@ -63,7 +63,19 @@
       .bx-ai-media-btn.is-danger{border-color:rgba(255,120,120,.5);color:#ffd4d4}
       .bx-ai-media-links{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px}
       .bx-ai-media-links button{border:0;background:transparent;color:#8edfff;padding:0;font:inherit;font-size:.78rem;text-decoration:underline;cursor:pointer}
-      @media(max-width:800px){.bx-ai-media-card{height:min(920px,96vh)}.bx-ai-media-grid{grid-template-columns:1fr;overflow:auto}.bx-ai-media-form{border-right:0;border-bottom:1px solid rgba(202,226,255,.12)}.bx-ai-media-output{min-height:380px}.bx-ai-media-form,.bx-ai-media-output{padding:18px}.bx-ai-media-canvas{min-height:250px}}
+      /* 5.4.243 — coluna única rolável: a grid vira o único scroller e os
+         painéis (form/resultado) deixam de rolar por conta própria. Antes, os
+         filhos mantinham overflow:auto;min-height:0 da regra base e as auto-rows
+         da grid colapsavam o form em ~264px, deixando as ações inatingíveis. */
+      @media(max-width:800px){.bx-ai-media-card{height:min(920px,96vh)}.bx-ai-media-grid{grid-template-columns:1fr;overflow:auto;align-items:start}.bx-ai-media-form,.bx-ai-media-output{overflow:visible}.bx-ai-media-form{border-right:0;border-bottom:1px solid rgba(202,226,255,.12)}.bx-ai-media-form textarea{min-height:120px}.bx-ai-media-output{min-height:0}.bx-ai-media-form,.bx-ai-media-output{padding:18px}.bx-ai-media-canvas{min-height:250px}}
+      /* 5.4.243 — gancho "Usar minha própria API" (chave do usuário, direto do navegador) */
+      .bx-ai-media-own{margin:12px 0 14px;padding:12px 14px;border:1px solid rgba(134,200,255,.22);border-radius:14px;background:rgba(7,23,39,.7)}
+      .bx-ai-media-own[hidden]{display:none}
+      .bx-ai-media-own>strong{display:block;color:#fff0bd;font-size:.9rem;margin:0 0 10px}
+      .bx-ai-media-own-row{display:grid;gap:6px;margin:0 0 10px;color:#bdd0e2;font-size:.84rem;font-weight:800}
+      .bx-ai-media-own-row input[type="password"],.bx-ai-media-own-row select{width:100%;box-sizing:border-box;border:1px solid rgba(134,200,255,.24);border-radius:12px;background:#071727;color:#eef8ff;padding:.7rem .85rem;font:inherit}
+      .bx-ai-media-links [data-ai-own-open]{font-weight:800;color:#62e4d2}
+      .bx-ai-media-links [data-ai-own-open]:hover{color:#baf6ec}
     `;
     document.head.appendChild(style);
   }
@@ -300,6 +312,98 @@
     if (openProvider) window.open(openProvider === "gemini" ? "https://gemini.google.com/app" : "https://chatgpt.com/", "_blank", "noopener");
   }
 
+  /* 5.4.243 — "Usar minha própria API": o usuário cola a chave dele (Gemini) e
+     o navegador chama a API diretamente, sem passar pelo servidor da Bíblia.
+     Espelha app/ai/media_generation.py: mesmo endpoint /v1beta/interactions,
+     header x-goog-api-key e formato de resposta (output_image/steps). */
+  const GEMINI_MEDIA_ENDPOINT = "https://generativelanguage.googleapis.com/v1beta/interactions";
+  const GEMINI_IMAGE_MODEL = "gemini-3.1-flash-image";
+
+  function ownKeyCfg() {
+    try {
+      const raw = localStorage.getItem("logosx:aiOwnKey");
+      if (!raw) return null;
+      const cfg = JSON.parse(raw);
+      return cfg && cfg.key ? { provider: String(cfg.provider || "gemini"), key: String(cfg.key), model: String(cfg.model || GEMINI_IMAGE_MODEL) } : null;
+    } catch (_) { return null; }
+  }
+  function ownKeySave(key) {
+    try { localStorage.setItem("logosx:aiOwnKey", JSON.stringify({ provider: "gemini", key: String(key || "").trim(), model: GEMINI_IMAGE_MODEL })); }
+    catch (_) { throw new Error("O navegador bloqueou salvar a chave. Verifique o modo de navegação."); }
+  }
+  function ownKeyClear() {
+    try { localStorage.removeItem("logosx:aiOwnKey"); } catch (_) {}
+  }
+
+  async function geminiRequestJson(endpoint, options) {
+    const response = await fetch(endpoint, { cache: "no-store", ...options });
+    let payload = {};
+    try { payload = await response.json(); } catch (_) {}
+    if (!response.ok) {
+      const detail = (payload && (payload.error && payload.error.message || payload.message)) || ("Falha HTTP " + response.status);
+      throw new Error(String(response.status) + ": " + String(detail).slice(0, 320));
+    }
+    return payload;
+  }
+
+  function geminiImageOutput(payload) {
+    const convenience = payload && payload.output_image;
+    if (convenience && convenience.data) return convenience;
+    const steps = Array.isArray(payload && payload.steps) ? payload.steps : [];
+    for (const step of steps) {
+      const contents = Array.isArray(step && step.content) ? step.content : [];
+      for (const content of contents) {
+        if (content && content.type === "image" && content.data) return content;
+      }
+    }
+    return null;
+  }
+
+  function friendlyOwnKeyError(error) {
+    const message = String((error && error.message) || error || "");
+    const status = Number((/^(\d{3}):/.exec(message) || [])[1] || 0);
+    if (status === 400) return "O Gemini recusou o pedido (400): " + message.slice(5);
+    if (status === 401 || status === 403) return "Sua chave foi recusada pela API (" + status + "). Confira e salve de novo em 🔑 Usar minha própria API.";
+    if (status === 429) return "Limite de uso da sua chave (429). Aguarde um pouco e tente de novo.";
+    if (!status && message.includes("Failed to fetch")) return "O navegador não conseguiu alcançar o Gemini (rede/CORS). Use ✨ Gerar com API (servidor) ou 📋 Copiar prompt.";
+    return message || "Falha inesperada ao gerar pela sua chave.";
+  }
+
+  async function generateOwnKey() {
+    if (!layer) return;
+    if (current.kind === "video") { setStatus("🎬 Vídeo pela sua chave ainda não está liberado — use ✨ Gerar com API (servidor) ou 📋 Copiar prompt.", "warn"); return; }
+    const rawPrompt = $("[data-ai-prompt]", layer)?.value.trim() || "";
+    if (!rawPrompt) { setStatus("Escreva um prompt antes de gerar.", "warn"); return; }
+    const cfg = ownKeyCfg();
+    if (!cfg || !cfg.key) { setStatus("Cole e salve sua chave da API primeiro (🔑 Usar minha própria API).", "warn"); return; }
+    const prompt = buildVisualPrompt(rawPrompt, { ...(current.context || {}), kind: "image" });
+    let input = prompt;
+    if (current.referenceImageDataUrl) {
+      const parts = /^data:(image\/(?:png|jpe?g|webp));base64,([A-Za-z0-9+/=]+)$/i.exec(current.referenceImageDataUrl);
+      if (parts) input = [{ type: "image", data: parts[2], mime_type: String(parts[1]).toLowerCase() }, { type: "text", text: prompt }];
+    }
+    const body = { model: cfg.model, input, response_format: { type: "image", aspect_ratio: $("[data-ai-aspect]", layer)?.value || "16:9", image_size: $("[data-ai-image-size]", layer)?.value || "1K" } };
+    const runButton = $("[data-ai-own-run]", layer);
+    if (runButton) runButton.disabled = true;
+    renderCanvas("Chamando o Gemini com a sua chave…");
+    setStatus("Gerando imagem pela sua chave. Isso pode consumir créditos da sua conta.", "normal");
+    try {
+      const payload = await geminiRequestJson(GEMINI_MEDIA_ENDPOINT, { method: "POST", headers: { "Content-Type": "application/json", "x-goog-api-key": cfg.key }, body: JSON.stringify(body) });
+      const output = geminiImageOutput(payload);
+      if (!output) throw new Error("O Gemini concluiu sem devolver a imagem.");
+      const mime = String(output.mime_type || "image/png");
+      const data = String(output.data || "");
+      if (!data) throw new Error("O Gemini devolveu a imagem vazia.");
+      renderResult({ kind: "image", mime_type: mime, data_url: "data:" + mime + ";base64," + data, provider: "gemini", model: cfg.model, status: "completed", source: "own-key" });
+      setStatus("Imagem gerada pela sua chave. Toque em 💾 Salvar na Mídia X (no resultado) se quiser guardar.", "ok");
+    } catch (error) {
+      renderCanvas("Não foi possível gerar pela sua chave.");
+      setStatus(friendlyOwnKeyError(error), "warn");
+    } finally {
+      if (runButton) runButton.disabled = false;
+    }
+  }
+
   function clearObjectUrl() {
     if (objectUrl) URL.revokeObjectURL(objectUrl);
     objectUrl = "";
@@ -381,7 +485,8 @@
               <select class="bx-ai-media-btn" data-ai-seconds aria-label="Duração do vídeo"><option value="8">8 s</option><option value="16">16 s</option><option value="20">20 s</option></select>
             </div>
             <div class="bx-ai-media-actions"><button type="button" class="bx-ai-media-btn is-primary" data-ai-generate>✨ Gerar com API</button><button type="button" class="bx-ai-media-btn" data-ai-copy>📋 Copiar prompt</button><button type="button" class="bx-ai-media-btn" data-ai-scan>🔎 Escanear e vincular mídias</button></div>
-            <div class="bx-ai-media-links"><button type="button" data-ai-open-provider="gemini">Abrir Gemini Plus ↗</button><button type="button" data-ai-open-provider="openai">Abrir ChatGPT ↗</button></div>
+            <div class="bx-ai-media-links"><button type="button" data-ai-open-provider="gemini">Abrir Gemini Plus ↗</button><button type="button" data-ai-open-provider="openai">Abrir ChatGPT ↗</button><button type="button" data-ai-own-open>🔑 Usar minha própria API</button></div>
+            <div class="bx-ai-media-own" data-ai-own hidden><strong>Gerar pela sua própria conta (sem o servidor)</strong><label class="bx-ai-media-own-row">Provedor<select data-ai-own-provider><option value="gemini">Gemini — funciona direto no navegador</option><option value="openai" disabled>OpenAI — bloqueado no navegador (CORS)</option></select></label><label class="bx-ai-media-own-row">Chave da API<input type="password" data-ai-own-key placeholder="Cole sua chave Gemini (começa com AIza…)" autocomplete="off"></label><span class="bx-ai-media-hint">A chave fica só neste navegador e chama o Gemini daqui. Ela não vai para o servidor da Bíblia.</span><div class="bx-ai-media-actions"><button type="button" class="bx-ai-media-btn" data-ai-own-save>💾 Salvar minha chave</button><button type="button" class="bx-ai-media-btn is-primary" data-ai-own-run>✨ Gerar pela minha chave</button><button type="button" class="bx-ai-media-btn is-danger" data-ai-own-clear>🗑 Remover</button></div></div>
             <span class="bx-ai-media-status" data-ai-status aria-live="polite">Consultando as APIs…</span>
             <span class="bx-ai-media-security">🔒 Segurança: a Bíblia nunca recebe sua senha. As chaves de API ficam no servidor/local e o ZIP não contém nenhum segredo.</span>
           </form>
@@ -409,6 +514,15 @@
     }));
     layer.querySelector(`[data-ai-kind='${current.kind}']`)?.click();
     layer.querySelectorAll("[data-ai-open-provider]").forEach((button) => button.addEventListener("click", () => copyPrompt(button.dataset.aiOpenProvider)));
+    /* 5.4.243 — gancho "Usar minha própria API": chave do usuário, direto no navegador */
+    const ownBox = $("[data-ai-own]", layer);
+    const ownKeyInput = $("[data-ai-own-key]", layer);
+    const ownStored = ownKeyCfg();
+    if (ownStored && ownKeyInput) ownKeyInput.value = ownStored.key || "";
+    $("[data-ai-own-open]", layer)?.addEventListener("click", () => { if (ownBox) { ownBox.hidden = false; ownKeyInput?.focus(); } });
+    $("[data-ai-own-save]", layer)?.addEventListener("click", () => { const key = String(ownKeyInput?.value || "").trim(); if (!key) { setStatus("Cole sua chave da API antes de salvar.", "warn"); return; } try { ownKeySave(key); setStatus("Chave salva neste navegador. Agora é só tocar em ✨ Gerar pela minha chave.", "ok"); } catch (error) { setStatus(error.message, "warn"); } });
+    $("[data-ai-own-clear]", layer)?.addEventListener("click", () => { try { ownKeyClear(); } catch (_) {} if (ownKeyInput) ownKeyInput.value = ""; setStatus("Chave removida deste navegador.", "ok"); });
+    $("[data-ai-own-run]", layer)?.addEventListener("click", () => { generateOwnKey(); });
     keydownHandler = (event) => { if (event.key === "Escape") close(); };
     document.addEventListener("keydown", keydownHandler);
     $("[data-ai-close]", layer).focus();

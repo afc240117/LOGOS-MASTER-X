@@ -2,7 +2,7 @@
 (function () {
   "use strict";
 
-  const VERSION = "5.4.242";
+  const VERSION = "5.4.243";
   const DATA_URL = "/static/immersion-scenes.json?v=" + VERSION;
   const SCENES_CACHE_KEY = `logosx:bibleVivaScenes:${VERSION}`;
   const MEDIA_CACHE_PREFIX = `logosx:bibleVivaMedia:${VERSION}:`;
@@ -2170,7 +2170,7 @@
             return;
           }
           const script = document.createElement("script");
-          script.src = `/static/bible-x-ai-media.js?v=5.4.240`;
+          script.src = `/static/bible-x-ai-media.js?v=5.4.243`;
           script.dataset.bxAiMedia = "1";
           script.onload = resolve;
           script.onerror = reject;

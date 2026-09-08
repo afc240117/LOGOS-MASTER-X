@@ -1,7 +1,7 @@
 (function () {
   "use strict";
 
-  const VERSION = "5.4.235";
+  const VERSION = "5.4.243";
   const $ = (selector, root = document) => root.querySelector(selector);
   const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
   const isRemote = value => /^https?:\/\//i.test(String(value || ""));
@@ -104,7 +104,7 @@
     if (!aiMediaLoader) {
       aiMediaLoader = new Promise((resolve, reject) => {
         const script = document.createElement("script");
-        script.src = "/static/bible-x-ai-media.js?v=5.4.235";
+        script.src = "/static/bible-x-ai-media.js?v=5.4.243";
         script.dataset.bxAiMedia = "1";
         script.onload = () => window.BibleXAIMedia?.open ? resolve(window.BibleXAIMedia) : reject(new Error("Ateliê IA não ficou disponível."));
         script.onerror = () => reject(new Error("Não foi possível carregar o Ateliê IA."));
