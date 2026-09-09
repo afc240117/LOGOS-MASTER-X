@@ -2,7 +2,7 @@
 (function () {
   "use strict";
 
-  const VERSION = "5.4.243";
+  const VERSION = "5.4.244";
   const DATA_URL = "/static/immersion-scenes.json?v=" + VERSION;
   const SCENES_CACHE_KEY = `logosx:bibleVivaScenes:${VERSION}`;
   const MEDIA_CACHE_PREFIX = `logosx:bibleVivaMedia:${VERSION}:`;
@@ -1525,7 +1525,7 @@
       { icon: "📖", label: "Texto", detail: event.ref || state.ref || scene.reference, status: state.verseText ? "Texto conectado" : "Referência pronta", tone: "ready", action: "reader", actionLabel: "Abrir texto" },
       { icon: "🌄", label: "Imagens", detail: imageReady ? `${state.visualItems.length} imagem(ns) com fonte` : "Busca pública com crédito e licença", status: state.visualLoading ? "Carregando" : imageReady ? "Ligado à etapa" : "Consulta pronta", tone: state.visualLoading ? "loading" : imageReady ? "ready" : "pending", action: "visual", actionLabel: imageReady ? "Ver galeria" : "Buscar imagens" },
       { icon: "🖼", label: "Mídia X", detail: `${scene.title || "Cena"} • ${event.label || "etapa atual"}`, status: "Busca contextual", tone: "ready", action: "media", actionLabel: "Abrir mídia" },
-      { icon: "✨", label: "Ateliê IA", detail: "Gerar imagem ou vídeo da passagem", status: "Gemini / OpenAI", tone: "ready", action: "generate", actionLabel: "Criar mídia" },
+      { icon: "✨", label: "Gerador de IA · Imagens e Vídeos", detail: "Gerar imagem ou vídeo da passagem", status: "Gemini / OpenAI", tone: "ready", action: "generate", actionLabel: "Criar mídia" },
       { icon: "◉", label: "360°", detail: panoramaQuery || "Consulta de panorama", status: state.panoramaLoading ? "Buscando" : "Consulta pronta", tone: state.panoramaLoading ? "loading" : "pending", action: "panorama", actionLabel: "Buscar 360°" },
       { icon: "⌖", label: "Mapa", detail: scene.place?.name || "Lugar em investigação", status: scene.route?.length ? "Rota cadastrada" : "Lugar a investigar", tone: scene.place || scene.route?.length ? "ready" : "pending", action: "atlas", actionLabel: "Abrir mapa" },
       { icon: "♙", label: "Personagens", detail: `${(scene.people || []).length} personagem(ns) na cena`, status: scene.people?.length ? "Camada disponível" : "A investigar", tone: scene.people?.length ? "ready" : "pending", tab: "people", actionLabel: "Ver personagens" },
@@ -2170,7 +2170,7 @@
             return;
           }
           const script = document.createElement("script");
-          script.src = `/static/bible-x-ai-media.js?v=5.4.243`;
+          script.src = `/static/bible-x-ai-media.js?v=5.4.246`;
           script.dataset.bxAiMedia = "1";
           script.onload = resolve;
           script.onerror = reject;
@@ -2178,12 +2178,12 @@
         });
       }
       aiMediaModulePromise.then(() => window.BibleXAIMedia?.open(context)).catch(() => {
-        window.alert("O Ateliê IA não pôde ser carregado. Atualize a página e tente novamente.");
+        window.alert("O Gerador de IA não pôde ser carregado. Atualize a página e tente novamente.");
       });
     };
     // Native fullscreen creates a browser top layer where body overlays cannot
-    // appear. Leave it before opening Ateliê, then the AI layer is guaranteed
-    // to sit above the immersion dialog instead of behind it.
+    // appear. Leave it before opening o Gerador de IA, then the AI layer is
+    // guaranteed to sit above the immersion dialog instead of behind it.
     releaseImmersionFullscreenForOverlay().then(launch);
   }
 
@@ -2208,61 +2208,141 @@
 
   let verseMediaRevision = 0;
 
-  function injectVerseAiDock() {
-    if (!document.getElementById("bxVerseAiDockStyle")) { const style = document.createElement("style"); style.id = "bxVerseAiDockStyle"; style.textContent = `.bx-verse-ai-dock{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:18px 0;padding:14px 16px;border:1px solid rgba(98,228,210,.3);border-radius:14px;background:linear-gradient(135deg,rgba(8,44,58,.82),rgba(8,21,36,.9));color:#eaf8ff}.bx-verse-ai-dock b{display:block;color:#fff0bd}.bx-verse-ai-dock small{display:block;color:#9fb5ca;margin-top:4px}.bx-verse-ai-dock nav{display:flex;flex-wrap:wrap;gap:8px}.bx-verse-ai-dock button,.lmx-bible-v3-tools [data-bx-verse-ai],.lmx-bible-v3-tools [data-bx-verse-media]{border:1px solid rgba(244,199,107,.42);border-radius:10px;padding:9px 12px;background:#102b42;color:#eef8ff;font-weight:800;cursor:pointer}.bx-verse-ai-dock button:hover,.lmx-bible-v3-tools [data-bx-verse-ai]:hover,.lmx-bible-v3-tools [data-bx-verse-media]:hover{background:#1a5260}.bx-verse-media-viewer{position:fixed;inset:0;z-index:2147483004;display:grid;place-items:center;padding:20px;background:rgba(1,6,13,.86);backdrop-filter:blur(12px)}.bx-verse-media-viewer-card{width:min(980px,94vw);max-height:90vh;overflow:auto;border:1px solid rgba(244,199,107,.45);border-radius:20px;background:#08192b;color:#eef8ff;box-shadow:0 25px 90px rgba(0,0,0,.7)}.bx-verse-media-viewer-card header{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;padding:18px 22px;border-bottom:1px solid rgba(202,226,255,.14)}.bx-verse-media-viewer-card header small{color:#f4c76b;font-weight:900;letter-spacing:.12em}.bx-verse-media-viewer-card h3{margin:5px 0 0;color:#fff0bd}.bx-verse-media-viewer-card header button{border:1px solid rgba(134,200,255,.3);border-radius:10px;background:#10243a;color:#fff;padding:7px 11px;font-size:1.2rem;cursor:pointer}.bx-verse-media-viewer-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;padding:18px}.bx-verse-media-viewer-grid article{padding:10px;border:1px solid rgba(134,200,255,.2);border-radius:12px;background:#061321}.bx-verse-media-viewer-grid img,.bx-verse-media-viewer-grid video{display:block;width:100%;max-height:330px;object-fit:contain;background:#02070d;border-radius:8px}.bx-verse-media-viewer-grid small{display:block;color:#b6cadd;margin-top:7px}@media(max-width:680px){.bx-verse-ai-dock{align-items:stretch;flex-direction:column}.lmx-bible-v3-tools [data-bx-verse-ai],.lmx-bible-v3-tools [data-bx-verse-media]{padding:7px 8px;font-size:.78rem}}`; document.head.appendChild(style); }
-    if (!document.getElementById("bxVerseMediaAvailabilityStyle")) { const style = document.createElement("style"); style.id = "bxVerseMediaAvailabilityStyle"; style.textContent = `.bx-verse-ai-dock [data-bx-verse-media].is-available,.lmx-bible-v3-tools [data-bx-verse-media].is-available{border-color:#f4c76b;color:#fff0bd;background:linear-gradient(135deg,#7f561d,#164b58);box-shadow:0 0 0 1px rgba(244,199,107,.35),0 0 20px rgba(244,199,107,.55);animation:bxVerseMediaGlow 2.2s ease-in-out infinite}.bx-verse-ai-media.is-available{border-color:rgba(244,199,107,.66);box-shadow:0 0 18px rgba(244,199,107,.28)}.bx-verse-ai-media img{cursor:pointer}@keyframes bxVerseMediaGlow{0%,100%{filter:brightness(1)}50%{filter:brightness(1.22)}}`; document.head.appendChild(style); }
-    const out = $("#bOut"); if (!out || !out.querySelector("[data-bx-v3-verse]")) return;
-    let dock = out.querySelector("[data-bx-verse-ai-dock]");
-    if (!dock) { dock = document.createElement("section"); dock.className = "bx-verse-ai-dock"; dock.dataset.bxVerseAiDock = "1"; dock.innerHTML = `<div><b>✨ Camada visual da passagem</b><small>Gere uma imagem ou vídeo com o contexto do versículo.</small></div><nav><button type="button" data-bx-verse-ai="image">🖼 Gerar imagem IA</button><button type="button" data-bx-verse-ai="video">🎬 Gerar vídeo IA</button><button type="button" data-bx-verse-media hidden>🖼 Ver imagem da passagem</button></nav>`; out.appendChild(dock); }
-    const nav = dock.querySelector("nav");
-    let mediaButton = dock.querySelector("[data-bx-verse-media]");
-    if (!mediaButton && nav) { mediaButton = document.createElement("button"); mediaButton.type = "button"; mediaButton.dataset.bxVerseMedia = ""; mediaButton.textContent = "🖼 Ver imagem da passagem"; mediaButton.hidden = true; nav.appendChild(mediaButton); }
-    const ref = $("[data-bx-v3-verse]", out)?.dataset.ref || $("#bRef")?.value || "";
-    dock.dataset.mediaRef = ref;
-    const show = (rows) => {
-      if (!dock.isConnected) return;
-      const imageRows = rows.filter((row) => row && row.type !== "video" && Boolean(row.blob || row.sourceUrl || row.thumbUrl));
-      if (mediaButton) {
-        mediaButton.dataset.bxVerseMedia = ref;
-        mediaButton.hidden = !imageRows.length;
-        mediaButton.classList.toggle("is-available", Boolean(imageRows.length));
-      }
-      /* 5.4.240 — esta função é chamada depois de uma leitura assíncrona do
-         IndexedDB. O observador antigo do body também enxergava o próprio
-         bloco que ela removia/recriava, causando um ciclo infinito quando havia
-         uma imagem salva. A assinatura torna a renderização idempotente. */
-      const signature = imageRows.slice(0, 4).map((row) => [
-        row.id || row.key || row.title || "",
-        row.sourceUrl || row.thumbUrl || "",
-        row.blob ? `${row.blob.size || 0}:${row.blob.type || ""}` : ""
-      ].join("|")).join("||");
-      const renderKey = `${ref}|${signature}`;
-      if (dock.dataset.bxVerseMediaSignature === renderKey) return;
-      dock.dataset.bxVerseMediaSignature = renderKey;
-      const old = dock.querySelector("[data-bx-verse-ai-media]");
-      old?.remove();
-      if (!imageRows.length) return;
-      const box = document.createElement("div");
-      box.dataset.bxVerseAiMedia = "1";
-      box.className = "bx-verse-ai-media is-available";
-      box.style.cssText = "display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:10px;width:100%";
-      imageRows.slice(0, 4).forEach((row) => {
-        const src = row.blob ? URL.createObjectURL(row.blob) : row.sourceUrl || row.thumbUrl;
-        if (!src) return;
-        const node = document.createElement("img");
-        node.src = src;
-        node.alt = row.title || "Imagem vinculada";
-        node.title = `${row.title || "Imagem vinculada"} • Abrir na Mídia X`;
-        node.style.cssText = "width:130px;height:78px;object-fit:cover;border-radius:9px;border:1px solid rgba(244,199,107,.55)";
-        node.addEventListener("click", () => openVerseSavedMedia(ref));
-        box.appendChild(node);
-      });
-      if (box.childElementCount) dock.insertBefore(box, nav || null);
+  /* 5.4.245 — ÍNDICE LEVE da Mídia X (anti-travamento): antes, para saber se um
+     versículo/capítulo tinha imagem, cada versículo (e o próprio capítulo) abria o
+     IndexedDB e lia a store TODA (getAll) — com imagens de lote salvas como base64
+     isso deixava o botão "🖼" demorando para "ficar azul" e estourava a memória da
+     aba (a página fechava com "está com problemas"). Agora fazemos UM getAll por
+     revisão da store e guardamos só metadados (refs/tipo/presença), nunca os bytes. */
+  let bxMediaIdx = [];
+  let bxMediaIdxRev = -1;
+  let bxMediaIdxBusy = false;
+  const bxMediaIdxWaiters = [];
+  function bxMediaEntriesFromRows(rows) {
+    return (rows || []).map(row => ({
+      id: String((row && row.id) || ""),
+      refs: [String((row && row.reference) || "")].concat(Array.isArray(row && row.relatedReferences) ? row.relatedReferences.map(r => String(r || "")) : []),
+      video: !!(row && row.type === "video"),
+      hasData: !!(row && (row.blob || row.sourceUrl || row.thumbUrl))
+    }));
+  }
+  function bxMediaIndexScan() {
+    if (bxMediaIdxBusy) return;
+    bxMediaIdxBusy = true;
+    const startRev = verseMediaRevision;
+    const finish = (rows) => {
+      bxMediaIdxBusy = false;
+      if (startRev === verseMediaRevision) { bxMediaIdx = bxMediaEntriesFromRows(rows); bxMediaIdxRev = startRev; }
+      const waiters = bxMediaIdxWaiters.splice(0);
+      waiters.forEach(w => { try { w(); } catch (_) {} });
+      if (startRev !== verseMediaRevision) bxMediaIndexScan();
     };
-    const scanKey = `${verseMediaRevision}|${ref}`;
-    if (dock.dataset.bxVerseMediaScan !== scanKey) {
-      dock.dataset.bxVerseMediaScan = scanKey;
-      readPassageMedia(ref, (rows) => show(rows));
+    try {
+      const request = indexedDB.open("logosx-bible", 15);
+      request.onupgradeneeded = () => { if (!request.result.objectStoreNames.contains("media")) request.result.createObjectStore("media", { keyPath: "id" }); };
+      request.onerror = () => finish([]);
+      request.onsuccess = () => {
+        try {
+          const tx = request.result.transaction("media", "readonly");
+          const get = tx.objectStore("media").getAll();
+          get.onerror = () => finish([]);
+          tx.onerror = () => finish([]);
+          get.onsuccess = () => finish(get.result || []);
+        } catch (_) { finish([]); }
+      };
+    } catch (_) { finish([]); }
+  }
+  function bxMediaIdxEnsure(done) {
+    if (!bxMediaIdxBusy && bxMediaIdxRev === verseMediaRevision) { done(); return; }
+    bxMediaIdxWaiters.push(done);
+    bxMediaIndexScan();
+  }
+  function bxMediaVerseOk(ref) {
+    const target = String(ref || "").trim();
+    const out = { img: false, vid: false };
+    if (!target) return out;
+    for (let i = 0; i < bxMediaIdx.length; i += 1) {
+      const e = bxMediaIdx[i];
+      if (!e.hasData) continue;
+      for (let j = 0; j < e.refs.length; j += 1) {
+        if (e.refs[j] && mediaRefMatches(e.refs[j], target)) { if (e.video) out.vid = true; else out.img = true; break; }
+      }
+      if (out.img && out.vid) break;
+    }
+    return out;
+  }
+  function bxMediaChapterOk(chap) {
+    const target = String(chap || "").trim();
+    const out = { img: false, vid: false };
+    if (!target) return out;
+    for (let i = 0; i < bxMediaIdx.length; i += 1) {
+      const e = bxMediaIdx[i];
+      if (!e.hasData) continue;
+      for (let j = 0; j < e.refs.length; j += 1) {
+        if (e.refs[j] && mediaRefInChapter(e.refs[j], target)) { if (e.video) out.vid = true; else out.img = true; break; }
+      }
+      if (out.img && out.vid) break;
+    }
+    return out;
+  }
+  function bxMediaToast(text) {
+    try {
+      if (!bxMediaToast._css) {
+        const s = document.createElement("style");
+        s.textContent = ".bxm-toast{position:fixed;left:50%;bottom:18px;transform:translateX(-50%) translateY(16px);z-index:2147483005;background:#0b1f30;border:1px solid #f4c76b;color:#eef8ff;padding:10px 16px;border-radius:12px;font-size:.85rem;max-width:86vw;text-align:center;box-shadow:0 10px 30px rgba(0,0,0,.5);opacity:0;transition:opacity .25s,transform .25s;pointer-events:none}.bxm-toast.bxm-on{opacity:1;transform:translateX(-50%) translateY(0)}";
+        document.head.appendChild(s);
+        bxMediaToast._css = 1;
+      }
+      let t = document.querySelector(".bxm-toast");
+      if (!t) { t = document.createElement("div"); t.className = "bxm-toast"; document.body.appendChild(t); }
+      t.textContent = text;
+      t.classList.add("bxm-on");
+      clearTimeout(bxMediaToast._h);
+      bxMediaToast._h = setTimeout(() => t.classList.remove("bxm-on"), 2800);
+    } catch (_) {}
+  }
+
+  function injectVerseAiDock() {
+    if (!document.getElementById("bxVerseAiDockStyle")) { const style = document.createElement("style"); style.id = "bxVerseAiDockStyle"; style.textContent = `.bx-verse-ai-dock{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:18px 0;padding:14px 16px;border:1px solid rgba(98,228,210,.3);border-radius:14px;background:linear-gradient(135deg,rgba(8,44,58,.82),rgba(8,21,36,.9));color:#eaf8ff}.bx-verse-ai-dock b{display:block;color:#fff0bd}.bx-verse-ai-dock small{display:block;color:#9fb5ca;margin-top:4px}.bx-verse-ai-dock nav{display:flex;flex-wrap:wrap;gap:8px}.bx-verse-ai-dock button,.lmx-bible-v3-tools [data-bx-verse-ai],.lmx-bible-v3-tools [data-bx-verse-media],.lmx-bible-v3-tools [data-bx-verse-images],.lmx-bible-v3-tools [data-bx-verse-videos]{border:1px solid rgba(244,199,107,.42);border-radius:10px;padding:9px 12px;background:#102b42;color:#eef8ff;font-weight:800;cursor:pointer}.bx-verse-ai-dock button:hover,.lmx-bible-v3-tools [data-bx-verse-ai]:hover,.lmx-bible-v3-tools [data-bx-verse-media]:hover,.lmx-bible-v3-tools [data-bx-verse-images]:hover,.lmx-bible-v3-tools [data-bx-verse-videos]:hover{background:#1a5260}.bx-verse-media-viewer{position:fixed;inset:0;z-index:2147483004;display:grid;place-items:center;padding:20px;background:rgba(1,6,13,.86);backdrop-filter:blur(12px)}.bx-verse-media-viewer-card{width:min(980px,94vw);max-height:90vh;overflow:auto;border:1px solid rgba(244,199,107,.45);border-radius:20px;background:#08192b;color:#eef8ff;box-shadow:0 25px 90px rgba(0,0,0,.7)}.bx-verse-media-viewer-card header{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;padding:18px 22px;border-bottom:1px solid rgba(202,226,255,.14)}.bx-verse-media-viewer-card header small{color:#f4c76b;font-weight:900;letter-spacing:.12em}.bx-verse-media-viewer-card h3{margin:5px 0 0;color:#fff0bd}.bx-verse-media-viewer-card header button{border:1px solid rgba(134,200,255,.3);border-radius:10px;background:#10243a;color:#fff;padding:7px 11px;font-size:1.2rem;cursor:pointer}.bx-verse-media-viewer-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;padding:18px}.bx-verse-media-viewer-grid article{padding:10px;border:1px solid rgba(134,200,255,.2);border-radius:12px;background:#061321}.bx-verse-media-viewer-grid img,.bx-verse-media-viewer-grid video{display:block;width:100%;max-height:330px;object-fit:contain;background:#02070d;border-radius:8px}.bx-verse-media-viewer-grid small{display:block;color:#b6cadd;margin-top:7px}@media(max-width:680px){.bx-verse-ai-dock{align-items:stretch;flex-direction:column}.lmx-bible-v3-tools [data-bx-verse-ai],.lmx-bible-v3-tools [data-bx-verse-media]{padding:7px 8px;font-size:.78rem}}`; document.head.appendChild(style); }
+    if (!document.getElementById("bxVerseMediaAvailabilityStyle")) { const style = document.createElement("style"); style.id = "bxVerseMediaAvailabilityStyle"; style.textContent = `.bx-verse-ai-dock [data-bx-verse-media].is-available,.lmx-bible-v3-tools [data-bx-verse-media].is-available,.lmx-bible-v3-tools [data-bx-verse-images].is-available,.lmx-bible-v3-tools [data-bx-verse-videos].is-available,.bx-verse-ai-dock [data-bx-chapter-media].is-available{border-color:#f4c76b;color:#fff0bd;background:linear-gradient(135deg,#7f561d,#164b58);box-shadow:0 0 0 1px rgba(244,199,107,.35),0 0 20px rgba(244,199,107,.55);animation:bxVerseMediaGlow 2.2s ease-in-out infinite}.bx-verse-ai-media.is-available{border-color:rgba(244,199,107,.66);box-shadow:0 0 18px rgba(244,199,107,.28)}.bx-verse-ai-media img{cursor:pointer}@keyframes bxVerseMediaGlow{0%,100%{filter:brightness(1)}50%{filter:brightness(1.22)}}`; document.head.appendChild(style); }
+    const out = $("#bOut"); if (!out || !out.querySelector("[data-bx-v3-verse]")) return;
+        let dock = out.querySelector("[data-bx-verse-ai-dock]");
+    if (!dock) {
+      dock = document.createElement("section");
+      dock.className = "bx-verse-ai-dock";
+      dock.dataset.bxVerseAiDock = "1";
+      dock.innerHTML = `<div><b>✨ Camada visual da passagem</b><small>Gere uma imagem ou vídeo com o contexto do capítulo.</small></div><nav><button type="button" data-bx-verse-ai="image">🖼 Gerar imagem IA</button><button type="button" data-bx-verse-ai="video">🎬 Gerar vídeo IA</button><button type="button" data-bx-chapter-images data-bx-chap="">🗂 Todas as imagens do capítulo</button><button type="button" data-bx-chapter-videos data-bx-chap="">🎬 Todos os vídeos do capítulo</button></nav>`;
+      out.appendChild(dock);
+    }
+    const dockRef = (($("[data-bx-v3-verse]", out) || {}).dataset || {}).ref || (($("#bRef") || {}).value || "").trim() || "";
+    const dockChap = chapterBaseOf(dockRef);
+    dock.dataset.mediaRef = dockRef;
+    const imgButton = dock.querySelector("[data-bx-chapter-images]");
+    const vidButton = dock.querySelector("[data-bx-chapter-videos]");
+    const chapterScan = `${verseMediaRevision}|${dockChap}`;
+    if ((imgButton || vidButton) && dock.dataset.bxChapterScan !== chapterScan) {
+      dock.dataset.bxChapterScan = chapterScan;
+      if (imgButton) imgButton.dataset.bxChap = dockChap;
+      if (vidButton) vidButton.dataset.bxChap = dockChap;
+      bxMediaIdxEnsure(() => {
+        const ok = bxMediaChapterOk(dockChap);
+        if (imgButton && imgButton.isConnected) imgButton.classList.toggle("is-available", ok.img);
+        if (vidButton && vidButton.isConnected) vidButton.classList.toggle("is-available", ok.vid);
+      });
+    }
+    if (imgButton && !imgButton.dataset.bxChapBound) {
+      imgButton.dataset.bxChapBound = "1";
+      imgButton.addEventListener("click", (ev) => { ev.preventDefault(); ev.stopImmediatePropagation(); openChapterImagesDirect(imgButton.dataset.bxChap || dockChap); });
+    }
+    if (vidButton && !vidButton.dataset.bxChapBound) {
+      vidButton.dataset.bxChapBound = "1";
+      vidButton.addEventListener("click", (ev) => { ev.preventDefault(); ev.stopImmediatePropagation(); openChapterVideosDirect(vidButton.dataset.bxChap || dockChap); });
+    }
+    if (!document.getElementById("bxVerse244Override")) {
+      const os = document.createElement("style");
+      os.id = "bxVerse244Override";
+      os.textContent = `.bx-verse-ai-dock nav{flex-wrap:wrap;gap:8px}.bx-verse-ai-dock nav button{min-height:44px;display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:9px 14px;border-radius:12px;font-size:.8rem;font-weight:800;line-height:1.15;border:1px solid rgba(255,199,110,.30);background:linear-gradient(180deg,#123047,#0b1e30);color:#eef8ff;cursor:pointer;box-shadow:none}.bx-verse-ai-dock nav button:hover{background:linear-gradient(180deg,#15506a,#10384d)}#bOut .lmx-bible-v3-tools button[data-bx-verse-images][data-bx-vsaved],#bOut .lmx-bible-v3-tools button[data-bx-verse-videos][data-bx-vsaved]{border:1px solid #d3e2ea!important;border-radius:10px;padding:6px 11px!important;background:#f7fafc!important;color:#0b2a3a!important;font-weight:800;font-size:.72rem;line-height:1.15;min-height:26px;display:inline-flex;align-items:center;cursor:pointer;box-shadow:none!important}#bOut .lmx-bible-v3-tools button[data-bx-verse-images][data-bx-vsaved]:hover,#bOut .lmx-bible-v3-tools button[data-bx-verse-videos][data-bx-vsaved]:hover{background:#e7f4f6!important}#bOut .lmx-bible-v3-tools button[data-bx-verse-images][data-bx-vsaved].is-available,#bOut .lmx-bible-v3-tools button[data-bx-verse-videos][data-bx-vsaved].is-available,.bx-verse-ai-dock nav button.is-available{border-color:rgba(64,196,174,.95)!important;color:#06333a!important;background:linear-gradient(180deg,#b9f3e4,#6fe0c9)!important;box-shadow:0 0 0 1px rgba(64,196,174,.4),0 0 14px rgba(88,226,199,.55);animation:bxVerse244Neon 2.4s ease-in-out infinite}.bx-verse-ai-dock nav button.is-available:hover,#bOut .lmx-bible-v3-tools button[data-bx-verse-images][data-bx-vsaved].is-available:hover,#bOut .lmx-bible-v3-tools button[data-bx-verse-videos][data-bx-vsaved].is-available:hover{background:linear-gradient(180deg,#a8efe0,#5fd6bf)!important}@keyframes bxVerse244Neon{0%,100%{box-shadow:0 0 0 1px rgba(64,196,174,.35),0 0 8px rgba(88,226,199,.35)}50%{box-shadow:0 0 0 1px rgba(64,196,174,.55),0 0 20px rgba(88,226,199,.85)}}@media(max-width:680px){.bx-verse-ai-dock nav button{padding:8px 10px;font-size:.74rem;min-height:40px}#bOut .lmx-bible-v3-tools button[data-bx-verse-images][data-bx-vsaved],#bOut .lmx-bible-v3-tools button[data-bx-verse-videos][data-bx-vsaved]{padding:5px 9px!important;font-size:.7rem}}`;
+      document.head.appendChild(os);
     }
   }
 
@@ -2827,9 +2907,19 @@
     const a = clean(rowRef), b = clean(targetRef);
     if (!a || !b) return false;
     if (a === b) return true;
-    const parse = (value) => { const match = value.match(/^(.*)\s+(\d+):(\d+)(?:-(\d+))?$/); return match ? { book: match[1], chapter: Number(match[2]), start: Number(match[3]), end: Number(match[4] || match[3]) } : null; };
+    const parse = (value) => {
+      const m = value.match(/^(.*?)\s+(\d+)(?::(\d+)(?:-(\d+))?)?$/);
+      if (!m) return null;
+      const hasVerse = m[3] !== undefined;
+      return { book: m[1], chapter: Number(m[2]), start: hasVerse ? Number(m[3]) : 0, end: hasVerse ? Number(m[4] || m[3]) : 0, chapterOnly: !hasVerse };
+    };
     const left = parse(a), right = parse(b);
-    return Boolean(left && right && left.book === right.book && left.chapter === right.chapter && ((right.start >= left.start && right.start <= left.end) || (left.start >= right.start && left.start <= right.end)));
+    if (!left || !right || left.book !== right.book || left.chapter !== right.chapter) return false;
+    /* 5.4.245 — mídia do capítulo inteiro (ex.: "Apocalipse 1", que é como o Lote
+       grava a densidade "capítulo inteiro") é relacionada a QUALQUER versículo do
+       capítulo: passa a aparecer no rodapé da Bíblia em "ver imagens geradas". */
+    if (left.chapterOnly || right.chapterOnly) return true;
+    return (right.start >= left.start && right.start <= left.end) || (left.start >= right.start && left.start <= right.end);
   }
 
   function readPassageMedia(ref, callback) {
@@ -2853,53 +2943,362 @@
     } catch (_) { callback([]); }
   }
 
-  function openVerseSavedMedia(ref) {
-    readPassageMedia(ref, (rows) => {
-      const urls = [];
-      const items = rows
-        .filter((row) => row && row.type !== "video")
-        .slice(0, 12)
-        .map((row) => {
-          const src = row.blob ? URL.createObjectURL(row.blob) : row.sourceUrl || row.thumbUrl || "";
-          if (row.blob && src) urls.push(src);
-          if (!src) return null;
-          const pageUrl = /^https?:\/\//i.test(String(row.pageUrl || row.page_url || "")) ? (row.pageUrl || row.page_url) : "";
-          return {
-            src,
-            original_url: src,
-            thumb_url: src,
-            title: row.title || "Imagem da passagem",
-            description: row.description || "",
-            credit: row.credits || row.credit || (row.sourceKind === "local" ? "Arquivo local" : ""),
-            license: row.license || "",
-            page_url: pageUrl,
-            license_url: row.licenseUrl || row.license_url || ""
-          };
-        })
-        .filter(Boolean);
-      if (!items.length) return;
-      const visual = window.BibleXVisualMedia;
-      if (typeof visual?.openGallery === "function") {
-        visual.openGallery(items, 0, {
-          eyebrow: `MÍDIA X • PASSAGEM • ${ref}`,
-          onClose: () => urls.forEach((url) => URL.revokeObjectURL(url))
-        });
+  /* ---- 5.4.244 — abertura DIRETA (sem tela intermediária):
+         • IMAGENS do versículo/capítulo usam o MESMO visualizador da biblioteca
+           (window.BibleXVisualMedia.openGallery → barra de cima com girar 90°,
+           zoom, Ajustar, tela cheia, navegar ‹/› pelas mídias da passagem);
+         • VÍDEOS abrem em player de tela cheia próprio (sem tela intermediária). ---- */
+
+  function chapterBaseOf(ref) {
+    return String(ref || "").replace(/:.*$/, "").trim() || String(ref || "").trim();
+  }
+
+  function mediaRefInChapter(value, chap) {
+    if (!value || !chap) return false;
+    const s = String(value || "").trim();
+    return s === chap || s.startsWith(chap + ":");
+  }
+
+  function readChapterMedia(chap, callback) {
+    /* Espelha readPassageMedia, mas aceita QUALQUER versículo do capítulo
+       (João 4:7 pertence a "João 4"). Garante callback([]) em qualquer falha. */
+    try {
+      const request = indexedDB.open("logosx-bible", 15);
+      request.onupgradeneeded = () => { if (!request.result.objectStoreNames.contains("media")) request.result.createObjectStore("media", { keyPath: "id" }); };
+      request.onerror = () => callback([]);
+      request.onsuccess = () => {
+        try {
+          const tx = request.result.transaction("media", "readonly");
+          const get = tx.objectStore("media").getAll();
+          get.onerror = () => callback([]);
+          tx.onerror = () => callback([]);
+          get.onsuccess = () => callback((get.result || []).filter(row => row && [row.reference, ...(Array.isArray(row.relatedReferences) ? row.relatedReferences : [])].some(value => mediaRefInChapter(value || "", chap))));
+        } catch (_) { callback([]); }
+      };
+    } catch (_) { callback([]); }
+  }
+
+  function isVerseMediaSource(row) {
+    return Boolean(row && (row.blob || row.sourceUrl || row.thumbUrl));
+  }
+
+  function passageRowsToImages(rows) {
+    return (rows || []).filter(row => row && row.type !== "video" && isVerseMediaSource(row));
+  }
+
+  function passageRowsToVideos(rows) {
+    return (rows || []).filter(row => row && row.type === "video" && isVerseMediaSource(row));
+  }
+
+  function passageImageItems(rows, revokeList) {
+    /* mesmos campos que a Mídia X usa no openGallery (visualizador da biblioteca). */
+    return rows.map((row) => {
+      const src = row.blob ? URL.createObjectURL(row.blob) : row.sourceUrl || row.thumbUrl || "";
+      if (row.blob && src) revokeList.push(src);
+      if (!src) return null;
+      return {
+        key: row.id || row.key || "",
+        src,
+        original_url: src,
+        thumb_url: src,
+        title: row.title || "Imagem da passagem",
+        description: row.description || "",
+        credit: row.credits || row.credit || (row.sourceKind === "local" ? "Arquivo local" : ""),
+        license: row.license || "",
+        page_url: /^https?:\/\//i.test(String(row.pageUrl || row.page_url || "")) ? (row.pageUrl || row.page_url) : "",
+        license_url: row.licenseUrl || row.license_url || "",
+        _dbId: row.id || row.key || "",
+        _reference: String(row.reference || row.ref || "").trim()
+      };
+    }).filter(Boolean);
+  }
+
+  function passageStartIndex(rows, items, preferredSrc, preferredKey) {
+    if (preferredKey) {
+      const byKey = items.findIndex(item => item && item.key && item.key === preferredKey);
+      if (byKey >= 0) return byKey;
+    }
+    if (preferredSrc) {
+      for (let i = 0; i < rows.length; i += 1) {
+        const s = rows[i] ? (rows[i].sourceUrl || rows[i].thumbUrl || "") : "";
+        if (s && s === preferredSrc) return i;
+      }
+    }
+    return 0;
+  }
+
+  function openPassageGallery(rows, preferredSrc, eyebrow, preferredKey) {
+    const revoke = [];
+    const items = passageImageItems(rows, revoke);
+    if (!items.length) return;
+    const visual = window.BibleXVisualMedia;
+    if (typeof visual?.openGallery === "function") {
+      visual.openGallery(items, passageStartIndex(rows, items, preferredSrc, preferredKey), {
+        eyebrow,
+        onClose: () => revoke.forEach((url) => URL.revokeObjectURL(url))
+      });
+      return;
+    }
+    revoke.forEach((url) => URL.revokeObjectURL(url));
+  }
+
+  function passageVideoSrc(row) {
+    return row.blob ? URL.createObjectURL(row.blob) : row.sourceUrl || row.thumbUrl || "";
+  }
+
+  function openPassageVideosDirect(videos, preferredSrc, eyebrow, preferredKey) {
+    if (!videos.length) return;
+    const revoke = [];
+    const list = videos.map((row) => ({ row, src: passageVideoSrc(row) })).filter(item => item.src);
+    list.filter(item => item.row.blob).forEach(item => revoke.push(item.src));
+    if (!list.length) return;
+    let index = 0;
+    let idx = preferredKey ? list.findIndex(item => (item.row.id || item.row.key || "") === preferredKey) : -1;
+    if (idx < 0 && preferredSrc) idx = list.findIndex(item => item.src === preferredSrc);
+    if (idx >= 0) index = idx;
+    const overlay = document.createElement("div");
+    overlay.className = "bxvm-overlay bxpm-overlay";
+    const dialog = document.createElement("div");
+    dialog.className = "bxvm-dialog bxpm-dialog";
+    dialog.innerHTML = `
+      <header class="bxvm-header">
+        <div class="bxvm-heading"><small></small><h2></h2></div>
+        <div class="bxvm-tools"><button type="button" data-bxpm-download aria-label="Baixar este vídeo">⬇</button><button type="button" data-bxpm-close aria-label="Fechar">×</button></div>
+      </header>
+      <main class="bxvm-stage"></main>
+      <footer class="bxvm-footer"><div class="bxvm-caption"><strong></strong><span></span></div></footer>`;
+    dialog.querySelector(".bxvm-heading small").textContent = eyebrow || "MÍDIA X • VÍDEO DA PASSAGEM";
+    const stage = dialog.querySelector(".bxvm-stage");
+    const prev = document.createElement("button");
+    prev.type = "button"; prev.className = "bxvm-nav bxvm-previous"; prev.innerHTML = "‹"; prev.setAttribute("aria-label", "Vídeo anterior");
+    const next = document.createElement("button");
+    next.type = "button"; next.className = "bxvm-nav bxvm-next"; next.innerHTML = "›"; next.setAttribute("aria-label", "Próximo vídeo");
+    const capCount = dialog.querySelector(".bxvm-caption strong");
+    const capDetail = dialog.querySelector(".bxvm-caption span");
+    overlay.appendChild(dialog);
+    stage.append(prev, next);
+    document.body.appendChild(overlay);
+    document.body.classList.add("bxvm-lock");
+    let current = null;
+    const play = (n) => {
+      index = (n + list.length) % list.length;
+      if (current) current.remove();
+      const video = document.createElement("video");
+      video.className = "bxvm-video";
+      video.controls = true;
+      video.autoplay = true;
+      video.playsInline = true;
+      video.src = list[index].src;
+      video.title = list[index].row.title || "";
+      current = video;
+      stage.appendChild(current);
+      capCount.textContent = `${index + 1} / ${list.length}`;
+      const row = list[index].row;
+      capDetail.textContent = [row.title, row.reference && `Passagem: ${row.reference}`, row.description].filter(Boolean).join(" • ");
+      prev.hidden = next.hidden = list.length < 2;
+    };
+    const close = () => {
+      document.removeEventListener("keydown", onKey);
+      overlay.remove();
+      if (!document.querySelector(".bxvm-overlay,.bx-route-visual-modal,.bxpm-overlay")) document.body.classList.remove("bxvm-lock");
+      revoke.forEach((url) => URL.revokeObjectURL(url));
+    };
+    const onKey = (event) => {
+      if (event.key === "Escape") close();
+      else if (event.key === "ArrowLeft") play(index - 1);
+      else if (event.key === "ArrowRight") play(index + 1);
+    };
+    prev.addEventListener("click", () => play(index - 1));
+    next.addEventListener("click", () => play(index + 1));
+    const triggerVideoDownload = (url, name) => { const a = document.createElement("a"); a.href = url; a.download = name; document.body.appendChild(a); a.click(); a.remove(); };
+    dialog.querySelector("[data-bxpm-download]")?.addEventListener("click", async () => {
+      const it = list[index]; if (!it) return;
+      const name = String(it.row.title || it.row.reference || "video-midia-x").replace(/[^\p{L}\p{N}]+/gu, "-").replace(/^-+|-+$/g, "") || "video-midia-x";
+      const src = it.src;
+      if (/^(blob|data):/i.test(src)) { triggerVideoDownload(src, name + ".mp4"); return; }
+      try {
+        const resp = await fetch(src, { mode: "cors" });
+        if (!resp.ok) throw new Error("http " + resp.status);
+        const blob = await resp.blob();
+        const u = URL.createObjectURL(blob);
+        triggerVideoDownload(u, name + ".mp4");
+        setTimeout(() => URL.revokeObjectURL(u), 10000);
+      } catch (_) { const w = window.open(src, "_blank"); if (w) w.opener = null; }
+    });
+    dialog.querySelector("[data-bxpm-close]").addEventListener("click", close);
+    overlay.addEventListener("click", (event) => { if (event.target === overlay) close(); });
+    document.addEventListener("keydown", onKey);
+    play(index);
+  }
+
+  function openPassageMediaDirect(rows, preferredSrc, eyebrow, preferredKey) {
+    const images = passageRowsToImages(rows);
+    const videos = passageRowsToVideos(rows);
+    if (preferredKey || preferredSrc) {
+      const isVideo = preferredKey
+        ? videos.some((row) => (row.id || row.key || "") === preferredKey)
+        : videos.some((row) => { const s = row.sourceUrl || row.thumbUrl || ""; return Boolean(s && s === preferredSrc); });
+      if (isVideo || !images.length) {
+        openPassageVideosDirect(videos, preferredSrc, eyebrow, preferredKey);
         return;
       }
-      urls.forEach((url) => URL.revokeObjectURL(url));
+    }
+    if (images.length) {
+      openPassageGallery(images, preferredSrc, eyebrow, preferredKey);
+      return;
+    }
+    if (videos.length) openPassageVideosDirect(videos, preferredSrc, eyebrow, preferredKey);
+  }
+
+  /* 5.4.245 — abertura RÁPIDA (segunda rodada): antes, o clique ainda relia a store
+     INTEIRA (getAll clonando TODAS as mídias em base64) para abrir a imagem de um
+     versículo = 3–4s de espera. Agora cruza o índice leve (que guarda id+refs) e
+     lê SOMENTE os registros que casam com a passagem — na pratica 1 imagem. */
+  function bxMediaMatchIds(kind, target, videoOnly) {
+    const out = [];
+    const seen = {};
+    for (let i = 0; i < bxMediaIdx.length; i += 1) {
+      const en = bxMediaIdx[i];
+      if (!en.hasData || !en.id) continue;
+      if (videoOnly === true && !en.video) continue;
+      if (videoOnly === false && en.video) continue;
+      for (let j = 0; j < en.refs.length; j += 1) {
+        const hit = kind === "verse" ? (en.refs[j] && mediaRefMatches(en.refs[j], target)) : (en.refs[j] && mediaRefInChapter(en.refs[j], target));
+        if (hit) { if (!seen[en.id]) { seen[en.id] = 1; out.push(en.id); } break; }
+      }
+    }
+    return out;
+  }
+  function bxReadMediaByIds(ids, cb) {
+    if (!ids || !ids.length) { cb([]); return; }
+    try {
+      const request = indexedDB.open("logosx-bible", 15);
+      request.onupgradeneeded = () => { if (!request.result.objectStoreNames.contains("media")) request.result.createObjectStore("media", { keyPath: "id" }); };
+      request.onerror = () => cb([]);
+      request.onsuccess = () => {
+        try {
+          const tx = request.result.transaction("media", "readonly");
+          const store = tx.objectStore("media");
+          const rows = [];
+          let back = 0;
+          let fin = false;
+          const finalize = () => { if (!fin) { fin = true; cb(rows); } };
+          ids.forEach((id) => {
+            const g = store.get(id);
+            g.onsuccess = () => { if (g.result) rows.push(g.result); back += 1; if (back >= ids.length) finalize(); };
+            g.onerror = () => { back += 1; if (back >= ids.length) finalize(); };
+          });
+          tx.onerror = () => finalize();
+          tx.onabort = () => finalize();
+        } catch (_) { cb([]); }
+      };
+    } catch (_) { cb([]); }
+  }
+  function bxOpenVerseMedia(ref, videoOnly, onRows, emptyMsg) {
+    if (!ref) return;
+    bxMediaIdxEnsure(() => {
+      bxReadMediaByIds(bxMediaMatchIds("verse", ref, videoOnly), (rows) => {
+        if (onRows(rows)) return;
+        bxMediaToast(emptyMsg || `Nenhuma mídia salva para ${ref} ainda.`);
+      });
     });
+  }
+  function bxOpenChapterMedia(chap, videoOnly, onRows, emptyMsg) {
+    if (!chap) return;
+    bxMediaIdxEnsure(() => {
+      bxReadMediaByIds(bxMediaMatchIds("chapter", chap, videoOnly), (rows) => {
+        if (onRows(rows)) return;
+        bxMediaToast(emptyMsg || `Nenhuma mídia salva para o capítulo ${chap} ainda.`);
+      });
+    });
+  }
+
+  function openVerseSavedMedia(ref, preferredSrc, preferredKey) {
+    bxOpenVerseMedia(ref, null, (rows) => {
+      const imgs = passageRowsToImages(rows);
+      const vids = passageRowsToVideos(rows);
+      if (!imgs.length && !vids.length) return false;
+      openPassageMediaDirect(rows, preferredSrc || "", `MÍDIA X • PASSAGEM • ${ref}`, preferredKey || "");
+      return true;
+    }, `Nenhuma mídia salva para ${ref} ainda. Gere no Gerador de IA.`);
+  }
+
+  function openVerseImagesDirect(ref) {
+    bxOpenVerseMedia(ref, false, (rows) => {
+      const imgs = passageRowsToImages(rows);
+      if (!imgs.length) return false;
+      openPassageGallery(imgs, "", `MÍDIA X • IMAGENS DA PASSAGEM • ${ref}`, "");
+      return true;
+    }, `Nenhuma imagem salva para ${ref} ainda. Gere uma no Gerador de IA.`);
+  }
+
+  function openVerseVideosDirect(ref) {
+    bxOpenVerseMedia(ref, true, (rows) => {
+      const vids = passageRowsToVideos(rows);
+      if (!vids.length) return false;
+      openPassageVideosDirect(vids, "", `MÍDIA X • VÍDEOS DA PASSAGEM • ${ref}`, "");
+      return true;
+    }, `Nenhum vídeo salvo para ${ref} ainda. Gere um no Gerador de IA.`);
+  }
+
+  function openChapterSavedMedia(chap) {
+    bxOpenChapterMedia(chap, null, (rows) => {
+      const imgs = passageRowsToImages(rows);
+      const vids = passageRowsToVideos(rows);
+      if (!imgs.length && !vids.length) return false;
+      openPassageMediaDirect(rows, "", `MÍDIA X • CAPÍTULO • ${chap}`);
+      return true;
+    }, `Nenhuma mídia salva para o capítulo ${chap} ainda.`);
+  }
+
+  function openChapterImagesDirect(chap) {
+    bxOpenChapterMedia(chap, false, (rows) => {
+      const imgs = passageRowsToImages(rows);
+      if (!imgs.length) return false;
+      openPassageGallery(imgs, "", `MÍDIA X • IMAGENS DO CAPÍTULO • ${chap}`, "");
+      return true;
+    }, `Nenhuma imagem salva para o capítulo ${chap} ainda.`);
+  }
+
+  function openChapterVideosDirect(chap) {
+    bxOpenChapterMedia(chap, true, (rows) => {
+      const vids = passageRowsToVideos(rows);
+      if (!vids.length) return false;
+      openPassageVideosDirect(vids, "", `MÍDIA X • VÍDEOS DO CAPÍTULO • ${chap}`, "");
+      return true;
+    }, `Nenhum vídeo salvo para o capítulo ${chap} ainda.`);
   }
 
   function ensureVerseAiButtons(tools, verse) {
     if (!verse) return;
     const ref = verse.getAttribute("data-ref") || "";
     const insertBefore = tools.querySelector("[data-bx-verse-more], .lmx-bible-v3-more");
-    const add = (kind, label, attribute) => { const selector = kind === "media" ? `[${attribute}]` : `[${attribute}="${kind}"]`; let button = tools.querySelector(selector); if (!button) { button = document.createElement("button"); button.type = "button"; if (insertBefore) insertBefore.before(button); else tools.appendChild(button); } button.dataset[kind === "media" ? "bxVerseMedia" : "bxVerseAi"] = kind === "media" ? ref : kind; button.textContent = label; button.title = kind === "media" ? `Ver imagem salva de ${ref}` : label; if (kind === "media") button.hidden = true; return button; };
-    add("image", "🖼 Gerar imagem", "data-bx-verse-ai"); add("video", "🎬 Gerar vídeo", "data-bx-verse-ai"); const media = add("media", "🖼 Ver imagem da passagem", "data-bx-verse-media");
+    const place = (btn) => { if (insertBefore) insertBefore.before(btn); else tools.appendChild(btn); return btn; };
+    const ai = (kind, label) => { let btn = tools.querySelector(`[data-bx-verse-ai="${kind}"]`); if (!btn) { btn = document.createElement("button"); btn.type = "button"; btn.setAttribute("data-bx-verse-ai", kind); place(btn); } btn.textContent = label; return btn; };
+    ai("image", "🖼 Gerar imagem"); ai("video", "🎬 Gerar vídeo");
+    /* 5.4.244 — dois botoes salvos ABAIXO do versiculo; cada um abre DIRETO o seu tipo
+       (imagem -> galeria com a barra da biblioteca; video -> player de tela cheia). */
+    const saved = (attr, label, titleText) => { let btn = tools.querySelector(`[${attr}]`); if (!btn) { btn = document.createElement("button"); btn.type = "button"; btn.setAttribute(attr, ref); place(btn); } else btn.setAttribute(attr, ref); btn.dataset.bxVsaved = "1"; btn.textContent = label; btn.title = titleText; btn.hidden = false; return btn; };
+    const imgBtn = saved("data-bx-verse-images", "🖼 Imagem da passagem", `Ver imagens salvas de ${ref}`);
+    const vidBtn = saved("data-bx-verse-videos", "🎬 Vídeo da passagem", `Ver vídeos salvos de ${ref}`);
+    /* 5.4.244 — handler DIRETO no botao (fase target roda antes de qualquer
+       delegado do app em bubble; evita abrir a tela intermediaria da Midia X). */
+    if (!imgBtn.dataset.bxVerseSavedBound) {
+      imgBtn.dataset.bxVerseSavedBound = "1";
+      imgBtn.addEventListener("click", (ev) => { ev.preventDefault(); ev.stopImmediatePropagation(); openVerseImagesDirect(imgBtn.getAttribute("data-bx-verse-images") || ref); });
+    }
+    if (!vidBtn.dataset.bxVerseSavedBound) {
+      vidBtn.dataset.bxVerseSavedBound = "1";
+      vidBtn.addEventListener("click", (ev) => { ev.preventDefault(); ev.stopImmediatePropagation(); openVerseVideosDirect(vidBtn.getAttribute("data-bx-verse-videos") || ref); });
+    }
     const scanKey = `${verseMediaRevision}|${ref}`;
-    if (media.dataset.bxVerseMediaScan === scanKey) return;
-    media.dataset.bxVerseMediaScan = scanKey;
-    readPassageMedia(ref, (rows) => { const available = rows.some((row) => row && row.type !== "video" && Boolean(row.blob || row.sourceUrl || row.thumbUrl)); if (media.isConnected) { media.hidden = !available; media.classList.toggle("is-available", available); } });
+    if (imgBtn.dataset.bxVerseSavedScan === scanKey) return;
+    imgBtn.dataset.bxVerseSavedScan = scanKey;
+    bxMediaIdxEnsure(() => {
+      const ok = bxMediaVerseOk(ref);
+      if (imgBtn && imgBtn.isConnected) imgBtn.classList.toggle("is-available", ok.img);
+      if (vidBtn && vidBtn.isConnected) vidBtn.classList.toggle("is-available", ok.vid);
+    });
   }
 
   function injectVerseTriggers() {
@@ -2910,6 +3309,72 @@
       if (!button) { button = document.createElement("button"); button.type = "button"; button.className = "bx-immersion-trigger"; button.dataset.bxImmersion = "1"; button.dataset.ref = verse.getAttribute("data-ref") || ""; button.textContent = "🕶 Entrar na história"; button.setAttribute("aria-label", `Entrar na história de ${button.dataset.ref || "este versículo"}`); const plus = tools.querySelector("[data-bx-verse-more], .lmx-bible-v3-more"); if (plus) plus.before(button); else tools.appendChild(button); }
       ensureVerseAiButtons(tools, verse);
     });
+  }
+
+  /* 5.4.246 — 🖼 miniatura INLINE leve por versículo (leitura normal).
+     Aparece só quando o versículo tem imagem salva na Mídia X; le o capítulo
+     inteiro de UMA vez (indice leve + ids casados) e monta um <img> pequeno que
+     abre a galeria da passagem. Respeita a engrenagem ⚙️: "Mídia" desmarcada
+     = sem miniaturas. URLs de objeto sao revogadas na troca de capitulo. */
+  function injectVerseThumbsStyle() {
+    if (document.getElementById("bxInlineThumbStyle")) return;
+    const s = document.createElement("style");
+    s.id = "bxInlineThumbStyle";
+    s.textContent = "#bOut .lmx-bible-v3-verse:has(> .bx-inline-thumb),[data-bx-v3-verse]:has(> .bx-inline-thumb){flex-wrap:wrap}.bx-inline-thumb{position:relative;flex:0 0 auto;border:1px solid rgba(46,204,159,.55);border-radius:10px;overflow:hidden;padding:0;margin:6px 0 2px;cursor:pointer;background:#02070d;line-height:0;box-shadow:0 2px 8px rgba(0,0,0,.4);align-self:flex-start}.bx-inline-thumb img{display:block;width:118px;height:72px;object-fit:cover}.bx-inline-thumb::after{content:\"🖼\";position:absolute;right:4px;bottom:4px;font-size:.6rem;background:rgba(1,10,18,.74);color:#fff;padding:1px 5px;border-radius:6px;line-height:1.2}.bx-inline-thumb:hover{outline:2px solid #2ecc9f}@media(max-width:680px){.bx-inline-thumb img{width:100px;height:64px}}";
+    document.head.appendChild(s);
+  }
+  function injectVerseThumbs() {
+    try {
+      const verses = $$(".lmx-bible-v3-verse[data-ref], [data-bx-v3-verse][data-ref]").filter((v) => v.isConnected && !v.querySelector("[data-bx-inline-thumb]") && v.dataset.bxThumbDone !== "1");
+      if (!verses.length) return;
+      let mediaOn = true;
+      try { const raw = localStorage.getItem("logosx:v170verseTools"); if (raw) { const arr = JSON.parse(raw); mediaOn = Array.isArray(arr) && arr.includes("media"); } } catch (_) {}
+      if (!mediaOn) return;
+      injectVerseThumbsStyle();
+      const first = verses[0];
+      const dockRef = (first.getAttribute("data-ref") || "").trim() || ($("#bRef")?.value || "").trim();
+      const chap = chapterBaseOf(dockRef);
+      if (!chap) return;
+      if (injectVerseThumbs._chap && injectVerseThumbs._chap !== chap && injectVerseThumbs._revoke) {
+        injectVerseThumbs._revoke.forEach((u) => { try { URL.revokeObjectURL(u); } catch (_) {} });
+        injectVerseThumbs._revoke = [];
+      }
+      injectVerseThumbs._chap = chap;
+      bxMediaIdxEnsure(() => {
+        try {
+          const ids = bxMediaMatchIds("chapter", chap, false);
+          if (!ids.length) { verses.forEach((v) => { v.dataset.bxThumbDone = "1"; }); return; }
+          bxReadMediaByIds(ids, (rows) => {
+            try {
+              if (!rows.length) { verses.forEach((v) => { v.dataset.bxThumbDone = "1"; }); return; }
+              const bucket = injectVerseThumbs._revoke || (injectVerseThumbs._revoke = []);
+              const pick = (row) => { if (row.blob) { const u = URL.createObjectURL(row.blob); bucket.push(u); return u; } return row.sourceUrl || row.thumbUrl || ""; };
+              verses.forEach((verse) => {
+                verse.dataset.bxThumbDone = "1";
+                if (!verse.isConnected || verse.querySelector("[data-bx-inline-thumb]")) return;
+                const ref = (verse.getAttribute("data-ref") || "").trim();
+                if (!ref) return;
+                let src = "";
+                for (let i = 0; i < rows.length; i += 1) {
+                  const row = rows[i];
+                  const refs = [row.reference, ...(Array.isArray(row.relatedReferences) ? row.relatedReferences : [])];
+                  if (refs.some((r) => r && mediaRefMatches(r, ref))) { src = pick(row); if (src) break; }
+                }
+                if (!src) return;
+                const t = document.createElement("button");
+                t.type = "button";
+                t.className = "bx-inline-thumb";
+                t.dataset.bxInlineThumb = "1";
+                t.title = "Ver imagem(s) de " + ref;
+                t.innerHTML = '<img src="' + src + '" alt="" loading="lazy" decoding="async">';
+                t.addEventListener("click", (ev) => { ev.preventDefault(); ev.stopImmediatePropagation(); openVerseImagesDirect(ref); });
+                verse.appendChild(t);
+              });
+            } catch (_) {}
+          });
+        } catch (_) {}
+      });
+    } catch (_) {}
   }
 
   function injectNavTrigger() {
@@ -2944,6 +3409,7 @@
 
   function injectAll() {
     injectVerseTriggers();
+    injectVerseThumbs();
     injectVerseAiDock();
     injectNavTrigger();
     injectCatalogTrigger();
@@ -2972,6 +3438,19 @@
     dismissLegacyVerseContext();
     openAiMedia({ ...verseAiContext(ai), kind: ai.dataset.bxVerseAi || "image" });
   }
+  /* 5.4.244 — Os botoes salvos por verso ([data-bx-verse-images] /
+     [data-bx-verse-videos]) vivem DENTRO de .lmx-bible-v3-tools, regiao onde um
+     interceptor antigo no window (stopPropagation em captura) impede o evento de
+     descer ate document/target. Este listener no MESMO node (window) roda depois
+     do interceptor (stopPropagation nao bloqueia o mesmo node) e abre o viewer
+     direto, como pedido: imagem -> galeria da biblioteca, video -> player. */
+  function onVerseSavedDirectClick(event) {
+    const imgHit = event.target.closest?.("[data-bx-verse-images]");
+    if (imgHit) { event.preventDefault(); event.stopImmediatePropagation(); openVerseImagesDirect(imgHit.dataset.bxVerseImages || ""); return; }
+    const vidHit = event.target.closest?.("[data-bx-verse-videos]");
+    if (vidHit) { event.preventDefault(); event.stopImmediatePropagation(); openVerseVideosDirect(vidHit.dataset.bxVerseVideos || ""); return; }
+  }
+
 
   function closeQuickGuideSafely(overlay) {
     if (!overlay) return false;
@@ -3019,6 +3498,14 @@
   }
 
   function onDocumentClick(event) {
+    const chapImgHit = event.target.closest?.("[data-bx-chapter-images]");
+    if (chapImgHit) { event.preventDefault(); event.stopImmediatePropagation(); openChapterImagesDirect(chapImgHit.dataset.bxChap || chapterBaseOf($("#bRef")?.value || "")); return; }
+    const chapVidHit = event.target.closest?.("[data-bx-chapter-videos]");
+    if (chapVidHit) { event.preventDefault(); event.stopImmediatePropagation(); openChapterVideosDirect(chapVidHit.dataset.bxChap || chapterBaseOf($("#bRef")?.value || "")); return; }
+    const imgHit = event.target.closest?.("[data-bx-verse-images]");
+    if (imgHit) { event.preventDefault(); event.stopImmediatePropagation(); openVerseImagesDirect(imgHit.dataset.bxVerseImages || ""); return; }
+    const vidHit = event.target.closest?.("[data-bx-verse-videos]");
+    if (vidHit) { event.preventDefault(); event.stopImmediatePropagation(); openVerseVideosDirect(vidHit.dataset.bxVerseVideos || ""); return; }
     const savedMedia = event.target.closest?.("[data-bx-verse-media]");
     if (savedMedia) { event.preventDefault(); event.stopImmediatePropagation(); openVerseSavedMedia(savedMedia.dataset.bxVerseMedia || ""); return; }
     const ai = event.target.closest?.("[data-bx-verse-ai]");
@@ -3183,6 +3670,7 @@
     window.addEventListener("click", onQuickGuidePriorityClick, true);
     window.addEventListener("keydown", onQuickGuidePriorityKeydown, true);
     window.addEventListener("click", onImmersionPriorityClick, true);
+    window.addEventListener("click", onVerseSavedDirectClick, true);
     document.addEventListener("fullscreenchange", syncImmersionFullscreen);
     document.addEventListener("webkitfullscreenchange", syncImmersionFullscreen);
     window.addEventListener("beforeunload", () => { stopSpeech(); stopTour(); });

@@ -43,19 +43,14 @@ def build_visual_prompt(
     base = re.sub(r"\s+", " ", str(prompt or "")).strip()
     if VISUAL_DNA_MARKER in base:
         return base
-    title = re.sub(r"\s+", " ", str(title or "Cena bíblica")).strip()
-    reference = re.sub(r"\s+", " ", str(reference or "Passagem em estudo")).strip()
-    place = re.sub(r"\s+", " ", str(place or "Lugar bíblico relacionado")).strip()
-    stage = re.sub(r"\s+", " ", str(stage or "Leitura da passagem")).strip()
-    moving = " Para vídeo, mantenha a ficha legível nos primeiros e nos últimos dois segundos." if str(kind).lower() == "video" else ""
+    moving = " Para vídeo, mantenha a mesma composição limpa do início ao fim." if str(kind).lower() == "video" else ""
     dna = (
         f"{VISUAL_DNA_MARKER}: use composição cinematográfica editorial, realista e historicamente prudente, "
         "com luz natural, paisagem, arquitetura, objetos e vestimentas coerentes com o antigo Oriente. "
-        "Reserve na parte inferior uma faixa semitransparente elegante, com tipografia serifada clara e divisores verticais discretos. "
-        "Escreva exatamente nesta faixa, em português brasileiro, sem inventar ou alterar palavras: "
-        f"{title} | {reference} | {place} | Etapa: {stage} | Reconstrução interpretativa para estudo bíblico. "
-        "Não apresente a reconstrução como fotografia do século I, não invente inscrições legíveis, datas ou fatos arqueológicos, "
-        "e não acrescente outros textos visíveis."
+        "A mídia deve sair completamente limpa: nenhum texto, título, letreiro, legenda, faixa informativa, "
+        "logotipo, assinatura ou marca d'água — nenhum caractere legível em qualquer idioma, para que a cena "
+        "possa ser reutilizada em vídeo. Não apresente a reconstrução como fotografia do século I, não invente "
+        "inscrições legíveis, datas ou fatos arqueológicos; trate como reconstrução interpretativa para estudo bíblico."
         f"{moving}"
     )
     return f"{base}\n\n{dna}".strip()

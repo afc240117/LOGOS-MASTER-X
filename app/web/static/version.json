@@ -1,6 +1,6 @@
 {
-  "version": "5.4.241",
+  "version": "5.4.246",
   "channel": "biblia-viva-modo-imersao-visual-vivo-mapas-midia-ia",
-  "build": "v241-reader-full-tick-and-explorer-guard",
-  "hotfix": "Tela cheia do leitor volta a (re)inicializar a barra de progresso e o menu ▲◉▼ sem ReferenceError do lm150 (agora via gancho público BibleXPolimento.readerFullTick); observador global da Bíblia Viva deixa de lançar exceção quando o painel de mapas não está no DOM (guarda antecipada em bible-x-infinite-explorer.js), o que reativa bindPublicInput/syncImmersionContext/watchMedia; versão unificada em 5.4.241 (version.json, APP_BUILD_VERSION, /api/health, /api/diagnostics e OpenAPI leem a mesma fonte); cache-bust dos 30 assets padronizado em ?v=5.4.241; removidos 6 snapshots mortos (app-381-v114/115/116.js, style-v114/115.css, index.html.PRE-AUDIO-X-MODULAR.bak)."
+  "build": "v246-busca-livros-mobile-sharebox-midia",
+  "hotfix": "1) BUSCA POR PALAVRAS NO CELULAR melhorada: o 🔎 do menu ganhou 'Ocorrências por livro' — chips com a contagem real de cada livro (clique filtra só aquele livro) e o total de livros com resultado. 2) MÍDIA X: enviar mídias entre aparelhos por CÓDIGO (📤 Enviar p/ outro aparelho no celular → anote o código → no PC 📥 Receber do celular e digite): sobe arquivos+metadados e o outro aparelho importa tudo para a Mídia X local (itens públicos entram como atalho). Servidor: /api/bible/sharebox/{código}. 3) 🔎 Buscar já vem no dock de atalhos do celular por padrão. 4) Regras de leitura limpa, índice leve da Mídia X (hub rápido) e zoom do leitor mantidos do 5.4.245. Versão unificada 5.4.246 (version.json, APP_BUILD_VERSION e tokens do index)."
 }

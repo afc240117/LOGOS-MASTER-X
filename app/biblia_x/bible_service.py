@@ -1350,6 +1350,7 @@ def search_text_page(
         else "b.canonical_order,CAST(verse_search.chapter AS INTEGER),CAST(verse_search.verse AS INTEGER)"
     )
     with connect() as con:
+        by_book: list[dict] = []
         try:
             total = int(con.execute(
                 f"""SELECT COUNT(*) FROM verse_search
@@ -1369,6 +1370,20 @@ def search_text_page(
                     LIMIT ? OFFSET ?""",
                 (*base_params, limit, offset),
             ).fetchall()
+            # Contagem real por livro (mesma cláusula WHERE, ignorando LIMIT/OFFSET).
+            # Alimenta o KPI "X livros" e a lista "ocorrências por livro" do Pesquisa X.
+            books_group = con.execute(
+                f"""SELECT verse_search.book_code AS book_code,
+                           b.name_pt, b.name_en,
+                           CAST(COUNT(*) AS INTEGER) AS c
+                    FROM verse_search
+                    JOIN books b ON b.code=verse_search.book_code
+                    WHERE {where}
+                    GROUP BY verse_search.book_code, b.name_pt, b.name_en
+                    ORDER BY c DESC, b.canonical_order""",
+                base_params,
+            ).fetchall()
+            by_book = [dict(row) for row in books_group]
         except sqlite3.OperationalError:
             # Defensive fallback for unusual punctuation/older SQLite builds.
             clauses = ["v.translation_id=?"]
@@ -1401,6 +1416,8 @@ def search_text_page(
         "truncated": offset + len(items) < total,
         "mode": mode,
         "scope": scope,
+        "books_total": len(by_book),
+        "by_book": by_book,
     }
 
 

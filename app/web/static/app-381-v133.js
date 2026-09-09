@@ -1835,8 +1835,8 @@ ${homeDesktopControls(actions)}
    <div class="bx-media-head"><div><span class="bible-x-stage">ETAPA 7</span><h3>🎥 Mídia X • Biblioteca Bíblica Visual</h3><p>Imagens, vídeos, áudios, apresentações e panoramas 360° ligados a passagens, lugares e estudos.</p></div><span class="bx-media-local">● Arquivos locais + fontes públicas</span></div>
    <div class="bx-media-toolbar"><div class="bx-media-query"><label>Pesquisar sua biblioteca por mídia, referência ou palavra-chave</label><div><input id="bxMediaQuery" placeholder="Jerusalém, João 3:16, templo, áudio..."><button class="btn primary" id="bxMediaFind">Pesquisar</button></div></div><div class="bx-media-filters"><button class="active" data-media-type="all">Todos</button><button data-media-type="image">🖼 Imagens</button><button data-media-type="panorama">🕶️ 360°</button><button data-media-type="video">🎬 Vídeos</button><button data-media-type="audio">🎧 Áudios</button><button data-media-type="document">📄 Outros</button></div></div>
    <section class="bx-media-discovery"><header><div><span>✨ DESCOBRIR IMAGENS</span><h4>Galeria pública por tema ou lugar</h4><p>Pesquise imagens relacionadas ao texto e ao lugar em estudo. Crédito e licença acompanham cada resultado.</p></div><small>Requer internet • confira a licença individual</small></header><div class="bx-media-public-search"><input id="bxMediaPublicQuery" value="" placeholder="A passagem ou o lugar em estudo aparecerá aqui..."><button class="btn primary" id="bxMediaPublicFind">🖼 Buscar imagens</button><button class="btn secondary" id="bxMediaPublic360">🕶️ Buscar 360°</button></div><div id="bxMediaPublicGrid" class="bx-media-public-grid"><div class="bx-media-public-empty">Abra uma passagem bíblica ou informe um tema para montar a galeria visual.</div></div></section>
-   <section class="bx-media-import-card"><div><h4>Adicionar arquivos locais</h4><p>Os arquivos permanecem neste dispositivo. Imagens equiretangulares próximas de 2:1 são reconhecidas automaticamente como panoramas 360°.</p><small id="bxMediaStorage" class="bx-media-storage" aria-live="polite">Verificando armazenamento local...</small></div><div class="bx-media-form"><input type="file" id="bxMediaFiles" accept="image/*,video/*,audio/*,.pdf,.doc,.docx,.ppt,.pptx,.txt" multiple><input id="bxMediaRef" placeholder="Referência (opcional), ex.: Isaías 6"><input id="bxMediaTags" placeholder="Tags ou lugar, separados por vírgula"><input id="bxMediaCredits" placeholder="Créditos / fonte"><input id="bxMediaLicense" placeholder="Licença / permissão de uso"><textarea id="bxMediaDesc" rows="2" placeholder="Descrição da mídia"></textarea><button class="btn blue" id="bxMediaAdd">＋ Adicionar à Mídia X</button><small id="bxMediaActionStatus" class="bx-media-action-status" aria-live="polite"></small></div></section>
-   <div class="bx-media-layout"><section class="bx-media-results"><div class="bx-media-results-head"><div><h4>Sua biblioteca</h4><p id="bxMediaCount">0 itens</p></div><div class="row"><button class="btn secondary" id="bxMediaSlideshow">▶ Apresentação</button><button class="btn secondary" id="bxMediaExample">Carregar exemplos</button><button class="btn secondary" id="bxMediaExport">Exportar índice</button></div></div><div id="bxMediaGrid" class="bx-media-grid"><div class="bx-media-empty">Adicione arquivos locais ou salve uma referência visual pública.</div></div></section><aside class="bx-media-detail" id="bxMediaDetail"><div class="bx-media-detail-empty"><span>🎥</span><h4>Visualização de mídia</h4><p>Selecione um item para ampliar, apresentar, ouvir, assistir ou explorar em 360°.</p></div></aside></div>
+   <section class="bx-media-import-card"><div><h4>Adicionar arquivos locais</h4><p>Os arquivos permanecem neste dispositivo. Imagens equiretangulares próximas de 2:1 são reconhecidas automaticamente como panoramas 360°.</p><small id="bxMediaStorage" class="bx-media-storage" aria-live="polite">Verificando armazenamento local...</small></div><div class="bx-media-form"><input type="file" id="bxMediaFiles" accept="image/*,video/*,audio/*,.pdf,.doc,.docx,.ppt,.pptx,.txt" multiple><div id="bxMediaFilePlan" class="bx-media-fileplan muted" aria-live="polite"></div><small class="bx-media-add-hint">Dica: nomeie cada arquivo com a passagem — <i>Salmos_23.png</i>, <i>Joao_3.16.png</i> — e ele já entra ligado a ela. Uma imagem pode servir a várias passagens: <i>Mt_14_Mc_6_Lc_9_Jo_6.png</i> ou “Mt 14:13-21; Mc 6:30-44; Lc 9:10-17; Jo 6:1-14” no campo Referência(s).</small><input id="bxMediaRef" placeholder="Referência(s) — separe com ; ou + (ex.: Mt 14:13-21; Mc 6:30-44; Lc 9:10-17; Jo 6:1-14)"><input id="bxMediaTags" placeholder="Tags ou lugar, separados por vírgula"><input id="bxMediaCredits" placeholder="Créditos / fonte"><input id="bxMediaLicense" placeholder="Licença / permissão de uso"><textarea id="bxMediaDesc" rows="2" placeholder="Descrição da mídia"></textarea><button class="btn blue" id="bxMediaAdd">＋ Adicionar à Mídia X</button><small id="bxMediaActionStatus" class="bx-media-action-status" aria-live="polite"></small></div></section>
+   <div class="bx-media-layout"><section class="bx-media-results"><div class="bx-media-results-head"><div><h4>Sua biblioteca</h4><p id="bxMediaCount">0 itens</p></div><div class="row"><button class="btn secondary" id="bxMediaSlideshow">▶ Apresentação</button><button class="btn secondary" id="bxMediaExample">Carregar exemplos</button><button class="btn secondary" id="bxMediaSelect" title="Baixar vários itens de uma vez">☑ Selecionar</button><button class="btn secondary" id="bxMediaExport">Exportar índice</button><button class="btn secondary" id="bxMediaShare" title="Enviar itens marcados para outro aparelho (celular → PC)">📤 Enviar p/ outro aparelho</button><button class="btn secondary" id="bxMediaRecv" title="Receber itens enviados de outro aparelho com o mesmo código">📥 Receber do celular</button></div></div><div id="bxMediaGrid" class="bx-media-grid"><div class="bx-media-empty">Adicione arquivos locais ou salve uma referência visual pública.</div></div></section><aside class="bx-media-detail" id="bxMediaDetail"><div class="bx-media-detail-empty"><span>🎥</span><h4>Visualização de mídia</h4><p>Selecione um item para ampliar, apresentar, ouvir, assistir ou explorar em 360°.</p></div></aside></div>
    <details class="bible-x-import"><summary>⚙️ Gerenciar Mídia X</summary><p class="muted">O índice pode ser exportado em JSON sem copiar os arquivos binários. Use apenas mídia cuja licença permita armazenamento e uso.</p><div class="row"><button class="btn danger" id="bxMediaClear">Limpar biblioteca de mídia</button></div></details>
   </section>
   <section class="bible-x-section" data-bible-panel="dna">
@@ -2625,7 +2625,7 @@ async function mapsAll(){return await dbAll("maps")}
 async function mapsPutMany(rows=[]){const clean=rows.map(normalizeMapRow).filter(Boolean);if(!clean.length)return 0;const db=await openDB();return new Promise((res,rej)=>{const t=db.transaction("maps","readwrite"),st=t.objectStore("maps");clean.forEach(x=>st.put(x));t.oncomplete=()=>res(clean.length);t.onerror=()=>rej(t.error)})}
 async function mapsClear(){const db=await openDB();return new Promise((res,rej)=>{const t=db.transaction("maps","readwrite");t.objectStore("maps").clear();t.oncomplete=()=>res(true);t.onerror=()=>rej(t.error)})}
 function mediaKindFromMime(mime=''){mime=String(mime).toLowerCase();if(mime.startsWith('image/'))return 'image';if(mime.startsWith('video/'))return 'video';if(mime.startsWith('audio/'))return 'audio';return 'document'}
-function normalizeMediaRow(row={}){const arr=v=>Array.isArray(v)?v:String(v||'').split(/[;,|]/).map(x=>x.trim()).filter(Boolean);const title=String(row.title||row.name||'Mídia bíblica').trim();const id=String(row.id||(`media-${Date.now()}-${Math.random().toString(36).slice(2,8)}`));const mime=String(row.mime||row.typeMime||row.blob?.type||'');const rawType=String(row.type||mediaKindFromMime(mime)||'document').toLowerCase(),type=rawType==='panorama'?'image':rawType;const width=Number(row.width||0),height=Number(row.height||0),ratio=width&&height?width/height:0,panorama=row.panorama===true||row.panorama_candidate===true||rawType==='panorama'||(width>=1200&&height>=500&&ratio>=1.75&&ratio<=2.25);return {id,title,type,mime,reference:normalizeBibleRef(row.reference||row.ref||row.passage||''),description:String(row.description||row.summary||''),tags:arr(row.tags||row.keywords),credits:String(row.credits||row.credit||row.artist||row.source||''),license:String(row.license||''),licenseUrl:String(row.licenseUrl||row.license_url||''),sourceUrl:String(row.sourceUrl||row.original_url||row.url||''),thumbUrl:String(row.thumbUrl||row.thumb_url||''),pageUrl:String(row.pageUrl||row.page_url||''),sourceKind:String(row.sourceKind||row.source_kind||(row.sourceUrl||row.original_url?'public':'local')),place:String(row.place||row.location||''),width,height,panorama,createdAt:String(row.createdAt||row.created||new Date().toISOString()),blob:row.blob||null,size:Number(row.size||row.blob?.size||0)}}
+function normalizeMediaRow(row={}){const arr=v=>Array.isArray(v)?v:String(v||'').split(/[;,|]/).map(x=>x.trim()).filter(Boolean);const title=String(row.title||row.name||'Mídia bíblica').trim();const id=String(row.id||(`media-${Date.now()}-${Math.random().toString(36).slice(2,8)}`));const mime=String(row.mime||row.typeMime||row.blob?.type||'');const rawType=String(row.type||mediaKindFromMime(mime)||'document').toLowerCase(),type=rawType==='panorama'?'image':rawType;const width=Number(row.width||0),height=Number(row.height||0),ratio=width&&height?width/height:0,panorama=row.panorama===true||row.panorama_candidate===true||rawType==='panorama'||(width>=1200&&height>=500&&ratio>=1.75&&ratio<=2.25);return {id,title,type,mime,reference:normalizeBibleRef(row.reference||row.ref||row.passage||''),relatedReferences:arr(row.relatedReferences||[]).slice(0,16).map(x=>normalizeBibleRef(x)).filter(Boolean),description:String(row.description||row.summary||''),tags:arr(row.tags||row.keywords),credits:String(row.credits||row.credit||row.artist||row.source||''),license:String(row.license||''),licenseUrl:String(row.licenseUrl||row.license_url||''),sourceUrl:String(row.sourceUrl||row.original_url||row.url||''),thumbUrl:String(row.thumbUrl||row.thumb_url||''),pageUrl:String(row.pageUrl||row.page_url||''),sourceKind:String(row.sourceKind||row.source_kind||(row.sourceUrl||row.original_url?'public':'local')),place:String(row.place||row.location||''),width,height,panorama,createdAt:String(row.createdAt||row.created||new Date().toISOString()),blob:row.blob||null,size:Number(row.size||row.blob?.size||0)}}
 async function mediaAll(){return await dbAll('media')}
 async function mediaPutMany(rows=[]){const clean=rows.map(normalizeMediaRow).filter(Boolean);if(!clean.length)return 0;const db=await openDB();return new Promise((res,rej)=>{const t=db.transaction('media','readwrite'),st=t.objectStore('media');clean.forEach(x=>st.put(x));t.oncomplete=()=>res(clean.length);t.onerror=()=>rej(t.error)})}
 async function mediaDelete(id){const db=await openDB();return new Promise((res,rej)=>{const t=db.transaction('media','readwrite');t.objectStore('media').delete(id);t.oncomplete=()=>res(true);t.onerror=()=>rej(t.error)})}
@@ -5934,7 +5934,12 @@ Gerado em ${new Date().toLocaleString("pt-BR")}
       if(!BX170_TOOLS[key]&&key!=='more')return;
       /* 5.4.108/5.4.151 — modo "Tudo": mostra exatamente o marcado na engrenagem. */
       if(mode==='all'){b.hidden=!(key==='more'||has(key));return;}
-      b.hidden=mode==='reading'?key!=='more':(key==='more'?false:!(allowed.includes(key)&&has(key)));
+      /* 5.4.245 — Leitura Limpa (reading) agora RESPEITA a engrenagem ⚙️: mostra os
+         atalhos marcados no painel e esconde os desmarcados (antes forçava esconder
+         tudo, então "marcar não fazia nada" no celular em tela normal). Enquanto o
+         usuário nunca configurou (cfg=null) continua limpa — só o "＋". */
+      if(mode==='reading'){b.hidden=key!=='more'&&(!cfg||!cfg.has(key));return;}
+      b.hidden=key==='more'?false:!(allowed.includes(key)&&has(key));
     });
     /* 5.4.151 — ações do leque "＋" respeitam a lista-mestra em QUALQUER modo
        (ao abrir o leque, só o marcado aparece). Só as chaves do registro são
@@ -8034,6 +8039,22 @@ const smartBibleRef=async(q)=>{try{return await apiBibleRef(q)}catch(e){const lo
      setTimeout(()=>$("#bOut")?.scrollIntoView({behavior:"smooth",block:"start"}),30);
    }catch(e){bxV159Toast(`Não foi possível abrir ${v.ref}`)}
  };
+ const bxSearchXRenderBooks=(page,q,translation,out)=>{
+   const list=Array.isArray(page.by_book)?page.by_book:[];
+   if(!list.length)return;
+   if(!document.getElementById("bxSearchXBooksCss")){const st=document.createElement("style");st.id="bxSearchXBooksCss";st.textContent=".bx-search-x-books{margin:0 0 10px;padding:10px 12px;border:1px solid rgba(128,128,128,.25);border-radius:12px;background:rgba(128,128,128,.06)}.bx-search-x-books-h{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;font-size:.8rem;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:#9aa;opacity:.9}.bx-search-x-books-h span:last-child{font-weight:400;text-transform:none}.bx-search-x-books-l{display:flex;flex-wrap:wrap;gap:6px;max-height:150px;overflow-y:auto;padding-right:2px}.bx-search-x-books-l button{display:inline-flex;align-items:center;gap:6px;padding:5px 9px;border-radius:999px;border:1px solid rgba(128,128,128,.3);background:transparent;color:inherit;font-size:.8rem;cursor:pointer;line-height:1.1}.bx-search-x-books-l button:hover,.bx-search-x-books-l button:focus-visible{border-color:#d4a94f;color:#d4a94f}.bx-search-x-books-l b{font-weight:700}";document.head.appendChild(st)}
+   const eng=(translation||"").toLowerCase()==="engwebp";
+   const chips=list.map(b=>`<button type="button" data-search-x-book="${escapeHtml(b.book_code)}" title="Ver resultados só em ${escapeHtml(eng?b.name_en:b.name_pt)}">${escapeHtml(eng?b.name_en:b.name_pt)} <b>${Number(b.c||0).toLocaleString("pt-BR")}</b></button>`).join("");
+   const el=document.createElement("div");el.className="bx-search-x-books";
+   el.innerHTML=`<div class="bx-search-x-books-h"><span>📚 Ocorrências por livro</span><span>${Number(list.length).toLocaleString("pt-BR")} livro${list.length===1?"":"s"}</span></div><div class="bx-search-x-books-l">${chips}</div>`;
+   const summary=out.querySelector(".bx-search-x-summary");if(summary)summary.after(el);else out.prepend(el);
+   el.querySelectorAll("[data-search-x-book]").forEach(btn=>btn.onclick=()=>{
+     const sc=$("#bxSearchXScope");if(sc)sc.value="book";
+     const bk=$("#bxSearchXBook");if(bk){bk.value=btn.dataset.searchXBook;bk.disabled=false;}
+     document.querySelectorAll('[data-search-x-scope]').forEach(item=>item.classList.toggle("active",item.dataset.searchXScope==="book"));
+     bxSearchXRun(0);
+   });
+ };
  const bxSearchXRender=(page,q,translation,mode)=>{
    const out=$("#bxSearchXResults"),rows=page.items||[];if(!out)return;
    const books=new Set(rows.map(row=>row.book));
@@ -8041,6 +8062,7 @@ const smartBibleRef=async(q)=>{try{return await apiBibleRef(q)}catch(e){const lo
    if(!rows.length){out.innerHTML=`<div class="bx-search-x-empty"><span>🔎</span><h4>Nenhuma ocorrência encontrada</h4><p>Tente outra correspondência, escopo ou uma expressão menor.</p></div>`;return}
    const start=Number(page.offset||0),total=Number(page.total||rows.length),end=start+rows.length;
    out.innerHTML=`<div class="bx-search-x-summary"><div><b>${escapeHtml(q)}</b><span>${total.toLocaleString("pt-BR")} resultado(s) • exibindo ${(start+1).toLocaleString("pt-BR")}–${end.toLocaleString("pt-BR")}</span></div><button type="button" data-search-x-copy>⧉ Copiar esta página</button></div><div class="bx-search-x-list">${rows.map((v,index)=>`<article class="bx-search-x-result"><button type="button" class="bx-search-x-ref" data-search-x-open="${index}">${escapeHtml(v.ref)}</button><p>${bxV159Highlight(v.text,q,mode)}</p><button type="button" data-search-x-open="${index}">Abrir no leitor →</button></article>`).join('')}</div><footer class="bx-search-x-pager"><button class="btn secondary" type="button" data-search-x-page="${Math.max(0,start-BX_SEARCH_X_PAGE_SIZE)}" ${start<=0?'disabled':''}>← Anterior</button><span>Página ${Math.floor(start/BX_SEARCH_X_PAGE_SIZE)+1} de ${Math.max(1,Math.ceil(total/BX_SEARCH_X_PAGE_SIZE))}</span><button class="btn secondary" type="button" data-search-x-page="${start+BX_SEARCH_X_PAGE_SIZE}" ${end>=total?'disabled':''}>Próxima →</button></footer>`;
+   bxSearchXRenderBooks(page,q,translation,out);
    out.querySelectorAll('[data-search-x-open]').forEach(button=>button.onclick=()=>bxSearchXOpen(rows[Number(button.dataset.searchXOpen)],translation));
    out.querySelectorAll('[data-search-x-page]').forEach(button=>button.onclick=()=>bxSearchXRun(Number(button.dataset.searchXPage)));
    out.querySelector('[data-search-x-copy]')?.addEventListener('click',async()=>{await bxCopyText(formatVerses(rows));bxV159Toast(`${rows.length} resultados copiados`)});
@@ -8245,8 +8267,8 @@ const smartBibleRef=async(q)=>{try{return await apiBibleRef(q)}catch(e){const lo
  };
  const bxMapEmbedUrl=row=>{const lat=Number(row?.lat),lng=Number(row?.lng);if(!Number.isFinite(lat)||!Number.isFinite(lng))return "";const d=.055,bbox=[lng-d,lat-d,lng+d,lat+d].join("%2C");return `https://www.openstreetmap.org/export/embed.html?bbox=${bbox}&layer=mapnik&marker=${lat}%2C${lng}`};
  const bxPublicMediaCache=new Map();
- const bxPublicMediaSearch=async(query,kind='image',limit=8)=>{const q=String(query||'').trim();if(!q)return [];const key=`${kind}|${limit}|${bxV159Norm(q)}`;if(bxPublicMediaCache.has(key))return bxPublicMediaCache.get(key);const promise=(async()=>{const params=new URLSearchParams({q,kind,limit:String(limit)}),response=await bxFetch(`/api/bible/media/public/search?${params}`),payload=await response.json().catch(()=>({}));if(!response.ok)throw new Error(payload.detail||'Fonte visual pública indisponível.');return Array.isArray(payload.items)?payload.items:[]})();bxPublicMediaCache.set(key,promise);try{return await promise}catch(error){bxPublicMediaCache.delete(key);throw error}};
- const bxVisualItem=item=>({title:item.title||'Imagem bíblica',src:item.original_url||item.sourceUrl||item.url||item.thumb_url||item.thumbUrl||'',thumb:item.thumb_url||item.thumbUrl||item.original_url||item.sourceUrl||'',credit:item.credit||item.credits||item.artist||item.source||'',license:item.license||'',pageUrl:item.page_url||item.pageUrl||'',licenseUrl:item.license_url||item.licenseUrl||'',description:item.description||''});
+ const bxPublicMediaSearch=async(query,kind='image',limit=8,provider='all')=>{const q=String(query||'').trim();if(!q)return [];const prov=String(provider||'all').trim();const key=`${kind}|${prov}|${limit}|${bxV159Norm(q)}`;if(bxPublicMediaCache.has(key))return bxPublicMediaCache.get(key);const promise=(async()=>{const params=new URLSearchParams({q,kind,limit:String(limit)});if(prov&&prov!=='all')params.set('provider',prov);const response=await bxFetch(`/api/bible/media/public/search?${params}`),payload=await response.json().catch(()=>({}));if(!response.ok)throw new Error(payload.detail||'Fonte visual pública indisponível.');return Array.isArray(payload.items)?payload.items:[]})();bxPublicMediaCache.set(key,promise);try{return await promise}catch(error){bxPublicMediaCache.delete(key);throw error}};
+ const bxVisualItem=item=>({...item,title:item.title||'Imagem bíblica',src:item.original_url||item.sourceUrl||item.url||item.thumb_url||item.thumbUrl||'',thumb:item.thumb_url||item.thumbUrl||item.original_url||item.sourceUrl||'',credit:item.credit||item.credits||item.artist||item.source||'',license:item.license||'',pageUrl:item.page_url||item.pageUrl||'',licenseUrl:item.license_url||item.licenseUrl||'',description:item.description||''});
  const bxOpenVisualGallery=(items,index=0,options={})=>{const visual=window.BibleXVisualMedia,clean=(items||[]).map(bxVisualItem).filter(x=>x.src);if(!clean.length)return alert('Nenhuma imagem disponível para abrir.');if(visual?.openGallery)return visual.openGallery(clean,index,options);window.open(clean[index]?.pageUrl||clean[index]?.src,'_blank','noopener')};
  const bxOpenVisualPanorama=(item,options={})=>{const visual=window.BibleXVisualMedia,x=bxVisualItem(item);if(!x.src)return alert('A imagem panorâmica não está disponível.');if(visual?.openPanorama)return visual.openPanorama(x,options);window.open(x.pageUrl||x.src,'_blank','noopener')};
  const bxMapPublicCard=(item,index)=>`<article class="bx-map-media-card${item.panorama_candidate?' is-panorama':''}"><button type="button" class="bx-map-media-image" data-map-public-open="${index}"><img loading="lazy" src="${escapeHtml(item.thumb_url||item.original_url)}" alt="${escapeHtml(item.title||'Imagem')}">${item.panorama_candidate?'<i>360°</i>':''}</button><div><strong title="${escapeHtml(item.title||'Imagem')}">${escapeHtml(item.title||'Imagem')}</strong><small>${escapeHtml(item.credit||item.artist||item.source||'Wikimedia Commons')}</small><em>${escapeHtml(item.license||'Licença na fonte')}</em></div><nav><button type="button" data-map-public-open="${index}">⛶ Ampliar</button>${item.panorama_candidate?`<button type="button" data-map-public-pano="${index}">🕶️ 360°</button>`:''}${item.page_url?`<a href="${escapeHtml(item.page_url)}" target="_blank" rel="noopener">Fonte ↗</a>`:''}</nav></article>`;
@@ -8317,18 +8339,289 @@ const smartBibleRef=async(q)=>{try{return await apiBibleRef(q)}catch(e){const lo
    else if(row.type==='video'&&url)player=`<video class="bx-media-preview-video" src="${escapeHtml(url)}" controls playsinline></video>`;
    else if(row.type==='audio'&&url)player=`<div class="bx-media-audio-wrap"><span>🎧</span><audio src="${escapeHtml(url)}" controls></audio></div>`;
    else player=`<div class="bx-media-file-wrap"><span>${mediaIcon(row.type)}</span><p>${row.blob?'Arquivo armazenado localmente.':row.sourceUrl?'Referência visual pública.':'Registro sem arquivo binário.'}</p>${url?`<a class="btn secondary" href="${escapeHtml(url)}" ${row.blob?`download="${escapeHtml(row.title)}"`:'target="_blank" rel="noopener"'}>Abrir arquivo</a>`:''}</div>`;
-   box.innerHTML=`<div class="bx-media-detail-head"><div><span>${mediaIcon(row.type)} ${row.panorama?'PANORAMA 360°':escapeHtml(String(row.type||'mídia').toUpperCase())}</span><h4>${escapeHtml(row.title)}</h4><small>${escapeHtml([row.reference,row.mime,row.width&&row.height?`${row.width}×${row.height}`:'',row.size?Math.round(row.size/1024)+' KB':''].filter(Boolean).join(' • '))}</small></div><button class="btn danger" data-media-delete>Excluir</button></div>${player}${row.description?`<p class="bx-media-description">${escapeHtml(row.description)}</p>`:''}<div class="bx-media-meta"><div><span>Referência</span><b>${escapeHtml(row.reference||'—')}</b></div><div><span>Créditos</span><b>${escapeHtml(row.credits||'—')}</b></div><div><span>Licença</span><b>${escapeHtml(row.license||'—')}</b></div><div><span>Origem</span><b>${row.blob?'Arquivo local':row.sourceKind==='public'?'Referência pública':'Índice local'}</b></div></div>${row.tags?.length?`<section class="bx-media-tags"><span>Palavras-chave</span><div>${row.tags.map(x=>`<i>${escapeHtml(x)}</i>`).join('')}</div></section>`:''}<div class="row bx-media-actions">${row.type==='image'&&url?'<button class="btn secondary" data-media-gallery>🖼️ Galeria</button>':''}${row.panorama&&url?'<button class="btn primary" data-media-pano>🕶️ Ver em 360°</button>':''}${row.reference?`<button class="btn secondary" data-media-open-ref>📖 Passagem</button>`:''}${row.pageUrl?`<a class="btn secondary" href="${escapeHtml(row.pageUrl)}" target="_blank" rel="noopener">Fonte ↗</a>`:''}<button class="btn secondary" data-media-copy>Copiar ficha</button></div>`;
+   box.innerHTML=`<div class="bx-media-detail-head"><div><span>${mediaIcon(row.type)} ${row.panorama?'PANORAMA 360°':escapeHtml(String(row.type||'mídia').toUpperCase())}</span><h4>${escapeHtml(row.title)}</h4><small>${escapeHtml([row.reference,row.mime,row.width&&row.height?`${row.width}×${row.height}`:'',row.size?Math.round(row.size/1024)+' KB':''].filter(Boolean).join(' • '))}</small></div><button class="btn danger" data-media-delete>Excluir</button></div>${player}${row.description?`<p class="bx-media-description">${escapeHtml(row.description)}</p>`:''}<div class="bx-media-meta"><div><span>Referência</span><b>${escapeHtml(row.reference||'—')}</b></div><div><span>Créditos</span><b>${escapeHtml(row.credits||'—')}</b></div><div><span>Licença</span><b>${escapeHtml(row.license||'—')}</b></div><div><span>Origem</span><b>${row.blob?'Arquivo local':row.sourceKind==='public'?'Referência pública':'Índice local'}</b></div></div>${row.tags?.length?`<section class="bx-media-tags"><span>Palavras-chave</span><div>${row.tags.map(x=>`<i>${escapeHtml(x)}</i>`).join('')}</div></section>`:''}<div class="row bx-media-actions">${row.type==='image'&&url?'<button class="btn secondary" data-media-gallery>🖼️ Galeria</button>':''}${row.panorama&&url?'<button class="btn primary" data-media-pano>🕶️ Ver em 360°</button>':''}${row.reference?`<button class="btn secondary" data-media-open-ref>📖 Passagem</button>`:''}${row.pageUrl?`<a class="btn secondary" href="${escapeHtml(row.pageUrl)}" target="_blank" rel="noopener">Fonte ↗</a>`:''}<button class="btn secondary" data-media-download>⬇ Baixar</button><button class="btn secondary" data-media-copy>Copiar ficha</button></div>`;
    box.querySelector('[data-media-delete]')?.addEventListener('click',async()=>{if(!confirm(`Excluir "${row.title}" da Mídia X?`))return;await mediaDelete(row.id);box.innerHTML='<div class="bx-media-detail-empty"><span>🎥</span><h4>Item removido</h4><p>Selecione outro item da biblioteca.</p></div>';await renderMedia()});
    box.querySelectorAll('[data-media-gallery]').forEach(button=>button.addEventListener('click',()=>{if(row.panorama)return bxOpenVisualPanorama({...row,sourceUrl:url},{eyebrow:'MÍDIA X • PANORAMA LOCAL'});bxMediaGalleryRows(mediaLastRows,row,{eyebrow:'MÍDIA X • GALERIA DA BIBLIOTECA'})}));
    box.querySelector('[data-media-pano]')?.addEventListener('click',()=>bxOpenVisualPanorama({...row,sourceUrl:url},{eyebrow:'MÍDIA X • PANORAMA 360°'}));
    box.querySelector('[data-media-open-ref]')?.addEventListener('click',async()=>{activate('reader');$("#bRef").value=row.reference;current=await bibleRef(row.reference);$("#bOut").textContent=formatVerses(current)||'Passagem não encontrada na Bíblia local.'});
    box.querySelector('[data-media-copy]')?.addEventListener('click',()=>navigator.clipboard?.writeText([row.title,row.reference,row.description,row.credits,row.license,row.pageUrl,(row.tags||[]).join(', ')].filter(Boolean).join('\n')));
+   box.querySelector('[data-media-download]')?.addEventListener('click',()=>{const name=bxHubFileName(row);if(row.blob){bxHubTriggerDownload(url,name)}else{const remote=row.sourceUrl||row.thumbUrl||'';if(/^https?:/i.test(remote))bxHubRemoteDownload(remote,name);else if(remote){bxHubTriggerDownload(remote,name)}}});
  };
- const renderMedia=async(q='')=>{const grid=$("#bxMediaGrid");if(!grid)return;revokeMediaUrls('grid');let rows=(await mediaAll()).map(normalizeMediaRow);const term=bxV159Norm(q||$("#bxMediaQuery")?.value||'');if(mediaType==='panorama')rows=rows.filter(row=>row.panorama);else if(mediaType!=='all')rows=rows.filter(row=>row.type===mediaType);if(term)rows=rows.filter(row=>bxV159Norm([row.title,row.reference,row.description,row.credits,row.license,row.mime,row.place,...(row.tags||[])].join(' ')).includes(term));rows.sort((a,b)=>String(b.createdAt||'').localeCompare(String(a.createdAt||'')));mediaLastRows=rows;const c=$("#bxMediaCount");if(c)c.textContent=`${rows.length} ${rows.length===1?'item':'itens'}${rows.some(row=>row.panorama)?` • ${rows.filter(row=>row.panorama).length} panorama(s)`:''}`;if(!rows.length){grid.innerHTML='<div class="bx-media-empty">Nenhuma mídia encontrada na sua biblioteca.</div>';return}grid.innerHTML=rows.slice(0,300).map(row=>{const url=mediaUrl(row,mediaGridUrls,true),visual=row.type==='image'&&url?`<img loading="lazy" src="${escapeHtml(url)}" alt="${escapeHtml(row.title)}">`:row.type==='video'&&url?`<video src="${escapeHtml(url)}" muted preload="metadata"></video>`:`<span>${mediaIcon(row.type)}</span>`;return `<button class="bx-media-card${row.panorama?' panorama':''}" data-media-id="${escapeHtml(row.id)}"><span class="bx-media-thumb">${visual}${row.panorama?'<i>360°</i>':''}</span><div><strong>${escapeHtml(row.title)}</strong><small>${escapeHtml([row.reference,row.mime,row.blob?'Local':row.sourceKind==='public'?'Pública':'Índice'].filter(Boolean).join(' • ')||'Mídia local')}</small>${row.description?`<p>${escapeHtml(row.description.slice(0,120))}</p>`:''}</div></button>`}).join('');grid.querySelectorAll('[data-media-id]').forEach(button=>button.onclick=()=>{const row=rows.find(item=>item.id===button.dataset.mediaId);grid.querySelectorAll('.bx-media-card').forEach(item=>item.classList.toggle('active',item===button));mediaPreview(row)});if(rows.length===1)grid.querySelector('[data-media-id]')?.click()};
- const bxMediaRenderPublic=async(kind='image')=>{const grid=$("#bxMediaPublicGrid"),query=String($("#bxMediaPublicQuery")?.value||'').trim();if(!grid||!query)return;if(kind==='panorama'&&query&&!/panorama|360/i.test(query)){}grid.innerHTML=`<div class="bx-media-public-empty">${kind==='panorama'?'Procurando imagens panorâmicas 2:1...':'Montando galeria com créditos e licenças...'}</div>`;try{const items=await bxPublicMediaSearch(query,kind,12);grid.__bxItems=items;if(!items.length){grid.innerHTML=`<div class="bx-media-public-empty">${kind==='panorama'?'Nenhum panorama equiretangular foi localizado. Tente outro nome de lugar.':'Nenhuma imagem foi localizada.'}</div>`;return}grid.innerHTML=items.map((item,index)=>`<article class="bx-media-public-card${item.panorama_candidate?' panorama':''}"><button type="button" data-media-public-open="${index}"><img loading="lazy" src="${escapeHtml(item.thumb_url||item.original_url)}" alt="${escapeHtml(item.title||query)}">${item.panorama_candidate?'<i>360°</i>':''}</button><div><strong>${escapeHtml(item.title||query)}</strong><small>${escapeHtml(item.credit||item.artist||item.source||'Wikimedia Commons')}</small><em>${escapeHtml(item.license||'Licença na fonte')}</em></div><nav><button type="button" data-media-public-open="${index}">⛶ Abrir</button>${item.panorama_candidate?`<button type="button" data-media-public-pano="${index}">🕶️ 360°</button>`:''}<button type="button" data-media-public-save="${index}">＋ Salvar no índice</button>${item.page_url?`<a href="${escapeHtml(item.page_url)}" target="_blank" rel="noopener">Fonte ↗</a>`:''}</nav></article>`).join('');grid.querySelectorAll('[data-media-public-open]').forEach(button=>button.onclick=()=>bxOpenVisualGallery(items,Number(button.dataset.mediaPublicOpen),{eyebrow:`MÍDIA X • ${query}`}));grid.querySelectorAll('[data-media-public-pano]').forEach(button=>button.onclick=()=>bxOpenVisualPanorama(items[Number(button.dataset.mediaPublicPano)],{eyebrow:`MÍDIA X • 360° DE ${query}`}));grid.querySelectorAll('[data-media-public-save]').forEach(button=>button.onclick=async()=>{const item=items[Number(button.dataset.mediaPublicSave)];await mediaPutMany([{id:item.id,title:item.title,type:'image',mime:item.mime,description:item.description,tags:[query,'wikimedia-commons',item.panorama_candidate?'360':'imagem'].filter(Boolean),credits:item.credit||item.artist||item.source,license:item.license,licenseUrl:item.license_url,sourceUrl:item.original_url,thumbUrl:item.thumb_url,pageUrl:item.page_url,sourceKind:'public',place:query,width:item.width,height:item.height,panorama:item.panorama_candidate,createdAt:new Date().toISOString()}]);button.textContent='✓ Salvo';button.disabled=true;await renderMedia()})}catch(error){grid.innerHTML=`<div class="bx-media-public-empty">${escapeHtml(error.message||String(error))}<small>Sua biblioteca local continua funcionando offline.</small></div>`}};
+ const renderMedia=async(q='')=>{const grid=$("#bxMediaGrid");if(!grid)return;revokeMediaUrls('grid');bxMediaDropMore();let rows=(await mediaAll()).map(normalizeMediaRow);const term=bxV159Norm(q||$("#bxMediaQuery")?.value||'');if(mediaType==='panorama')rows=rows.filter(row=>row.panorama);else if(mediaType!=='all')rows=rows.filter(row=>row.type===mediaType);if(term)rows=rows.filter(row=>bxV159Norm([row.title,row.reference,row.description,row.credits,row.license,row.mime,row.place,...(row.tags||[])].join(' ')).includes(term));rows.sort((a,b)=>String(b.createdAt||'').localeCompare(String(a.createdAt||'')));mediaLastRows=rows;const total=rows.length,c=$("#bxMediaCount");if(c)c.textContent=`${total} ${total===1?'item':'itens'}${rows.some(row=>row.panorama)?` • ${rows.filter(row=>row.panorama).length} panorama(s)`:''}`;if(!total){grid.innerHTML='<div class="bx-media-empty">Nenhuma mídia encontrada na sua biblioteca.</div>';const bxd=$("#bxMediaDetail");if(bxd)bxd.innerHTML='';return}const PAGE=60;let shown=Math.min(PAGE,total);const card=row=>{const url=mediaUrl(row,mediaGridUrls,true),visual=row.type==='image'&&url?`<img loading="lazy" src="${escapeHtml(url)}" alt="${escapeHtml(row.title)}">`:row.type==='video'&&url?`<video src="${escapeHtml(url)}" muted preload="metadata"></video>`:`<span>${mediaIcon(row.type)}</span>`;return `<button class="bx-media-card${row.panorama?' panorama':''}" data-media-id="${escapeHtml(row.id)}"><span class="bx-media-thumb">${visual}${row.panorama?'<i>360°</i>':''}</span><div><strong>${escapeHtml(row.title)}</strong><small>${escapeHtml([row.reference,(Array.isArray(row.relatedReferences)&&row.relatedReferences.length)?('+'+row.relatedReferences.length+' vínculo'+(row.relatedReferences.length>1?'s':'')):'',row.mime,row.blob?'Local':row.sourceKind==='public'?'Pública':'Índice'].filter(Boolean).join(' • ')||'Mídia local')}</small>${row.description?`<p>${escapeHtml(row.description.slice(0,120))}</p>`:''}</div></button>`};const paint=()=>{grid.innerHTML=rows.slice(0,shown).map(card).join('');grid.querySelectorAll('[data-media-id]').forEach(button=>button.onclick=()=>{const row=rows.find(item=>item.id===button.dataset.mediaId);bxHubCardClick(row,button,grid)});grid.querySelectorAll('[data-media-id]').forEach(button=>{const selRow=rows.find(item=>item.id===button.dataset.mediaId);if(selRow&&bxMediaSelected.has(String(selRow.id)))button.classList.add('is-sel');else button.classList.remove('is-sel')});if(rows.length===1&&!bxMediaSelectMode)grid.querySelector('[data-media-id]')?.click()};paint();const more=()=>{bxMediaDropMore();if(shown>=total)return;shown=Math.min(shown+PAGE,total);paint();const rowDiv=document.createElement('div');rowDiv.id='bxMediaMoreRow';rowDiv.style.cssText='display:flex;justify-content:center;padding:14px 0 4px';const btn=document.createElement('button');btn.type='button';btn.className='btn secondary';btn.textContent=`Mostrar mais (${total-shown} restante${total-shown===1?'':'s'})`;btn.onclick=more;rowDiv.appendChild(btn);grid.after(rowDiv)};more()};
+ function bxMediaDropMore(){document.getElementById('bxMediaMoreRow')?.remove()}
+ /* ---- 5.4.246 — Multi-seleção + ⬇ download em lote no HUB Mídia X ------- */
+ let bxMediaSelectMode=false;
+ const bxMediaSelected=new Set();
+ function bxHubFileName(row){
+   const base=String(row?.title||row?.reference||'midia-x').replace(/[^\p{L}\p{N}]+/gu,'-').replace(/^-+|-+$/g,'')||'midia-x';
+   const mime=String(row?.mime||row?.type||'').toLowerCase();
+   let ext='';
+   if(mime.includes('png'))ext='.png';else if(mime.includes('jpeg')||mime.includes('jpg'))ext='.jpg';else if(mime.includes('webp'))ext='.webp';else if(mime.includes('gif'))ext='.gif';else if(mime.includes('webm'))ext='.webm';else if(mime.includes('mp4')||row?.type==='video')ext='.mp4';else if(mime.includes('mp3')||mime.includes('mpeg')||row?.type==='audio')ext='.mp3';else if(mime.includes('pdf'))ext='.pdf';
+   return base.slice(0,120)+ext;
+ }
+ function bxHubSelCss(){
+   if(document.getElementById('bxHubSelCss'))return;
+   const s=document.createElement('style');s.id='bxHubSelCss';
+   s.textContent='.bx-media-card{position:relative}.bx-media-thumb{position:relative}.bx-media-card.is-sel{outline:2px solid #2ecc9f;outline-offset:-2px}.bx-media-card.is-sel .bx-media-thumb::after{content:"✓";position:absolute;top:6px;right:6px;background:#2ecc9f;color:#04231a;font-weight:900;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-size:.8rem;box-shadow:0 2px 6px rgba(0,0,0,.4);z-index:2}#bxHubSelBar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:10px 2px 0;padding:8px 10px;border:1px solid rgba(46,204,159,.45);border-radius:12px;background:rgba(9,54,48,.28);color:#dffcf5;font-size:.85rem;flex-wrap:wrap}#bxHubSelBar b{color:#5fe0b0}#bxHubToast{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:200000;background:#06202a;border:1px solid rgba(134,200,255,.4);color:#eaf6ff;padding:10px 16px;border-radius:12px;font-size:.85rem;box-shadow:0 6px 24px rgba(0,0,0,.45);max-width:92vw}.bx-hub-toast-warn{border-color:rgba(255,175,80,.55)!important;color:#ffe3bd!important}';
+   document.head.appendChild(s);
+ }
+ function bxHubToast(message,tone){
+   bxHubSelCss();
+   const old=document.getElementById('bxHubToast');if(old)old.remove();
+   const t=document.createElement('div');t.id='bxHubToast';t.textContent=message;if(tone==='warn')t.classList.add('bx-hub-toast-warn');
+   document.body.appendChild(t);setTimeout(()=>t.remove(),4200);
+ }
+ function bxHubCardClick(row,button,grid){
+   if(bxMediaSelectMode){bxHubToggleSel(row,button);return;}
+   if(grid)grid.querySelectorAll('.bx-media-card').forEach(item=>item.classList.toggle('active',item===button));
+   mediaPreview(row);
+ }
+ function bxHubToggleSel(row,button){
+   const id=String(row&&row.id||'');
+   if(!id)return;
+   if(bxMediaSelected.has(id)){bxMediaSelected.delete(id);button.classList.remove('is-sel');}
+   else{bxMediaSelected.add(id);button.classList.add('is-sel');}
+   bxHubBar();
+ }
+ function bxHubBar(){
+   bxHubSelCss();
+   let bar=document.getElementById('bxHubSelBar');
+   if(!bxMediaSelectMode){if(bar)bar.remove();return;}
+   const grid=document.getElementById('bxMediaGrid');if(!grid)return;
+   if(!bar){bar=document.createElement('div');bar.id='bxHubSelBar';grid.after(bar);}
+   const n=bxMediaSelected.size,total=(mediaLastRows||[]).length;
+   bar.innerHTML=`<span><b>${n}</b> selecionado${n===1?'':'s'}${total&&n===total?' (todas)':''}</span><span style="display:flex;gap:6px;flex-wrap:wrap">${total&&n!==total?`<button type="button" class="btn secondary" data-sel="all">Selecionar todas (${total})</button>`:''}<button type="button" class="btn secondary" data-sel="clear">Limpar</button><button type="button" class="btn primary" data-sel="download" ${n?'':'disabled'}>⬇ Baixar ${n}</button><button type="button" class="btn secondary" data-sel="share" ${n?'':'disabled'} title="Enviar marcados para outro aparelho">📤 Enviar</button></span>`;
+   bar.querySelector('[data-sel="all"]')?.addEventListener('click',bxHubSelAll);
+   bar.querySelector('[data-sel="clear"]')?.addEventListener('click',bxHubSelClear);
+   bar.querySelector('[data-sel="download"]')?.addEventListener('click',bxHubSelDownload);bar.querySelector('[data-sel="share"]')?.addEventListener('click',bxHubShareSend);
+ }
+ function bxHubSelAll(){(mediaLastRows||[]).forEach(r=>{if(r&&r.id)bxMediaSelected.add(String(r.id))});bxHubPaintSel();bxHubBar();}
+ function bxHubSelClear(){bxMediaSelected.clear();bxHubPaintSel();bxHubBar();}
+ function bxHubPaintSel(){document.querySelectorAll('#bxMediaGrid .bx-media-card').forEach(b=>{const id=b.dataset.mediaId;if(bxMediaSelected.has(id))b.classList.add('is-sel');else b.classList.remove('is-sel')});}
+ function bxHubSelToggle(){
+   bxMediaSelectMode=!bxMediaSelectMode;
+   const btn=document.getElementById('bxMediaSelect');
+   if(btn)btn.textContent=bxMediaSelectMode?'✕ Sair da seleção':'☑ Selecionar';
+   bxMediaSelected.clear();
+   bxHubPaintSel();
+   bxHubBar();
+   if(bxMediaSelectMode)bxHubToast('Toque nos itens para marcar e depois em ⬇ Baixar.','normal');
+ }
+ function bxHubTriggerDownload(url,name){
+   const a=document.createElement('a');a.href=url;a.download=name||'midia-x.jpg';document.body.appendChild(a);a.click();a.remove();
+ }
+ async function bxHubRemoteDownload(url,name){
+   try{const resp=await fetch(url,{mode:'cors'});if(!resp.ok)throw new Error('http '+resp.status);const blob=await resp.blob();const u=URL.createObjectURL(blob);bxHubTriggerDownload(u,name);setTimeout(()=>URL.revokeObjectURL(u),10000);return true;}catch(_){const w=window.open(url,'_blank');if(w)w.opener=null;return false;}
+ }
+ async function bxHubSelDownload(){
+   const rows=mediaLastRows||[];
+   const ids=[...bxMediaSelected];
+   const chosen=rows.filter(r=>r&&ids.includes(String(r.id)));
+   if(!chosen.length)return;
+   let ok=0,skip=0;
+   for(const row of chosen){
+     const name=bxHubFileName(row);
+     try{
+       if(row.blob){const u=URL.createObjectURL(row.blob);bxHubTriggerDownload(u,name);setTimeout(()=>URL.revokeObjectURL(u),8000);ok++;}
+       else{const remote=row.sourceUrl||row.thumbUrl||'';if(/^https?:/i.test(remote)){if(await bxHubRemoteDownload(remote,name))ok++;else skip++;}else if(remote){bxHubTriggerDownload(remote,name);ok++;}else skip++;}
+     }catch(_){skip++;}
+   }
+   bxHubToast(skip?`⬇ Baixadas ${ok} • ${skip} sem download (fonte pública com bloqueio).`:`⬇ Baixadas ${ok} — confira a pasta de downloads.`,skip?'warn':'normal');
+ }
+ $('#bxMediaSelect')?.addEventListener('click',bxHubSelToggle);
+ /* ---- 5.4.246 — 📤 Enviar / 📥 Receber mídia entre aparelhos (código) ---- */
+ function bxShareCss(){if(document.getElementById('bxShareCss'))return;const s=document.createElement('style');s.id='bxShareCss';s.textContent='.bxshare-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:100900;display:flex;align-items:flex-start;justify-content:center;padding:7vh 14px 20px}.bxshare-card{background:var(--bx-card,#fff);color:var(--bx-txt,#222);max-width:480px;width:100%;border-radius:14px;overflow:hidden;box-shadow:0 18px 60px rgba(0,0,0,.4);max-height:80vh;display:flex;flex-direction:column}.bxshare-head{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border-bottom:1px solid rgba(128,128,128,.28)}.bxshare-head button{background:none;border:0;font-size:1.15rem;cursor:pointer;color:inherit}.bxshare-body{padding:12px 14px;overflow:auto}.bxshare-txt{margin:0 0 8px;font-size:.9rem;opacity:.92;line-height:1.5}.bxshare-lbl{display:block;font-size:.7rem;text-transform:uppercase;letter-spacing:.05em;margin:10px 0 4px;opacity:.72}.bxshare-code-row{display:flex;gap:8px;align-items:stretch}.bxshare-input{flex:1;min-width:0;font-size:1.05rem;letter-spacing:.14em;text-transform:uppercase;padding:8px 10px;border-radius:9px;border:1px solid rgba(128,128,128,.45);background:rgba(128,128,128,.06);color:inherit}.bxshare-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:14px;flex-wrap:wrap}.bxshare-list{margin:10px 0 0;padding:0;list-style:none;border-top:1px solid rgba(128,128,128,.18)}.bxshare-list li{padding:7px 2px;border-bottom:1px solid rgba(128,128,128,.14);font-size:.85rem;display:flex;justify-content:space-between;gap:10px;min-width:0;align-items:baseline}.bxshare-list li small{opacity:.6;flex:none}.bxshare-more{opacity:.6;justify-content:center!important}.bxshare-found{font-size:.82rem;opacity:.85;margin-top:8px}.bxshare-none{opacity:.75;font-size:.86rem;padding:6px 0}.bxshare-loading{font-size:.86rem;opacity:.75;padding:8px 0}.bxshare-note{font-size:.74rem;opacity:.6;margin-top:10px;line-height:1.4}';document.head.appendChild(s)}
+ let bxShareModal=null;
+ function bxShareClose(){if(bxShareModal&&bxShareModal.parentNode)bxShareModal.parentNode.removeChild(bxShareModal);bxShareModal=null}
+ function bxShareOpen(headHtml,bodyHtml){
+   bxShareCss();bxShareClose();
+   const root=document.createElement('div');root.className='bxshare-backdrop';
+   const card=document.createElement('div');card.className='bxshare-card';
+   const head=document.createElement('div');head.className='bxshare-head';head.innerHTML=headHtml;
+   const close=document.createElement('button');close.type='button';close.setAttribute('aria-label','Fechar');close.textContent='✕';close.addEventListener('click',bxShareClose);head.appendChild(close);
+   const body=document.createElement('div');body.className='bxshare-body';body.innerHTML=bodyHtml;
+   card.appendChild(head);card.appendChild(body);root.appendChild(card);document.body.appendChild(root);bxShareModal=root;
+   root.addEventListener('mousedown',e=>{if(e.target===root)bxShareClose()});
+   return {root,body};
+ }
+ function bxShareCodeNew(){let c='';do{c='BX';for(let i=0;i<4;i++)c+='ABCDEFGHJKLMNPQRSTUVWXYZ23456789'[Math.floor(Math.random()*32)]}while(/[0O1I]/.test(c));return c.slice(0,6)}
+ function bxShareExtOf(mime,row){
+   const m=String(mime||'').toLowerCase();
+   if(m.includes('png'))return '.png';if(m.includes('webp'))return '.webp';if(m.includes('gif'))return '.gif';if(m.includes('webm'))return '.webm';if(m.includes('mp4')||m.includes('quicktime'))return '.mp4';if(m.includes('mpeg')||/^audio/.test(m))return '.mp3';
+   const t=String((row&&(row.title||row.fileName))||'');const ex=t.match(/\.([A-Za-z0-9]{2,4})$/);return ex?('.'+ex[1].toLowerCase()):'.jpg';
+ }
+ async function bxShareRowFile(row){
+   if(!row)return null;
+   const b=row.blob;
+   if(b&&typeof Blob!=='undefined'&&b instanceof Blob)return b;
+   if(b&&typeof b==='string'&&b.startsWith('data:')){try{const r=await fetch(b);return r.ok?await r.blob():null}catch(_){return null}}
+   if(b&&(b instanceof ArrayBuffer||(typeof ArrayBufferView!=='undefined'&&ArrayBuffer.isView(b))))return new Blob([b]);
+   return null;
+ }
+ function bxShareKind(mime,type){if(type==='image'||type==='video'||type==='audio')return type;const m=String(mime||'');return /^video/i.test(m)?'video':/^audio/i.test(m)?'audio':'image'}
+ function bxShareChosen(){const rows=mediaLastRows||[];return rows.filter(r=>r&&r.id&&bxMediaSelected.has(String(r.id)))}
+ function bxShareSend(){
+   const rows=bxShareChosen();
+   if(!rows.length){bxHubToast('Primeiro marque os itens (☑ Selecionar) — depois toque em 📤 Enviar.','warn');if(!bxMediaSelectMode)bxHubSelToggle();return}
+   const m=bxShareOpen('<b>📤 Enviar para outro aparelho</b>',
+     '<p class="bxshare-txt">Estes <b>'+rows.length+'</b> item(ns) vão para a caixa com o código abaixo. No outro aparelho (ex.: PC), abra <b>Mídia X → 📥 Receber do celular</b> e digite o mesmo código.</p>'+
+     '<label class="bxshare-lbl">Código (use igual nos dois aparelhos)</label>'+
+     '<div class="bxshare-code-row"><input id="bxShareCode" class="bxshare-input" value="'+bxShareCodeNew()+'" maxlength="12" autocomplete="off" spellcheck="false"><button type="button" class="btn secondary" data-bxshare="regen" title="Gerar outro código">↻</button></div>'+
+     '<ul class="bxshare-list">'+rows.slice(0,6).map(r=>'<li>'+escapeHtml(r.title||r.reference||'item')+'<small>'+escapeHtml([r.reference,bxShareKind(r.mime,r.type)].filter(Boolean).join(' • ')||'')+'</small></li>').join('')+(rows.length>6?'<li class="bxshare-more">… e mais '+(rows.length-6)+'</li>':'')+'</ul>'+
+     '<div class="bxshare-actions"><button type="button" class="btn secondary" data-bxshare="cancel">Cancelar</button><button type="button" class="btn primary" data-bxshare="send">📤 Enviar '+rows.length+'</button></div>'+
+     '<p class="bxshare-note">Só os itens COM arquivo neste aparelho sobem de verdade; itens públicos entram como atalho (o outro aparelho abre a fonte pela internet).</p>');
+   m.body.querySelector('[data-bxshare="regen"]').addEventListener('click',()=>{const c=m.body.querySelector('#bxShareCode');if(c)c.value=bxShareCodeNew()});
+   m.body.querySelector('[data-bxshare="cancel"]').addEventListener('click',bxShareClose);
+   m.body.querySelector('[data-bxshare="send"]').addEventListener('click',async()=>{const btn=m.body.querySelector('[data-bxshare="send"]');const code=(m.body.querySelector('#bxShareCode')?.value||'').trim();btn.disabled=true;btn.textContent='Enviando…';await bxShareDoSend(code,rows);btn.disabled=false;btn.textContent='📤 Enviar '+rows.length;});
+ }
+ async function bxShareDoSend(code,rows){
+   code=String(code||'').toUpperCase().replace(/[^A-Z0-9]/g,'');
+   if(code.length<4){bxHubToast('O código precisa de 4 a 12 letras/números.','warn');return}
+   const entries=[],fd=new FormData();
+   for(let k=0;k<rows.length;k++){
+     const row=rows[k]||{};
+     const mime=String(row.mime||'').toLowerCase()||'image/jpeg';
+     entries.push({title:String(row.title||bxHubFileName(row)||'mídia'),type:bxShareKind(mime,row.type),mime,reference:String(row.reference||''),relatedReferences:Array.isArray(row.relatedReferences)?row.relatedReferences.slice(0,16):[],description:String(row.description||''),tags:Array.isArray(row.tags)?row.tags:[],credits:String(row.credits||''),license:String(row.license||''),createdAt:row.createdAt||new Date().toISOString(),remoteUrl:(/^https?:/i.test(String(row.sourceUrl||''))?String(row.sourceUrl):(/^https?:/i.test(String(row.thumbUrl||''))?String(row.thumbUrl):''))});
+     const file=await bxShareRowFile(row);
+     if(file){fd.append('files',file,k+bxShareExtOf(mime,row))}
+   }
+   fd.append('manifest',JSON.stringify(entries));
+   try{
+     const resp=await fetch('/api/bible/sharebox/'+encodeURIComponent(code),{method:'POST',body:fd});
+     if(!resp.ok)throw new Error('HTTP '+resp.status);
+     const j=await resp.json();
+     bxHubToast('✔ '+j.items+' enviado(s) com o código '+code+'. No outro aparelho: 📥 Receber com esse código.','normal');
+     bxShareClose();
+     if(bxMediaSelected.size){bxMediaSelected.clear();bxHubPaintSel();bxHubBar()}
+   }catch(err){bxHubToast('Falha ao enviar: '+(err&&err.message||'sem conexão com o servidor.'),'warn')}
+ }
+ function bxShareRecv(){
+   const m=bxShareOpen('<b>📥 Receber do celular</b>',
+     '<p class="bxshare-txt">Digite o código mostrado no aparelho que enviou (📤 Enviar p/ outro aparelho). Os itens são importados para a <b>Mídia X deste aparelho</b>.</p>'+
+     '<label class="bxshare-lbl">Código recebido</label>'+
+     '<div class="bxshare-code-row"><input id="bxRecvCode" class="bxshare-input" placeholder="ex.: BX7Q2M" maxlength="12" autocomplete="off" spellcheck="false"><button type="button" class="btn primary" data-bxrecv="go">Buscar</button></div>'+
+     '<div class="bxshare-recvout" data-bxrecv="out"></div>'+
+     '<div class="bxshare-actions"><button type="button" class="btn secondary" data-bxrecv="cancel">Fechar</button></div>'+
+     '<p class="bxshare-note">Os dois aparelhos precisam estar no MESMO endereço do app (ex.: os dois na versão publicada — Render).</p>');
+   m.body.querySelector('[data-bxrecv="cancel"]').addEventListener('click',bxShareClose);
+   m.body.querySelector('#bxRecvCode').addEventListener('keydown',e=>{if(e.key==='Enter')m.body.querySelector('[data-bxrecv="go"]').click()});
+   m.body.querySelector('[data-bxrecv="go"]').addEventListener('click',()=>bxShareDoList(m.body.querySelector('#bxRecvCode'),m.body.querySelector('[data-bxrecv="out"]')));
+ }
+ async function bxShareDoList(input,outEl){
+   const code=String(input?.value||'').trim().toUpperCase().replace(/[^A-Z0-9]/g,'');
+   if(code.length<4){bxHubToast('Digite o código de 4 a 12 letras/números.','warn');return}
+   if(outEl)outEl.innerHTML='<div class="bxshare-loading">Consultando a caixa '+escapeHtml(code)+'…</div>';
+   try{
+     const resp=await fetch('/api/bible/sharebox/'+encodeURIComponent(code));
+     if(!resp.ok)throw new Error('HTTP '+resp.status);
+     const j=await resp.json();const items=j.items||[];
+     if(!items.length){if(outEl)outEl.innerHTML='<p class="bxshare-none">Caixa vazia ou código ainda não enviado. Confira o código e tente de novo.</p>';return}
+     const local=items.filter(e=>e.file).length;
+     outEl.innerHTML='<div class="bxshare-found"><b>'+items.length+'</b> item(ns) · '+local+' com arquivo'+(items.length>local?' · '+(items.length-local)+' atalho(s) público(s)':'')+'</div>'+
+       '<ul class="bxshare-list">'+items.slice(0,12).map(e=>'<li>'+escapeHtml(e.title||'item')+'<small>'+escapeHtml([e.reference,bxShareKind(e.mime,e.type),(e.file?'⬇ baixar':'🔗 fonte')].filter(Boolean).join(' • ')||'')+'</small></li>').join('')+(items.length>12?'<li class="bxshare-more">… e mais '+(items.length-12)+'</li>':'')+'</ul>'+
+       '<div class="bxshare-actions"><button type="button" class="btn secondary" data-bxrecv="cancel">Fechar</button><button type="button" class="btn primary" data-bxrecv="import">Importar '+items.length+' para a Mídia X</button></div>';
+     outEl.querySelector('[data-bxrecv="cancel"]')?.addEventListener('click',bxShareClose);
+     outEl.querySelector('[data-bxrecv="import"]')?.addEventListener('click',()=>bxShareDoRecv(code,outEl));
+   }catch(err){if(outEl)outEl.innerHTML='<p class="bxshare-none">Não foi possível consultar a caixa: '+escapeHtml(err&&err.message||'')+'</p>'}
+ }
+ async function bxShareDoRecv(code,outEl){
+   if(outEl)outEl.innerHTML='<div class="bxshare-loading">Importando…</div>';
+   let items=[];try{const r=await fetch('/api/bible/sharebox/'+encodeURIComponent(code));if(!r.ok)throw 0;const j=await r.json();items=j.items||[]}catch(_){}
+   if(!items.length){if(outEl)outEl.innerHTML='<p class="bxshare-none">Caixa vazia.</p>';return}
+   let ok=0,fail=0;
+   for(const e of items){
+     const base={title:String(e.title||'mídia recebida'),type:bxShareKind(e.mime,e.type),mime:String(e.mime||'image/jpeg'),reference:String(e.reference||''),relatedReferences:Array.isArray(e.relatedReferences)?e.relatedReferences.slice(0,16):[],description:String(e.description||''),tags:Array.isArray(e.tags)?e.tags:[],credits:String(e.credits||''),license:String(e.license||''),createdAt:String(e.createdAt||new Date().toISOString())};
+     try{
+       if(e.file&&e.url){
+         const rr=await fetch(e.url);if(!rr.ok)throw 0;
+         const blob=await rr.blob();
+         const ext=bxShareExtOf(e.mime,e);
+         const file=blob instanceof File?blob:new File([blob],(String(base.title).replace(/[^A-Za-z0-9._-]+/g,'_').slice(0,60)||'midia')+ext,{type:e.mime||blob.type||'image/jpeg'});
+         await mediaPutMany([Object.assign({},base,{id:'share-'+Date.now()+'-'+Math.random().toString(36).slice(2,7),blob:file,size:file.size})]);ok++;
+       }else if(e.remoteUrl){
+         await mediaPutMany([Object.assign({},base,{id:'share-'+Date.now()+'-'+Math.random().toString(36).slice(2,7),sourceUrl:String(e.remoteUrl),thumbUrl:String(e.remoteUrl)})]);ok++;
+       }else{fail++}
+     }catch(_){fail++}
+   }
+   try{await renderMedia();if(typeof bxMediaStorageRefresh==='function')bxMediaStorageRefresh()}catch(_){}
+   if(outEl)outEl.innerHTML='<p class="bxshare-none">✔ Importados <b>'+ok+'</b> de '+items.length+' para a Mídia X deste aparelho.</p>';
+   bxHubToast('✔ '+ok+' item(ns) importado(s) da caixa '+code+'.','normal');
+   if(fail)bxHubToast(fail+' com falha (conferir conexão).','warn');
+ }
+ const bxHubShareSend=bxShareSend;
+ $('#bxMediaShare')?.addEventListener('click',bxShareSend);
+ $('#bxMediaRecv')?.addEventListener('click',bxShareRecv);
+ const bxMediaRenderPublic=async(kind='image')=>{const grid=$("#bxMediaPublicGrid"),input=$("#bxMediaPublicQuery"),query=String(input?.value||'').trim();if(!grid)return;if(!query){if(grid.dataset.bxReq)grid.dataset.bxReq=(Number(grid.dataset.bxReq)||0)+1;if(grid.querySelector('.bx-media-public-empty,.bx-media-public-card'))grid.innerHTML='<div class="bx-media-public-empty">Digite um tema ou lugar (ex.: “Mar da Galileia”) e toque em Buscar imagens.</div>';return}const token=Number(grid.dataset.bxReq||0)+1;grid.dataset.bxReq=token;const provider=String(input?.dataset.bxMediaProvider||'all').trim();if(kind==='panorama'&&query&&!/panorama|360/i.test(query)){}grid.innerHTML=`<div class="bx-media-public-empty">${kind==='panorama'?'Procurando imagens panorâmicas 2:1...':'Montando galeria com créditos e licenças...'}</div>`;try{const items=await bxPublicMediaSearch(query,kind,12,provider);if(Number(grid.dataset.bxReq)!==token)return;grid.__bxItems=items;if(!items.length){grid.innerHTML=`<div class="bx-media-public-empty">${kind==='panorama'?'Nenhum panorama equiretangular foi localizado. Tente outro nome de lugar.':'Nenhuma imagem foi localizada.'}</div>`;return}grid.innerHTML=items.map((item,index)=>`<article class="bx-media-public-card${item.panorama_candidate?' panorama':''}"><button type="button" data-media-public-open="${index}"><img loading="lazy" src="${escapeHtml(item.thumb_url||item.original_url)}" alt="${escapeHtml(item.title||query)}">${item.panorama_candidate?'<i>360°</i>':''}</button><div><strong>${escapeHtml(item.title||query)}</strong><small>${escapeHtml(item.credit||item.artist||item.source||'Wikimedia Commons')}</small><em>${escapeHtml(item.license||'Licença na fonte')}</em></div><nav><button type="button" data-media-public-open="${index}">⛶ Abrir</button>${item.panorama_candidate?`<button type="button" data-media-public-pano="${index}">🕶️ 360°</button>`:''}<button type="button" data-media-public-save="${index}">＋ Salvar no índice</button>${item.page_url?`<a href="${escapeHtml(item.page_url)}" target="_blank" rel="noopener">Fonte ↗</a>`:''}</nav></article>`).join('');grid.querySelectorAll('[data-media-public-open]').forEach(button=>button.onclick=()=>bxOpenVisualGallery(items,Number(button.dataset.mediaPublicOpen),{eyebrow:`MÍDIA X • ${query}`}));grid.querySelectorAll('[data-media-public-pano]').forEach(button=>button.onclick=()=>bxOpenVisualPanorama(items[Number(button.dataset.mediaPublicPano)],{eyebrow:`MÍDIA X • 360° DE ${query}`}));grid.querySelectorAll('[data-media-public-save]').forEach(button=>button.onclick=async()=>{const item=items[Number(button.dataset.mediaPublicSave)];await mediaPutMany([{id:item.id,title:item.title,type:'image',mime:item.mime,description:item.description,tags:[query,'wikimedia-commons',item.panorama_candidate?'360':'imagem'].filter(Boolean),credits:item.credit||item.artist||item.source,license:item.license,licenseUrl:item.license_url,sourceUrl:item.original_url,thumbUrl:item.thumb_url,pageUrl:item.page_url,sourceKind:'public',place:query,width:item.width,height:item.height,panorama:item.panorama_candidate,createdAt:new Date().toISOString()}]);button.textContent='✓ Salvo';button.disabled=true;await renderMedia()})}catch(error){grid.innerHTML=`<div class="bx-media-public-empty">${escapeHtml(error.message||String(error))}<small>Sua biblioteca local continua funcionando offline.</small></div>`}};
  $("#bxMediaFind")?.addEventListener('click',()=>renderMedia($("#bxMediaQuery").value));$("#bxMediaQuery")?.addEventListener('keydown',event=>{if(event.key==='Enter')renderMedia(event.target.value)});document.querySelectorAll('[data-media-type]').forEach(button=>button.onclick=()=>{mediaType=button.dataset.mediaType;document.querySelectorAll('[data-media-type]').forEach(item=>item.classList.toggle('active',item===button));renderMedia()});
- $("#bxMediaPublicFind")?.addEventListener('click',()=>bxMediaRenderPublic('image'));$("#bxMediaPublic360")?.addEventListener('click',()=>bxMediaRenderPublic('panorama'));$("#bxMediaPublicQuery")?.addEventListener('keydown',event=>{if(event.key==='Enter')bxMediaRenderPublic('image')});
- $("#bxMediaAdd")?.addEventListener('click',async event=>{const button=event.currentTarget,status=$("#bxMediaActionStatus"),files=[...($("#bxMediaFiles")?.files||[])];if(!files.length){if(status)status.textContent='Escolha um ou mais arquivos antes de adicionar.';$("#bxMediaFiles")?.focus();return}const reference=normalizeBibleRef($("#bxMediaRef")?.value),description=$("#bxMediaDesc")?.value||'',baseTags=String($("#bxMediaTags")?.value||'').split(',').map(x=>x.trim()).filter(Boolean),credits=$("#bxMediaCredits")?.value||'',license=$("#bxMediaLicense")?.value||'';button.disabled=true;if(status)status.textContent=`Analisando ${files.length} arquivo(s), dimensões e formato 360°...`;try{const rows=await Promise.all(files.map(async(file,index)=>{const meta=await bxMediaImageMeta(file),tags=[...baseTags];if(meta.panorama&&!tags.includes('360'))tags.push('360');return {id:`local-${Date.now()}-${index}-${Math.random().toString(36).slice(2,7)}`,title:file.name,type:mediaKindFromMime(file.type),mime:file.type,reference,description,tags,credits,license,blob:file,size:file.size,width:meta.width,height:meta.height,panorama:meta.panorama,sourceKind:'local',createdAt:new Date().toISOString()}}));await mediaPutMany(rows);$("#bxMediaFiles").value='';const panoramas=rows.filter(row=>row.panorama).length;if(status)status.textContent=`✓ ${rows.length} arquivo(s) adicionado(s)${panoramas?` • ${panoramas} panorama(s) 360° reconhecido(s)`:''}.`;await renderMedia();await bxMediaStorageRefresh()}catch(error){if(status)status.textContent='Falha ao armazenar: '+error.message;alert('Falha ao armazenar mídia: '+error.message+'\nSe o arquivo for muito grande, o limite de armazenamento do navegador pode ter sido atingido.')}finally{button.disabled=false}});
+ window.addEventListener('biblex:media-changed',()=>{if(document.querySelector('[data-bible-panel="media"]')?.classList.contains('active')){renderMedia();bxMediaStorageRefresh()}});$("#bxMediaPublicFind")?.addEventListener('click',()=>bxMediaRenderPublic('image'));$("#bxMediaPublic360")?.addEventListener('click',()=>bxMediaRenderPublic('panorama'));$("#bxMediaPublicQuery")?.addEventListener('keydown',event=>{if(event.key==='Enter')bxMediaRenderPublic('image')});
+ /* ===== SUBIR VÁRIAS imagens (multi-upload) =====
+   1) nome do arquivo vira a referência:  Salmos_23.png, Joao_3.16.png, 1Co_13_4.png
+   2) uma mídia pode ficar ligada a VÁRIAS passagens (evangelhos em paralelo,
+      1Reis×2Crônicas, citações…) — separe com ; , + | ou _:
+         Mt_14_Mc_6_Lc_9_Jo_6.png   →  "Mt 14" + vínculos Mc 6 / Lc 9 / Jo 6
+         campo Referência(s) = "Mt 14:13-21; Mc 6:30-44; Lc 9:10-17; Jo 6:1-14"
+      A 1ª vira reference (casa); as demais vão em relatedReferences (até 16),
+      que a imersão/"Ver imagem" já consulta em QUALQUER passagem da Bíblia.
+   3) upload em FILA sequencial com progresso x/N e tolerância a erro por arquivo.
+   Os nomes de livro saem no padrão exato do índice instalado (via verses DB),
+   então o vínculo bate na hora de abrir a passagem. */
+const bxMV2norm=s=>String(s||"").normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase().trim();
+let bxMV2StoredP=null;
+const bxMV2Stored=()=>bxMV2StoredP||(bxMV2StoredP=(async()=>{const m={};try{const rows=await dbAll("verses");rows.forEach(v=>{const k=bxMV2norm(v&&v.book);if(k&&!m[k])m[k]=String(v.book||"").trim()})}catch(_){ }return m})());
+const bxMV2Books=()=>(typeof EPIGRAPH_ABBR!=="undefined"&&EPIGRAPH_ABBR)||{};
+const bxMV2Aliases=(()=>{const src=bxMV2Books(),out={};const add=(k,rec)=>{k=bxMV2norm(k);if(!k)return;if(!out[k])out[k]={norm:k,recs:[]};if(!out[k].recs.some(r=>r.book===rec.book))out[k].recs.push({book:rec.book,abbr:rec.abbr})};Object.keys(src).forEach(book=>{const abbr=String(src[book]||"").trim(),rec={book,abbr};add(book,rec);add(bxMV2norm(book).replace(/\s+/g,""),rec);if(abbr){add(abbr,rec);add(bxMV2norm(abbr).replace(/\s+/g,""),rec)}});return Object.keys(out).sort((a,b)=>b.length-a.length).map(k=>out[k])})();
+function bxMV2ParseAt(s,pos){for(let a=0;a<bxMV2Aliases.length;a++){const al=bxMV2Aliases[a],n=al.norm;if(!s.startsWith(n,pos))continue;const nxt=s[pos+n.length]||"";if(/[a-z]/.test(nxt))continue;const rest=s.slice(pos+n.length),m=rest.match(/^[\s_.:,;+|&()\[\]-]*(\d{1,3})(?:[\s_.:]+(\d{1,3})(?:\s*-\s*(\d{1,3}))?)?/);if(m&&m[1])return {recs:al.recs,chapter:Number(m[1]),a:m[2]!=null?Number(m[2]):null,b:m[3]!=null?Number(m[3]):(m[2]!=null?Number(m[2]):null),end:pos+n.length+m[0].length}}return null}
+function bxMV2Dedupe(recs){const seen=new Set(),out=[];recs.forEach(r=>{if(!seen.has(r.book)){seen.add(r.book);out.push(r)}});return out}
+async function bxMV2Resolve(recs,chapter){recs=bxMV2Dedupe(recs);if(recs.some(r=>r.book==="Jó")&&recs.some(r=>r.book==="João"))return chapter>21?"Jó":"João";const stored=await bxMV2Stored();for(let i=0;i<recs.length;i++){const raw=stored[bxMV2norm(recs[i].book)];if(raw)return raw}return recs[0]?.book||""}
+async function bxMV2Canon(p){if(!p)return "";const book=await bxMV2Resolve(p.recs,p.chapter);let out=book+" "+p.chapter;if(p.a!=null)out+=":"+p.a;if(p.b!=null&&p.b!==p.a)out+="-"+p.b;return out}
+function bxMV2ParseAll(name){const s=bxMV2norm(String(name||"").replace(/\.(?:png|jpe?g|gif|webp|avif|bmp|svg|mp4|webm|mov|m4v|mp3|wav|ogg|oga|m4a|pdf|docx?|pptx?|xlsx?|txt|csv)$/i,""));const out=[],len=s.length;let pos=0;while(pos<len){const r=bxMV2ParseAt(s,pos);if(!r)break;out.push(r);pos=r.end;if(pos>=len)break;const before=pos;while(pos<len&&/[;_+|,&\s()\[\]_-]/.test(s[pos]))pos++;if(pos===before)break}return out}
+const bxMV2Uniq=refs=>{const seen=new Set(),out=[];refs.forEach(r=>{const k=bxMV2norm(r);if(!k||seen.has(k))return;seen.add(k);out.push(String(r).trim())});return out};
+async function bxMV2NameRefs(name){const out=[];for(let i=0;i<bxMV2ParseAll(name).length;i++){const c=await bxMV2Canon(bxMV2ParseAll(name)[i]);if(c)out.push(c)}return out}
+function bxMV2Split(v){return String(v||"").split(/[;,|+\n]+/).map(x=>String(x||"").trim()).filter(Boolean)}
+async function bxMV2SharedRefs(v){const out=[],raw=bxMV2Split(v);for(let i=0;i<raw.length;i++){const seg=bxMV2norm(raw[i]),p=bxMV2ParseAt(seg,0);out.push(p?await bxMV2Canon(p):normalizeBibleRef(raw[i]))}return out}
+const bxMV2Plan=async()=>{try{const host=$("#bxMediaFilePlan");if(!host)return;const files=[...($("#bxMediaFiles")?.files||[])];if(!files.length){host.innerHTML="";return}const shared=await bxMV2SharedRefs($("#bxMediaRef")?.value),lines=[];lines.push("<div><b>"+escapeHtml(String(files.length))+"</b> arquivo(s)"+(files.length>40?" · mostrando 40":"")+"</div>");const cap=files.slice(0,40);for(let i=0;i<cap.length;i++){let refs=[];try{refs=await bxMV2NameRefs(cap[i].name)}catch(_){ }if(!refs.length)refs=shared;refs=bxMV2Uniq(refs);lines.push("<div>"+escapeHtml(cap[i].name)+" → "+(refs.length?"<b>"+escapeHtml(refs[0])+"</b>":"<i>sem referência — usará o campo</i>")+(refs.length>1?" <i>+"+escapeHtml(String(refs.length-1))+" vínculo(s)</i>":"")+"</div>")}host.innerHTML=lines.join("")}catch(_){ }};
+window.bxMV2Plan=bxMV2Plan;
+$("#bxMediaFiles")?.addEventListener("change",bxMV2Plan);
+$("#bxMediaRef")?.addEventListener("input",bxMV2Plan);
+window.__bxMediaAddV2=async event=>{
+  const button=event.currentTarget,status=$("#bxMediaActionStatus");
+  const files=[...($("#bxMediaFiles")?.files||[])];if(!files.length){if(status)status.textContent="Escolha um ou mais arquivos antes de adicionar.";$("#bxMediaFiles")?.focus();return}
+  let shared=[];try{shared=await bxMV2SharedRefs($("#bxMediaRef")?.value)}catch(_){ }
+  const description=$("#bxMediaDesc")?.value||"",baseTags=String($("#bxMediaTags")?.value||"").split(",").map(x=>x.trim()).filter(Boolean),credits=$("#bxMediaCredits")?.value||"",license=$("#bxMediaLicense")?.value||"";
+  button.disabled=true;let done=0,panoCount=0,linkedFiles=0;const failed=[];
+  const setStatus=text=>{if(status)status.textContent=text};
+  setStatus("Analisando dimensões e formatos 360°…");
+  try{
+    for(let index=0;index<files.length;index++){
+      const file=files[index];
+      try{
+        setStatus("Guardando "+(index+1)+" de "+files.length+" — "+file.name+"…");
+        await new Promise(res=>setTimeout(res,0));
+        const meta=await bxMediaImageMeta(file),tags=[...baseTags];
+        if(meta.panorama&&!tags.includes("360"))tags.push("360");
+        let refs=[];try{refs=await bxMV2NameRefs(file.name)}catch(_){ }
+        if(!refs.length)refs=shared;
+        refs=bxMV2Uniq(refs).slice(0,17);
+        const reference=refs[0]||"",related=refs.slice(1,16);
+        if(reference&&related.length)linkedFiles++;
+        await mediaPutMany([{id:"local-"+Date.now()+"-"+index+"-"+Math.random().toString(36).slice(2,7),title:file.name,type:mediaKindFromMime(file.type),mime:file.type,reference,relatedReferences:related,description,tags,credits,license,blob:file,size:file.size,width:meta.width,height:meta.height,panorama:meta.panorama,sourceKind:"local",createdAt:new Date().toISOString()}]);
+        done++;if(meta.panorama)panoCount++;
+      }catch(error){failed.push(file.name+": "+(error&&error.message||error))}
+    }
+    $("#bxMediaFiles").value="";
+    window.bxMV2Plan?.();
+    let msg="✓ "+done+" de "+files.length+" arquivo(s) adicionado(s)";
+    if(panoCount)msg+=" • "+panoCount+" panorama(s) 360°";
+    if(linkedFiles)msg+=" • "+linkedFiles+" ligada(s) a mais de uma passagem";
+    if(failed.length)msg+=" • "+failed.length+" com falha";
+    setStatus(msg+".");
+    if(failed.length){alert("Mídia adicionada com "+failed.length+" falha(s):\n"+failed.slice(0,4).join("\n"))}
+    await renderMedia();await bxMediaStorageRefresh();
+  }catch(error){
+    setStatus("Falha ao armazenar: "+error.message);alert("Falha ao armazenar mídia: "+error.message+"\nSe o arquivo for muito grande, o limite de armazenamento do navegador pode ter sido atingido.");
+  }finally{button.disabled=false}
+};
+$("#bxMediaAdd")?.addEventListener('click',async event=>{if(window.__bxMediaAddV2){return window.__bxMediaAddV2(event)}const button=event.currentTarget,status=$("#bxMediaActionStatus"),files=[...($("#bxMediaFiles")?.files||[])];if(!files.length){if(status)status.textContent='Escolha um ou mais arquivos antes de adicionar.';$("#bxMediaFiles")?.focus();return}const reference=normalizeBibleRef($("#bxMediaRef")?.value),description=$("#bxMediaDesc")?.value||'',baseTags=String($("#bxMediaTags")?.value||'').split(',').map(x=>x.trim()).filter(Boolean),credits=$("#bxMediaCredits")?.value||'',license=$("#bxMediaLicense")?.value||'';button.disabled=true;if(status)status.textContent=`Analisando ${files.length} arquivo(s), dimensões e formato 360°...`;try{const rows=await Promise.all(files.map(async(file,index)=>{const meta=await bxMediaImageMeta(file),tags=[...baseTags];if(meta.panorama&&!tags.includes('360'))tags.push('360');return {id:`local-${Date.now()}-${index}-${Math.random().toString(36).slice(2,7)}`,title:file.name,type:mediaKindFromMime(file.type),mime:file.type,reference,description,tags,credits,license,blob:file,size:file.size,width:meta.width,height:meta.height,panorama:meta.panorama,sourceKind:'local',createdAt:new Date().toISOString()}}));await mediaPutMany(rows);$("#bxMediaFiles").value='';const panoramas=rows.filter(row=>row.panorama).length;if(status)status.textContent=`✓ ${rows.length} arquivo(s) adicionado(s)${panoramas?` • ${panoramas} panorama(s) 360° reconhecido(s)`:''}.`;await renderMedia();await bxMediaStorageRefresh()}catch(error){if(status)status.textContent='Falha ao armazenar: '+error.message;alert('Falha ao armazenar mídia: '+error.message+'\nSe o arquivo for muito grande, o limite de armazenamento do navegador pode ter sido atingido.')}finally{button.disabled=false}});
  $("#bxMediaSlideshow")?.addEventListener('click',async()=>{const rows=mediaLastRows.length?mediaLastRows:(await mediaAll());bxMediaGalleryRows(rows,rows.find(row=>row.type==='image'),{eyebrow:'MÍDIA X • APRESENTAÇÃO VISUAL',autoplay:true})});
  $("#bxMediaExample")?.addEventListener('click',async()=>{await mediaPutMany([{id:'media-ex-jerusalem',title:'Jerusalém • referência visual',type:'image',mime:'image/example',reference:'Salmos 122',description:'Registro demonstrativo para organizar futuras imagens de Jerusalém. Use Descobrir imagens ou adicione um arquivo local autorizado para ter visualização real.',tags:['jerusalém','templo','cidade'],credits:'Exemplo local',license:'Substitua por mídia com licença adequada'},{id:'media-ex-audio',title:'Áudio de estudo • Isaías 6',type:'audio',mime:'audio/example',reference:'Isaías 6',description:'Registro demonstrativo para associar gravações de estudo à passagem.',tags:['isaías','chamado','estudo'],credits:'Exemplo local',license:'Sem arquivo binário'}]);await renderMedia()});
  $("#bxMediaExport")?.addEventListener('click',async()=>{const rows=(await mediaAll()).map(({blob,...row})=>({...row,hasLocalFile:!!blob}));download('biblia-x-midia-indice.json',JSON.stringify(rows,null,2),'application/json')});$("#bxMediaClear")?.addEventListener('click',async()=>{if(!confirm('Limpar toda a biblioteca Mídia X deste navegador?'))return;revokeMediaUrls();await mediaClear();await renderMedia();const detail=$("#bxMediaDetail");if(detail)detail.innerHTML='<div class="bx-media-detail-empty"><span>🎥</span><h4>Mídia X limpa</h4><p>Nenhum arquivo local armazenado.</p></div>'});
@@ -8565,7 +8858,7 @@ async function clearOldFrontendCache(){
  }catch(e){}
 }
 
-const APP_BUILD_VERSION="5.4.241";
+const APP_BUILD_VERSION="5.4.246";
 function publicAsset(path){return "/"+String(path).replace(/^\/+/,"");}
 const PRODUCTION_VERSION_URL="https://logos-master-x-api.onrender.com/static/version.json";
 function showUpdateBanner(remoteVersion){
@@ -9623,6 +9916,10 @@ window.BibliaXLocal = window.BibliaXLocal || {
       const id=button.dataset.bibleSection,meta=pageMeta(id);
       return '<option value="'+escapeHtml(id)+'">'+escapeHtml(meta.icon+" "+meta.title)+"</option>";
     }).join("");
+    /* 5.4.244 — MENU CENTRAL do topo: a biblioteca Mídia X é o nosso
+       diferencial e fica sempre na 1ª opção (acesso imediato por ali). */
+    const _mxOpt = select.querySelector('option[value="media"]');
+    if (_mxOpt) { _mxOpt.textContent = "🎥 Mídia X · Imagens e vídeos gerados ⭐"; if (select.options[0] !== _mxOpt) { _mxOpt.remove(); select.insertBefore(_mxOpt, select.firstChild); } }
     select.dataset.signature=signature;
     select.addEventListener("change",()=>{
       const id=select.value;
@@ -10099,7 +10396,8 @@ window.BibliaXLocal = window.BibliaXLocal || {
     {k:"editor", i:"✏️", l:"Editor",     t:"Editor",        view:"editor"},
     {k:"library",i:"📚", l:"Biblioteca", t:"Biblioteca",    view:"library"},
     {k:"history",i:"🕘", l:"Histórico",  t:"Histórico",     view:"history"},
-    {k:"pulpit", i:"🎙️",l:"Púlpito",    t:"Modo Púlpito",  view:"pulpit"}
+    {k:"pulpit", i:"🎙️",l:"Púlpito",    t:"Modo Púlpito",  view:"pulpit"},
+    {k:"searchx",i:"🔎",l:"Buscar na Bíblia", t:"Pesquisar em toda a Bíblia", run:()=>{if(window.bxOpenBibleSearch)window.bxOpenBibleSearch();}}
   ];
   const DOCK_ALL=()=>DOCK_CORE.concat(DOCK_EXTRA);
   /* 5.4.218 — a dock tambem hospeda ferramentas de LEITURA do catalogo mestre
@@ -10115,7 +10413,10 @@ window.BibliaXLocal = window.BibliaXLocal || {
             run:()=>{try{if(window.__bxBarsCfg&&window.__bxBarsCfg.dockRun)window.__bxBarsCfg.dockRun(_id);}catch(_e){}}};
   };
   const dockFind=k=>DOCK_ALL().find(d=>d.k===k)||bxDockReadingDef(k);
-  const dockDefaultKeys=()=>DOCK_CORE.filter(d=>!d.always&&d.k!=="cfg").map(d=>d.k); /* extra,painel,pages,import */
+  /* 5.4.246 — 🔎 Buscar na Bíblia (Pesquisa X) entra no padrão da dock do CELULAR.
+     Quem já personalizou a própria dock mantém a escolha; no PC o padrão
+     continua extra,painel,pages,import. */
+  const dockDefaultKeys=()=>{const base=DOCK_CORE.filter(d=>!d.always&&d.k!=="cfg").map(d=>d.k);const out=base.slice();if(isMobile()&&out.indexOf("searchx")<0)out.push("searchx");return out}; /* extra,painel,pages,import(+searchx no celular) */
   const dockRead=()=>{
     try{
       const raw=localStorage.getItem(dockKey());
@@ -10196,6 +10497,9 @@ window.BibliaXLocal = window.BibliaXLocal || {
     dockSave(en);
     const nav=document.getElementById("bxMobileBottomNav");
     if(nav)renderDockButtons(nav);
+    /* 5.4.244 — ao MARCAR, rola o botão novo para dentro da faixa da dock
+       (com 7+ botões o overflowX esconde o recém-adicionado na direita). */
+    if(cb.checked){try{const nb=document.getElementById("bxMobileBottomNav");if(nb){const bb=nb.querySelector('[data-bxm="'+k+'"]');if(bb)bb.scrollIntoView({block:"nearest",inline:"nearest"});}}catch(_e){}}
   },true);
   let dockDirty=false;
   const renderDockButtons=nav=>{
@@ -15925,6 +16229,22 @@ if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded'
        dock; Studio/Rápido/Editor/Biblioteca/Histórico nascem OFF. 'pulpit' NÃO
        se repete aqui — é a mesma linha de Ferramentas de estudo (deduplicado),
        e o padrão dele na dock também é OFF (era extra da dock). */
+    /* 5.4.244 — "Buscar na Bíblia" (Pesquisa X em toda a Bíblia) como item de
+       app: abre a seção de pesquisa e foca o campo, sem depender do painel
+       Detalhe. Guard: se a seção já está ativa só foca. */
+    window.bxOpenBibleSearch = function () {
+      try {
+        var pan = document.querySelector('[data-bible-panel="search"]');
+        if (!(pan && pan.classList && pan.classList.contains('active'))) {
+          var sec = document.querySelector('[data-bible-section="search"]');
+          if (sec) sec.click();
+        }
+        setTimeout(function () {
+          var inp = document.getElementById('bxSearchXQuery');
+          if (inp) { inp.focus(); try { inp.scrollIntoView({ block: 'center', inline: 'center' }); } catch (_e) {} }
+        }, 220);
+      } catch (_e) {}
+    };
     var APP_ROWS = [
       { id: 'extra',   i: '▦', l: 'Módulos',    d: 1 },
       { id: 'painel',  i: '☰', l: 'Painéis',    d: 1 },
@@ -15934,7 +16254,8 @@ if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded'
       { id: 'quick',   i: '⚡', l: 'Rápido',    d: 0 },
       { id: 'editor',  i: '✏️', l: 'Editor',    d: 0 },
       { id: 'library', i: '📚', l: 'Biblioteca',d: 0 },
-      { id: 'history', i: '🕘', l: 'Histórico', d: 0 }
+      { id: 'history', i: '🕘', l: 'Histórico', d: 0 },
+      { id: 'searchx', i: '🔎', l: 'Buscar na Bíblia', d: 0 }
     ];
     /* ids de APP que originalmente navegam para uma view própria (Fases 2/3) */
     var APP_VIEW = { studio: 'studio', quick: 'quick', editor: 'editor', library: 'library', history: 'history' };
@@ -16024,6 +16345,7 @@ if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded'
         if (id === 'painel') { if (window.LMXBXPages) { if (typeof window.LMXBXPages.togglePagePainel === 'function') window.LMXBXPages.togglePagePainel(); else if (window.LMXBXPages.openPagePainel) window.LMXBXPages.openPagePainel(); } return; }
         if (id === 'pages') { if (window.__bxV170ModeFanToggle) window.__bxV170ModeFanToggle(); else if (window.LMXBXPages && window.LMXBXPages.openPageMenu) window.LMXBXPages.openPageMenu(); return; }
         if (id === 'import') { if (typeof openLocalImport === 'function') { openLocalImport(); try { window.bxMaybeTip && window.bxMaybeTip('import'); } catch (_e) {} } return; }
+        if (id === 'searchx') { if (window.bxOpenBibleSearch) window.bxOpenBibleSearch(); return; }
         var v = APP_TO_VIEW[id];
         if (v && typeof navigateView === 'function') navigateView(v);
       } catch (_e) {}
@@ -16226,6 +16548,10 @@ if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded'
       body.innerHTML = bodyHtml(state.tab);
       var chip = el.querySelector('[data-bx-barscfg-chiprow]');
       if (chip) chip.hidden = state.tab !== 'full';
+      var hint = el.querySelector('.bx-barscfg-hint');
+      if (hint) hint.textContent = state.tab === 'full'
+        ? 'Ligar aqui; na tela cheia a barra só aparece ao rolar até o fim do texto.'
+        : 'Ligar/desligar aqui; a ORDEM você ajusta arrastando na própria barra.';
     }
     function setTabs() {
       var nm = { dock: 'Barra de baixo', rail: 'Lateral', full: state.sub === 'fullpc' ? 'Full · PC' : 'Full · Celular' }[state.tab];
@@ -16289,6 +16615,8 @@ if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded'
         else { list = list.filter(function (x) { return x !== id; }); }
         lsSet(key, list);
         try { if (window.__bxDockRender) window.__bxDockRender(); } catch (_) {}
+        /* 5.4.244 — botão recém-marcado sempre visível (dock com overflowX). */
+        if (on) { try { var nb = document.getElementById('bxMobileBottomNav'); if (nb) { var bb = nb.querySelector('[data-bxm="' + id + '"]'); if (bb) bb.scrollIntoView({ block: 'nearest', inline: 'nearest' }); } } catch (_e) {} }
         return;
       }
       var ctx = ctxForTab();

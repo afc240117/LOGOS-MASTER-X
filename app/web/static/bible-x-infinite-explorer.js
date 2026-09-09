@@ -233,22 +233,43 @@
     grid.__bxItems=[];grid.__bxKind=kind;
   }
   async function runPublicSearch(requestedKind){
-    const grid=$("#bxMediaPublicGrid"),input=$("#bxMediaPublicQuery");if(!grid||!input||mediaState.loading)return;
+    const grid=$("#bxMediaPublicGrid"),input=$("#bxMediaPublicQuery");if(!grid||!input)return;
+    // Token anti-corrida: cada busca nova invalida a anterior ainda em voo,
+    // então o resultado de uma busca antiga nunca pinta por cima da nova.
+    const requestId=(mediaState.requestId=(mediaState.requestId||0)+1);
+    const typed=String(input.value||"").trim();
+    if(!cleanQuery(typed)){
+      // Campo apagado + Buscar/Enter: não ressuscita a busca de contexto nem
+      // roda fallback — mostra o estado neutro e limpo (sem quebra de busca).
+      mediaState.observer?.disconnect();
+      mediaState.loading=false;mediaState.query="";mediaState.sourceQuery="";mediaState.requestedKind=requestedKind;mediaState.kind=requestedKind;mediaState.offset=0;mediaState.items=[];mediaState.done=true;
+      grid.__bxItems=[];grid.__bxKind=requestedKind;
+      // Na área com hub de fontes o grid fica vazio e limpo (a orientação vem do
+      // hub acima); fora dela mostra uma mensagem curta.
+      grid.innerHTML=grid.closest?.(".bx-media-discovery")?"":`<div class="bx-media-public-empty">Escolha uma fonte acima ou digite um tema e toque em Buscar imagens.</div>`;
+      input.dataset.bxUserCleared="1";
+      return;
+    }
     const {model}=immersionMediaContext();
     const fallbackQuery=requestedKind==="panorama"?model?.queries?.panorama:model?.queries?.images;
-    const query=contextualVisualQuery(input.value||fallbackQuery||"",requestedKind);if(!query)return;
+    const query=contextualVisualQuery(typed,requestedKind);if(!query)return;
     input.value=query;input.dataset.bxImmersionQuery=query;
     mediaState.loading=true;mediaState.query=query;mediaState.sourceQuery=query;mediaState.requestedKind=requestedKind;mediaState.kind=requestedKind;mediaState.provider=String(input.dataset.bxMediaProvider||"all").toLowerCase()||"all";mediaState.offset=0;mediaState.items=[];mediaState.done=false;
     mediaState.observer?.disconnect();
     grid.innerHTML=`<div class="bx-infinite-loading">Buscando ${requestedKind==="panorama"?"vistas 360°, cidades e paisagens relacionadas":"imagens atuais de cidades, sítios arqueológicos e ruínas bíblicas"} com consultas alternativas…</div>`;
     try{
       const result=await searchWithFallback(query,requestedKind);
+      if(requestId!==mediaState.requestId)return;
       if(!result.items.length){renderPublicEmpty(grid,requestedKind,result.error,query);mediaState.done=true;return}
       const notice=result.fallbackFrom==="panorama"?`<div class="bx-infinite-notice"><strong>Vista geográfica alternativa</strong><span>Nenhum panorama equiretangular foi localizado; exibimos imagens relacionadas do lugar para a exploração não ficar vazia.</span></div>`:"";
       grid.__bxItems=result.items.slice();grid.__bxKind=result.actualKind;grid.innerHTML=notice+result.items.map((item,index)=>mediaCard(item,index)).join("");
       mediaState.kind=result.actualKind;mediaState.sourceQuery=result.query;mediaState.items=result.items.slice();mediaState.offset=result.next_offset;mediaState.done=!result.has_more;
-    }catch(error){renderPublicEmpty(grid,requestedKind,error,query);mediaState.done=true}
-    finally{mediaState.loading=false;watchMedia()}
+    }catch(error){
+      if(requestId!==mediaState.requestId)return;
+      renderPublicEmpty(grid,requestedKind,error,query);mediaState.done=true
+    }finally{
+      if(requestId===mediaState.requestId){mediaState.loading=false;watchMedia()}
+    }
   }
   async function moreMedia(){
     const grid=$("#bxMediaPublicGrid"); if(!grid||mediaState.loading||mediaState.done)return;
@@ -270,11 +291,15 @@
   }
   function syncImmersionContext(attempt=0){
     const input=$("#bxMediaPublicQuery");
+    if(!input){if(attempt<12)window.setTimeout(()=>syncImmersionContext(attempt+1),100);return}
+    // O usuário apagou o campo de propósito: não re-preencha com o contexto
+    // (só quando ele voltar a digitar). Evita a "busca anterior" voltar sozinha.
+    if(input.dataset.bxUserCleared==="1")return;
     const context=window.BibleXImmersion?.getContext?.();
     const candidate=context?.integration?.active?context.integration:window.BibleXImmersion?.getIntegrationModel?.();
     const model=candidate?.active?candidate:null;
     const hasContext=Boolean(model?.active||context?.reference||context?.currentNarrativeRef||context?.scene);
-    if(!input||!hasContext){if(attempt<12)window.setTimeout(()=>syncImmersionContext(attempt+1),100);return}
+    if(!hasContext){if(attempt<12)window.setTimeout(()=>syncImmersionContext(attempt+1),100);return}
     const query=contextualVisualQuery(model?.queries?.images||context?.searchQuery||context?.mediaQuery||context?.reference||"","image");
     if(!query){if(attempt<12)window.setTimeout(()=>syncImmersionContext(attempt+1),100);return}
     const previous=input.dataset.bxImmersionQuery||"";
@@ -286,7 +311,7 @@
   function bindPublicInput(){
     const input=$("#bxMediaPublicQuery");if(!input||input.dataset.bxInfiniteBound)return;
     input.dataset.bxInfiniteBound="1";
-    input.addEventListener("input",()=>{const clipped=cleanQuery(input.value);if(input.value!==clipped)input.value=clipped});
+    input.addEventListener("input",()=>{const clipped=cleanQuery(input.value);if(input.value!==clipped)input.value=clipped;if(input.dataset.bxUserCleared==="1"&&clipped)input.dataset.bxUserCleared=""});
   }
   function bindPublicKindButtons(){
     if(document.documentElement.dataset.bxInfiniteKindBound)return;

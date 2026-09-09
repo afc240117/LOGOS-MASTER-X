@@ -10,6 +10,7 @@ from app.core.env import load_project_env
 from app.biblia_x.router import router as biblia_x_router
 from app.atlas_x.router import router as atlas_x_router
 from app.audio_x.router import router as audio_x_router
+from app.biblia_x.share_router import router as biblia_x_share_router
 
 # Load project .env before AIHub is instantiated, so provider keys/models are available.
 # Local project .env is authoritative when present. This fixes Windows/session variables
@@ -40,6 +41,7 @@ async def prevent_stale_frontend(request:Request,call_next):
 app.include_router(biblia_x_router)
 app.include_router(atlas_x_router)
 app.include_router(audio_x_router)
+app.include_router(biblia_x_share_router)
 class Generate(BaseModel):
  mode:str="SERMÃO";text:str=Field(min_length=1);theme:str|None=None;duration:int=40;cult:str="Avivamento";audience:str="Igreja local";intensity:int=10;objective:str|None=None;notes:str|None=None;provider:str="auto";ai_mode:str="automatico";model:str|None=None
 class BibleCommentAI(BaseModel):
@@ -539,6 +541,94 @@ Responda imediatamente no formato pedido."""
         except Exception as e:
             errors.append(f"openrouter: {type(e).__name__}: {str(e)[:180]}")
     raise HTTPException(502,detail="Comentário IA curto indisponível. "+" | ".join(errors))
+
+_LEGEND_FIELDS={"GEOGRAFIA":"geo","CULTURA":"cul","CURIOSIDADE":"cur"}
+def _parse_legend(text:str)->dict:
+    """Extrai os blocos GEOGRAFIA/CULTURA/CURIOSIDADE de uma resposta de texto."""
+    out={"geo":"","cul":"","cur":""}
+    if not text: return out
+    bucket=None
+    for raw in str(text).replace("\r","\n").split("\n"):
+        line=raw.strip()
+        if not line: continue
+        upper=line.upper()
+        matched=None
+        for label in _LEGEND_FIELDS:
+            if upper.startswith(label+":") or upper.startswith(label+" -") or upper.startswith(label+"—") or upper.startswith(label+" –"):
+                matched=label;break
+        if matched:
+            bucket=_LEGEND_FIELDS[matched]
+            content=re.sub(r"^[^:：]+[:：\-—\s]*","",line).strip()
+        else:
+            content=line
+        if bucket and content:
+            out[bucket]=re.sub(r"\s+"," ",out[bucket]+" "+content).strip() if out[bucket] else content
+    return {k:v[:300] for k,v in out.items()}
+
+@app.post("/api/bible/ai/legend")
+def bible_ai_legend(r:dict):
+    """Legenda curta de reconstrução visual em 3 blocos (Geografia/Cultura/Curiosidade).
+
+    Texto leve de texto (não usa o pipeline de sermão nem o revisor). A imagem
+    gerada permanece limpa: a legenda é uma camada do app, nunca pintada na mídia.
+    O provedor fica em Automático (OpenAI direto, depois OpenRouter)."""
+    import time
+    def clean(value,limit):return re.sub(r"\s+"," ",str(value or "")).strip()[:limit]
+    reference=clean(r.get("reference"),200) or "passagem em estudo"
+    verse_text=clean(r.get("verse_text"),900)
+    place=clean(r.get("place"),160)
+    scene=clean(r.get("scene"),160)
+    instructions=("Você é o redator de legendas do LOGOS MASTER X para reconstruções visuais de passagens bíblicas.\n"
+        "Responda em português brasileiro.\n"
+        "Escreva APENAS três blocos curtos, cada um iniciado pela palavra-chave em MAIÚSCULAS e dois-pontos, um por linha:\n"
+        "GEOGRAFIA: …\nCULTURA: …\nCURIOSIDADE: …\n"
+        "Cada bloco: 1 a 2 frases, no máximo 40 palavras, tom de verbete de museu para quem olha a imagem.\n"
+        "Não invente fatos, datas, nomes de lugar ou achados arqueológicos que não estejam no texto fornecido; em dúvida, seja prudente e genérico.\n"
+        "Não repita o texto do versículo e não fale da legenda em si.")
+    prompt=(f"BÍBLIA X — LEGENDA DA RECONSTRUÇÃO VISUAL\nPassagem: {reference}\n")
+    if verse_text: prompt+=f"Texto: {verse_text}\n"
+    if place: prompt+=f"Lugar: {place}\n"
+    if scene: prompt+=f"Cena: {scene}\n"
+    prompt+="\nEntregue os três blocos no formato pedido e nada além disso."
+    errors=[]
+    if os.getenv("OPENAI_API_KEY"):
+        started=time.perf_counter()
+        try:
+            from openai import OpenAI
+            client=OpenAI(api_key=os.getenv("OPENAI_API_KEY"), timeout=float(os.getenv("BIBLE_COMMENT_OPENAI_TIMEOUT","28")), max_retries=0)
+            model=os.getenv("BIBLE_COMMENT_OPENAI_MODEL") or os.getenv("OPENAI_MODEL","gpt-5-mini")
+            resp=client.responses.create(model=model,instructions=instructions,input=prompt,max_output_tokens=int(os.getenv("BIBLE_COMMENT_MAX_OUTPUT_TOKENS","900")))
+            text=(getattr(resp,"output_text",None) or "").strip()
+            if not text:
+                chunks=[]
+                for item in getattr(resp,"output",[]) or []:
+                    for content in getattr(item,"content",[]) or []:
+                        t=getattr(content,"text",None)
+                        if t: chunks.append(str(t))
+                text="\n".join(chunks).strip()
+            legend=_parse_legend(text)
+            if any(legend.values()):
+                return {"ok":True,"provider":"openai","model":model,"legend":legend,"reference":reference,"seconds":round(time.perf_counter()-started,3)}
+            errors.append("openai: resposta sem os três blocos")
+        except Exception as e:
+            errors.append(f"openai: {type(e).__name__}: {str(e)[:180]}")
+    if os.getenv("OPENROUTER_API_KEY"):
+        started=time.perf_counter()
+        try:
+            from openai import OpenAI
+            client=OpenAI(api_key=os.getenv("OPENROUTER_API_KEY"), base_url="https://openrouter.ai/api/v1",
+                          timeout=float(os.getenv("BIBLE_COMMENT_OPENROUTER_TIMEOUT","24")), max_retries=0)
+            model=os.getenv("BIBLE_COMMENT_OPENROUTER_MODEL") or os.getenv("OPENROUTER_MODEL","openrouter/auto")
+            resp=client.chat.completions.create(model=model,messages=[{"role":"system","content":instructions},{"role":"user","content":prompt}],
+                                                max_tokens=int(os.getenv("BIBLE_COMMENT_MAX_OUTPUT_TOKENS","900")),temperature=.35)
+            text=(resp.choices[0].message.content or "").strip()
+            legend=_parse_legend(text)
+            if any(legend.values()):
+                return {"ok":True,"provider":"openrouter","model":model,"legend":legend,"reference":reference,"seconds":round(time.perf_counter()-started,3)}
+            errors.append("openrouter: resposta sem os três blocos")
+        except Exception as e:
+            errors.append(f"openrouter: {type(e).__name__}: {str(e)[:180]}")
+    raise HTTPException(502,detail="Legenda IA indisponível. "+" | ".join(errors))
 
 @app.post("/api/generate-ai")
 def generate(r:Generate):

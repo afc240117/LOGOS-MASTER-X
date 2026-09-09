@@ -1,7 +1,7 @@
 (function () {
   "use strict";
 
-  const VERSION = "5.4.243";
+  const VERSION = "5.4.244";
   const $ = (selector, root = document) => root.querySelector(selector);
   const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
   const isRemote = value => /^https?:\/\//i.test(String(value || ""));
@@ -18,6 +18,53 @@
       licenseUrl: String(item.licenseUrl || item.license_url || ""),
       description: String(item.description || ""),
     };
+  }
+
+  /* ---- 5.4.244 — ✏️ Editar no visualizador: helpers da store media ----
+     (IndexedDB logosx-bible v15, store 'media' keyPath id). Abre a cada
+     operacao como os modulos originais (evita trava de versao). ---- */
+  function currentReaderReference(item) {
+    const ctx = (window.BibleXImmersion && typeof window.BibleXImmersion.getContext === "function") ? (window.BibleXImmersion.getContext() || {}) : {};
+    return String(item._reference || ctx.currentNarrativeRef || ctx.reference || "").trim();
+  }
+  function mediaStoreOpen() {
+    return new Promise((resolve, reject) => {
+      const request = indexedDB.open("logosx-bible", 15);
+      request.onupgradeneeded = () => { if (!request.result.objectStoreNames.contains("media")) request.result.createObjectStore("media", { keyPath: "id" }); };
+      request.onsuccess = () => resolve(request.result);
+      request.onerror = () => reject(request.error);
+    });
+  }
+  async function mediaRowById(id) {
+    if (!id) return null;
+    const db = await mediaStoreOpen();
+    return new Promise((resolve, reject) => {
+      const request = db.transaction("media", "readonly").objectStore("media").get(id);
+      request.onsuccess = () => resolve(request.result || null);
+      request.onerror = () => reject(request.error);
+    });
+  }
+  async function mediaRowPut(row) {
+    const db = await mediaStoreOpen();
+    return new Promise((resolve, reject) => {
+      const tx = db.transaction("media", "readwrite");
+      tx.objectStore("media").put(row);
+      tx.oncomplete = () => resolve(true);
+      tx.onerror = () => reject(tx.error);
+    });
+  }
+  async function mediaRowDelete(id) {
+    if (!id) return true;
+    const db = await mediaStoreOpen();
+    return new Promise((resolve, reject) => {
+      const tx = db.transaction("media", "readwrite");
+      tx.objectStore("media").delete(id);
+      tx.oncomplete = () => resolve(true);
+      tx.onerror = () => reject(tx.error);
+    });
+  }
+  function mediaChanged() {
+    document.dispatchEvent(new CustomEvent("biblex:media-changed", { detail: { source: "editor" } }));
   }
 
   function button(label, action, title) {
@@ -104,10 +151,10 @@
     if (!aiMediaLoader) {
       aiMediaLoader = new Promise((resolve, reject) => {
         const script = document.createElement("script");
-        script.src = "/static/bible-x-ai-media.js?v=5.4.243";
+        script.src = "/static/bible-x-ai-media.js?v=5.4.246";
         script.dataset.bxAiMedia = "1";
-        script.onload = () => window.BibleXAIMedia?.open ? resolve(window.BibleXAIMedia) : reject(new Error("Ateliê IA não ficou disponível."));
-        script.onerror = () => reject(new Error("Não foi possível carregar o Ateliê IA."));
+        script.onload = () => window.BibleXAIMedia?.open ? resolve(window.BibleXAIMedia) : reject(new Error("O Gerador de IA não ficou disponível."));
+        script.onerror = () => reject(new Error("Não foi possível carregar o Gerador de IA."));
         document.head.appendChild(script);
       }).catch(error => { aiMediaLoader = null; throw error; });
     }
@@ -150,7 +197,7 @@
     nav.appendChild(sourceAction("Wikimedia • imagens aqui", "commons-image", "Pesquisar Wikimedia dentro da Mídia X"));
     nav.appendChild(sourceAction("Wikimedia • 360° aqui", "commons-panorama", "Pesquisar panoramas dentro da Mídia X"));
     nav.appendChild(sourceAction("Pexels • fotos aqui", "pexels-image", "Pesquisar fotos do Pexels dentro da Mídia X (requer PEXELS_API_KEY)"));
-    nav.appendChild(sourceAction("✨ Ateliê IA", "ai", "Gerar imagem ou vídeo para esta passagem"));
+    nav.appendChild(sourceAction("✨ Gerador de IA · Imagens e Vídeos", "ai", "Gerar imagem ou vídeo para esta passagem"));
     [
       ["Pexels • vídeos ↗", publicSourceUrl("pexels", "video", query)]
     ].forEach(([text, href]) => {
@@ -254,6 +301,9 @@
     let scale = 1;
     let offsetX = 0;
     let offsetY = 0;
+    let angle = 0;          /* 5.4.244 — rotação da imagem (0/90/180/270) */
+    let orientK = 1;        /* fator de ajuste p/ a imagem rotacionada caber */
+    let laidW = 0, laidH = 0;
     let slideTimer = 0;
     let dragging = false;
     let dragStart = null;
@@ -284,14 +334,541 @@
       button("−", "zoom-out", "Diminuir zoom"),
       button("+", "zoom-in", "Aumentar zoom"),
       button("Ajustar", "fit", "Ajustar à tela"),
+      button("↻ 90°", "rotate", "Girar imagem 90°"),
       button("▶", "play", "Iniciar apresentação"),
+      button("✏️", "edit", "Editar imagem"),
+      button("🏷", "legend", "Legenda da imagem (texto do app)"),
+      button("⬇", "download", "Baixar esta imagem"),
       button("⛶", "fullscreen", "Tela cheia"),
       button("×", "close", "Fechar"),
     ].forEach(node => tools.appendChild(node));
+    /* ---- 5.4.244 — ✏️ Editar no visualizador -------------------------------
+       Painel flutuante com Recortar / Salvar / Copiar / Excluir + modo recorte.
+       Só opera em imagens LOCAIS (id presente na store media); o lápis fica
+       oculto quando o item não é editável (ex.: fonte pública da web). ----- */
+    let cropActive = false;
+    let cropFrom = null;
+    let cropBox = null;
+    const editorUrls = [];
+    const isEditableItem = item => Boolean(item && !/^video/i.test(String(item.type || "")) && String(item._dbId || item.id || item.key || "").trim());
+    const editToast = text => {
+      const old = $(".bxvm-toast", overlay); if (old) old.remove();
+      const t = document.createElement("div");
+      t.className = "bxvm-toast";
+      t.textContent = text;
+      overlay.appendChild(t);
+      setTimeout(() => t.remove(), 2600);
+    };
+    const editPanel = document.createElement("div");
+    editPanel.className = "bxvm-edit-panel";
+    editPanel.hidden = true;
+    editPanel.innerHTML =
+      '<div class="bxvm-edit-head"><b>✏️ Editar</b><small>Imagem da Mídia X</small><button type="button" class="bxvm-edit-x" data-bxvm-edit-close="1" aria-label="Fechar">×</button></div>' +
+      '<div class="bxvm-edit-body" data-bxvm-edit-view="main">' +
+      '<button type="button" data-bxvm-edit="crop">✂️ Recortar</button>' +
+      '<button type="button" data-bxvm-edit="save">💾 Salvar</button>' +
+      '<button type="button" data-bxvm-edit="copy">⧉ Copiar</button>' +
+      '<button type="button" class="bxvm-edit-danger" data-bxvm-edit="delete">🗑 Excluir</button>' +
+      '</div>' +
+      '<div class="bxvm-edit-body" data-bxvm-edit-view="savedest" hidden>' +
+      '<b class="bxvm-edit-q">Salvar imagem em:</b>' +
+      '<button type="button" data-bxvm-edit="saveBible">📖 Na Bíblia</button>' +
+      '<button type="button" data-bxvm-edit="saveDisk">💾 No dispositivo</button>' +
+      '<button type="button" data-bxvm-edit="saveBoth">📖💾 Ambos</button>' +
+      '<button type="button" class="bxvm-edit-back" data-bxvm-edit="back">↩ Voltar</button>' +
+      '</div>' +
+      '<div class="bxvm-edit-body" data-bxvm-edit-view="del" hidden>' +
+      '<b class="bxvm-edit-q">Excluir esta imagem da Bíblia?</b>' +
+      '<button type="button" class="bxvm-edit-danger" data-bxvm-edit="delYes">Sim, excluir</button>' +
+      '<button type="button" class="bxvm-edit-back" data-bxvm-edit="back">Cancelar</button>' +
+      '</div>';
+    stage.appendChild(editPanel);
+    const showEditView = name => {
+      [...editPanel.querySelectorAll("[data-bxvm-edit-view]")].forEach(node => { node.hidden = node.dataset.bxvmEditView !== name; });
+    };
+    const closeEditPanel = () => { if (editPanel) editPanel.hidden = true; };
+    const toggleEditPanel = () => { if (cropActive) return; editPanel.hidden = !editPanel.hidden; };
+    editPanel.addEventListener("click", event => {
+      if (event.target.closest("[data-bxvm-edit-close]")) { closeEditPanel(); return; }
+      const btn = event.target.closest("[data-bxvm-edit]");
+      if (!btn) return;
+      event.preventDefault(); event.stopPropagation();
+      const act = btn.dataset.bxvmEdit;
+      if (act === "back") showEditView("main");
+      else if (act === "crop") { closeEditPanel(); startCrop(); }
+      else if (act === "copy") copyCurrent();
+      else if (act === "delete") showEditView("del");
+      else if (act === "delYes") removeCurrent();
+      else if (act === "save") showEditView("savedest");
+      else if (act === "saveBible") saveCurrent("bible");
+      else if (act === "saveDisk") saveCurrent("disk");
+      else if (act === "saveBoth") saveCurrent("both");
+    });
+    /* ---- Legenda de reconstrução visual (camada do app) --------------------
+       Placa "impressa" sobre a imagem + painel de 3 blocos (Geografia / Cultura
+       / Curiosidade). A imagem gerada continua limpa: o texto é desenhado pelo
+       app. A IA preenche sozinha (uma chamada leve de texto) e o usuário pode
+       revisar, refazer e aplicar. --------------------------------------------- */
+    const legendKeys = [["geo", "Geografia"], ["cul", "Cultura"], ["cur", "Curiosidade"]];
+    const legendTrim = value => String(value == null ? "" : value).replace(/\s+/g, " ").trim();
+    const legendOf = item => {
+      const raw = (item && item.legend) || {};
+      return {
+        geo: legendTrim(raw.geo),
+        cul: legendTrim(raw.cul),
+        cur: legendTrim(raw.cur),
+        ref: legendTrim(item && (item.legendRef || item._reference || currentReaderReference(item)))
+      };
+    };
+    const legendFilled = item => { const l = legendOf(item); return Boolean(l.geo || l.cul || l.cur); };
+    const legendPlate = document.createElement("div");
+    legendPlate.className = "bxvm-legend-plate";
+    legendPlate.hidden = true;
+    const legendHead = document.createElement("div");
+    legendHead.className = "bxvm-legend-head";
+    legendPlate.appendChild(legendHead);
+    const legendBody = document.createElement("div");
+    legendBody.className = "bxvm-legend-body";
+    legendPlate.appendChild(legendBody);
+    viewport.appendChild(legendPlate);
+    const renderLegendPlate = () => {
+      /* 5.4.245 — placa "LEGENDA DA IMAGEM" NÃO é mais desenhada sobre NENHUMA
+         imagem. Pedido do usuário: remover o "retângulo oval" de todas as imagens
+         e impedir que novas gerações recebam a marcação. A legenda continua
+         editável/exportável pelo painel 🏷 (ver CSS: .bxvm-legend-plate {display:none}). */
+      legendPlate.hidden = true;
+    };
+    const syncLegendPlateView = () => {
+      if (!legendPlate || legendPlate.hidden) return;
+      const away = Boolean(cropActive) || scale > 1.01 || (angle % 180) !== 0;
+      legendPlate.classList.toggle("bxvm-legend-away", away);
+    };
+    const togglePlateCollapse = () => {
+      legendPlate.classList.toggle("bxvm-legend-collapsed");
+      const hint = legendPlate.querySelector(".bxvm-legend-hint");
+      if (hint) hint.textContent = legendPlate.classList.contains("bxvm-legend-collapsed") ? "ver" : "ocultar";
+    };
+    legendPlate.addEventListener("click", event => {
+      event.preventDefault(); event.stopPropagation();
+      togglePlateCollapse();
+    });
+    legendPlate.addEventListener("pointerdown", event => event.stopPropagation());
+    legendPlate.addEventListener("dblclick", event => event.stopPropagation());
+    const legendPanel = document.createElement("div");
+    legendPanel.className = "bxvm-legend-panel";
+    legendPanel.hidden = true;
+    legendPanel.innerHTML =
+      '<div class="bxvm-legend-panel-head"><b>🏷 Legenda da imagem</b><small>texto do app — a imagem continua limpa</small>' +
+      '<button type="button" class="bxvm-legend-panel-x" data-legend="close" aria-label="Fechar legenda">×</button></div>' +
+      '<div class="bxvm-legend-panel-ref" data-legend-ref></div>' +
+      '<div class="bxvm-legend-fields">' +
+      legendKeys.map(([k, t]) => `<label class="bxvm-legend-field"><b>${t}</b><textarea rows="2" data-legend-field="${k}" placeholder="${t} da cena (1 a 2 frases)"></textarea></label>`).join("") +
+      '</div>' +
+      '<div class="bxvm-legend-actions">' +
+      '<button type="button" class="bxvm-legend-btn" data-legend="gen">✨ Gerar com IA</button>' +
+      '<button type="button" class="bxvm-legend-btn is-primary" data-legend="save">💾 Salvar legenda</button>' +
+      '<button type="button" class="bxvm-legend-btn" data-legend="export">⬇ Salvar com legenda</button>' +
+      '<button type="button" class="bxvm-legend-btn bxvm-legend-ghost" data-legend="close">Fechar</button>' +
+      '</div>' +
+      '<div class="bxvm-legend-status" data-legend-status hidden></div>';
+    stage.appendChild(legendPanel);
+    let legendRefValue = "";
+    const legendInput = key => legendPanel.querySelector(`[data-legend-field="${key}"]`);
+    const legendStatus = () => legendPanel.querySelector("[data-legend-status]");
+    const setLegendStatus = (text, kind) => {
+      const node = legendStatus();
+      if (!node) return;
+      node.hidden = !text;
+      node.textContent = text || "";
+      node.dataset.kind = kind || "ok";
+    };
+    const setLegendFields = item => {
+      const l = legendOf(item);
+      legendRefValue = l.ref;
+      const refBox = legendPanel.querySelector("[data-legend-ref]");
+      if (refBox) refBox.textContent = "Reconstrução visual · " + (legendRefValue || "passagem em estudo");
+      legendKeys.forEach(([k]) => { const ta = legendInput(k); if (ta) ta.value = l[k]; });
+      const gen = legendPanel.querySelector('[data-legend="gen"]');
+      if (gen) gen.textContent = legendFilled(item) ? "↻ Refazer com IA" : "✨ Gerar com IA";
+      setLegendStatus("");
+    };
+    const collectLegend = () => {
+      const l = { geo: "", cul: "", cur: "" };
+      legendKeys.forEach(([k]) => { const ta = legendInput(k); if (ta) l[k] = legendTrim(ta.value); });
+      return { ...l, ref: legendRefValue };
+    };
+    const hasPanelLegend = () => { const l = collectLegend(); return Boolean(l.geo || l.cul || l.cur); };
+    let legendBusy = false;
+    const generateLegend = async (mode = "manual") => {
+      if (legendBusy) return;
+      const item = items[index] || {};
+      const ctx = (window.BibleXImmersion && typeof window.BibleXImmersion.getContext === "function") ? (window.BibleXImmersion.getContext() || {}) : {};
+      const scene = ctx.scene || {};
+      const place = scene.place || {};
+      const ref = legendTrim(item.legendRef || item._reference || item.reference || currentReaderReference(item) || ctx.currentNarrativeRef || ctx.reference);
+      const body = { reference: ref || "passagem em estudo" };
+      const verseText = legendTrim(item.verseText || ctx.verseText);
+      if (verseText) body.verse_text = verseText.slice(0, 900);
+      const placeName = legendTrim(place.name);
+      const placeRegion = legendTrim(place.region);
+      const location = [placeName, placeRegion].filter(Boolean).join(" • ");
+      const sceneTitle = legendTrim(scene.title);
+      if (location) body.place = location;
+      if (sceneTitle) body.scene = sceneTitle;
+      legendRefValue = ref;
+      legendBusy = true;
+      setLegendStatus(mode === "auto" ? "Escrevendo a legenda com IA…" : "Refazendo a legenda com IA…", "ok");
+      try {
+        const resp = await window.fetch("/api/bible/ai/legend", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+        if (!resp.ok) {
+          let detail = "";
+          try { detail = ((await resp.json()).detail || "").toString(); } catch (_) {}
+          throw new Error(detail || ("HTTP " + resp.status));
+        }
+        const data = await resp.json();
+        const lg = (data && data.legend) || {};
+        legendKeys.forEach(([k]) => { const ta = legendInput(k); if (ta) ta.value = legendTrim(lg[k]); });
+        if (!hasPanelLegend()) throw new Error("A IA não retornou blocos legíveis.");
+        setLegendStatus("✔ Pronto — revise e salve com 💾.", "ok");
+      } catch (error) {
+        setLegendStatus("A geração automática falhou agora. Escreva os três campos ou tente de novo.", "err");
+        editToast("Legenda IA indisponível no momento.");
+      } finally {
+        legendBusy = false;
+      }
+    };
+    const openLegendPanel = item => {
+      closeEditPanel();
+      setLegendFields(item);
+      legendPanel.hidden = false;
+      if (!legendFilled(item)) generateLegend("auto");
+    };
+    const closeLegendPanel = () => { legendPanel.hidden = true; setLegendStatus(""); };
+    const toggleLegendPanel = () => {
+      if (cropActive) return;
+      const item = items[index] || {};
+      if (!isEditableItem(item)) { editToast("Salve a imagem na Bíblia primeiro para criar a legenda."); return; }
+      if (!legendPanel.hidden) { closeLegendPanel(); return; }
+      openLegendPanel(item);
+    };
+    const saveLegend = async () => {
+      const item = items[index] || {};
+      const id = String(item._dbId || item.id || item.key || "").trim();
+      const l = collectLegend();
+      if (!hasPanelLegend()) { setLegendStatus("Escreva ao menos um dos três campos antes de aplicar.", "warn"); return; }
+      if (!id) { setLegendStatus("Esta imagem não está salva na Bíblia.", "warn"); return; }
+      try {
+        const row = (await mediaRowById(id)) || {};
+        await mediaRowPut({ ...row, id, legend: { geo: l.geo, cul: l.cul, cur: l.cur }, legendRef: legendTrim(l.ref || row.reference || "") });
+        items[index] = { ...item, legend: { geo: l.geo, cul: l.cul, cur: l.cur }, legendRef: legendTrim(l.ref || row.reference || "") };
+        mediaChanged();
+        closeLegendPanel();
+        renderLegendPlate(items[index]);
+        editToast("🏷 Legenda salva nesta mídia ✔");
+      } catch (_) { setLegendStatus("Não foi possível salvar a legenda.", "err"); }
+    };
+    const exportLegend = () => {
+      const l = collectLegend();
+      if (!(l.geo || l.cul || l.cur)) { setLegendStatus("Escreva ou gere a legenda antes de salvar o arquivo.", "warn"); return; }
+      if (!image.naturalWidth) { setLegendStatus("Aguarde a imagem carregar para exportar.", "warn"); return; }
+      try {
+        const w = image.naturalWidth;
+        const h = image.naturalHeight;
+        const canvas = document.createElement("canvas");
+        const g2 = canvas.getContext("2d");
+        const face = '"Segoe UI", system-ui, sans-serif';
+        const kickerPx = Math.max(10, Math.round(w * 0.016));
+        const titlePx = Math.max(13, Math.round(w * 0.026));
+        const segPx = Math.max(11, Math.round(w * 0.02));
+        const pad = Math.max(12, Math.round(w * 0.035));
+        const wrap = (text, px, bold) => {
+          g2.font = `800 ${px}px ${face}`;
+          const maxW = w - pad * 2;
+          const words = String(text).split(/\s+/).filter(Boolean);
+          const lines = [];
+          let line = "";
+          words.forEach(word => {
+            const test = line ? line + " " + word : word;
+            if (g2.measureText(test).width > maxW && line) { lines.push(line); line = word; } else line = test;
+          });
+          if (line) lines.push(line);
+          return lines;
+        };
+        const kickerLH = Math.round(kickerPx * 1.25);
+        const titleLH = Math.round(titlePx * 1.28);
+        const segLH = Math.round(segPx * 1.28);
+        const bodyLH = Math.round(segPx * 1.38);
+        const titleLines = wrap("Reconstrução visual · " + (l.ref || "passagem em estudo"), titlePx);
+        const segs = legendKeys.map(([k, label]) => { const body = l[k]; return body ? { label, lines: wrap(body, segPx) } : null; }).filter(Boolean);
+        const rule = Math.max(2, Math.round(w * 0.002));
+        const bandH = pad + kickerLH + 4 + titleLines.length * titleLH + 10 + rule + 10 + segs.reduce((sum, s) => sum + segLH + 3 + s.lines.length * bodyLH + 8, 0) + pad;
+        canvas.width = w;
+        canvas.height = h + bandH;
+        g2.fillStyle = "#f5eeda";
+        g2.fillRect(0, h, w, bandH);
+        g2.drawImage(image, 0, 0, w, h);
+        g2.fillStyle = "#a07c3f";
+        g2.fillRect(0, h, w, rule);
+        g2.textBaseline = "top";
+        let y = h + pad;
+        g2.fillStyle = "#7a2e1d";
+        g2.font = `900 ${kickerPx}px ${face}`;
+        g2.fillText("LEGENDA DA IMAGEM", pad, y);
+        y += kickerLH + 4;
+        g2.fillStyle = "#35291a";
+        g2.font = `800 ${titlePx}px ${face}`;
+        titleLines.forEach(line => { g2.fillText(line, pad, y); y += titleLH; });
+        y += 10 + rule;
+        segs.forEach(s => {
+          y += 8;
+          g2.fillStyle = "#a05a22";
+          g2.font = `900 ${segPx}px ${face}`;
+          g2.fillText(s.label, pad, y);
+          y += segLH + 3;
+          g2.fillStyle = "#3a2e1c";
+          g2.font = `400 ${segPx}px ${face}`;
+          s.lines.forEach(line => { g2.fillText(line, pad, y); y += bodyLH; });
+        });
+        canvas.toBlob(blob => {
+          if (!blob) { editToast("Não foi possível gerar o arquivo."); return; }
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = editorName(item).replace(/\.(png|jpe?g)$/i, "") + "-com-legenda.png";
+          document.body.appendChild(a); a.click(); a.remove();
+          setTimeout(() => URL.revokeObjectURL(url), 5000);
+          editToast("⬇ Arquivo com legenda baixado.");
+        }, "image/png");
+      } catch (_) { setLegendStatus("Não foi possível exportar a imagem com legenda.", "err"); }
+    };
+    legendPanel.addEventListener("click", event => {
+      const btn = event.target.closest("[data-legend]");
+      if (!btn) return;
+      event.preventDefault(); event.stopPropagation();
+      const act = btn.dataset.legend;
+      if (act === "close") closeLegendPanel();
+      else if (act === "gen") generateLegend("manual");
+      else if (act === "save") saveLegend();
+      else if (act === "export") exportLegend();
+    });
+    legendPanel.addEventListener("pointerdown", event => event.stopPropagation());
+    const fetchItemBlob = async item => {
+      try { const resp = await fetch(item.src); if (!resp.ok) return null; return await resp.blob(); } catch (_) { return null; }
+    };
+    const downloadBlob = (blob, name) => {
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url; a.download = name || "imagem-midia-x.jpg";
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 5000);
+    };
+    const editorName = item => {
+      const base = String(currentReaderReference(item) || item.title || "imagem").replace(/[^\p{L}\p{N}]+/gu, "-").replace(/^-+|-+$/g, "") || "imagem";
+      return base + (/.png$/i.test(item.src || "") ? ".png" : ".jpg");
+    };
+    const copyCurrent = async () => {
+      const blob = await fetchItemBlob(items[index] || {});
+      if (!blob) { editToast("Não foi possível copiar."); return; }
+      try {
+        await navigator.clipboard.write([new ClipboardItem({ [(blob.type || "image/png")]: blob })]);
+        editToast("⧉ Imagem copiada.");
+      } catch (_) { editToast("Seu navegador não permite copiar imagem."); }
+    };
+    const removeCurrent = async () => {
+      const item = items[index] || {};
+      const id = String(item._dbId || item.id || item.key || "").trim();
+      try { if (id) await mediaRowDelete(id); }
+      catch (_) { editToast("Não foi possível excluir."); return; }
+      items.splice(index, 1);
+      if (!items.length) { close(); return; }
+      if (index >= items.length) index = items.length - 1;
+      closeEditPanel();
+      show(index);
+      mediaChanged();
+      editToast("🗑 Imagem excluída da Bíblia.");
+    };
+    const saveCurrent = async target => {
+      const item = items[index] || {};
+      const id = String(item._dbId || item.id || item.key || "").trim();
+      const saveBible = async () => {
+        if (id) {
+          const row = (await mediaRowById(id)) || { ...item, id };
+          row.blob = row.blob || null;
+          await mediaRowPut(row);
+          editToast("📖 Já está salva na Bíblia ✔");
+          return;
+        }
+        const blob = await fetchItemBlob(item);
+        if (!blob) { editToast("Não foi possível salvar na Bíblia."); return; }
+        const nid = "mx-" + Date.now() + "-" + Math.round(Math.random() * 1e6);
+        await mediaRowPut({ id: nid, type: "image", blob, sourceKind: "local", title: item.title || "Imagem da passagem", reference: currentReaderReference(item), createdAt: new Date().toISOString() });
+        items[index] = { ...item, _dbId: nid };
+        mediaChanged();
+        editToast("📖 Salva na Bíblia ✔");
+      };
+      const saveDisk = async () => {
+        const blob = await fetchItemBlob(item);
+        if (!blob) { editToast("Não foi possível baixar."); return; }
+        downloadBlob(blob, editorName(item));
+        editToast("💾 Baixada para o dispositivo.");
+      };
+      if (target === "bible") await saveBible();
+      else if (target === "disk") await saveDisk();
+      else if (target === "both") { await saveBible(); await saveDisk(); }
+      closeEditPanel();
+    };
+    /* ---- camada de recorte (por cima da imagem, alinhada ao retângulo real) ---- */
+    const cropLayer = document.createElement("div");
+    cropLayer.className = "bxvm-crop-layer";
+    cropLayer.hidden = true;
+    cropLayer.innerHTML =
+      '<div class="bxvm-crop-sel" style="display:none"></div>' +
+      '<div class="bxvm-crop-tip">🖐 Arraste para escolher o recorte</div>' +
+      '<div class="bxvm-crop-actions"><button type="button" class="bxvm-crop-cancel" data-crop="cancel">Cancelar</button><button type="button" class="bxvm-crop-ok" data-crop="ok">✂️ Recortar</button></div>';
+    viewport.appendChild(cropLayer);
+    const cropSel = cropLayer.querySelector(".bxvm-crop-sel");
+    const placeCropLayer = () => {
+      const ivr = viewport.getBoundingClientRect();
+      const ir = image.getBoundingClientRect();
+      cropLayer.style.left = Math.max(0, Math.round(ir.left - ivr.left)) + "px";
+      cropLayer.style.top = Math.max(0, Math.round(ir.top - ivr.top)) + "px";
+      cropLayer.style.width = Math.round(ir.width) + "px";
+      cropLayer.style.height = Math.round(ir.height) + "px";
+    };
+    const paintCrop = () => {
+      if (!cropBox || cropBox.w < 2 || cropBox.h < 2) { cropSel.style.display = "none"; return; }
+      cropSel.style.display = "block";
+      cropSel.style.left = cropBox.x + "px";
+      cropSel.style.top = cropBox.y + "px";
+      cropSel.style.width = cropBox.w + "px";
+      cropSel.style.height = cropBox.h + "px";
+    };
+    const exitCrop = () => {
+      cropActive = false;
+      cropFrom = null;
+      cropBox = null;
+      if (cropLayer) cropLayer.hidden = true;
+      if (cropSel) cropSel.style.display = "none";
+    };
+    const startCrop = () => {
+      if (!image.classList.contains("loaded") || !image.complete) { editToast("Aguarde a imagem carregar para recortar."); return; }
+      setAngle(0);
+      setScale(1);
+      requestAnimationFrame(() => {
+        placeCropLayer();
+        cropActive = true;
+        cropLayer.hidden = false;
+      });
+    };
+    const cropPoint = event => {
+      const r = cropLayer.getBoundingClientRect();
+      return { x: event.clientX - r.left, y: event.clientY - r.top };
+    };
+    cropLayer.addEventListener("pointerdown", event => {
+      if (event.target.closest(".bxvm-crop-actions,.bxvm-crop-tip")) return;
+      if (!cropActive) return;
+      event.stopPropagation(); /* isola o recorte: sem isso o drag horizontal vira "próxima imagem" (swipe do viewport) e sai do recorte */
+      cropLayer.setPointerCapture?.(event.pointerId);
+      const p = cropPoint(event);
+      cropFrom = p;
+      cropBox = { x: p.x, y: p.y, w: 0, h: 0 };
+      paintCrop();
+    });
+    cropLayer.addEventListener("pointermove", event => {
+      if (!cropActive || !cropFrom) return;
+      event.stopPropagation();
+      const p = cropPoint(event);
+      cropBox = { x: Math.min(cropFrom.x, p.x), y: Math.min(cropFrom.y, p.y), w: Math.abs(p.x - cropFrom.x), h: Math.abs(p.y - cropFrom.y) };
+      paintCrop();
+    });
+    cropLayer.addEventListener("pointerup", event => {
+      event.stopPropagation();
+      cropFrom = null;
+    });
+    cropLayer.addEventListener("click", event => {
+      const act = event.target.closest("[data-crop]")?.dataset.crop;
+      if (!act) return;
+      event.preventDefault(); event.stopPropagation();
+      if (act === "cancel") { exitCrop(); return; }
+      if (act !== "ok") return;
+      const r = cropLayer.getBoundingClientRect();
+      if (!cropBox || cropBox.w < 10 || cropBox.h < 10) { editToast("Escolha um recorte maior."); return; }
+      const sx = image.naturalWidth / Math.max(1, r.width);
+      const sy = image.naturalHeight / Math.max(1, r.height);
+      const nr = {
+        x: clamp(Math.round(cropBox.x * sx), 0, image.naturalWidth),
+        y: clamp(Math.round(cropBox.y * sy), 0, image.naturalHeight),
+        w: clamp(Math.round(cropBox.w * sx), 1, image.naturalWidth),
+        h: clamp(Math.round(cropBox.h * sy), 1, image.naturalHeight)
+      };
+      nr.w = Math.max(1, Math.min(nr.w, image.naturalWidth - nr.x));
+      nr.h = Math.max(1, Math.min(nr.h, image.naturalHeight - nr.y));
+      exitCrop();
+      applyCrop(nr);
+    });
+    const applyCrop = rect => {
+      if (rect.w < 2 || rect.h < 2) { editToast("Recorte muito pequeno."); return; }
+      const canvas = document.createElement("canvas");
+      canvas.width = rect.w;
+      canvas.height = rect.h;
+      const ctx = canvas.getContext("2d");
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = "high";
+      ctx.drawImage(image, rect.x, rect.y, rect.w, rect.h, 0, 0, rect.w, rect.h);
+      const kind = /\.png$/i.test(items[index] && items[index].src || "") ? "image/png" : "image/jpeg";
+      canvas.toBlob(async blob => {
+        if (!blob) { editToast("Não foi possível recortar."); return; }
+        const item = items[index] || {};
+        const id = String(item._dbId || item.id || item.key || "").trim();
+        try {
+          const row = (await mediaRowById(id)) || {};
+          const fresh = URL.createObjectURL(blob);
+          editorUrls.push(fresh);
+          const next = {
+            ...row,
+            id: row.id || id || ("mx-" + Date.now() + "-" + Math.round(Math.random() * 1e6)),
+            type: "image",
+            blob,
+            sourceKind: "local",
+            title: row.title || item.title || "Imagem da passagem",
+            reference: String(row.reference || item._reference || currentReaderReference(item)).trim(),
+            createdAt: row.createdAt || new Date().toISOString()
+          };
+          await mediaRowPut(next);
+          items[index] = { ...item, src: fresh, _dbId: next.id, _reference: next.reference };
+          show(index);
+          mediaChanged();
+          editToast("✂️ Recortado e salvo na Bíblia ✔");
+        } catch (_) { editToast("Não foi possível salvar o recorte."); }
+      }, kind, 0.92);
+    };
 
     const applyTransform = () => {
-      image.style.transform = `translate3d(${offsetX}px,${offsetY}px,0) scale(${scale})`;
+      const s = (scale * orientK).toFixed(4);
+      image.style.transform = `translate3d(${offsetX}px,${offsetY}px,0) rotate(${angle}deg) scale(${s})`;
       viewport.classList.toggle("zoomed", scale > 1.01);
+      syncLegendPlateView();
+    };
+    /* medidas "deitadas" da imagem (offset ignora transform) e fator que faz a
+       imagem ROTACIONADA (90/270 = largura vira altura) caber no palco */
+    const updateFit = () => {
+      const w = viewport.clientWidth || stage.clientWidth || 1;
+      const h = viewport.clientHeight || stage.clientHeight || 1;
+      const iw = image.offsetWidth || image.naturalWidth || laidW || 1;
+      const ih = image.offsetHeight || image.naturalHeight || laidH || 1;
+      laidW = iw; laidH = ih;
+      orientK = (angle % 180 === 0)
+        ? 1
+        : Math.min(1, w / ih, h / iw);
+      applyTransform();
+    };
+    const setAngle = value => {
+      angle = ((value % 360) + 360) % 360;
+      scale = 1;
+      offsetX = offsetY = 0;
+      updateFit();
+      const rb = tools.querySelector('[data-bxvm-action="rotate"]');
+      if (rb) rb.classList.toggle("is-active", angle % 180 !== 0);
     };
     const setScale = value => {
       scale = clamp(value, 1, 5);
@@ -335,24 +912,43 @@
       const item = items[index];
       scale = 1;
       offsetX = offsetY = 0;
+      angle = 0;
+      orientK = 1;
+      const rotateBtn = $('[data-bxvm-action="rotate"]', tools);
+      if (rotateBtn) rotateBtn.classList.remove("is-active");
       applyTransform();
       loading.hidden = false;
       image.classList.remove("loaded");
       image.alt = item.title;
       image.src = item.src;
+      closeEditPanel();
+      if (legendPanel) legendPanel.hidden = true;
+      if (cropLayer) { cropActive = false; cropLayer.hidden = true; const cs = cropLayer.querySelector(".bxvm-crop-sel"); if (cs) cs.style.display = "none"; cropFrom = null; cropBox = null; }
+      const editBtnNode = $('[data-bxvm-action="edit"]', tools);
+      if (editBtnNode) editBtnNode.hidden = !isEditableItem(item);
+      const legendBtnNode = $('[data-bxvm-action="legend"]', tools);
+      if (legendBtnNode) legendBtnNode.hidden = !isEditableItem(item);
       renderInfo(item);
+      legendPlate.classList.remove("bxvm-legend-collapsed");
+      renderLegendPlate(item);
       previous.hidden = next.hidden = items.length < 2;
     };
     const close = () => {
       stopSlides();
       document.removeEventListener("keydown", onKey);
+      window.removeEventListener("resize", onResize);
+      editorUrls.forEach((url) => { try { URL.revokeObjectURL(url); } catch (_) {} });
       overlay.remove();
       if (!document.querySelector(".bxvm-overlay,.bx-route-visual-modal")) document.body.classList.remove("bxvm-lock");
       if (typeof options.onClose === "function") options.onClose();
     };
     const onKey = event => {
-      if (event.key === "Escape") close();
-      else if (event.key === "ArrowLeft") show(index - 1);
+      if (event.key === "Escape") {
+        if (cropActive) { exitCrop(); return; }
+        if (editPanel && !editPanel.hidden) { closeEditPanel(); return; }
+        if (legendPanel && !legendPanel.hidden) { closeLegendPanel(); return; }
+        close();
+      } else if (event.key === "ArrowLeft") show(index - 1);
       else if (event.key === "ArrowRight") show(index + 1);
       else if (event.key === "+" || event.key === "=") setScale(scale + 0.25);
       else if (event.key === "-") setScale(scale - 0.25);
@@ -360,10 +956,13 @@
       else if (event.key === " ") { event.preventDefault(); toggleSlides(); }
     };
 
-    image.addEventListener("load", () => { loading.hidden = true; image.classList.add("loaded"); });
+    image.addEventListener("load", () => { loading.hidden = true; image.classList.add("loaded"); updateFit(); });
     image.addEventListener("error", () => { loading.textContent = "Não foi possível carregar esta imagem."; });
+    const onResize = () => updateFit();
+    window.addEventListener("resize", onResize);
     viewport.addEventListener("wheel", event => { event.preventDefault(); setScale(scale + (event.deltaY < 0 ? .25 : -.25)); }, { passive: false });
     viewport.addEventListener("pointerdown", event => {
+      if (cropActive) return; /* em recorte o gesto é do crop, nunca swipe/pan */
       viewport.setPointerCapture?.(event.pointerId);
       if (scale > 1.01) {
         dragging = true;
@@ -371,12 +970,13 @@
       } else swipeStart = { x: event.clientX, y: event.clientY };
     });
     viewport.addEventListener("pointermove", event => {
-      if (!dragging || !dragStart) return;
+      if (cropActive || !dragging || !dragStart) return;
       offsetX = dragStart.ox + event.clientX - dragStart.x;
       offsetY = dragStart.oy + event.clientY - dragStart.y;
       applyTransform();
     });
     viewport.addEventListener("pointerup", event => {
+      if (cropActive) { dragging = false; dragStart = swipeStart = null; return; }
       if (!dragging && swipeStart && Math.abs(event.clientX - swipeStart.x) > 55) show(index + (event.clientX < swipeStart.x ? 1 : -1));
       dragging = false;
       dragStart = swipeStart = null;
@@ -387,8 +987,27 @@
       if (action === "zoom-in") setScale(scale + .25);
       if (action === "zoom-out") setScale(scale - .25);
       if (action === "fit") setScale(1);
+      if (action === "rotate") setAngle(angle + 90);
       if (action === "play") toggleSlides();
       if (action === "fullscreen") requestFullScreen(dialog);
+      if (action === "edit") { if (legendPanel && !legendPanel.hidden) closeLegendPanel(); toggleEditPanel(); }
+      if (action === "legend") toggleLegendPanel();
+      if (action === "download") {
+        const it = items[index] || {};
+        (async () => {
+          const blob = await fetchItemBlob(it);
+          if (!blob) {
+            if (/^https?:/i.test(String(it.src || ""))) { const w = window.open(it.src, "_blank"); if (w) w.opener = null; editToast("Abrindo a fonte original no navegador…"); }
+            else editToast("Não foi possível baixar.");
+            return;
+          }
+          let ext = ".jpg";
+          const t = String(blob.type || "").toLowerCase();
+          if (t.includes("png")) ext = ".png"; else if (t.includes("webp")) ext = ".webp"; else if (t.includes("gif")) ext = ".gif";
+          downloadBlob(blob, String(editorName(it)).replace(/\.(png|jpe?g|webp|gif)$/i, "") + ext);
+          editToast("⬇ Download iniciado.");
+        })();
+      }
       if (action === "immersion") {
         close();
         openImmersionFromVisual(item);
