@@ -6878,6 +6878,7 @@ Gerado em ${new Date().toLocaleString("pt-BR")}
 
   // V1.57 — trilho flutuante de leitura
   let bxV157CurrentIndex=0;
+  let bxV157Paint=true; // 5.4.248 — capítulo inteiro abre SEM marcar o v.1 (0 = passagem toda)
   const bxV157Els=[...out.querySelectorAll("[data-bx-v3-verse]")];
   const bxV157Pos=out.querySelector("[data-v157-position]");
   const bxV157Bm=out.querySelector("[data-v157-bookmark-current]");
