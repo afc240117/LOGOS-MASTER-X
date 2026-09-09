@@ -238,6 +238,7 @@ function siteMeta(row){
   return {kind:'site',current:row.name||'Lugar',subtitle:'ponto de interesse para estudo',certainty:row.certainty||'medium'};
 }
 function siteKindLabel(kind){return ({city:'cidade atual',ruin:'sítio arqueológico',site:'lugar de estudo',region:'região'})[kind]||'lugar'}
+function safeClass(kind){return ['city','ruin','site','region'].includes(kind)?kind:'site'}
 function markerSymbol(kind){
   if(kind==='ruin')return '<path class="marker-symbol ruin" d="M0-7 7 0 0 7-7 0Z"/>';
   if(kind==='site')return '<path class="marker-symbol site" d="M0-8 7 5-7 5Z"/>';

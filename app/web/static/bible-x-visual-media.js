@@ -151,7 +151,7 @@
     if (!aiMediaLoader) {
       aiMediaLoader = new Promise((resolve, reject) => {
         const script = document.createElement("script");
-        script.src = "/static/bible-x-ai-media.js?v=5.4.246";
+        script.src = "/static/bible-x-ai-media.js?v=5.4.247";
         script.dataset.bxAiMedia = "1";
         script.onload = () => window.BibleXAIMedia?.open ? resolve(window.BibleXAIMedia) : reject(new Error("O Gerador de IA não ficou disponível."));
         script.onerror = () => reject(new Error("Não foi possível carregar o Gerador de IA."));

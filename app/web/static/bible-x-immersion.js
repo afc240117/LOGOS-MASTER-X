@@ -2170,7 +2170,7 @@
             return;
           }
           const script = document.createElement("script");
-          script.src = `/static/bible-x-ai-media.js?v=5.4.246`;
+          script.src = `/static/bible-x-ai-media.js?v=5.4.247`;
           script.dataset.bxAiMedia = "1";
           script.onload = resolve;
           script.onerror = reject;
@@ -3311,71 +3311,10 @@
     });
   }
 
-  /* 5.4.246 — 🖼 miniatura INLINE leve por versículo (leitura normal).
-     Aparece só quando o versículo tem imagem salva na Mídia X; le o capítulo
-     inteiro de UMA vez (indice leve + ids casados) e monta um <img> pequeno que
-     abre a galeria da passagem. Respeita a engrenagem ⚙️: "Mídia" desmarcada
-     = sem miniaturas. URLs de objeto sao revogadas na troca de capitulo. */
-  function injectVerseThumbsStyle() {
-    if (document.getElementById("bxInlineThumbStyle")) return;
-    const s = document.createElement("style");
-    s.id = "bxInlineThumbStyle";
-    s.textContent = "#bOut .lmx-bible-v3-verse:has(> .bx-inline-thumb),[data-bx-v3-verse]:has(> .bx-inline-thumb){flex-wrap:wrap}.bx-inline-thumb{position:relative;flex:0 0 auto;border:1px solid rgba(46,204,159,.55);border-radius:10px;overflow:hidden;padding:0;margin:6px 0 2px;cursor:pointer;background:#02070d;line-height:0;box-shadow:0 2px 8px rgba(0,0,0,.4);align-self:flex-start}.bx-inline-thumb img{display:block;width:118px;height:72px;object-fit:cover}.bx-inline-thumb::after{content:\"🖼\";position:absolute;right:4px;bottom:4px;font-size:.6rem;background:rgba(1,10,18,.74);color:#fff;padding:1px 5px;border-radius:6px;line-height:1.2}.bx-inline-thumb:hover{outline:2px solid #2ecc9f}@media(max-width:680px){.bx-inline-thumb img{width:100px;height:64px}}";
-    document.head.appendChild(s);
-  }
-  function injectVerseThumbs() {
-    try {
-      const verses = $$(".lmx-bible-v3-verse[data-ref], [data-bx-v3-verse][data-ref]").filter((v) => v.isConnected && !v.querySelector("[data-bx-inline-thumb]") && v.dataset.bxThumbDone !== "1");
-      if (!verses.length) return;
-      let mediaOn = true;
-      try { const raw = localStorage.getItem("logosx:v170verseTools"); if (raw) { const arr = JSON.parse(raw); mediaOn = Array.isArray(arr) && arr.includes("media"); } } catch (_) {}
-      if (!mediaOn) return;
-      injectVerseThumbsStyle();
-      const first = verses[0];
-      const dockRef = (first.getAttribute("data-ref") || "").trim() || ($("#bRef")?.value || "").trim();
-      const chap = chapterBaseOf(dockRef);
-      if (!chap) return;
-      if (injectVerseThumbs._chap && injectVerseThumbs._chap !== chap && injectVerseThumbs._revoke) {
-        injectVerseThumbs._revoke.forEach((u) => { try { URL.revokeObjectURL(u); } catch (_) {} });
-        injectVerseThumbs._revoke = [];
-      }
-      injectVerseThumbs._chap = chap;
-      bxMediaIdxEnsure(() => {
-        try {
-          const ids = bxMediaMatchIds("chapter", chap, false);
-          if (!ids.length) { verses.forEach((v) => { v.dataset.bxThumbDone = "1"; }); return; }
-          bxReadMediaByIds(ids, (rows) => {
-            try {
-              if (!rows.length) { verses.forEach((v) => { v.dataset.bxThumbDone = "1"; }); return; }
-              const bucket = injectVerseThumbs._revoke || (injectVerseThumbs._revoke = []);
-              const pick = (row) => { if (row.blob) { const u = URL.createObjectURL(row.blob); bucket.push(u); return u; } return row.sourceUrl || row.thumbUrl || ""; };
-              verses.forEach((verse) => {
-                verse.dataset.bxThumbDone = "1";
-                if (!verse.isConnected || verse.querySelector("[data-bx-inline-thumb]")) return;
-                const ref = (verse.getAttribute("data-ref") || "").trim();
-                if (!ref) return;
-                let src = "";
-                for (let i = 0; i < rows.length; i += 1) {
-                  const row = rows[i];
-                  const refs = [row.reference, ...(Array.isArray(row.relatedReferences) ? row.relatedReferences : [])];
-                  if (refs.some((r) => r && mediaRefMatches(r, ref))) { src = pick(row); if (src) break; }
-                }
-                if (!src) return;
-                const t = document.createElement("button");
-                t.type = "button";
-                t.className = "bx-inline-thumb";
-                t.dataset.bxInlineThumb = "1";
-                t.title = "Ver imagem(s) de " + ref;
-                t.innerHTML = '<img src="' + src + '" alt="" loading="lazy" decoding="async">';
-                t.addEventListener("click", (ev) => { ev.preventDefault(); ev.stopImmediatePropagation(); openVerseImagesDirect(ref); });
-                verse.appendChild(t);
-              });
-            } catch (_) {}
-          });
-        } catch (_) {}
-      });
-    } catch (_) {}
-  }
+  /* 5.4.247 — barra de miniaturas INLINE por versículo REMOVIDA (desempenho:
+     injetava imagem em resolução cheia para o capítulo inteiro de uma vez e
+     travava o fio principal). O botão "🖼 Imagem da passagem" ([data-bx-verse-images],
+     no .lmx-bible-v3-tools) mantém o acesso à galeria. */
 
   function injectNavTrigger() {
     const nav = $(".bible-x-nav");
@@ -3409,7 +3348,6 @@
 
   function injectAll() {
     injectVerseTriggers();
-    injectVerseThumbs();
     injectVerseAiDock();
     injectNavTrigger();
     injectCatalogTrigger();

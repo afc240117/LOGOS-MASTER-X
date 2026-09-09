@@ -5244,30 +5244,36 @@ Gerado em ${new Date().toLocaleString("pt-BR")}
    "Horebe","Nebo","Hermom","Carmelo","Tabor","Gilboa","Calvário","Monte das Oliveiras",
    "Gerizim","Ebal","Mar Vermelho","Mar Mediterrâneo","Genesaré"
  ]);
+ let _bxLkNames=null,_bxLkType=null,_bxLkRe=null;
  const bxLinkifyEntities=(text)=>{
    // V1.60.2 — renderização segura de entidades.
    // Não reutiliza o HTML já gerado e não usa <button> dentro do texto do verso.
    // Isso evita DOM quebrado quando um nome existe em mais de uma categoria
    // (ex.: Israel = pessoa/nome e lugar/nação).
+   // 5.4.247 — nomes/RegExp montados UMA vez (cache lazy) em vez de por verso;
+   // String.replace com /g compartilhado é seguro (ele reinicia lastIndex).
    const html=escapeHtml(String(text||""));
-   const typeByKey=new Map();
-   const names=[];
-   const add=(name,type)=>{
-     const key=String(name).toLocaleLowerCase("pt-BR");
-     if(!typeByKey.has(key)){ names.push(name); typeByKey.set(key,type); }
-     else if(typeByKey.get(key)!==type){
-       // Em nomes ambíguos, prioriza mapa/região para não criar dois links sobrepostos.
-       typeByKey.set(key,"maps");
-     }
-   };
-   bxEntityPeople.forEach(name=>add(name,"people"));
-   bxEntityPlaces.forEach(name=>add(name,"maps"));
-   names.sort((a,b)=>b.length-a.length);
-   if(!html||!names.length)return html;
-   const pattern=names.map(name=>name.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")).join("|");
-   const re=new RegExp(`(^|[^A-Za-zÀ-ÿ])(${pattern})(?=$|[^A-Za-zÀ-ÿ])`,"gi");
-   return html.replace(re,(m,p,n)=>{
-     const type=typeByKey.get(String(n).toLocaleLowerCase("pt-BR"))||"maps";
+   if(!_bxLkNames){
+     const typeByKey=new Map();
+     const names=[];
+     const add=(name,type)=>{
+       const key=String(name).toLocaleLowerCase("pt-BR");
+       if(!typeByKey.has(key)){ names.push(name); typeByKey.set(key,type); }
+       else if(typeByKey.get(key)!==type){
+         // Em nomes ambíguos, prioriza mapa/região para não criar dois links sobrepostos.
+         typeByKey.set(key,"maps");
+       }
+     };
+     bxEntityPeople.forEach(name=>add(name,"people"));
+     bxEntityPlaces.forEach(name=>add(name,"maps"));
+     names.sort((a,b)=>b.length-a.length);
+     _bxLkNames=names;_bxLkType=typeByKey;
+     const pattern=names.map(name=>name.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")).join("|");
+     _bxLkRe=names.length?new RegExp(`(^|[^A-Za-zÀ-ÿ])(${pattern})(?=$|[^A-Za-zÀ-ÿ])`,"gi"):null;
+   }
+   if(!html||!_bxLkNames.length)return html;
+   return html.replace(_bxLkRe,(m,p,n)=>{
+     const type=_bxLkType.get(String(n).toLocaleLowerCase("pt-BR"))||"maps";
      const safeName=escapeHtml(n);
      return `${p}<span class="bx-entity-link" role="button" tabindex="0" data-bx-entity="${type}" data-bx-entity-name="${safeName}" title="Abrir conteúdo contextual de ${safeName}">${safeName}</span>`;
    });
@@ -5537,18 +5543,18 @@ Gerado em ${new Date().toLocaleString("pt-BR")}
    }catch(_e){}
    finally{bxReaderSuppressPush=false}
  };
+ /* 5.4.247 — gravações de rastreio (persistência localStorage, sem efeito no
+    render) coalescidas em UM setTimeout(0): não travam a abertura do capítulo. */
+ let _bxDeferTimer=0;
+ const bxDeferTrack=(fn)=>{clearTimeout(_bxDeferTimer);_bxDeferTimer=setTimeout(()=>{_bxDeferTimer=0;try{fn()}catch(_e){}},0)};
  const renderBibleVerses=(rows=[])=>{const out=$("#bOut");if(!out)return;out.classList.remove("bx-v159-results-mode");if(!rows.length){out.innerHTML='<div class="bx-reader-empty">Passagem não encontrada.</div>';return}
   bxReaderTrackPassage(rows);
-  bxHistoryPush(rows);
-  bxSaveReadingProgress(rows);
-  bxSaveSession(rows);
-  bxWorkspaceCapture(rows);
-  bxActivityTouch();
-  bxSessionLogPush(rows[0]?.ref||"");
-  bxReadingSessionAdd(rows);
-  bxTrailPush(rows);
+  bxDeferTrack(()=>{bxHistoryPush(rows);bxSaveReadingProgress(rows);bxSaveSession(rows);bxWorkspaceCapture(rows);bxActivityTouch();bxSessionLogPush(rows[0]?.ref||"");bxReadingSessionAdd(rows);bxTrailPush(rows);});
   const first=rows[0],sameChapter=rows.every(v=>v.book===first.book&&v.chapter===first.chapter);bxV157NavPush(rows);
   if(sameChapter){if($("#bChapterTitle"))$("#bChapterTitle").textContent=`${first.book} ${first.chapter}`;if($("#bChapter"))$("#bChapter").value=String(first.chapter);if($("#bBook")&&first.bookCode)$("#bBook").value=first.bookCode;setTimeout(()=>bxV161SyncVerseOptions(first.book,first.chapter,rows.length===1?rows[0].verse:null).catch(()=>{}),0);}
+  /* 5.4.247 — snapshot ÚNICO de seleção/highlight/review por render (antes cada
+     verso re-parseava 3 chaves de localStorage). Mesmos valores, custo fixo. */
+  const _selSet=new Set(bxSelectionGet().map(x=>x.ref)),_hlMap=bxHighlightsGet(),_rvMap=bxReviewGet(),_rvOf=ref=>{const s=_rvMap[ref];return s?(s.status||""):""};
   out.innerHTML=`${bxChapterNavigator(rows)}
   <div class="bx-v157-smartnav">
     <div class="bx-v157-smartnav-left">
@@ -5681,9 +5687,9 @@ Gerado em ${new Date().toLocaleString("pt-BR")}
   <div class="bx-v157-more-panel" data-v157-more-panel hidden></div>
 
   <div class="lmx-bible-v3-list">
-    ${rows.map((v,idx)=>`${pericopeHtml(v,idx===0)}<div class="lmx-bible-v3-verse ${bxSelectionHas(v.ref)?"bx-selected-verse":""}" data-bx-v3-verse data-v157-index="${idx}" data-ref="${escapeHtml(v.ref)}" data-highlight="${escapeHtml(bxHighlightFor(v.ref))}">
+    ${rows.map((v,idx)=>`${pericopeHtml(v,idx===0)}<div class="lmx-bible-v3-verse ${_selSet.has(v.ref)?"bx-selected-verse":""}" data-bx-v3-verse data-v157-index="${idx}" data-ref="${escapeHtml(v.ref)}" data-highlight="${escapeHtml(_hlMap[v.ref]||"")}">
       <div class="lmx-bible-v3-textrow">
-        <button type="button" class="bx-v155-select ${bxSelectionHas(v.ref)?"selected":""}" data-v155-select="${escapeHtml(v.ref)}" title="Selecionar ${escapeHtml(v.ref)}">${bxSelectionHas(v.ref)?"✓":"○"}</button>
+        <button type="button" class="bx-v155-select ${_selSet.has(v.ref)?"selected":""}" data-v155-select="${escapeHtml(v.ref)}" title="Selecionar ${escapeHtml(v.ref)}">${_selSet.has(v.ref)?"✓":"○"}</button>
         <button class="lmx-bible-v3-num" data-open-ref="${escapeHtml(v.ref)}" title="${escapeHtml(v.ref)}">${escapeHtml(String(v.verse))}</button>
         <div class="lmx-bible-v3-text" data-bx-verse-text="${escapeHtml(v.ref)}">${bxLinkifyEntities(v.text)}</div>
       </div>
@@ -5712,7 +5718,7 @@ Gerado em ${new Date().toLocaleString("pt-BR")}
         <button data-verse-card data-ref="${escapeHtml(v.ref)}">▣ Ficha</button>
         <button data-verse-queue data-ref="${escapeHtml(v.ref)}">☑ Fila</button>
         <button data-verse-backlinks data-ref="${escapeHtml(v.ref)}">↩ Voltas</button>
-        <button data-verse-select data-ref="${escapeHtml(v.ref)}" class="${bxSelectionHas(v.ref)?"selected":""}">${bxSelectionHas(v.ref)?"✓ Selecionado":"☑ Selecionar"}</button>
+        <button data-verse-select data-ref="${escapeHtml(v.ref)}" class="${_selSet.has(v.ref)?"selected":""}">${_selSet.has(v.ref)?"✓ Selecionado":"☑ Selecionar"}</button>
         <button data-verse-compare data-ref="${escapeHtml(v.ref)}">▦ Comparar</button>
         <button data-verse-insight data-ref="${escapeHtml(v.ref)}">💡 Insight</button>
         <button data-verse-pin data-ref="${escapeHtml(v.ref)}">📌 Fixar</button>
@@ -5720,7 +5726,7 @@ Gerado em ${new Date().toLocaleString("pt-BR")}
         <button data-verse-topic data-ref="${escapeHtml(v.ref)}">📁 Tópico</button>
         <button data-verse-readlater data-ref="${escapeHtml(v.ref)}">🔖 Depois</button>
         <button data-verse-word data-ref="${escapeHtml(v.ref)}">🔤 Palavra</button>
-        <button data-verse-review data-ref="${escapeHtml(v.ref)}">${bxReviewFor(v.ref)==="studied"?"✓ Estudado":bxReviewFor(v.ref)==="review"?"↺ Revisar":"✅ Revisão"}</button><button data-verse-v171index data-ref="${escapeHtml(v.ref)}">🏷️ Indexar</button>
+        <button data-verse-review data-ref="${escapeHtml(v.ref)}">${_rvOf(v.ref)==="studied"?"✓ Estudado":_rvOf(v.ref)==="review"?"↺ Revisar":"✅ Revisão"}</button><button data-verse-v171index data-ref="${escapeHtml(v.ref)}">🏷️ Indexar</button>
         <button data-verse-question data-ref="${escapeHtml(v.ref)}">❓ Pergunta</button>
         <button data-verse-studylink data-ref="${escapeHtml(v.ref)}">🔗 Ligar</button>
         <button data-verse-v144set data-ref="${escapeHtml(v.ref)}">🗃 Coleção</button>
@@ -8858,7 +8864,7 @@ async function clearOldFrontendCache(){
  }catch(e){}
 }
 
-const APP_BUILD_VERSION="5.4.246";
+const APP_BUILD_VERSION="5.4.247";
 function publicAsset(path){return "/"+String(path).replace(/^\/+/,"");}
 const PRODUCTION_VERSION_URL="https://logos-master-x-api.onrender.com/static/version.json";
 function showUpdateBanner(remoteVersion){
@@ -14845,7 +14851,7 @@ window.BibleXPolimento=Object.assign(window.BibleXPolimento||{},{lote528:"concor
   if (window.MutationObserver) {
     new MutationObserver(sync).observe(document.body, { subtree: true, attributes: true, attributeFilter: ['class'] });
   }
-  setInterval(sync, 500);
+  setInterval(sync, 5000);
 })();
 
 /* =============================================================
@@ -15622,7 +15628,7 @@ window.BibleXPolimento=Object.assign(window.BibleXPolimento||{},{lote528:"concor
     new MutationObserver(function(){checkR()}).observe(document.body,{subtree:true,attributes:true,attributeFilter:["class"]});
   }
   setTimeout(function(){checkR()},600);
-  setInterval(checkR,700);
+  setInterval(checkR,5000);
 })();
 
 /* ============================================================

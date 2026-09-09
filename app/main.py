@@ -11,6 +11,7 @@ from app.biblia_x.router import router as biblia_x_router
 from app.atlas_x.router import router as atlas_x_router
 from app.audio_x.router import router as audio_x_router
 from app.biblia_x.share_router import router as biblia_x_share_router
+from app.biblia_x.mediacloud_router import router as biblia_x_mediacloud_router
 
 # Load project .env before AIHub is instantiated, so provider keys/models are available.
 # Local project .env is authoritative when present. This fixes Windows/session variables
@@ -42,6 +43,7 @@ app.include_router(biblia_x_router)
 app.include_router(atlas_x_router)
 app.include_router(audio_x_router)
 app.include_router(biblia_x_share_router)
+app.include_router(biblia_x_mediacloud_router)
 class Generate(BaseModel):
  mode:str="SERMÃO";text:str=Field(min_length=1);theme:str|None=None;duration:int=40;cult:str="Avivamento";audience:str="Igreja local";intensity:int=10;objective:str|None=None;notes:str|None=None;provider:str="auto";ai_mode:str="automatico";model:str|None=None
 class BibleCommentAI(BaseModel):
