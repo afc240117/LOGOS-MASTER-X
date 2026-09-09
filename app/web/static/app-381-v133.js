@@ -6897,7 +6897,7 @@ Gerado em ${new Date().toLocaleString("pt-BR")}
        não é mais alternada nos versículos — sem mudança de estilo, sem tremor.
        Desktop segue marcando normal. */
     const _bxV158Desktop=!window.matchMedia("(max-width:760px)").matches;
-    if(_bxV158Desktop)bxV157Els.forEach((el,i)=>el.classList.toggle("bx-v157-current",i===bxV157CurrentIndex));
+    if(_bxV158Desktop&&bxV157Paint)bxV157Els.forEach((el,i)=>el.classList.toggle("bx-v157-current",i===bxV157CurrentIndex));
     if(scroll&&_bxV158Desktop)bxV157Els[bxV157CurrentIndex]?.scrollIntoView({behavior:"smooth",block:"center"});
     window.__bxV157Ctx={rows,index:bxV157CurrentIndex,setCurrent:bxV157SetCurrent};
   };
@@ -7121,7 +7121,20 @@ Gerado em ${new Date().toLocaleString("pt-BR")}
     },{root:null,rootMargin:"-22% 0px -54% 0px",threshold:[0,.1,.35]});
     bxV157Els.forEach(el=>window.__bxV157Observer.observe(el));
   }
+  /* 5.4.248 — PADRÃO "0 · TODOS": quando abre uma passagem de CAPÍTULO INTEIRO
+     (ref sem versículo), NENHUM versículo nasce marcado como o antigo v.1. O índice
+     interno segue em 0 (trilho/marcador/tarja prontos), mas a marca dourada só passa
+     a acompanhar a leitura depois que o usuário rola, clica num verso ou usa tecla. */
+  const bxRefNow=currentRefState();
+  if(rows.length>1&&bxRefNow&&!bxRefNow.verse)bxV157Paint=false;
   bxV157SetCurrent(0,false);
+  if(!bxV157Paint){
+    const bxPaintEnable=()=>{if(!bxV157Paint){bxV157Paint=true;bxV157SetCurrent(bxV157CurrentIndex,false)}};
+    out.addEventListener("wheel",bxPaintEnable,{passive:true});
+    out.addEventListener("mousedown",bxPaintEnable,{passive:true});
+    out.addEventListener("touchstart",bxPaintEnable,{passive:true});
+    out.addEventListener("keydown",bxPaintEnable);
+  }
 
   /* 5.4.88 — Modos de leitura vão para a barra de Pesquisa Bíblica (horizontal,
      um ao lado do outro), não mais para o body. O painel "＋" continua no body.
