@@ -2312,7 +2312,8 @@
       dock.className = "bx-verse-ai-dock";
       dock.dataset.bxVerseAiDock = "1";
       dock.innerHTML = `<div><b>✨ Camada visual da passagem</b><small>Gere uma imagem ou vídeo com o contexto do capítulo.</small></div><nav><button type="button" data-bx-verse-ai="image">🖼 Gerar imagem IA</button><button type="button" data-bx-verse-ai="video">🎬 Gerar vídeo IA</button><button type="button" data-bx-chapter-images data-bx-chap="">🗂 Todas as imagens do capítulo</button><button type="button" data-bx-chapter-videos data-bx-chap="">🎬 Todos os vídeos do capítulo</button></nav>`;
-      out.appendChild(dock);
+      const dockHost = (out.querySelector("[data-bx-v3-verse]") || {}).parentElement || out;
+      dockHost.appendChild(dock);
     }
     const dockRef = (($("[data-bx-v3-verse]", out) || {}).dataset || {}).ref || (($("#bRef") || {}).value || "").trim() || "";
     const dockChap = chapterBaseOf(dockRef);
