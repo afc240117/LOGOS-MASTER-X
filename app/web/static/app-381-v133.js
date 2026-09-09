@@ -2763,6 +2763,10 @@ async function initBibleUI(){let current=[];
    const el=$("#bVerse");if(!el||!rows?.length)return;
    const same=rows.every(v=>v.book===rows[0].book&&v.chapter===rows[0].chapter);
    if(!same){el.value="";bxV158UpdateMode();return}
+   // 5.4.248 — padrão "0 · Todos": capítulo inteiro aberto (ref sem versículo)
+   // mantém o seletor em 0/Todos mesmo em capítulos curtos (≤6 versos).
+   const refState=currentRefState();
+   if(refState&&!refState.verse){el.value="";bxV158UpdateMode();return}
    if(rows.length===1){
      el.value=String(rows[0].verse);
    }else{
