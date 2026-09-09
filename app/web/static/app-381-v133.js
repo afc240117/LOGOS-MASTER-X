@@ -1625,8 +1625,8 @@ ${homeDesktopControls(actions)}
     <div data-bx-vis="book"><label>Livro</label><select id="bBook"><option>Carregando...</option></select></div>
     <div data-bx-vis="chapter"><label>Capítulo</label><select id="bChapter"><option value="3">3</option></select></div>
     <div class="bx-v158-verse-field bx-v161-verse-field" data-bx-vis="verse">
-      <label>Versículo <small>Todos = capítulo inteiro</small></label>
-      <select id="bVerse" aria-label="Versículo"><option value="">Todos</option></select>
+      <label>Versículo <small>0 = todos os versículos</small></label>
+      <select id="bVerse" aria-label="Versículo"><option value="">0 · Todos</option></select>
     </div>
     <input id="bRef" type="hidden" value="João 3:16">
     <button class="btn primary bx-v158-open" id="bOpen" data-bx-vis="open">Abrir</button>
