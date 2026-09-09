@@ -2727,6 +2727,7 @@ async function initBibleUI(){let current=[];
    const m=raw.match(/^(\d{1,3})(?:-(\d{1,3}))?$/);
    if(!m)return null;
    const a=Number(m[1]),b=m[2]?Number(m[2]):null;
+   if(a===0&&b===null)return ""; // 0 = todos os versículos do capítulo (padrão)
    if(a<1||a>176)return null;
    if(b!==null&&(b<a||b>176))return null;
    return b!==null?`${a}-${b}`:String(a);
@@ -2793,7 +2794,7 @@ async function initBibleUI(){let current=[];
    let verses=[];
    try{verses=await smartBibleRef(`${bookName} ${ch}`)}catch(_){verses=[]}
    const nums=[...new Set((verses||[]).map(v=>Number(v.verse)).filter(Number.isFinite))].sort((a,b)=>a-b);
-   sel.innerHTML=`<option value="">Todos</option>${nums.map(n=>`<option value="${n}">${n}</option>`).join("")}`;
+   sel.innerHTML=`<option value="">0 · Todos</option>${nums.map(n=>`<option value="${n}">${n}</option>`).join("")}`;
    if(keep&&nums.includes(Number(keep)))sel.value=String(Number(keep));else sel.value="";
    bxV158UpdateMode();
    return nums;
