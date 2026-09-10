@@ -35,6 +35,10 @@
     pexelsKey: ""
   };
 
+  /* Abaixo disso a grade fica pobre e a busca desce um degrau (ver
+     montarTentativas). */
+  var MINIMO = 8;
+
   /* ---------- vocabulário: português → inglês (os acervos indexam em inglês) ---------- */
   var LUGARES = {
     "jerusalém": "Jerusalem", "jerusalem": "Jerusalem", "belém": "Bethlehem",
@@ -356,9 +360,17 @@
             tudo.push(item);
           });
         });
-        tudo.sort(function (a, b) { return pontuar(b, consulta) - pontuar(a, consulta); });
-        if (tudo.length || indice >= tentativas.length) {
-          estado.itens = tudo;
+        /* livro/mapa digitalizado e pintura não ilustram a passagem: saem da
+           lista. Se o acervo SÓ devolveu isso, é melhor mostrar do que nada. */
+        var limpos = tudo.filter(function (item) {
+          return !ehReproducao(item.titulo) && !ehEventoModerno(item.titulo);
+        });
+        var escolhidos = limpos.length ? limpos : tudo;
+        escolhidos.sort(function (a, b) { return pontuar(b, consulta) - pontuar(a, consulta); });
+        /* poucos resultados costuma significar consulta larga demais: vale
+           tentar o degrau seguinte antes de aceitar uma grade quase vazia. */
+        if (escolhidos.length >= MINIMO || indice >= tentativas.length) {
+          estado.itens = escolhidos;
           estado.consultaUsada = consulta;
           if (consulta !== estado.consulta) {
             estado.avisos.push("Sem resultados para «" + estado.consulta + "» — a busca foi ampliada para «" + consulta + "».");
