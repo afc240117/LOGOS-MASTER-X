@@ -59,6 +59,7 @@
        console, nunca para a tela do usuário. */
     fontes: { wikimedia: true, openverse: true, pexels: true },
     carregando: false,
+    rebuscar: false,
     fase: "",
     itens: [],
     /* itens já aprovados que ainda não estão na tela (o "Carregar mais" solta) */
@@ -755,6 +756,21 @@
     return lista;
   }
 
+  /* Clicar em Buscar - ou trocar tema/fonte - enquanto a busca anterior ainda
+     esta rodando NAO pode ser ignorado. Antes o clique era descartado e a tela
+     ficava com o resultado da consulta antiga (parecia que o app "voltava" para
+     o termo anterior). Agora o pedido fica guardado e roda assim que a busca em
+     andamento termina. */
+  function pedirBusca() {
+    if (estado.carregando) { estado.rebuscar = true; return; }
+    buscar();
+  }
+
+  function terminarBusca() {
+    estado.carregando = false;
+    if (estado.rebuscar) { estado.rebuscar = false; buscar(); }
+  }
+
   function buscar() {
     if (estado.carregando) return;
     estado.consulta = ($("[data-bxpub-busca]") || {}).value || estado.consulta || montarConsulta();
@@ -774,7 +790,7 @@
 
     var tentativas = montarTentativas();
     if (!Object.keys(estado.fontes).some(function (f) { return estado.fontes[f]; })) {
-      estado.carregando = false;
+      terminarBusca();
       estado.avisos.push("Escolha ao menos uma fonte.");
       desenhar();
       return;
@@ -815,7 +831,7 @@
         if (!grade.length) {
           estado.itens = [];
           estado.consultaUsada = consulta;
-          estado.carregando = false;
+          terminarBusca();
           desenhar();
           return;
         }
@@ -839,7 +855,7 @@
           }
           if (perdidos > 0) registrar(perdidos + " miniatura(s) não abriram e saíram da grade.");
           if (usouSemHD && vivos.length) registrar("sem alta definição neste tema: mostrando o melhor disponível.");
-          estado.carregando = false;
+          terminarBusca();
           desenhar();
         });
       });
@@ -1255,7 +1271,7 @@
         if (campo && eraAutomatico) campo.value = montarConsulta();
         if (campo) estado.consultaAuto = campo.value;
         estado.consulta = campo ? campo.value : estado.consulta;
-        buscar();
+        pedirBusca();
         return;
       }
       var fonte = alvo.closest("[data-bxpub-fonte]");
@@ -1275,7 +1291,7 @@
             return;
           }
         }
-        buscar();
+        pedirBusca();
         return;
       }
       if (alvo.closest("[data-bxpub-salvarchave]")) {
@@ -1291,13 +1307,14 @@
         try { localStorage.setItem(LS_PEXELS, valor); } catch (_) {}
         estado.fontes.pexels = true;
         estado.avisos = [];
-        buscar();
+        pedirBusca();
         return;
       }
       if (alvo.closest("[data-bxpub-buscar]")) {
         /* busca pedida pelo usuário: o texto é dele, o tema não sobrescreve mais */
         estado.consultaAuto = "";
-        buscar();
+        estado.consulta = ((campoBusca && campoBusca.value) || estado.consulta || "").trim();
+        pedirBusca();
         return;
       }
       if (alvo.closest("[data-bxpub-mais]")) { carregarMais(); return; }
@@ -1366,7 +1383,7 @@
 
     overlay.addEventListener("keydown", function (ev) {
       if (ev.key === "Escape") { ev.stopPropagation(); fechar(); }
-      if (ev.key === "Enter" && ev.target && ev.target.matches("[data-bxpub-busca]")) { ev.preventDefault(); estado.consultaAuto = ""; buscar(); }
+      if (ev.key === "Enter" && ev.target && ev.target.matches("[data-bxpub-busca]")) { ev.preventDefault(); estado.consultaAuto = ""; estado.consulta = (ev.target.value || estado.consulta || "").trim(); pedirBusca(); }
     });
 
     desenhar();
