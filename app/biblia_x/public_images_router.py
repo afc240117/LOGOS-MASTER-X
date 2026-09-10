@@ -140,10 +140,13 @@ async def geo(request: Request, q: str = Query(..., min_length=2, max_length=120
     # "Muro das Lamentações, Jerusalém" não existe com esse nome no mapa aberto,
     # mas "Jerusalém" existe: se a consulta inteira não achar nada, tenta o que
     # vem antes da vírgula. Duas tentativas no máximo, para não abusar do serviço.
-    tentativas = [consulta]
+    # O nome conhecido do lugar bíblico vem PRIMEIRO: "monte das oliveiras"
+    # sozinho acha um bairro de Manaus antes de achar o monte em Jerusalém.
+    tentativas = []
     em_ingles = _em_ingles(consulta)
     if em_ingles:
         tentativas.append(em_ingles)
+    tentativas.append(consulta)
     antes = consulta.split(",")[0].strip()
     if antes:
         tentativas.append(antes)
