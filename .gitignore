@@ -11,6 +11,12 @@ node_modules/
 venv/
 __pycache__/
 .env
+# 5.4.250 — nenhuma COPIA do .env entra aqui. O .env.bak-pexels foi versionado
+# por engano e o push foi recusado pelo GitHub (OpenAI, GCP, Groq etc. dentro
+# dele). O arquivo saiu do historico e o padrao abaixo impede a volta: backup de
+# segredo e segredo, e o app le o .env — o backup nao serve para nada em runtime.
+.env.*
+!.env.example
 .tmp.driveupload/
 BACKUPS-LOGOS/
 _QUARENTENA_*/
