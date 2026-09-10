@@ -16747,3 +16747,32 @@ if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded'
     cfg._barsState = function () { return { tab: state.tab, sub: state.sub, open: !!(el && !el.hidden) }; };
   } catch (e) { if (window.console) console.error('bxBarsPanel:', e); }
 })();
+
+/* 5.4.249 — Retrato das preferências locais (uso pessoal do dono do app).
+   Abrindo o app com ?bxsnapshot=1 as chaves de LAYOUT abaixo vão para o
+   servidor local, que grava H:x-test\config-local.json. Só chaves de
+   aparência/ordem: nada de notas, favoritos, histórico ou chave de API.
+   Fora do localhost (Render) este bloco não faz absolutamente nada. */
+(function () {  // 5.4.249-snapshot-prefs
+  try {
+    if (!/[?&]bxsnapshot/.test(location.search)) return;
+    if (!/^(127\.0\.0\.1|localhost|\[::1\])$/.test(location.hostname)) return;
+    var exatas = ['logosbx:v157order','logosbx:v157order-def','logosbx:bxdock-def',
+      'logosbx:v157railvis','logosbx:v157fullvis','logosbx:v157fullvis-pc',
+      'logosbx:bxDock:m','logosbx:bxDock:d','v170verseTools',
+      'logosx:bibleXZoom','logosbx:bibleXZoom','logosx:atlasColorMode',
+      'logosx:bibleXCleanReading','logosx:bibleXLastSection','logosx:bxQuickGuideNever'];
+    var prefixos = ['logosx:tip:'];
+    var dados = { _url: location.href, _quando: new Date().toISOString() };
+    for (var i = 0; i < localStorage.length; i += 1) {
+      var k = localStorage.key(i);
+      if (!k) continue;
+      var serve = exatas.indexOf(k) >= 0 || prefixos.some(function (p) { return k.indexOf(p) === 0; });
+      if (serve) dados[k] = localStorage.getItem(k);
+    }
+    fetch('/api/bx/snapshot', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(dados) })
+      .then(function (r) { return r.json(); })
+      .then(function (r) { console.log('[bxsnapshot] ' + (r && r.chaves ? r.chaves + ' chaves gravadas em ' + r.arquivo : 'falhou')); })
+      .catch(function (e) { console.warn('[bxsnapshot]', e); });
+  } catch (e) { if (window.console) console.warn('[bxsnapshot]', e); }
+})();
