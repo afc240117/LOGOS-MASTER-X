@@ -1337,7 +1337,7 @@
       aviso.textContent = "Esta imagem não é uma foto 360° (esférica). Mostrando em panorâmica deslizante, sem deformação.";
       stage.append(wrap, aviso);
       const eyebrow = $(".bxvm-heading small", overlay);
-      if (eyebrow) eyebrow.textContent = String(eyebrow.textContent || "").replace(/360°/g, "PANORÂMICA");
+      if (eyebrow) eyebrow.textContent = "MÍDIA X • PANORÂMICA DESLIZANTE";
       let escala = 1, dx = 0, dy = 0, sentido = 1, arrastando = false, ponto = null, ultimo = performance.now();
       const ajustar = () => {
         const ra = img.naturalWidth / Math.max(1, img.naturalHeight);
@@ -1356,10 +1356,18 @@
         const dt = Math.min(50, now - ultimo);
         ultimo = now;
         const s2 = sobras();
-        if (autoRotate && !arrastando && s2.x > 2) {
-          dx += sentido * dt * .028;
-          if (dx > s2.x) { dx = s2.x; sentido = -1; }
-          if (dx < -s2.x) { dx = -s2.x; sentido = 1; }
+        /* o passeio automático vai no eixo que TEM sobra: panorâmica larga corre
+           para os lados; foto em pé corre para cima e para baixo. */
+        if (autoRotate && !arrastando) {
+          if (s2.x > 2) {
+            dx += sentido * dt * .028;
+            if (dx > s2.x) { dx = s2.x; sentido = -1; }
+            if (dx < -s2.x) { dx = -s2.x; sentido = 1; }
+          } else if (s2.y > 2) {
+            dy += sentido * dt * .028;
+            if (dy > s2.y) { dy = s2.y; sentido = -1; }
+            if (dy < -s2.y) { dy = -s2.y; sentido = 1; }
+          }
         }
         pintar();
         animation = requestAnimationFrame(passo);
