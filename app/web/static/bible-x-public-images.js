@@ -314,7 +314,19 @@
   /* Foto de evento moderno (político, turista, festa) não serve de ilustração
      da passagem, mesmo quando cita o lugar certo. */
   function ehEventoModerno(titulo) {
-    return /\bpresident\b|\btrump\b|\bminister\b|ambassador|\btourist|\btour\b|selfie|\bwedding\b|festival|\bprotest\b|\bidf\b|\bsoldier/i.test(String(titulo || ""));
+    return /\bpresident\b|\btrump\b|\bminister\b|ambassador|\btourist|\btour\b|selfie|\bwedding\b|festival|\bprotest\b|\bidf\b|\bsoldier|\binterview\b|co-founder|\bceo\b|conference|keynote|\blecture\b|\bpodcast\b|webinar/i.test(String(titulo || ""));
+  }
+
+  /* O acervo de VÍDEO do Commons é pequeno e vem cheio de entrevista e palestra
+     ("Adam Hochschild, Co-Founder, Mother Jones"). Vídeo só entra se o título
+     falar de lugar, época ou escavação. Pexels não passa por aqui: a busca dele
+     já é ordenada por relevância. */
+  var VIDEO_DO_TEMA = /israel|jerusal|bible|biblical|holy land|galile|jordan|judea|judaea|samaria|ancient|archaeolog|archeolog|\bruin|temple|church|monaster|\bdesert|dead sea|sea of|nazareth|bethlehem|jericho|capernaum|masada|qumran|hebron|\bzions?\b|olive|excavation|pilgrim|synagogue|fortress|\btel\b|sepulchre|landscape|aerial|panorama/i;
+  function ehVideoDoTema(item) {
+    if (item.midia !== "video") return true;
+    if (String(item.fonte || "").indexOf("Pexels") === 0) return true;
+    var alvo = String(item.titulo || "") + " " + (item.categorias || []).join(" ");
+    return VIDEO_DO_TEMA.test(alvo);
   }
 
   function pontuar(item, consulta) {
@@ -507,6 +519,7 @@
 
     var midia = midiaAtual();
     var indice = 0;
+    var melhorSemHD = [];
     var tentar = function () {
       var consulta = tentativas[indice++];
       var tarefas = [];
