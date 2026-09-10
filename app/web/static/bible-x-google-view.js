@@ -90,6 +90,7 @@
       '</div>';
 
     document.body.appendChild(caixa);
+    caixa.hidden = true;
     painel = caixa.querySelector(".bxvm-google-panel");
     campo = caixa.querySelector("[data-bxgm-campo]");
     palco = caixa.querySelector("[data-bxgm-palco]");
@@ -149,6 +150,8 @@
 
   function mostrar(modo, lat, lon, texto, aviso) {
     montar();
+    caixa.hidden = false;
+    document.body.classList.add("bxvm-lock");
     modoAtual = modo;
     ultimo = { modo: modo, lat: lat, lon: lon, texto: texto || "", aviso: aviso || "", lugar: ultimo ? ultimo.lugar : null };
     var tem = lat !== null && lat !== undefined && lon !== null && lon !== undefined;
