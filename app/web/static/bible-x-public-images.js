@@ -319,19 +319,36 @@
       if (proporcao >= 1) pontos += 1.5;
       else if (proporcao < 0.7) pontos -= 1;
     }
-    if (ehReproducao(item.titulo)) pontos -= 8;
+    if (ehReproducao(item.titulo, item.categorias)) pontos -= 8;
     if (ehEventoModerno(item.titulo)) pontos -= 6;
+    /* quanto maior o original, melhor a imagem no telão */
+    var megapixels = ((item.largura || 0) * (item.altura || 0)) / 1000000;
+    if (megapixels >= 8) pontos += 3;
+    else if (megapixels >= 4) pontos += 2;
+    else if (megapixels >= 2) pontos += 1;
+    if (item.largura >= 3840) pontos += 1.5; /* 4K */
+    if (item.midia === "360") pontos += 1;
+    if (item.midia === "video") pontos += 1;
     if (item.fonte.indexOf("Pexels") === 0) pontos += 0.6;
     else if (item.fonte.indexOf("Openverse") === 0) pontos += 0.4;
     return pontos;
   }
 
   /* ---------- fontes ---------- */
-  function buscaWikimedia(consulta) {
+  function categoriasDe(info) {
+    var bruto = info.categories || [];
+    return (Array.isArray(bruto) ? bruto : []).map(function (c) {
+      return String((c && c.title) || c || "");
+    }).filter(Boolean);
+  }
+
+  /* filetype: "bitmap" para foto, "video" para vídeo. O Commons gera um quadro
+     do vídeo como miniatura (thumburl), então o cartão mostra a imagem. */
+  function buscaWikimedia(consulta, filetype, midia) {
     var url = "https://commons.wikimedia.org/w/api.php?action=query&format=json&origin=*"
       + "&generator=search&gsrnamespace=6&gsrlimit=" + LIMITE_WIKIMEDIA
-      + "&gsrsearch=" + encodeURIComponent("filetype:bitmap " + consulta)
-      + "&prop=imageinfo&iiprop=url|extmetadata|size|user&iiurlwidth=560";
+      + "&gsrsearch=" + encodeURIComponent("filetype:" + (filetype || "bitmap") + " " + consulta)
+      + "&prop=imageinfo&iiprop=url|extmetadata|size|user|categories|mime&iiurlwidth=640";
     return fetch(url, { headers: { Accept: "application/json" } })
       .then(function (r) { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); })
       .then(function (json) {
@@ -341,19 +358,69 @@
           var meta = info.extmetadata || {};
           var autor = limparHtml(meta.Artist && meta.Artist.value) || limparHtml(info.user) || "Autor não indicado";
           var licenca = limparHtml(meta.LicenseShortName && meta.LicenseShortName.value) || "Ver página do arquivo";
+          var mime = String(info.mime || "");
+          if (midia === "video" && mime.indexOf("video/") !== 0) return null;
+          /* só webm e ogv abrem no navegador; o resto vira link */
           return {
             id: "wk-" + p.pageid,
             fonte: "Wikimedia Commons",
             titulo: String(p.title || "").replace(/^File:/, "").replace(/\.[a-z0-9]+$/i, ""),
-            thumb: info.thumburl || info.url || "",
+            thumb: info.thumburl || "",
             original: info.url || info.descriptionurl || "",
             pagina: info.descriptionurl || "",
             autor: autor,
             licenca: licenca,
+            categorias: categoriasDe(info),
             largura: info.width || 0,
-            altura: info.height || 0
+            altura: info.height || 0,
+            midia: midia || "foto",
+            mime: mime,
+            video: midia === "video" ? (info.url || "") : ""
           };
-        }).filter(function (i) { return i.thumb; });
+        }).filter(function (i) { return i && i.thumb; });
+      });
+  }
+
+  /* Vídeo do Pexels: vem com pôster e MP4 — toca direto no cartão. */
+  function buscaVideosPexels(consulta) {
+    if (!estado.pexelsKey) return Promise.reject(new Error("chave ausente"));
+    var url = "https://api.pexels.com/videos/search?query=" + encodeURIComponent(consulta)
+      + "&per_page=" + LIMITE_PEXELS + "&orientation=landscape";
+    return fetch(url, { headers: { Authorization: estado.pexelsKey, Accept: "application/json" } })
+      .then(function (r) {
+        if (r.status === 401) throw new Error("chave recusada");
+        if (!r.ok) throw new Error("HTTP " + r.status);
+        return r.json();
+      })
+      .then(function (json) {
+        return (json && json.videos ? json.videos : []).map(function (v) {
+          var arquivos = (v.video_files || []).filter(function (f) {
+            return f && f.link && /mp4/i.test(f.file_type || "") && f.width;
+          });
+          /* o maior MP4 que ainda não passa de 1920 de largura (Full HD) */
+          arquivos.sort(function (a, b) { return b.width - a.width; });
+          var escolhido = null;
+          for (var i = 0; i < arquivos.length; i++) {
+            if (arquivos[i].width <= 1920) { escolhido = arquivos[i]; break; }
+          }
+          if (!escolhido && arquivos.length) escolhido = arquivos[arquivos.length - 1];
+          if (!escolhido) return null;
+          return {
+            id: "pxv-" + v.id,
+            fonte: "Pexels • vídeo",
+            titulo: String(v.alt || "Vídeo de " + (v.user && v.user.name ? v.user.name : "autor Pexels")).slice(0, 120),
+            thumb: v.image || "",
+            original: escolhido.link,
+            video: escolhido.link,
+            pagina: v.url || "",
+            autor: String((v.user && v.user.name) || "Pexels"),
+            licenca: "Licença Pexels (uso livre; crédito apreciado)",
+            largura: escolhido.width || v.width || 0,
+            altura: escolhido.height || v.height || 0,
+            midia: "video",
+            mime: "video/mp4"
+          };
+        }).filter(function (i) { return i && i.thumb && i.video; });
       });
   }
 
