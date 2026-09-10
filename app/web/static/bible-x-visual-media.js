@@ -1021,16 +1021,6 @@
       '<button type="button" data-bxvm-google="cheio" title="Sair da tela cheia" aria-label="Sair da tela cheia">⤡</button>' +
       '<button type="button" data-bxvm-google="fechar" title="Fechar o Google View" aria-label="Fechar o Google View">×</button>' +
       "</div>" +
-      /* 5.4.249 — na TELA CHEIA os botões do topo somem e o comando vira
-         este trenzinho flutuante no rodapé: a tela toda é do mapa, e ainda
-         dá para trocar de vista e sair sem ficar procurando botão. */
-      '<div class="bxvm-google-mini">' +
-      '<button type="button" data-bxvm-google="sv" title="Street View — andar na rua" aria-label="Street View">🚶</button>' +
-      '<button type="button" data-bxvm-google="mapa" title="Mapa" aria-label="Mapa">🗺</button>' +
-      '<button type="button" data-bxvm-google="sat" title="Satélite" aria-label="Satélite">🛰</button>' +
-      '<button type="button" data-bxvm-google="cheio" title="Sair da tela cheia" aria-label="Sair da tela cheia">⤡</button>' +
-      '<button type="button" data-bxvm-google="fechar" title="Fechar o Google View" aria-label="Fechar o Google View">×</button>' +
-      "</div>" +
       '<div class="bxvm-google-stage" data-bxvm-google-stage></div>' +
       '<p class="bxvm-google-pe" data-bxvm-google-pe></p>';
     overlay.appendChild(googlePanel);
@@ -1099,13 +1089,8 @@
        recriado, e sem isto o mapa voltava para o lugar da imagem — perdendo o
        que a pessoa tinha digitado na busca ou escolhido num passeio. */
     let googleUltimo = null;
-    /* guarda a ÚLTIMA vista mostrada: ao entrar/sair da tela cheia o iframe é
-       recriado, e sem isto o mapa voltava para o lugar da imagem — perdendo o
-       que a pessoa tinha digitado na busca ou escolhido num passeio. */
-    let googleUltimo = null;
     const googleMostrar = (modo, lat, lon, texto, aviso) => {
       googleModo = modo;
-      googleUltimo = { modo: modo, lat: lat, lon: lon, texto: texto || "", aviso: aviso || "" };
       googleUltimo = { modo: modo, lat: lat, lon: lon, texto: texto || "", aviso: aviso || "" };
       const temPos = lat !== null && lat !== undefined && lon !== null && lon !== undefined;
       googleStage.innerHTML = "";
