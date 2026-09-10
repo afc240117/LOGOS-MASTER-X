@@ -53,6 +53,14 @@
     carregando: false,
     fase: "",
     itens: [],
+    /* itens já aprovados que ainda não estão na tela (o "Carregar mais" solta) */
+    reserva: [],
+    chaves: {},
+    rodada: 0,
+    extras: [],
+    consultaBase: "",
+    semMais: false,
+    maisCarregando: false,
     avisos: [],
     salvo: {},
     pexelsKey: "",
@@ -66,6 +74,9 @@
   /* Abaixo disso a grade fica pobre e a busca desce um degrau (ver
      montarTentativas). */
   var MINIMO = 8;
+  /* Quantos cartões entram por vez. O resto fica na reserva e o botão "Carregar
+     mais" vai soltando — a grade cresce sem fim, a cada clique. */
+  var LOTE = 18;
 
   /* ---------- vocabulário: português → inglês (os acervos indexam em inglês) ---------- */
   var LUGARES = {
@@ -691,49 +702,24 @@
     var melhorSemHD = [];
     var tentar = function () {
       var consulta = tentativas[indice++];
-      var tarefas = [];
-      if (estado.fontes.wikimedia) {
-        tarefas.push(buscaWikimedia(consulta, midia === "video" ? "video" : "bitmap", midia)
-          .catch(function (e) { avisar("Wikimedia Commons: " + e.message); return []; }));
-      }
-      /* Openverse só tem imagem parada: fora das buscas de vídeo */
-      if (midia !== "video" && estado.fontes.openverse) {
-        tarefas.push(buscaOpenverse(consulta).catch(function (e) { avisar("Openverse: " + e.message); return []; }));
-      }
-      if (estado.fontes.pexels) {
-        var doPexels = midia === "video" ? buscaVideosPexels(consulta) : buscaPexels(consulta);
-        tarefas.push(doPexels.catch(function (e) {
-          if (e.message === "chave ausente") avisar("Pexels: sem chave aqui — toque em 🔑 Pexels e cole a sua (é gratuita em pexels.com/api).");
-          else if (e.message === "chave recusada") avisar("Pexels recusou a chave — confira em pexels.com/api se copiou a “API Key” inteira e salve de novo em 🔑.");
-          else if (e.message === "cota esgotada") avisar("Pexels: cota esgotada por agora — as outras fontes continuam trazendo resultados.");
-          else avisar("Pexels: " + e.message);
-          return [];
-        }));
-      }
-      return Promise.all(tarefas).then(function (listas) {
-        var vistos = {};
+      return tarefasDe(consulta, midia, 1).then(function (listas) {
         var tudo = [];
         listas.forEach(function (lista) {
           (lista || []).forEach(function (item) {
-            /* o mesmo arquivo aparece em várias fontes e com títulos quase iguais:
-               a chave curta evita repetir a mesma imagem na grade */
-            var chave = semAcento(item.titulo).replace(/[^a-z0-9 ]/g, "").slice(0, 34) + "|" + item.fonte.split(" • ")[0];
-            if (vistos[chave]) return;
-            vistos[chave] = 1;
+            var chave = chaveDoItem(item);
+            if (estado.chaves[chave]) return;
+            estado.chaves[chave] = 1;
             tudo.push(item);
           });
         });
-        /* Arte, livro e mapa digitalizado ficam de fora DEFINITIVAMENTE — antes
-           eles voltavam quando o acervo era pobre, e era isso que enchia a grade
-           de pintura e gravura. */
+        /* Aqui a peneira é sem o piso de HD, para guardar o melhor conjunto sem
+           alta definição visto na cascata — só no último degrau ele é aceito. */
         var naoArte = tudo.filter(function (item) {
           return !ehReproducao(item.titulo, item.categorias)
-            && !ehEventoModerno(item.titulo)
-            && ehVideoDoTema(item);
+            && !ehEventoModerno(item.titulo, item)
+            && ehDoTema(item);
         });
-        if (!naoArte.length && tudo.length) avisar("O acervo só devolveu arte, livro, mapa digitalizado ou vídeo fora do tema para «" + consulta + "» — nada disso ilustra a passagem.");
-        /* Guarda o melhor conjunto SEM alta definição visto na cascata: se nenhum
-           degrau trouxer HD, é ele que aparece no fim. */
+        if (!naoArte.length && tudo.length) avisar("O acervo só devolveu arte, livro, mapa digitalizado ou vídeo/360 fora do tema para «" + consulta + "» — nada disso ilustra a passagem.");
         if (naoArte.length > melhorSemHD.length) melhorSemHD = naoArte;
         var hd = naoArte.filter(function (item) { return ehAltaDefinicao(item, midia); });
         var ultimoDegrau = indice >= tentativas.length;
@@ -758,7 +744,10 @@
         return conferirMiniaturas(grade.slice(0, 40)).then(function (vivos) {
           var perdidos = grade.length - vivos.length;
           if (vivos.length < MINIMO && !ultimoDegrau && vivos.length < grade.length) return tentar();
-          estado.itens = vivos;
+          estado.consultaBase = consulta;
+          estado.itens = [];
+          estado.reserva = [];
+          porNaReserva(vivos, consulta);
           estado.consultaUsada = consulta;
           estado.fase = "";
           if (consulta !== estado.consulta) {
@@ -772,6 +761,69 @@
       });
     };
     return tentar();
+  }
+
+  /* ---------- carregar mais (sem fim) ----------
+     Cada clique desce um degrau: primeiro o MESMO acervo mais fundo (offset no
+     Commons, página no Openverse e no Pexels), depois uma consulta vizinha, e
+     depois volta a aprofundar — sempre trazendo o que ainda não apareceu. */
+  function proximaLeva() {
+    var midia = midiaAtual();
+    var n = estado.rodada++;
+    var consulta, pagina;
+    if (n === 0) { consulta = estado.consultaBase; pagina = 2; }
+    else if (n === 1) { consulta = estado.consultaBase; pagina = 3; }
+    else {
+      var i = n - 2;
+      if (estado.extras.length) {
+        consulta = estado.extras[i % estado.extras.length];
+        pagina = Math.floor(i / estado.extras.length) + 2;
+      } else {
+        consulta = estado.consultaBase;
+        pagina = n + 2;
+      }
+    }
+    return tarefasDe(consulta, midia, pagina).then(function (listas) {
+      /* só o que passa no portão de assunto; o piso de HD aqui é do próprio item */
+      var novos = limparListas(listas, midia, true).filter(function (item) {
+        return ehAltaDefinicao(item, midia);
+      });
+      if (!novos.length) {
+        /* este degrau secou: desce o próximo na hora, mas com limite — sem isso
+           um acervo esgotado viraria laço infinito de requisições */
+        if (estado.rodada - n < 4 && estado.rodada < 80) return proximaLeva();
+        estado.semMais = true;
+        return 0;
+      }
+      return conferirMiniaturas(novos.slice(0, 40)).then(function (vivos) {
+        porNaReserva(vivos, consulta);
+        return vivos.length;
+      });
+    });
+  }
+
+  function carregarMais() {
+    if (estado.maisCarregando || estado.carregando) return;
+    if (estado.reserva.length) {
+      estado.itens = estado.itens.concat(estado.reserva.splice(0, LOTE));
+      desenhar();
+      return;
+    }
+    if (estado.semMais) return;
+    estado.maisCarregando = true;
+    estado.fase = "Buscando mais imagens e vídeos…";
+    desenhar();
+    proximaLeva().then(function (quantos) {
+      estado.maisCarregando = false;
+      estado.fase = "";
+      if (quantos) estado.itens = estado.itens.concat(estado.reserva.splice(0, LOTE));
+      desenhar();
+    }).catch(function (e) {
+      estado.maisCarregando = false;
+      estado.fase = "";
+      avisar("Não deu para carregar mais agora: " + (e && e.message ? e.message : e));
+      desenhar();
+    });
   }
 
   /* ---------- salvar na Mídia X ---------- */
