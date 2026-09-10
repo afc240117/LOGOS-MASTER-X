@@ -1405,6 +1405,7 @@
     abrir: abrir,
     fechar: fechar,
     buscar: buscar,
+    carregarMais: carregarMais,
     montarConsulta: montarConsulta,
     lugaresDaPassagem: lugaresDaPassagem,
     definirChavePexels: function (chave) {
