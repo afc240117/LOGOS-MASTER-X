@@ -4027,3 +4027,14 @@ body.bx-immersion-lock {
   .bx-immersion-dialog .bx-immersion-quadrant-controls button { min-width: 2.4rem; }
   .bx-immersion-dialog .bx-immersion-map-legend button { font-size: .78rem; min-height: 2.2rem; }
 }
+
+/* 5.4.248c — o div do título dentro do topo é um item flex com min-width:auto:
+   ele crescia para 677px por causa da faixa de chips e empurrava tudo para
+   fora do diálogo. Com min-width:0 o título volta à largura da tela e a
+   faixa de chips passa a rolar dentro dela. */
+@media (max-width: 760px) {
+  .bx-immersion-dialog .bx-immersion-topbar > div:first-child {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+}
