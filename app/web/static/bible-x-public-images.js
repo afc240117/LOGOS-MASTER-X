@@ -307,13 +307,17 @@
       var vistos = {};
       var tudo = [];
       listas.forEach(function (lista) {
-        lista.forEach(function (item) {
-          var chave = semAcento(item.titulo).slice(0, 60) + "|" + item.fonte;
+        (lista || []).forEach(function (item) {
+          /* o mesmo arquivo aparece em várias fontes e com títulos quase iguais:
+             a chave curta evita repetir a mesma imagem na grade */
+          var chave = semAcento(item.titulo).replace(/[^a-z0-9 ]/g, "").slice(0, 34) + "|" + item.fonte.split(" • ")[0];
           if (vistos[chave]) return;
           vistos[chave] = 1;
           tudo.push(item);
         });
       });
+      var consulta = estado.consulta;
+      tudo.sort(function (a, b) { return pontuar(b, consulta) - pontuar(a, consulta); });
       estado.itens = tudo;
       estado.carregando = false;
       desenhar();
