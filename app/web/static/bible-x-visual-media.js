@@ -1012,7 +1012,8 @@
       googleStage.appendChild(frame);
       googlePe.textContent = aviso || (temPos
         ? (modo === "sv"
-          ? "🚶 Street View em " + Number(lat).toFixed(4) + ", " + Number(lon).toFixed(4) + " — arraste para olhar ao redor e ande pelas setas."
+          ? "🚶 Street View em " + Number(lat).toFixed(4) + ", " + Number(lon).toFixed(4)
+            + " — arraste para olhar em volta. As setas brancas no chão andam pela rua; onde elas não aparecem, o Google só tem foto esférica ali (sem rua para andar). Para andar com o 🧍 bonequinho, use «🧍 Navegar no Google»."
           : (modo === "sat" ? "🛰 Satélite" : "🗺 Mapa") + " em " + Number(lat).toFixed(4) + ", " + Number(lon).toFixed(4) + ".")
         : "🗺 Mapa de «" + texto + "». Digite o lugar e toque em 🚶 Street View para ver da rua.");
       googleFora.href = modo === "sv" && temPos
