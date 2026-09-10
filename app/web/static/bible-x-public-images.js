@@ -1,23 +1,39 @@
-/* LOGOS MASTER X — 5.4.248 — Fontes públicas de imagem
+/* LOGOS MASTER X — 5.4.249 — Fontes públicas de imagem, vídeo e 360°
    ------------------------------------------------------------------
-   Botão "🖼 Fontes públicas": busca imagens de acervos públicos sobre a
-   passagem aberta (cultura, lugares bíblicos, ruínas da época) e mostra o
-   crédito de cada uma.
+   Botão "🖼 Fontes públicas": busca foto, vídeo e panorama 360° de acervos
+   públicos sobre a passagem aberta (lugares bíblicos, ruínas da época,
+   cultura, geografia) e mostra o crédito de cada um.
 
    Fontes (todas consultadas do próprio navegador, sem servidor nosso):
-   • Wikimedia Commons — sem chave, CORS liberado (origin=*).
+   • Wikimedia Commons — sem chave, CORS liberado (origin=*). Foto e vídeo.
    • Openverse        — sem chave, acervo CC de vários museus e bancos.
    • Pexels           — opcional: exige chave própria do usuário, guardada
                         apenas neste navegador (localStorage logosx:pexelsKey).
+                        Foto e vídeo.
+
+   Regras de qualidade (pedido do usuário):
+   • Só ALTA DEFINIÇÃO — piso por tipo: foto 1200×700, vídeo 1280×720,
+     panorama 360° 2000×700. Se nenhum acervo tiver HD no tema, a grade mostra
+     o melhor disponível e diz isso na tela.
+   • Arte e papelada BLOQUEADAS — pintura, gravura, desenho, aquarela, mosaico,
+     ícone, escultura, livro/mapa digitalizado, manuscrito. Olha o título E as
+     categorias do Wikimedia (o título engana).
+   • Miniatura conferida de verdade: a imagem é carregada no navegador antes de
+     entrar na grade. O que não abre (arquivo removido, hotlink bloqueado) não
+     aparece — era isso que deixava cartão só com texto.
+
+   Ao clicar, o resultado abre no NOSSO visualizador (zoom, girar 90°, baixar,
+   tela cheia, anterior/próxima) e o 360° no nosso panorama — não em aba do
+   site de origem. O link do acervo fica no botão 🔗 Origem.
 
    Nada é enviado para servidores nossos: a consulta sai daqui direto para
-   a fonte escolhida. Cada imagem mantém autor e licença visíveis, porque
+   a fonte escolhida. Cada mídia mantém autor e licença visíveis, porque
    quase todas exigem crédito.
    ------------------------------------------------------------------ */
 (function () {
   "use strict";
 
-  var VERSAO = "5.4.248";
+  var VERSAO = "5.4.249";
   var LS_PEXELS = "logosx:pexelsKey";
   var LIMITE_WIKIMEDIA = 24;
   var LIMITE_OPENVERSE = 20;
@@ -104,10 +120,6 @@
     { id: "videos", rotulo: "🎥 Vídeos", termos: "biblical sites", midia: "video" }
   ];
 
-  function temaAtualPorId(id) {
-    for (var i = 0; i < TEMAS.length; i++) if (TEMAS[i].id === id) return TEMAS[i];
-    return TEMAS[0];
-  }
   /* "foto" (padrão), "360" ou "video" — decide quais acervos são consultados. */
   function midiaAtual() { return temaAtual().midia || "foto"; }
   function minimoDaMidia(midia) {
@@ -762,7 +774,7 @@
     if (avisos) {
       var linhas = estado.avisos.map(function (a) { return '<p class="bxpub-aviso">' + esc(a) + "</p>"; });
       if (!estado.carregando && estado.itens.length) {
-        linhas.push('<p class="bxpub-aviso is-conta">' + estado.itens.length + " imagem(ns) • busca: «"
+        linhas.push('<p class="bxpub-aviso is-conta">' + estado.itens.length + " resultado(s) • busca: «"
           + esc(estado.consultaUsada || estado.consulta) + "»</p>");
       }
       avisos.innerHTML = linhas.join("");
@@ -988,7 +1000,7 @@
       if (cartao) cartao.remove();
       estado.itens = estado.itens.filter(function (i) { return i.id !== id; });
       var conta = $(".bxpub-aviso.is-conta", overlay);
-      if (conta) conta.textContent = estado.itens.length + " imagem(ns) • busca: «" + (estado.consultaUsada || estado.consulta) + "»";
+      if (conta) conta.textContent = estado.itens.length + " resultado(s) • busca: «" + (estado.consultaUsada || estado.consulta) + "»";
     }, true);
 
     overlay.addEventListener("keydown", function (ev) {
