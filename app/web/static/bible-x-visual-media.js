@@ -961,8 +961,13 @@
     };
     const close = () => {
       if (googlePanel) googlePanel.classList.remove("is-cheio");
+      /* Sai da tela cheia nativa ANTES de desmontar: sem isso o navegador
+         continuaria em tela cheia com o painel já fora do ar. */
+      googleSairTelaCheia();
       stopSlides();
       document.removeEventListener("keydown", onKey);
+      document.removeEventListener("fullscreenchange", googleSincronizaCheio);
+      document.removeEventListener("webkitfullscreenchange", googleSincronizaCheio);
       window.removeEventListener("resize", onResize);
       editorUrls.forEach((url) => { try { URL.revokeObjectURL(url); } catch (_) {} });
       overlay.remove();
@@ -1207,19 +1212,77 @@
       if (abrir) googleIr(googleModo);
       else googleStage.innerHTML = "";
     };
+    /* ---- 5.4.249 — ⛶ TELA CHEIA DE VERDADE (tipo F11) ---------------------
+       O `.is-cheio` sozinho só esticava o painel DENTRO da página: as barras do
+       navegador continuavam à vista. Agora o ⛶ pede a tela cheia NATIVA do
+       próprio painel (Fullscreen API) e aí as barras somem de fato, como o F11.
+       O `.is-cheio` continua entrando — como layout da tela cheia e como REDE:
+       navegador sem a API (Safari do iPhone) fica com o comportamento antigo,
+       que é melhor que nada, e o Esc/botão do sistema sempre desmonta tudo. */
+    const telaCheiaNativa = () => document.fullscreenElement || document.webkitFullscreenElement || null;
+    let googleCheioNativo = false; /* a tela cheia nativa está valendo para ESTE painel */
+    const googleSairTelaCheia = () => {
+      const sair = document.exitFullscreen || document.webkitExitFullscreen;
+      if (!telaCheiaNativa() || typeof sair !== "function") return;
+      /* Se a saída falhar, o Esc continua valendo: o googleSincronizaCheio
+         desmonta o painel do mesmo jeito quando a tela cheia acabar. */
+      try { Promise.resolve(sair.call(document)).catch(() => {}); } catch (_) {}
+    };
+    /* Volta para a MESMA vista que estava no ar — nunca para o lugar da imagem
+       aberta. O iframe é recriado porque a altura muda junto com a tela. */
+    const googleRedesenhaVista = () => {
+      const u = googleUltimo;
+      const alvo = u ? [u.lat, u.lon] : googlePos(items[index] || {}, googleModo);
+      if (u) googleMostrar(u.modo, u.lat, u.lon, u.texto, u.aviso);
+      else if (alvo) googleMostrar(googleModo, alvo[0], alvo[1], "");
+    };
+    /* Quem sai da tela cheia por fora (Esc, botão do sistema, ⤡) também precisa
+       desmontar o `.is-cheio` — senão o painel fica pendurado cobrindo a
+       página. Sem a API, googleCheioNativo nunca liga e o `.is-cheio` é o único
+       modo: aí ele fica como está. */
+    const googleSincronizaCheio = () => {
+      if (telaCheiaNativa() === googlePanel) { googleCheioNativo = true; return; }
+      if (!googleCheioNativo) return;
+      googleCheioNativo = false;
+      /* Se quem pediu a saída já desmontou o painel, não redesenha duas vezes. */
+      if (!googlePanel.classList.contains("is-cheio")) return;
+      googlePanel.classList.remove("is-cheio");
+      if (googlePanel.hidden) return;
+      googleRedesenhaVista();
+    };
+    document.addEventListener("fullscreenchange", googleSincronizaCheio);
+    document.addEventListener("webkitfullscreenchange", googleSincronizaCheio);
+
     googlePanel.addEventListener("click", event => {
       const acao = event.target.closest("[data-bxvm-google]")?.dataset.bxvmGoogle;
       if (!acao) return;
-      if (acao === "fechar") { googlePanel.classList.remove("is-cheio"); googlePanel.hidden = true; googleStage.innerHTML = ""; return; }
+      if (acao === "fechar") {
+        /* sai da tela cheia nativa antes de esconder — o navegador não sai
+           sozinho só porque o painel virou display:none */
+        googleSairTelaCheia();
+        googlePanel.classList.remove("is-cheio");
+        googlePanel.hidden = true;
+        googleStage.innerHTML = "";
+        return;
+      }
       if (acao === "cheio") {
-        googlePanel.classList.toggle("is-cheio");
-        /* o iframe é recriado porque a altura muda junto com a tela — mas
-           volta para a MESMA vista que estava no ar, e não para o lugar da
-           imagem aberta. */
-        const u = googleUltimo;
-        const alvo = u ? [u.lat, u.lon] : googlePos(items[index] || {}, googleModo);
-        if (u) googleMostrar(u.modo, u.lat, u.lon, u.texto, u.aviso);
-        else if (alvo) googleMostrar(googleModo, alvo[0], alvo[1], "");
+        if (googlePanel.classList.contains("is-cheio")) {
+          /* Na tela cheia nativa quem desmonta o `.is-cheio` é o
+             googleSincronizaCheio, quando a saída se consumar — assim o painel
+             não fica sem layout no meio do caminho. */
+          if (googleCheioNativo) { googleSairTelaCheia(); return; }
+          googlePanel.classList.remove("is-cheio"); /* rede: navegador sem a API */
+          googleRedesenhaVista();
+          return;
+        }
+        googlePanel.classList.add("is-cheio");
+        const pedir = googlePanel.requestFullscreen || googlePanel.webkitRequestFullscreen;
+        if (typeof pedir === "function") {
+          /* a promessa pode ser recusada (outro elemento em tela cheia, gesto
+             não reconhecido) — aí o `.is-cheio` segue valendo sozinho */
+          try { Promise.resolve(pedir.call(googlePanel)).catch(() => {}); } catch (_) {}
+        }
+        googleRedesenhaVista();
         return;
       }
       googleIr(acao);
