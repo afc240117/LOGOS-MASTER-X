@@ -754,7 +754,7 @@
     var b = document.createElement("button");
     b.type = "button";
     b.setAttribute("data-bx-public-images", "1");
-    b.setAttribute("data-bxpub-ref", ref);
+    b.setAttribute("data-bxpub-verso", ref);
     b.className = "bxpub-disparo-verso";
     b.textContent = "🖼 Fontes públicas";
     b.title = "Buscar imagens de acervos públicos sobre " + ref;
@@ -775,10 +775,10 @@
         var ref = "";
         var linha = tools.closest("[data-ref]");
         if (linha) ref = linha.getAttribute("data-ref") || "";
-        var meu = tools.querySelector("[data-bxpub-ref]");
+        var meu = tools.querySelector("[data-bxpub-verso]");
         if (!ref) { if (meu) meu.remove(); return; }
         if (meu) {
-          if (meu.getAttribute("data-bxpub-ref") !== ref) meu.setAttribute("data-bxpub-ref", ref);
+          if (meu.getAttribute("data-bxpub-verso") !== ref) meu.setAttribute("data-bxpub-verso", ref);
           return;
         }
         var mais = tools.querySelector("[data-bx-verse-more], .lmx-bible-v3-more");
@@ -797,13 +797,17 @@
   }
 
   function ligar() {
-    document.addEventListener("click", function (ev) {
+    /* No WINDOW e não no document: um listener do app na fileira de ferramentas
+       do versículo dá stopPropagation() em fase de captura, e o clique nunca
+       chega ao document — era por isso que o botão do dock abria e o do
+       versículo não. Listeners do mesmo nó continuam rodando. */
+    window.addEventListener("click", function (ev) {
       var alvo = ev.target && ev.target.closest ? ev.target.closest("[data-bx-public-images]") : null;
       if (!alvo) return;
       ev.preventDefault();
       ev.stopPropagation();
       if (estado.aberto) { fechar(); return; }
-      var ref = alvo.getAttribute("data-bxpub-ref") || "";
+      var ref = alvo.getAttribute("data-bxpub-verso") || "";
       usarVersiculo(ref);
       estado.consulta = "";
       abrir();
