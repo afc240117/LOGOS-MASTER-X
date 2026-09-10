@@ -233,11 +233,18 @@
     };
     var lugares = lugaresEmIngles();
     var termos = temaAtual().termos;
+    var midia = midiaAtual();
     juntar(estado.consulta);
     /* "Jerusalem biblical sites" ainda é curto o bastante; já "Jerusalem holy
        land ruins" (4 palavras) os acervos devolvem vazio — então não junta. */
     if (lugares.length && !/^(holy land|ancient)\b/i.test(termos)) juntar(lugares[0] + " " + termos);
+    /* 360 e vídeo precisam do termo da mídia junto do lugar: sem isso a cascata
+       larga a Terra Santa e traz panorama dos Alpes. */
+    if (midia === "360" && lugares.length) juntar(lugares[0] + " 360");
+    if (midia === "video" && lugares.length) juntar(lugares[0] + " aerial");
     juntar(termos);
+    if (midia === "360") juntar("holy land 360");
+    if (midia === "video") juntar("holy land aerial");
     if (lugares.length) juntar(lugares[0]);
     juntar("holy land");
     return lista;
