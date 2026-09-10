@@ -144,6 +144,7 @@ body.bxvm-lock{overflow:hidden!important}.bxvm-overlay{position:fixed;inset:0;z-
 .bxvm-google-head{display:flex;align-items:center;gap:8px}
 .bxvm-google-head b{font:900 .92rem/1.2 system-ui;color:#eaf8ff}
 .bxvm-google-head small{flex:1 1 auto;color:#9fb5ca;font-size:.72rem}
+.bxvm-google-cheio{width:34px;height:34px;border-radius:10px;border:1px solid #5a6a78;background:#101b24;color:#d7e2e8;font:900 1rem/1 system-ui;cursor:pointer}
 .bxvm-google-x{width:34px;height:34px;border-radius:10px;border:1px solid #5a6a78;background:#101b24;color:#d7e2e8;font:900 1rem/1 system-ui;cursor:pointer}
 .bxvm-google-linha input{width:100%;min-height:40px;padding:8px 12px;border:1px solid rgba(134,200,255,.3);border-radius:12px;background:#061321;color:#eef8ff;font-size:.82rem}
 .bxvm-google-acoes{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
@@ -154,6 +155,12 @@ body.bxvm-lock{overflow:hidden!important}.bxvm-overlay{position:fixed;inset:0;z-
 .bxvm-google-frame{display:block;width:100%;height:min(56vh,420px);border:0}
 .bxvm-google-vazio{margin:0;padding:26px 16px;text-align:center;color:#9fb5ca;font-size:.84rem}
 .bxvm-google-pe{margin:0;color:#9fb5ca;font-size:.72rem;line-height:1.4}
+/* ⛶ TELA CHEIA do Google (dentro do app): o mapa ocupa tudo e as setas do
+   chão ficam grandes — é assim que se ANDA com o dedo no celular. */
+.bxvm-google-panel.is-cheio{position:fixed;inset:0;top:0;left:0;transform:none;width:auto;max-width:none;height:auto;max-height:none;border-radius:0;border:0;z-index:100700;padding:8px;gap:6px}
+.bxvm-google-panel.is-cheio .bxvm-google-stage{flex:1 1 auto;min-height:0}
+.bxvm-google-panel.is-cheio .bxvm-google-frame{height:100%;min-height:56vh}
+.bxvm-google-panel.is-cheio .bxvm-google-passeios{max-height:74px;overflow:auto}
 @media(max-width:680px){.bxvm-google-panel{top:6px;width:96%}.bxvm-google-frame{height:46vh}.bxvm-google-fora{margin-left:0}}
 .bxvm-pano-plano{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;overflow:hidden;background:#04070c;cursor:grab;touch-action:none}.bxvm-pano-plano:active{cursor:grabbing}.bxvm-pano-plano img{display:block;max-width:none;max-height:none;width:auto;height:auto;user-select:none;-webkit-user-drag:none;will-change:transform;transform-origin:center}.bxvm-pano-nota{position:absolute;left:50%;bottom:9px;z-index:3;transform:translateX(-50%);width:max-content;max-width:92%;margin:0;padding:7px 14px;border:1px solid #2b4759;border-radius:999px;background:rgba(4,11,17,.86);color:#cfdde6;font-size:.72rem;font-weight:650;text-align:center;pointer-events:none}
 .bxvm-google-passeios{display:grid;gap:6px;margin:2px 0 8px}.bxvm-google-passeios b{color:#9fb6c4;font-size:.72rem;font-weight:800}.bxvm-google-chips{display:flex;flex-wrap:wrap;gap:6px;max-height:96px;overflow:auto;padding:2px}.bxvm-google-chips button{padding:6px 10px;border:1px solid #2f5568;border-radius:999px;background:#0b1e2b;color:#dceaf1;font:700 .74rem/1 system-ui;cursor:pointer;white-space:nowrap}.bxvm-google-chips button:hover,.bxvm-google-chips button:focus-visible{border-color:#c19a48;color:#ffe08a;outline:none}.bxvm-google-chips button.is-sorte{border-color:#8a6f2a;background:#241d08;color:#ffdf8a}
