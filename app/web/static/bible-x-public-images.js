@@ -1313,7 +1313,8 @@
       if (alvo.closest("[data-bxpub-buscar]")) {
         /* busca pedida pelo usuário: o texto é dele, o tema não sobrescreve mais */
         estado.consultaAuto = "";
-        estado.consulta = ((campoBusca && campoBusca.value) || estado.consulta || "").trim();
+        var digitadoAgora = $("[data-bxpub-busca]", overlay);
+        estado.consulta = ((digitadoAgora && digitadoAgora.value) || estado.consulta || "").trim();
         pedirBusca();
         return;
       }
