@@ -93,7 +93,7 @@
   function $(sel, raiz) { return (raiz || document).querySelector(sel); }
   function $$(sel, raiz) { return Array.prototype.slice.call((raiz || document).querySelectorAll(sel)); }
   function semAcento(txt) {
-    return String(txt || "").normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+    return String(txt || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
   }
   function limparHtml(txt) {
     var d = document.createElement("div");
