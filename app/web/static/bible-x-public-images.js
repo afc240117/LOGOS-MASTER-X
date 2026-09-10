@@ -486,9 +486,13 @@
       ".bxpub-acoes button.is-salvo{border-color:rgba(64,196,174,.9);background:linear-gradient(180deg,#123f3a,#0d2f2c);color:#9ff0dc}",
       ".bxpub-vazio{padding:28px 20px;text-align:center;color:#9fb5ca;font-size:.86rem}",
       ".bxpub-pe{display:flex;flex-direction:column;flex:1 1 auto;min-height:0}",
-      ".bxpub-chave{display:none;gap:8px;align-items:center;padding:0 20px 10px}",
+      ".bxpub-chave{display:none;flex-direction:column;gap:8px;padding:0 20px 10px}",
       ".bxpub-chave.is-on{display:flex}",
-      ".bxpub-chave input{flex:1 1 auto;min-width:0;min-height:40px;border:1px solid rgba(134,200,255,.28);border-radius:12px;background:#061321;color:#eef8ff;padding:8px 12px;font-size:.82rem}",
+      ".bxpub-chave-dica{margin:0;color:#9fb5ca;font-size:.78rem;line-height:1.5}",
+      ".bxpub-chave-dica b{color:#cfe6ff}",
+      ".bxpub-chave-dica a{color:#8fd0ff}",
+      ".bxpub-chave-linha{display:flex;gap:8px;align-items:center}",
+      ".bxpub-chave-linha input{flex:1 1 auto;min-width:0;min-height:40px;border:1px solid rgba(134,200,255,.28);border-radius:12px;background:#061321;color:#eef8ff;padding:8px 12px;font-size:.82rem}",
       ".bxpub-rodape{padding:10px 20px;border-top:1px solid rgba(150,196,232,.14);color:#8fa8bd;font-size:.72rem;line-height:1.45}",
       "@media(max-width:680px){",
       ".bxpub-overlay{padding:0}",
@@ -524,7 +528,12 @@
       b.classList.toggle("is-on", !!estado.fontes[b.getAttribute("data-bxpub-fonte")]);
     });
     var chave = $("[data-bxpub-chave]", overlay);
-    if (chave) chave.classList.toggle("is-on", estado.fontes.pexels);
+    if (chave) {
+      chave.classList.toggle("is-on", estado.fontes.pexels);
+      /* o campo já mostra a chave guardada (o "Salvar chave" regrava) */
+      var entradaChave = $("[data-bxpub-pexels]", overlay);
+      if (entradaChave && !entradaChave.value && estado.pexelsKey) entradaChave.value = estado.pexelsKey;
+    }
 
     if (avisos) {
       var linhas = estado.avisos.map(function (a) { return '<p class="bxpub-aviso">' + esc(a) + "</p>"; });
@@ -592,8 +601,14 @@
       + '<button type="button" class="bxpub-chip" data-bxpub-fonte="openverse">Openverse</button>'
       + '<button type="button" class="bxpub-chip" data-bxpub-fonte="pexels">🔑 Pexels</button>'
       + "</div>"
-      + '<div class="bxpub-chave"><input type="password" data-bxpub-pexels placeholder="Chave da API Pexels (fica só neste navegador)" aria-label="Chave Pexels">'
-      + '<button type="button" class="bxpub-btn" data-bxpub-salvarchave>Salvar chave</button></div>'
+      + '<div class="bxpub-chave" data-bxpub-chave>'
+      + '<p class="bxpub-chave-dica">A chave do Pexels é <b>gratuita</b>: pegue em '
+      + '<a href="https://www.pexels.com/api/" target="_blank" rel="noopener noreferrer">pexels.com/api</a> '
+      + '(criar conta → “Your API Key”) e cole aqui. Ela fica <b>só neste navegador</b> e não passa pelos nossos servidores.</p>'
+      + '<div class="bxpub-chave-linha">'
+      + '<input type="password" data-bxpub-pexels placeholder="Cole aqui a chave da API Pexels" aria-label="Chave Pexels">'
+      + '<button type="button" class="bxpub-btn" data-bxpub-salvarchave>Salvar chave</button>'
+      + "</div></div>"
       + '<div data-bxpub-avisos></div>'
       + '<div class="bxpub-pe"><div class="bxpub-grade" data-bxpub-grade></div></div>'
       + '<footer class="bxpub-rodape">Imagens de acervos de terceiros (Wikimedia Commons, Openverse, Pexels). Cada autor e licença aparece no cartão — confira a licença na página de origem antes de reutilizar. O crédito é salvo junto quando você manda para a Mídia X.</footer>'
