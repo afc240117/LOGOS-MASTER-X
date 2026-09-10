@@ -297,7 +297,8 @@
   /* Alta definição: sem medida confiável a imagem passa (a miniatura real decide
      depois), mas com medida pequena não entra. */
   function ehAltaDefinicao(item, midia) {
-    var min = minimoDaMidia(midia);
+    /* em "Tudo" a grade mistura foto, 360 e vídeo: o piso é o de cada um */
+    var min = minimoDaMidia(midia === "tudo" ? item.midia : midia);
     if (!item.largura || !item.altura) return true;
     return item.largura >= min.largura && item.altura >= min.altura;
   }
@@ -343,12 +344,24 @@
      ("Adam Hochschild, Co-Founder, Mother Jones"). Vídeo só entra se o título
      falar de lugar, época ou escavação. Pexels não passa por aqui: a busca dele
      já é ordenada por relevância. */
-  var VIDEO_DO_TEMA = /israel|jerusal|bible|biblical|holy land|galile|jordan|judea|judaea|samaria|ancient|archaeolog|archeolog|\bruin|temple|church|monaster|\bdesert|dead sea|sea of|nazareth|bethlehem|jericho|capernaum|masada|qumran|hebron|\bzions?\b|olive|excavation|pilgrim|synagogue|fortress|\btel\b|sepulchre|landscape|aerial|panorama/i;
-  function ehVideoDoTema(item) {
-    if (item.midia !== "video") return true;
-    if (String(item.fonte || "").indexOf("Pexels") === 0) return true;
+  var LOCAL_DO_TEMA = /israel|jerusal|bible|biblical|holy land|galile|jordan|judea|judaea|samaria|ancient|archaeolog|archeolog|\bruin|temple|church|monaster|\bdesert|dead sea|sea of|nazareth|bethlehem|jericho|capernaum|masada|qumran|hebron|\bzions?\b|olive|excavation|pilgrim|synagogue|fortress|\btel\b|sepulchre|landscape|aerial|panorama|walking tour|old city|city of david|mount of olives|garden tomb|via dolorosa|sea of galilee|river jordan|western wall|golgotha|calvary|kidron|jezreel|armageddon|sodom|ur of the|babylon|nineveh|ephesus|corinth|athens|rome|antioch|patmos/i;
+
+  /* Vídeo e 360 saem de acervos enormes e cheios de assunto alheio — o de vídeo
+     do Commons é entrevista, palestra, bonde e incêndio; o de 360 é montanha
+     alpina quando a consulta é só "360 panorama". Medido: vídeo do Commons só
+     rende com consulta de LUGAR ("Jerusalem old city" = 15 em HD; "biblical
+     sites" = zero). Então os dois passam por um portão de lugar, e o vídeo ainda
+     tem um bloqueio do que claramente não é lugar nenhum. */
+  var VIDEO_FORA = /\brail\b|\btram\b|\btrain\b|railway|wildfire|\bfire\b|fireworks|construction|air ?force|fly ?by|military|\bnavy\b|\barmy\b|missile|weapon|\bcar\b|\bcars\b|traffic|vehicle|motorc|driving|\bdrive\b|highway|nightlife|fashion|makeup|\bconcert\b|\bdance\b|\bsport|football|soccer|basketball|\bgaming\b|\bdog\b|\bcat\b|\bbaby\b|\bfood\b|restaurant|cooking|recipe|\bmall\b|shopping|stock market|\bwedding\b|influencer|unboxing|tutorial|review|\bfestival\b|\bprotest\b|\bidf\b|\bsoldier|\binterview\b|co-founder|\bceo\b|conference|keynote|\blecture\b|podcast|webinar/i;
+  /* Um 360 de verdade se anuncia: sem isso é foto larga qualquer. */
+  var PANORAMA_MESMO = /360|panoram|equirect|spherical|photosphere|wide ?angle|vista|view from|lookout|overlook/i;
+
+  function ehDoTema(item) {
+    if (item.midia !== "video" && item.midia !== "360") return true;
     var alvo = String(item.titulo || "") + " " + (item.categorias || []).join(" ");
-    return VIDEO_DO_TEMA.test(alvo);
+    if (item.midia === "video" && VIDEO_FORA.test(alvo)) return false;
+    if (item.midia === "360" && !PANORAMA_MESMO.test(alvo)) return false;
+    return LOCAL_DO_TEMA.test(alvo);
   }
 
   function pontuar(item, consulta) {
