@@ -1383,11 +1383,16 @@
         var pos = 0;
         for (var r = 0; r < ruas.length; r++) if (ruas[r].id === item.id) pos = r;
         if (!ruas.length) return false;
-        api.openGallery(ruas.map(paraGaleria), pos, {
-          eyebrow: "MÍDIA X • GOOGLE VIEW",
-          rua: { lat: item.gmap.ruaLat, lon: item.gmap.ruaLon, nome: item.titulo, emoji: item.gmap.emoji,
-                 sitio: { lat: item.gmap.lat, lon: item.gmap.lon } }
-        });
+        var opcoes = { eyebrow: "MÍDIA X • GOOGLE VIEW" };
+        /* Só entra na rua quem TEM rua. O `Number(null)` do outro lado dá ZERO,
+           então um lugar sem carro de rua do Google mandaria a pessoa para 0,0,
+           no meio do Atlântico. Sem rua, a galeria abre normal e o 🚶 cai no
+           sítio (satélite), com o aviso explicando por quê. */
+        if (!item.gmap.semRua) {
+          opcoes.rua = { lat: item.gmap.ruaLat, lon: item.gmap.ruaLon, nome: item.titulo,
+                         emoji: item.gmap.emoji, sitio: { lat: item.gmap.lat, lon: item.gmap.lon } };
+        }
+        api.openGallery(ruas.map(paraGaleria), pos, opcoes);
         return true;
       }
       if (typeof api.openGallery !== "function") return false;
