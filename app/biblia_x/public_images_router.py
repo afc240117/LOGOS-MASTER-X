@@ -78,6 +78,7 @@ async def pexels(
     tipo: str = Query("foto"),
     per_page: int = Query(18, ge=1, le=_MAX_POR_PAGINA),
     orientacao: str = Query("landscape", max_length=24),
+    pagina: int = Query(1, ge=1, le=50),   # o "carregar mais" do app desce as páginas
 ):
     chave = _chave()
     if not chave:
@@ -88,7 +89,7 @@ async def pexels(
         raise HTTPException(status_code=400, detail="consulta vazia")
 
     videos = tipo == "video"
-    marca = f"{'v' if videos else 'f'}|{per_page}|{orientacao}|{consulta.lower()}"
+    marca = f"{'v' if videos else 'f'}|{per_page}|{orientacao}|{pagina}|{consulta.lower()}"
     agora = time.time()
     guardado = _cache.get(marca)
     if guardado and agora - guardado[0] < _CACHE_SEGUNDOS:
@@ -99,6 +100,8 @@ async def pexels(
         raise HTTPException(status_code=429, detail="muitas consultas seguidas; tente daqui a pouco")
 
     params = {"query": consulta, "per_page": per_page, "orientation": orientacao}
+    if pagina > 1:
+        params["page"] = pagina
     try:
         async with httpx.AsyncClient(timeout=_TIMEOUT) as cliente:
             resposta = await cliente.get(

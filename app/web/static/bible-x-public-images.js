@@ -480,9 +480,10 @@
       });
   }
 
-  function buscaOpenverse(consulta) {
+  function buscaOpenverse(consulta, pagina) {
     var url = "https://api.openverse.org/v1/images/?q=" + encodeURIComponent(consulta)
-      + "&page_size=" + LIMITE_OPENVERSE + "&mature=false";
+      + "&page_size=" + LIMITE_OPENVERSE + "&mature=false"
+      + (pagina > 1 ? "&page=" + pagina : "");
     return fetch(url, { headers: { Accept: "application/json" } })
       .then(function (r) { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); })
       .then(function (json) {
