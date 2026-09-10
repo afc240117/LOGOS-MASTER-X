@@ -55,7 +55,12 @@
     itens: [],
     avisos: [],
     salvo: {},
-    pexelsKey: ""
+    pexelsKey: "",
+    /* A chave do Pexels vive no SERVIDOR (PEXELS_API_KEY). Quando ela existe, o
+       Pexels já vem ligado e nenhum usuário precisa da chave dele. O campo
+       "minha própria chave" fica escondido e só aparece se faltar no servidor. */
+    pexelsServidor: false,
+    mostrarChave: false
   };
 
   /* Abaixo disso a grade fica pobre e a busca desce um degrau (ver
@@ -415,15 +420,7 @@
 
   /* Vídeo do Pexels: vem com pôster e MP4 — toca direto no cartão. */
   function buscaVideosPexels(consulta) {
-    if (!estado.pexelsKey) return Promise.reject(new Error("chave ausente"));
-    var url = "https://api.pexels.com/videos/search?query=" + encodeURIComponent(consulta)
-      + "&per_page=" + LIMITE_PEXELS + "&orientation=landscape";
-    return fetch(url, { headers: { Authorization: estado.pexelsKey, Accept: "application/json" } })
-      .then(function (r) {
-        if (r.status === 401) throw new Error("chave recusada");
-        if (!r.ok) throw new Error("HTTP " + r.status);
-        return r.json();
-      })
+    return pedirAoPexels("video", consulta)
       .then(function (json) {
         return (json && json.videos ? json.videos : []).map(function (v) {
           var arquivos = (v.video_files || []).filter(function (f) {
@@ -482,16 +479,34 @@
       });
   }
 
+  /* A chave do Pexels é do dono do app e mora no SERVIDOR. Embuti-la no
+     JavaScript entregaria ela a qualquer visitante (DevTools) e o repositório é
+     público — por isso o caminho normal é pedir a este proxy. Só se o usuário
+     tiver uma chave própria guardada aqui é que ele fala direto com o Pexels. */
+  function pedirAoPexels(tipo, consulta) {
+    var url, cabecalhos;
+    if (estado.pexelsKey) {
+      url = (tipo === "video" ? "https://api.pexels.com/videos/search" : "https://api.pexels.com/v1/search")
+        + "?query=" + encodeURIComponent(consulta) + "&per_page=" + LIMITE_PEXELS + "&orientation=landscape";
+      cabecalhos = { Authorization: estado.pexelsKey, Accept: "application/json" };
+    } else if (estado.pexelsServidor) {
+      url = "/api/bible/public-images/pexels?tipo=" + (tipo === "video" ? "video" : "foto")
+        + "&per_page=" + LIMITE_PEXELS + "&q=" + encodeURIComponent(consulta);
+      cabecalhos = { Accept: "application/json" };
+    } else {
+      return Promise.reject(new Error("chave ausente"));
+    }
+    return fetch(url, { headers: cabecalhos }).then(function (r) {
+      if (r.status === 401) throw new Error("chave recusada");
+      if (r.status === 429) throw new Error("cota esgotada");
+      if (r.status === 503) throw new Error("chave ausente");
+      if (!r.ok) throw new Error("HTTP " + r.status);
+      return r.json();
+    });
+  }
+
   function buscaPexels(consulta) {
-    if (!estado.pexelsKey) return Promise.reject(new Error("chave ausente"));
-    var url = "https://api.pexels.com/v1/search?query=" + encodeURIComponent(consulta)
-      + "&per_page=" + LIMITE_PEXELS + "&orientation=landscape";
-    return fetch(url, { headers: { Authorization: estado.pexelsKey, Accept: "application/json" } })
-      .then(function (r) {
-        if (r.status === 401) throw new Error("chave recusada");
-        if (!r.ok) throw new Error("HTTP " + r.status);
-        return r.json();
-      })
+    return pedirAoPexels("foto", consulta)
       .then(function (json) {
         return (json && json.photos ? json.photos : []).map(function (p) {
           var src = p.src || {};
@@ -546,8 +561,9 @@
       if (estado.fontes.pexels) {
         var doPexels = midia === "video" ? buscaVideosPexels(consulta) : buscaPexels(consulta);
         tarefas.push(doPexels.catch(function (e) {
-          if (e.message === "chave ausente") avisar("Pexels: falta a chave — toque em 🔑 Pexels e cole a sua (é gratuita em pexels.com/api).");
+          if (e.message === "chave ausente") avisar("Pexels: sem chave aqui — toque em 🔑 Pexels e cole a sua (é gratuita em pexels.com/api).");
           else if (e.message === "chave recusada") avisar("Pexels recusou a chave — confira em pexels.com/api se copiou a “API Key” inteira e salve de novo em 🔑.");
+          else if (e.message === "cota esgotada") avisar("Pexels: cota esgotada por agora — as outras fontes continuam trazendo resultados.");
           else avisar("Pexels: " + e.message);
           return [];
         }));
@@ -763,10 +779,13 @@
     $$("[data-bxpub-fonte]", overlay).forEach(function (b) {
       b.classList.toggle("is-on", !!estado.fontes[b.getAttribute("data-bxpub-fonte")]);
     });
+    /* O campo da chave do Pexels NÃO fica à mostra: quem usa o app não precisa
+       de chave nenhuma, porque a do dono já vem do servidor. Ele só aparece se
+       o servidor estiver sem chave E o usuário pedir (🔑 Pexels) — aí sim ele
+       cola a dele, que fica só neste navegador (localStorage). */
     var chave = $("[data-bxpub-chave]", overlay);
     if (chave) {
-      chave.classList.toggle("is-on", estado.fontes.pexels);
-      /* o campo já mostra a chave guardada (o "Salvar chave" regrava) */
+      chave.classList.toggle("is-on", !!estado.mostrarChave);
       var entradaChave = $("[data-bxpub-pexels]", overlay);
       if (entradaChave && !entradaChave.value && estado.pexelsKey) entradaChave.value = estado.pexelsKey;
     }
@@ -886,9 +905,11 @@
       + '<button type="button" class="bxpub-chip" data-bxpub-fonte="pexels">🔑 Pexels</button>'
       + "</div>"
       + '<div class="bxpub-chave" data-bxpub-chave>'
-      + '<p class="bxpub-chave-dica">A chave do Pexels é <b>gratuita</b>: pegue em '
+      + '<p class="bxpub-chave-dica">O Pexels já vem ligado no app e você <b>não precisa de chave nenhuma</b>. '
+      + 'Este campo só apareceu porque o servidor está sem a chave dele: se quiser usar o Pexels agora, pegue a sua, '
+      + 'que é <b>gratuita</b>, em '
       + '<a href="https://www.pexels.com/api/" target="_blank" rel="noopener noreferrer">pexels.com/api</a> '
-      + '(criar conta → “Your API Key”) e cole aqui. Ela fica <b>só neste navegador</b> e não passa pelos nossos servidores.</p>'
+      + '(criar conta → “Your API Key”) e cole aqui. Ela fica <b>só neste navegador</b>.</p>'
       + '<div class="bxpub-chave-linha">'
       + '<input type="password" data-bxpub-pexels placeholder="Cole aqui a chave da API Pexels" aria-label="Chave Pexels">'
       + '<button type="button" class="bxpub-btn" data-bxpub-salvarchave>Salvar chave</button>'
@@ -916,12 +937,20 @@
       if (fonte) {
         var nome = fonte.getAttribute("data-bxpub-fonte");
         estado.fontes[nome] = !estado.fontes[nome];
-        if (nome === "pexels" && estado.fontes.pexels && !estado.pexelsKey) {
-          /* sem chave ainda: abre o campo em vez de buscar e falhar */
-          desenhar();
-          var campo2 = $("[data-bxpub-pexels]", overlay);
-          if (campo2) campo2.focus();
-        } else buscar();
+        if (nome === "pexels" && estado.fontes.pexels) {
+          /* Com a chave do servidor não há nada a pedir: liga e busca. Sem ela
+             (e sem chave própria guardada), o campo aparece só agora — fora do
+             caminho de quem só quer usar o app. */
+          var temChavePropria = !!estado.pexelsKey;
+          if (!estado.pexelsServidor && !temChavePropria) {
+            estado.mostrarChave = true;
+            desenhar();
+            var campo2 = $("[data-bxpub-pexels]", overlay);
+            if (campo2) campo2.focus();
+            return;
+          }
+        }
+        buscar();
         return;
       }
       if (alvo.closest("[data-bxpub-salvarchave]")) {
@@ -1077,6 +1106,21 @@
         else acoesImersao.appendChild(botao);
       }
     }, 60);
+  }
+
+  /* Pergunta ao NOSSO servidor se ele já tem a chave do Pexels. Se tiver, o
+     Pexels entra ligado por padrão para todo mundo e ninguém vê campo de chave.
+     Se o endpoint não existir (servidor antigo), segue sem Pexels — o resto do
+     app funciona igual com Wikimedia e Openverse. */
+  function consultarStatusPexels() {
+    return fetch("/api/bible/public-images/status", { headers: { Accept: "application/json" } })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (json) {
+        estado.pexelsServidor = !!(json && json.pexels);
+        if (estado.pexelsServidor) estado.fontes.pexels = true;
+        if (estado.aberto) desenhar();
+      })
+      .catch(function () { estado.pexelsServidor = false; });
   }
 
   function ligar() {

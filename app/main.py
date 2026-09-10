@@ -44,6 +44,7 @@ app.include_router(atlas_x_router)
 app.include_router(audio_x_router)
 app.include_router(biblia_x_share_router)
 app.include_router(biblia_x_mediacloud_router)
+app.include_router(biblia_x_public_images_router)
 class Generate(BaseModel):
  mode:str="SERMÃO";text:str=Field(min_length=1);theme:str|None=None;duration:int=40;cult:str="Avivamento";audience:str="Igreja local";intensity:int=10;objective:str|None=None;notes:str|None=None;provider:str="auto";ai_mode:str="automatico";model:str|None=None
 class BibleCommentAI(BaseModel):
