@@ -318,6 +318,7 @@
     estado.carregando = true;
     estado.avisos = [];
     estado.itens = [];
+    estado.consultaUsada = "";
     desenhar();
 
     var tentativas = montarTentativas();
@@ -510,9 +511,12 @@
     if (chave) chave.classList.toggle("is-on", estado.fontes.pexels);
 
     if (avisos) {
-      avisos.innerHTML = estado.avisos.length
-        ? estado.avisos.map(function (a) { return '<p class="bxpub-aviso">' + esc(a) + "</p>"; }).join("")
-        : "";
+      var linhas = estado.avisos.map(function (a) { return '<p class="bxpub-aviso">' + esc(a) + "</p>"; });
+      if (!estado.carregando && estado.itens.length) {
+        linhas.push('<p class="bxpub-aviso is-conta">' + estado.itens.length + " imagem(ns) • busca: «"
+          + esc(estado.consultaUsada || estado.consulta) + "»</p>");
+      }
+      avisos.innerHTML = linhas.join("");
     }
 
     if (!grade) return;
