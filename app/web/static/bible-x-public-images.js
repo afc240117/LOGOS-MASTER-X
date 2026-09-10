@@ -724,7 +724,6 @@
   function buscar() {
     if (estado.carregando) return;
     estado.consulta = ($("[data-bxpub-busca]") || {}).value || estado.consulta || montarConsulta();
-    estado.consultaAuto = "";   /* quem digitou foi o usuário: o tema não mexe mais nisso */
     estado.carregando = true;
     estado.avisos = [];
     estado.itens = [];
@@ -1257,7 +1256,12 @@
         buscar();
         return;
       }
-      if (alvo.closest("[data-bxpub-buscar]")) { buscar(); return; }
+      if (alvo.closest("[data-bxpub-buscar]")) {
+        /* busca pedida pelo usuário: o texto é dele, o tema não sobrescreve mais */
+        estado.consultaAuto = "";
+        buscar();
+        return;
+      }
       if (alvo.closest("[data-bxpub-mais]")) { carregarMais(); return; }
       /* o vídeo toca no próprio cartão, e o clique o abre em TELA CHEIA */
       var videoEl = alvo.closest("[data-bxpub-video]");
@@ -1324,7 +1328,7 @@
 
     overlay.addEventListener("keydown", function (ev) {
       if (ev.key === "Escape") { ev.stopPropagation(); fechar(); }
-      if (ev.key === "Enter" && ev.target && ev.target.matches("[data-bxpub-busca]")) { ev.preventDefault(); buscar(); }
+      if (ev.key === "Enter" && ev.target && ev.target.matches("[data-bxpub-busca]")) { ev.preventDefault(); estado.consultaAuto = ""; buscar(); }
     });
 
     desenhar();
