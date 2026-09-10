@@ -663,7 +663,15 @@
       ".bxpub-aviso.is-conta{border-color:rgba(120,190,255,.28);background:rgba(24,58,92,.28);color:#bcd7ef}",
       ".bxpub-grade{display:grid;grid-template-columns:repeat(auto-fill,minmax(196px,1fr));gap:12px;padding:14px 20px;overflow:auto;flex:1 1 auto}",
       ".bxpub-item{display:flex;flex-direction:column;border:1px solid rgba(134,200,255,.18);border-radius:14px;background:#061321;overflow:hidden}",
-      ".bxpub-item img{display:block;width:100%;height:150px;object-fit:cover;background:#02070d;cursor:zoom-in}",
+      ".bxpub-item{position:relative}",
+      ".bxpub-item img,.bxpub-item video{display:block;width:100%;height:150px;object-fit:cover;background:#02070d;cursor:zoom-in}",
+      ".bxpub-item video{cursor:default}",
+      ".bxpub-item.is-360 img{object-fit:contain}",
+      ".bxpub-selos{position:absolute;top:8px;left:8px;display:flex;flex-wrap:wrap;gap:4px;pointer-events:none}",
+      ".bxpub-selo{font-style:normal;padding:3px 7px;border-radius:999px;font-size:.62rem;font-weight:900;letter-spacing:.04em;border:1px solid rgba(0,0,0,.45);background:rgba(4,14,24,.82);color:#dff1ff}",
+      ".bxpub-selo.is-hd{color:#9ff0dc;border-color:rgba(64,196,174,.5)}",
+      ".bxpub-selo.is-video{color:#ffdca8;border-color:rgba(244,199,107,.55)}",
+      ".bxpub-selo.is-360{color:#bfe3ff;border-color:rgba(134,200,255,.55)}",
       ".bxpub-item div{padding:9px 10px;display:flex;flex-direction:column;gap:5px;flex:1 1 auto}",
       ".bxpub-item strong{font-size:.8rem;line-height:1.25;color:#eaf8ff;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}",
       ".bxpub-item small{font-size:.7rem;color:#9fb5ca;line-height:1.3}",
@@ -689,7 +697,7 @@
       ".bxpub-controles{padding:10px 14px}",
       ".bxpub-fontes{padding:0 14px 8px}",
       ".bxpub-grade{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;padding:12px 14px}",
-      ".bxpub-item img{height:118px}",
+      ".bxpub-item img,.bxpub-item video{height:118px}",
       ".bxpub-acoes button{min-height:40px;flex:1 1 46%}",
       ".bxpub-rodape{padding:8px 14px}",
       "}"
@@ -939,6 +947,21 @@
         return;
       }
     });
+
+    /* Se a miniatura morrer depois de desenhada (origem fora do ar), o cartão
+       sai da grade em vez de virar um retângulo com texto. Evento "error" não
+       borbulha: só pega na fase de captura. */
+    overlay.addEventListener("error", function (ev) {
+      var img = ev.target;
+      if (!img || !img.getAttribute) return;
+      var id = img.getAttribute("data-bxpub-img");
+      if (!id) return;
+      var cartao = img.closest ? img.closest(".bxpub-item") : null;
+      if (cartao) cartao.remove();
+      estado.itens = estado.itens.filter(function (i) { return i.id !== id; });
+      var conta = $(".bxpub-aviso.is-conta", overlay);
+      if (conta) conta.textContent = estado.itens.length + " imagem(ns) • busca: «" + (estado.consultaUsada || estado.consulta) + "»";
+    }, true);
 
     overlay.addEventListener("keydown", function (ev) {
       if (ev.key === "Escape") { ev.stopPropagation(); fechar(); }
