@@ -184,20 +184,14 @@
   /* Abre já NO LUGAR. Se o Google tem rua ali, cai na rua (é o que permite
      ANDAR); se não tem, cai no satélite e o aviso diz por quê — em vez de
      prometer uma caminhada que não existe. */
-  /* De onde a vista começa quando o versículo não tem lugar nosso. É só um
-     ponto de partida para a pessoa digitar — o aviso diz isso na cara. */
-  var CENTRO_BIBLIA = [31.7784, 35.2354];
-
-  function abrir(lugar, modo, semLugar) {
+  function abrir(lugar, modo) {
     montar();
     caixa.hidden = false;
     document.body.classList.add("bxvm-lock");
     var rua = temRua(lugar);
     var m = modo || (rua ? "sv" : "sat");
     if (m === "sv" && !rua) m = "sat";
-    var p = posicao(lugar, m);
-    if (!lugar) { m = "mapa"; p = CENTRO_BIBLIA.slice(); }
-    if (!p) p = [null, null];
+    var p = posicao(lugar, m) || [null, null];
     campo.value = lugar && lugar[1] ? lugar[1] : "";
     ultimo = { lugar: lugar || null };
     mostrar(m, p[0], p[1], lugar ? lugar[1] : "",
@@ -205,8 +199,7 @@
         ? (lugar[0] || "📍") + " " + lugar[1] + (rua
           ? " — você está na rua. Arraste para olhar em volta; as setas brancas no chão andam."
           : " — aqui o Google NÃO tem carro de rua: a vista é do satélite. Onde houver foto esférica de alguém dá para olhar em volta, mas sem seta para caminhar.")
-        : (semLugar || "🗺 Este versículo não cita nenhum lugar do nosso catálogo. Digite abaixo o lugar que você quer ver (ou lat,lon) e toque Enter."));
-    if (!lugar) { try { campo.focus(); } catch (e) {} }
+        : "");
     return true;
   }
 
