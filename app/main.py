@@ -567,25 +567,51 @@ Responda imediatamente no formato pedido."""
 
 _LEGEND_FIELDS={"GEOGRAFIA":"geo","CULTURA":"cul","CURIOSIDADE":"cur"}
 def _parse_legend(text:str)->dict:
-    """Extrai os blocos GEOGRAFIA/CULTURA/CURIOSIDADE de uma resposta de texto."""
+    """Extrai os blocos GEOGRAFIA/CULTURA/CURIOSIDADE de uma resposta de texto.
+
+    5.4.250 — o parser antigo exigia que a linha começasse EXATAMENTE pela
+    palavra-chave seguida de ":"/" -"/"—". Bastava o modelo responder em markdown
+    ("**GEOGRAFIA:**"), numerar ("1. GEOGRAFIA:") ou pôr a palavra sozinha na
+    linha para os três blocos voltarem VAZIOS — a IA gerava a legenda, o endpoint
+    devolvia 502 e a tela dizia "Legenda IA indisponível no momento": gerada e
+    invisível, exatamente a queixa. Agora a linha é limpa do enfeite (marcador,
+    numeração, negrito, cerquilha) antes de procurar o rótulo, e a palavra
+    sozinha na linha também abre o bloco. Último recurso: sem rótulo nenhum, mas
+    com três linhas de texto, elas entram na ordem pedida — melhor mostrar a
+    legenda do que perdê-la."""
     out={"geo":"","cul":"","cur":""}
     if not text: return out
-    bucket=None
+    enfeite=re.compile(r"^[\s:：\-—–.*_`#>]+")
+    linhas=[]
     for raw in str(text).replace("\r","\n").split("\n"):
-        line=raw.strip()
+        s=raw.strip()
+        if s: s=re.sub(r"^(?:(?:[-*•·#>]+\s*)|\d{1,2}[.)]\s*)+","",s).strip()
+        linhas.append(s)
+    bucket=None
+    for line in linhas:
         if not line: continue
         upper=line.upper()
-        matched=None
+        matched=None;content=""
         for label in _LEGEND_FIELDS:
-            if upper.startswith(label+":") or upper.startswith(label+" -") or upper.startswith(label+"—") or upper.startswith(label+" –"):
-                matched=label;break
+            if not upper.startswith(label): continue
+            resto=line[len(label):]
+            nucleo=re.sub(r"^[\s*_`#>]+","",resto)       # resto sem a decoração
+            if nucleo=="" or nucleo[:1] in ":：-—–.":    # "CULTURA:" ou "CULTURA" sozinha
+                matched=label
+                content=enfeite.sub("",resto).strip("*_`# \t").strip()
+            if matched: break
         if matched:
             bucket=_LEGEND_FIELDS[matched]
-            content=re.sub(r"^[^:：]+[:：\-—\s]*","",line).strip()
+        elif bucket is None:
+            continue
         else:
             content=line
         if bucket and content:
             out[bucket]=re.sub(r"\s+"," ",out[bucket]+" "+content).strip() if out[bucket] else content
+    if not any(out.values()):
+        soltas=[linha for linha in linhas if linha]
+        if len(soltas)>=3:
+            for chave,valor in zip(("geo","cul","cur"),soltas[:3]): out[chave]=valor
     return {k:v[:300] for k,v in out.items()}
 
 @app.post("/api/bible/ai/legend")

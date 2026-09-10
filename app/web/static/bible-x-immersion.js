@@ -3384,7 +3384,10 @@
         const lista = window.BibleXLugares || [];
         const i = Number(gBtn.dataset.bxGmapIdx);
         const lugar = (gBtn.dataset.bxGmapIdx !== "" && isFinite(i) && lista[i]) ? lista[i] : null;
-        janela.abrir(lugar);
+        /* 5.4.250 — a referência vai junto: é ela que encabeça a legenda do
+           lugar na janela do Google (aqui ela está na mão; sem isso o módulo
+           teria de adivinhar a passagem pela leitura). */
+        janela.abrir(lugar, null, null, ref);
       });
     }
     if (!document.getElementById("bxVerse249Gmap")) {

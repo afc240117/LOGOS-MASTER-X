@@ -4626,7 +4626,13 @@ html,body{font-synthesis:none;text-rendering:optimizeLegibility;-webkit-font-smo
 .bible-x-output{min-height:320px!important;border-radius:14px!important;font-size:15px!important;line-height:1.72!important}
 .bible-x-import{border:1px solid #26384d;border-radius:12px;padding:10px 12px;background:#08121d}.bible-x-import summary{cursor:pointer;color:#dbe6ef;font-weight:750}
 /* 5.4.161 — pop-up "Comandos rápidos" da Bíblia X (primeira visita; não polui) */
-.bx-guide-overlay{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(3,6,11,.62);z-index:260000;padding:18px;backdrop-filter:blur(2px)}
+/* 5.4.249 — SEM backdrop-filter na tela inteira. O blur(2px) sobre a viewport
+   toda era a única coisa caríssima deste pop-up: o navegador precisa compor e
+   recompor uma camada borrada que cobre o leitor inteiro (4.300+ elementos) a
+   cada quadro, e no celular é isso que faz a camada demorar a SAIR da tela ao
+   fechar. O escurecimento sobe um pouco (.62 -> .72) para o contraste do card
+   continuar o mesmo — a diferença visual é imperceptível, o custo some. */
+.bx-guide-overlay{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(3,6,11,.72);z-index:260000;padding:18px;touch-action:manipulation}
 .bx-guide-card{width:min(94vw,430px);max-height:88vh;overflow:auto;background:#0b1726;border:1px solid #2b4059;border-radius:18px;padding:16px 16px 14px;box-shadow:0 24px 70px rgba(0,0,0,.55);color:#e9eff6;font-size:15px;line-height:1.45}
 .bx-guide-card header{display:flex;align-items:center;gap:10px;margin-bottom:12px}
 .bx-guide-card header .bxq-mark{font-size:22px;background:rgba(245,197,66,.14);border:1px solid rgba(245,197,66,.4);width:42px;height:42px;border-radius:12px;display:grid;place-items:center;flex:none}
@@ -4642,6 +4648,25 @@ html,body{font-synthesis:none;text-rendering:optimizeLegibility;-webkit-font-smo
 .bx-guide-card .bxq-never input{accent-color:#f5c542;width:15px;height:15px;flex:none}
 .bx-guide-card .bxq-ok{background:linear-gradient(180deg,#f5c542,#e0a82e);color:#241a02;font-weight:800;border:0;border-radius:11px;padding:9px 18px;font-size:14px;cursor:pointer}
 .bx-guide-card .bxq-ok:hover{filter:brightness(1.07)}
+/* 5.4.249 — RESPOSTA IMEDIATA AO TOQUE. Sem estado :active, o dedo encosta no
+   botão e nada muda até o pop-up sumir — o que se lê como "demora pra fechar",
+   mesmo com o fechamento levando 15ms (medido). Aqui o botão afunda no MESMO
+   quadro em que o dedo encosta. O touch-action:manipulation tira a espera de
+   duplo-toque-para-zoom do celular, que segura o toque ~300ms antes de decidir. */
+.bx-guide-overlay .bxq-ok,.bx-guide-overlay .bxq-close{touch-action:manipulation;-webkit-tap-highlight-color:transparent;transition:transform .06s ease,filter .06s ease}
+.bx-guide-overlay .bxq-ok:active{transform:scale(.95);filter:brightness(.9)}
+.bx-guide-overlay .bxq-close:active{transform:scale(.92);background:rgba(255,255,255,.2)}
+/* 5.4.250 — O touch-action TEM de estar na CAMADA, não só no botão. É o alvo do
+   toque que decide se o navegador do celular espera ~300ms para saber se o dedo
+   está fazendo duplo-toque-para-zoom. Com a espera ligada, quem toca duas ou três
+   vezes seguidas (porque o pop-up não sumiu na primeira) tem os cliques
+   ENGOLIDOS pelo reconhecedor de zoom: o dedo bate, nada acontece, e só o
+   terceiro toque fecha. É essa a leitura de "tenho que clicar umas 3 vezes".
+   Com manipulation na camada inteira, todo toque vira clique na hora.
+   O ✕ do cabeçalho era pequeno demais (32px): dedo que erra por poucos pixels
+   não fecha nada e o usuário repete. O tamanho dele NÃO fica aqui — a regra
+   daqui não vencia a cascata (medido: font-size entrava, width não). Está no
+   bloco do FIM do arquivo, que é onde este CSS resolve empates. */
 @media(max-width:760px){.bx-guide-card{font-size:14.5px}}
 .bible-x-empty{min-height:430px;border:1px solid #26384d;border-radius:16px;background:radial-gradient(circle at 50% 30%,color-mix(in srgb,var(--theme-primary,#22d3ee) 10%,transparent),transparent 32%),#08121d;display:grid;place-items:center;align-content:center;text-align:center;padding:32px}
 .bible-x-empty>span{font-size:58px;margin-bottom:12px}.bible-x-empty h3{font-size:24px;margin:0 0 8px}.bible-x-empty p{max-width:560px;color:#b0bfcd;font-size:14px;line-height:1.55;margin:0 0 10px}.bible-x-empty small{color:var(--theme-primary,var(--accent,#22d3ee))}
@@ -17608,3 +17633,13 @@ html body .bx-v157-rail button.bx-v157-zoom-reset[data-v157-zoomreset]{
 #bOut{scrollbar-width:none}
 #bOut::-webkit-scrollbar,.bible-x-shell::-webkit-scrollbar,
 .bible-x-shell .bx-reading-full::-webkit-scrollbar{width:0!important;height:0!important;display:none!important}
+
+/* 5.4.250 — ALVO DO ✕ DO POP-UP "COMANDOS RÁPIDOS" NO CELULAR.
+   A regra de 5.4.161 dá 32x32, pequeno demais para o dedo. Aqui vai a versão
+   grande, com a especificidade e o !important necessários para vencer o que
+   estiver ganhando a cascata (medido: sem esta regra o layout fica em 32x40
+   mesmo com style inline de 44px, porque !important de folha vence inline).
+   Só no celular: no PC o mouse não erra o alvo. */
+@media(max-width:760px){
+  .bx-guide-overlay .bx-guide-card header button.bxq-close{width:44px!important;height:44px!important;min-width:44px!important;min-height:44px!important;font-size:17px!important;line-height:1!important;border-radius:12px!important;padding:0!important}
+}

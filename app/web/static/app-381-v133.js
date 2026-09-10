@@ -2294,7 +2294,11 @@ async function render(view){
     botão "Painéis" do topo e "Painéis & Ferramentas" da lateral) */
  $$("[data-go]").forEach(b=>b.onclick=()=>navigateView(b.dataset.go));
  if(view==="dashboard"){$("#installPwaHome")?.addEventListener("click",installPwa);bindHomeDashboard();/* fluxo visual oficial: HOTFIX 4.3.14 */} $$(".top-nav [data-go]").forEach(b=>b.classList.toggle("active",b.dataset.go===view)); $$(".bottom-nav [data-go]").forEach(b=>b.classList.toggle("active",b.dataset.go===view)); document.body.classList.toggle("lmx-hide-global-nav",view==="bible"); if($("#installPwaSide"))$("#installPwaSide").onclick=installPwa;
- if(view==="bible")setTimeout(function(){try{if(window.bxMaybeTip)window.bxMaybeTip("bible");if(window.__bxTipEnsureWatchers)window.__bxTipEnsureWatchers()}catch(e){}},520);
+ /* 5.4.249 — o pop-up "Comandos rápidos" esperava 520ms para aparecer (medido:
+   655-773ms do toque no módulo até o card na tela). Nesse meio segundo a pessoa
+   já começou a mexer, e a dica caía embaixo do dedo dela. 180ms é o suficiente
+   para a view assentar e a dica chega junto com a tela. */
+ if(view==="bible")setTimeout(function(){try{if(window.bxMaybeTip)window.bxMaybeTip("bible");if(window.__bxTipEnsureWatchers)window.__bxTipEnsureWatchers()}catch(e){}},180);
  if(view==="appearance"){$("#openAppearanceInside")?.addEventListener("click",openAppearance);}
  if(view==="custompages"){$("#customPageSave")?.addEventListener("click",()=>{const title=$("#customPageTitle").value.trim();if(!title)return;const a=Store.get("customPages",[]);a.push({title,icon:$("#customPageIcon").value||"⭐",content:$("#customPageContent").value});Store.set("customPages",a);render("custompages")});$$('[data-page-delete]').forEach(b=>b.onclick=()=>{const a=Store.get("customPages",[]);a.splice(Number(b.dataset.pageDelete),1);Store.set("customPages",a);render("custompages")});}
  if(view==="quick"){
@@ -8883,7 +8887,7 @@ async function clearOldFrontendCache(){
  }catch(e){}
 }
 
-const APP_BUILD_VERSION="5.4.247";
+const APP_BUILD_VERSION="5.4.250";
 function publicAsset(path){return "/"+String(path).replace(/^\/+/,"");}
 const PRODUCTION_VERSION_URL="https://logos-master-x-api.onrender.com/static/version.json";
 function showUpdateBanner(remoteVersion){
@@ -15335,7 +15339,18 @@ window.BibleXPolimento=Object.assign(window.BibleXPolimento||{},{lote528:"concor
       const wrap=document.createElement("div");
       wrap.className="bx-guide-overlay bx-guide-area";
       wrap.setAttribute("role","dialog");wrap.setAttribute("aria-modal","true");
-      wrap.innerHTML='<div class="bx-guide-card"><header><span class="bxq-mark">'+c.mark+'</span><div><small>'+c.eyebrow+'</small><h3>'+c.title+'</h3></div><button type="button" class="bxq-close" aria-label="Fechar">✕</button></header><ul>'+c.rows(ph).join("")+'</ul><footer><label class="bxq-never"><input type="checkbox">Não mostrar novamente</label><button type="button" class="bxq-ok">Entendi</button></footer></div>';
+      /* 5.4.250 — ALVO DO ✕ NO CELULAR.
+         O ✕ nasceu com 32x32 (CSS de 5.4.161); no dedo isso é alvo pequeno, e
+         quem erra por poucos pixels não fecha nada — o toque cai no cabeçalho,
+         que de propósito não fecha — o que se lê como "tenho que clicar umas 3
+         vezes". Quem decide o tamanho é a regra !important de alta
+         especificidade em style-v133.css: medido no navegador, uma declaração
+         !important de folha VENCE o style inline (32x40 no layout mesmo com o
+         width inline abaixo), então este inline não é o que manda — fica só
+         como reforço, caso aquela regra suma. O que de fato resolve o "clico 3
+         vezes" é o fechamento no pointerdown, no bloco de eventos mais abaixo. */
+      const xisCss=ph?' style="width:44px;height:44px;font-size:17px;line-height:1;border-radius:12px"':'';
+      wrap.innerHTML='<div class="bx-guide-card"><header><span class="bxq-mark">'+c.mark+'</span><div><small>'+c.eyebrow+'</small><h3>'+c.title+'</h3></div><button type="button" class="bxq-close" aria-label="Fechar"'+xisCss+'>✕</button></header><ul>'+c.rows(ph).join("")+'</ul><footer><label class="bxq-never"><input type="checkbox">Não mostrar novamente</label><button type="button" class="bxq-ok">Entendi</button></footer></div>';
       wrap.__area=area;
       window.__bxTipOpen=area;
       if(!window.__bxTipShown)window.__bxTipShown={};
@@ -15367,6 +15382,15 @@ window.BibleXPolimento=Object.assign(window.BibleXPolimento||{},{lote528:"concor
   }
   if(!window.__bxQuickGuideEventsBound){
     window.__bxQuickGuideEventsBound=true;
+    /* 5.4.250 — FECHA NO ENCOSTAR DO DEDO, não no levantar. O pointerup só chega
+       quando o dedo sobe, e é essa espera (somada ao ~300ms do duplo-toque-para-
+       zoom, quando o touch-action não está na camada) que se lê como "demora pra
+       fechar". No pointerdown o pop-up some no mesmo quadro em que o dedo encosta.
+       Só os botões e o fundo fecham — tocar no card (checkbox, texto, rolagem)
+       continua sem fechar, senão "Não mostrar novamente" ficaria inalcançável.
+       O pointerup segue ligado como rede para navegador/evento sintético que não
+       emita pointerdown; o __bxClosed de bxTipClose torna o segundo no-op. */
+    window.addEventListener("pointerdown",bxQuickGuideEventDismiss,true);
     window.addEventListener("pointerup",bxQuickGuideEventDismiss,true);
     window.addEventListener("click",bxQuickGuideEventDismiss,true);
     window.addEventListener("keydown",bxQuickGuideEventDismiss,true);

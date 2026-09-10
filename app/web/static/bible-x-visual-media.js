@@ -441,12 +441,24 @@
     legendBody.className = "bxvm-legend-body";
     legendPlate.appendChild(legendBody);
     viewport.appendChild(legendPlate);
-    const renderLegendPlate = () => {
-      /* 5.4.245 — placa "LEGENDA DA IMAGEM" NÃO é mais desenhada sobre NENHUMA
-         imagem. Pedido do usuário: remover o "retângulo oval" de todas as imagens
-         e impedir que novas gerações recebam a marcação. A legenda continua
-         editável/exportável pelo painel 🏷 (ver CSS: .bxvm-legend-plate {display:none}). */
-      legendPlate.hidden = true;
+    const legendEsc = value => String(value == null ? "" : value).replace(/[&<>"]/g, ch => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[ch]));
+    const renderLegendPlate = item => {
+      /* 5.4.250 — A PLACA É MONTADA COM O CONTEÚDO REAL.
+         Em 5.4.245 ela ficou permanentemente escondida porque o defeito era o
+         retângulo VAZIO sobre toda imagem — a legenda em si nunca deveria ter
+         sumido. Agora: três blocos preenchidos => placa visível sobre a imagem
+         (recolhível com um toque); nenhum bloco => placa escondida e galeria
+         limpa, como o usuário pediu. É aqui que a legenda gerada pela IA passa a
+         ser vista fora do painel 🏷. */
+      const l = legendOf(item || {});
+      const segs = legendKeys.map(([k, t]) => [t, l[k]]).filter(([, v]) => v);
+      if (!segs.length) { legendPlate.hidden = true; legendHead.innerHTML = ""; legendBody.innerHTML = ""; return; }
+      legendHead.innerHTML = '<span class="bxvm-legend-kicker">Legenda da imagem</span>' +
+        '<span class="bxvm-legend-title">Reconstrução visual <span class="bxvm-legend-ref">' + legendEsc(l.ref || "passagem em estudo") + '</span></span>' +
+        '<span class="bxvm-legend-hint">ocultar</span>';
+      legendBody.innerHTML = segs.map(([t, v]) => '<div class="bxvm-legend-seg"><b>' + legendEsc(t) + '</b><span>' + legendEsc(v) + '</span></div>').join("");
+      legendPlate.hidden = false;
+      syncLegendPlateView();
     };
     const syncLegendPlateView = () => {
       if (!legendPlate || legendPlate.hidden) return;
@@ -964,6 +976,7 @@
       /* Sai da tela cheia nativa ANTES de desmontar: sem isso o navegador
          continuaria em tela cheia com o painel já fora do ar. */
       googleSairTelaCheia();
+      googleAvisoFechar();
       stopSlides();
       document.removeEventListener("keydown", onKey);
       document.removeEventListener("fullscreenchange", googleSincronizaCheio);
@@ -1003,6 +1016,16 @@
       '<div class="bxvm-google-head"><b>🗺 Google View</b><small>Mapa e Street View aqui dentro</small>' +
       '<button type="button" class="bxvm-google-cheio" data-bxvm-google="cheio" title="Tela cheia do Google — no celular as setas do chão ficam grandes para ANDAR" aria-label="Tela cheia do Google">⛶</button>' +
       '<button type="button" class="bxvm-google-x" data-bxvm-google="fechar" aria-label="Fechar">×</button></div>' +
+      /* 5.4.249 — POP-UP do 🚶: quando a foto não tem lugar no nosso catálogo,
+         o app abre um lugar de verdade e avisa AQUI, em vez de deixar o campo
+         vazio pedindo para digitar. O botão leva direto ao leque de passeios. */
+      '<div class="bxvm-google-aviso" data-bxvm-google-aviso hidden>' +
+      '<b data-bxvm-aviso-titulo>🔎 Esta referência não temos no catálogo</b>' +
+      '<p data-bxvm-aviso-texto></p>' +
+      '<div class="bxvm-google-aviso-botoes">' +
+      '<button type="button" data-bxvm-aviso="ver">🧭 Ver os passeios prontos</button>' +
+      '<button type="button" data-bxvm-aviso="ok">Entendi</button>' +
+      "</div></div>" +
       '<div class="bxvm-google-linha"><input type="text" data-bxvm-google-campo placeholder="Lugar ou coordenadas (ex.: Muro das Lamentações, Jerusalém / 31.7767,35.2345)"></div>' +
       '<div class="bxvm-google-acoes">' +
       '<button type="button" data-bxvm-google="sv">🚶 Street View</button>' +
@@ -1033,7 +1056,49 @@
     const googleStage = $("[data-bxvm-google-stage]", googlePanel);
     const googlePe = $("[data-bxvm-google-pe]", googlePanel);
     const googleFora = $("[data-bxvm-google-fora]", googlePanel);
+    const googleAviso = $("[data-bxvm-google-aviso]", googlePanel);
+    const googleAvisoTitulo = $("[data-bxvm-aviso-titulo]", googlePanel);
+    const googleAvisoTexto = $("[data-bxvm-aviso-texto]", googlePanel);
+    const googlePasseiosBloco = $(".bxvm-google-passeios", googlePanel);
     let googleModo = "sv";
+    let googleAvisoTimer = 0;
+
+    /* 5.4.249 — o POP-UP do leque. Aparece quando a referência aberta não tem
+       lugar nosso (é o caso do 🚶 numa foto sem coordenada): em vez de deixar a
+       pessoa numa tela vazia pedindo para digitar, dizemos na cara que esta
+       referência não temos e apontamos os passeios prontos. Some sozinho — é
+       aviso, não é janela. */
+    const googleAvisoFechar = () => {
+      if (!googleAviso) return;
+      googleAviso.hidden = true;
+      if (googleAvisoTimer) { clearTimeout(googleAvisoTimer); googleAvisoTimer = 0; }
+    };
+    const googleAvisoMostrar = (referencia, escolhido) => {
+      if (!googleAviso) return;
+      googleAvisoTitulo.textContent = referencia
+        ? "🔎 «" + referencia + "» não temos no catálogo"
+        : "🔎 Esta referência não temos no catálogo";
+      googleAvisoTexto.textContent = "Mas você pode ver outras neste leque de ícones aqui embaixo — os passeios prontos."
+        + (escolhido ? " Mostrei " + escolhido + " para você agora." : "")
+        + " Toque em qualquer um e você já cai na rua.";
+      googleAviso.hidden = false;
+      if (googleAvisoTimer) clearTimeout(googleAvisoTimer);
+      googleAvisoTimer = setTimeout(() => { googleAviso.hidden = true; googleAvisoTimer = 0; }, 12000);
+    };
+    if (googleAviso) {
+      googleAviso.addEventListener("click", event => {
+        const botao = event.target.closest("[data-bxvm-aviso]");
+        if (!botao) return;
+        const qual = botao.getAttribute("data-bxvm-aviso");
+        googleAvisoFechar();
+        if (qual !== "ver" || !googlePasseiosBloco) return;
+        googlePasseiosBloco.classList.remove("is-pisca");
+        void googlePasseiosBloco.offsetWidth; /* reinicia a animação do pisca */
+        googlePasseiosBloco.classList.add("is-pisca");
+        try { googlePasseiosBloco.scrollIntoView({ block: "nearest", behavior: "smooth" }); } catch (_) {}
+        setTimeout(() => googlePasseiosBloco.classList.remove("is-pisca"), 3600);
+      });
+    }
 
     /* ---- 5.4.249 — Passeios prontos -------------------------------------
        A pessoa não precisa saber procurar: toca no lugar e o Google View já
@@ -1087,6 +1152,7 @@
           ? PASSEIOS[Math.floor(Math.random() * PASSEIOS.length)]
           : PASSEIOS[Number(valor)];
         if (!passeio) return;
+        googleAvisoFechar(); /* a pessoa já achou o que queria: o aviso sai de cena */
         googleCampo.value = passeio[1];
         googleMostrar("sv", passeio[2], passeio[3], passeio[1],
           passeio[0] + " " + passeio[1] + " — você está na rua. Arraste para olhar em volta; as setas brancas no chão andam. Sem seta = o Google só tem foto esférica aqui.");
@@ -1107,7 +1173,14 @@
        recriado, e sem isto o mapa voltava para o lugar da imagem — perdendo o
        que a pessoa tinha digitado na busca ou escolhido num passeio. */
     let googleUltimo = null;
+    /* 5.4.249 — o mapa por NOME passa pelo servidor (leva um tempo). Sem este
+       selo, a resposta de uma busca atrasada atropelava a vista que a pessoa
+       acabou de escolher: ela tocava num passeio, caía na rua, e meio segundo
+       depois o mapa da busca antiga entrava por cima. Cada renderização nova
+       invalida as buscas em voo. */
+    let googleBuscaSeq = 0;
     const googleMostrar = (modo, lat, lon, texto, aviso) => {
+      googleBuscaSeq++;
       googleModo = modo;
       googleUltimo = { modo: modo, lat: lat, lon: lon, texto: texto || "", aviso: aviso || "" };
       const temPos = lat !== null && lat !== undefined && lon !== null && lon !== undefined;
@@ -1162,17 +1235,35 @@
       if (cLat !== null && cLon !== null) return [cLat, cLon];
       return null;
     };
-    /* Abre o painel do Google já num modo (é o que os botões da barra fazem). */
+    /* Abre o painel do Google já num modo (é o que os botões da barra fazem).
+       5.4.249 — numa foto SEM coordenada nenhuma, o 🚶 não pode largar a pessoa
+       numa tela vazia pedindo para digitar: ele abre um lugar de verdade do
+       leque de passeios (sorteado, porque qualquer um serve para mostrar o
+       caminho) e o pop-up diz que ESTA referência não temos, mas que há outras
+       ali embaixo. Mapa e satélite continuam procurando o título da foto — que
+       é o comportamento útil neles, e não depende de rua nenhuma. */
     const googleAbrirModo = modo => {
       if (googlePanel.hidden) {
         googleAlternar();
         if (googlePanel.hidden) return;
       }
       googleModo = modo;
-      const alvo = googlePos(items[index] || {}, modo);
+      const item = items[index] || {};
+      const alvo = googlePos(item, modo);
       if (alvo) {
         googleCampo.value = alvo[0].toFixed(5) + "," + alvo[1].toFixed(5);
         googleMostrar(modo, alvo[0], alvo[1], "");
+        return;
+      }
+      if (modo === "sv" && PASSEIOS.length) {
+        const passeio = PASSEIOS[Math.floor(Math.random() * PASSEIOS.length)];
+        googleCampo.value = passeio[1];
+        googleMostrar("sv", passeio[2], passeio[3], passeio[1],
+          passeio[0] + " " + passeio[1] + " — você está na rua. Arraste para olhar em volta; as setas brancas no chão andam.");
+        googleAvisoMostrar(
+          String(item.title || "").replace(/\.[a-z0-9]{2,5}$/i, "").trim().slice(0, 60),
+          passeio[0] + " " + passeio[1]
+        );
         return;
       }
       googleIr(modo);
@@ -1188,14 +1279,19 @@
         if (alvo) { googleCampo.value = alvo[0].toFixed(5) + "," + alvo[1].toFixed(5); googleMostrar(modo, alvo[0], alvo[1], ""); return; }
       }
       if (!texto) { googlePe.textContent = "Digite o lugar (ou as coordenadas) para eu abrir o mapa aqui dentro."; googleCampo.focus(); return; }
+      const minhaBusca = ++googleBuscaSeq; /* dona do palco até alguém entrar na frente */
       googleStage.innerHTML = '<p class="bxvm-google-vazio">Procurando «' + texto + '» no mapa…</p>';
       fetch("/api/bible/public-images/geo?q=" + encodeURIComponent(texto), { headers: { Accept: "application/json" } })
         .then(r => (r.ok ? r.json() : null))
         .then(d => {
+          if (minhaBusca !== googleBuscaSeq) return; /* já tem outra vista no ar */
           if (d && d.lat !== null && d.lat !== undefined) googleMostrar(modo, Number(d.lat), Number(d.lon), texto, "📍 " + (d.nome || texto));
           else googleMostrar("mapa", null, null, texto, "Não achei as coordenadas de «" + texto + "» — mostrei o mapa da busca.");
         })
-        .catch(() => googleMostrar("mapa", null, null, texto, "Sem resposta do servidor do mapa — mostrei o mapa da busca."));
+        .catch(() => {
+          if (minhaBusca !== googleBuscaSeq) return;
+          googleMostrar("mapa", null, null, texto, "Sem resposta do servidor do mapa — mostrei o mapa da busca.");
+        });
     };
     const googleAlternar = () => {
       const abrir = googlePanel.hidden;
@@ -1210,7 +1306,7 @@
       }
       googlePanel.hidden = !abrir;
       if (abrir) googleIr(googleModo);
-      else googleStage.innerHTML = "";
+      else { googleStage.innerHTML = ""; googleAvisoFechar(); }
     };
     /* ---- 5.4.249 — ⛶ TELA CHEIA DE VERDADE (tipo F11) ---------------------
        O `.is-cheio` sozinho só esticava o painel DENTRO da página: as barras do
@@ -1452,6 +1548,15 @@
       button("↺", "reset", "Centralizar visão"),
       button("❚❚", "rotate", "Pausar rotação"),
       button("⛶", "fullscreen", "Tela cheia"),
+      /* ---- 5.4.249 — AS OPÇÕES DE VER NO GOOGLE, também no 360°. São as
+         mesmas da galeria (🚶 rua · 🛰 satélite · 🌍 mapa · 🧍 Google Maps
+         inteiro), para o panorama não ser o único lugar do app onde não dá
+         para descer à rua. A janela do Google abre POR CIMA; fechar devolve a
+         imagem 360° que estava na tela. */
+      button("🚶", "google-rua", "Ver da RUA (Street View) — arraste para olhar em volta e toque nas setas brancas do chão para ANDAR"),
+      button("🛰", "google-sat", "Ver do SATÉLITE"),
+      button("🌍", "google-mapa", "Ver no MAPA"),
+      button("🧍", "google-fora", "Abrir o Google Maps inteiro (com o bonequinho para arrastar até a rua), em outra aba"),
       button("×", "close", "Fechar"),
     ].forEach(node => tools.appendChild(node));
     heading.textContent = item.title;
@@ -1522,7 +1627,13 @@
       node.title = autoRotate ? "Pausar rotação" : "Continuar rotação";
     };
     const onKey = event => {
-      if (event.key === "Escape") close();
+      if (event.key === "Escape") {
+        /* Com a janela do Google por cima, o Esc é DELA: sem esta guarda os
+           dois fechavam juntos e a pessoa perdia o panorama sem querer. */
+        const gv = window.BibleXGoogleView;
+        if (gv && typeof gv.aberto === "function" && gv.aberto()) return;
+        close();
+      }
       else if (event.key === "ArrowLeft") yaw -= .08;
       else if (event.key === "ArrowRight") yaw += .08;
       else if (event.key === "ArrowUp") pitch = clamp(pitch + .06, -1.35, 1.35);
@@ -1530,6 +1641,54 @@
       else if (event.key === "+" || event.key === "=") setFov(fov - 6);
       else if (event.key === "-") setFov(fov + 6);
     };
+    /* ---- 5.4.249 — GOOGLE a partir do 360° --------------------------------
+       O panorama não tinha nenhuma porta para o Google. Em vez de duplicar a
+       janela aqui dentro (o painel da galeria vive no escopo dela, não neste),
+       usamos o módulo GLOBAL window.BibleXGoogleView — o mesmo que o botão
+       abaixo do versículo abre. Ele tem as MESMAS classes de CSS, então a
+       janela sai idêntica, e por ser global já nasce com a tela cheia de
+       verdade no ⛶.
+       `Number(null)` é 0 e `isFinite(0)` é true: o guarda abaixo existe para um
+       lugar sem coordenada não virar 0,0 no Golfo da Guiné. */
+    const pNum = v => (v === null || v === undefined || v === "" || !Number.isFinite(Number(v))) ? null : Number(v);
+    /* O módulo do Google fala a língua do CATÁLOGO de lugares
+       (lugar[2]/[3] = sítio, lugar[4]/[5] = rua). O item da Mídia X traz a
+       mesma coisa em gmap{} — e, quando não tem, em coords{}. */
+    const lugarDoPanorama = () => {
+      const g = item.gmap || {};
+      const c = item.coords || {};
+      const siLat = pNum(g.lat !== undefined && g.lat !== null ? g.lat : c.lat);
+      const siLon = pNum(g.lon !== undefined && g.lon !== null ? g.lon : c.lon);
+      const ruaLat = pNum(g.ruaLat), ruaLon = pNum(g.ruaLon);
+      if (siLat === null && siLon === null && ruaLat === null && ruaLon === null) return null;
+      return [
+        g.emoji || "📍",
+        String(g.nome || item.title || "Lugar").replace(/\.[a-z0-9]{2,5}$/i, ""),
+        siLat, siLon, ruaLat, ruaLon
+      ];
+    };
+    const googleForaDoPanorama = () => {
+      const lugar = lugarDoPanorama();
+      const temSitio = lugar && lugar[2] !== null && lugar[3] !== null;
+      const url = temSitio
+        ? "https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=" + lugar[2] + "," + lugar[3]
+        : "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(String(item.title || "").replace(/\.[a-z0-9]{2,5}$/i, ""));
+      window.open(url, "_blank", "noopener");
+    };
+    const googleNoPanorama = modo => {
+      const lugar = lugarDoPanorama();
+      const gv = window.BibleXGoogleView;
+      if (!gv || typeof gv.abrir !== "function") {
+        /* se o módulo não carregou, é melhor abrir em outra aba do que não
+           fazer nada — este app roda em cópias antigas também */
+        googleForaDoPanorama();
+        return;
+      }
+      /* Abre POR CIMA: fechar (×) devolve a imagem 360° que estava na tela —
+         é o que preserva o trabalho de quem estava olhando o panorama. */
+      gv.abrir(lugar, modo, lugar ? "" : "🗺 Esta imagem não traz coordenada nenhuma e o nosso catálogo não conhece esta referência. Digite abaixo o lugar que você quer ver (ou lat,lon) e toque Enter.");
+    };
+
     tools.addEventListener("click", event => {
       const action = event.target.closest("[data-bxvm-action]")?.dataset.bxvmAction;
       if (action === "zoom-in") { if (plano) plano.zoom(1.28); else setFov(fov - 7); }
@@ -1541,6 +1700,11 @@
         close();
         openImmersionFromVisual(item);
       }
+      /* 5.4.249 — Google no 360 (janela do módulo global, por cima do panorama) */
+      if (action === "google-rua" || action === "google-sat" || action === "google-mapa") {
+        googleNoPanorama(action === "google-rua" ? "sv" : (action === "google-sat" ? "sat" : "mapa"));
+      }
+      if (action === "google-fora") googleForaDoPanorama();
       if (action === "close") close();
     });
     canvas.addEventListener("wheel", event => { event.preventDefault(); setFov(fov + event.deltaY * .035); }, { passive: false });

@@ -95,12 +95,17 @@ body.bxvm-lock{overflow:hidden!important}.bxvm-overlay{position:fixed;inset:0;z-
 .bxvm-tools button[data-bxvm-action="legend"]{border-color:#a37a3c;background:linear-gradient(180deg,#3c2f12,#12303a);color:#ffe0a0}
 .bxvm-tools button[data-bxvm-action="legend"]:hover,.bxvm-tools button[data-bxvm-action="legend"]:focus-visible{border-color:#e0a84f;color:#fff2c9}
 .bxvm-tools button[data-bxvm-action="legend"][hidden],.bxvm-legend-panel[hidden]{display:none!important}
-/* 5.4.245 — placa "LEGENDA DA IMAGEM" REMOVIDA de todas as imagens (pedido do
-   usuário): antes o display:flex desta regra sobrescrevia o atributo hidden e o
-   retângulo oval vazio aparecia em cima de cada mídia da galeria. A legenda
-   continua disponível só no painel 🏷 (criar/revisar/exportar como arquivo) —
-   nada é mais impresso sobre a imagem no app, nem em novas gerações. */
-.bxvm-legend-plate{display:none!important}
+/* 5.4.250 — A PLACA VOLTA, SÓ QUANDO HÁ LEGENDA PARA MOSTRAR.
+   Em 5.4.245 ela foi desligada por um defeito real: o display:flex desta regra
+   vencia o atributo [hidden], e um retângulo oval VAZIO aparecia sobre TODA mídia
+   da galeria. O pedido era tirar o retângulo vazio — não a legenda. Agora quem
+   manda é o conteúdo: imagem sem legenda salva continua 100% limpa (hidden), e a
+   imagem que TEM os três blocos os mostra sobre ela, recolhíveis com um toque.
+   O display só entra no estado :not([hidden]) — nunca sobre um [hidden]. */
+.bxvm-legend-plate{position:absolute;left:12px;right:12px;bottom:12px;z-index:30;border:1px solid rgba(216,180,110,.5);border-radius:14px;background:linear-gradient(180deg,rgba(14,22,18,.94),rgba(6,11,9,.95));box-shadow:0 10px 30px rgba(0,0,0,.5);backdrop-filter:blur(6px);color:#efe2c2;overflow:hidden;cursor:pointer}
+.bxvm-legend-plate[hidden]{display:none!important}
+.bxvm-legend-plate:not([hidden]){display:flex;flex-direction:column;max-height:52%}
+.bxvm-legend-plate.bxvm-legend-away{opacity:0;pointer-events:none}
 .bxvm-legend-head{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:10px;padding:8px 12px;border-bottom:1px solid rgba(216,180,110,.4)}
 .bxvm-legend-kicker{color:#c8a45c;font-size:.56rem;font-weight:900;letter-spacing:.14em}
 .bxvm-legend-title{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#f0e2bd;font-size:.9rem;font-style:italic}
@@ -135,12 +140,21 @@ body.bxvm-lock{overflow:hidden!important}.bxvm-overlay{position:fixed;inset:0;z-
 .bxvm-legend-status[data-kind="warn"]{border:1px dashed #a78543;color:#f2d28a}
 .bxvm-legend-status[data-kind="err"]{border:1px dashed #a8453f;color:#ffc9c4}
 .bxvm-legend-status[hidden]{display:none}
-@media(max-width:680px){.bxvm-legend-plate{width:calc(100% - 96px);bottom:8px}.bxvm-legend-panel{top:4px;width:97%}.bxvm-legend-seg{grid-template-columns:1fr}.bxvm-legend-title{white-space:normal}.bxvm-legend-kicker{display:none}}
+@media(max-width:680px){.bxvm-legend-plate{left:8px;right:8px;bottom:8px;max-height:58%}.bxvm-legend-panel{top:4px;width:97%}.bxvm-legend-seg{grid-template-columns:1fr}.bxvm-legend-title{white-space:normal}.bxvm-legend-kicker{display:none}}
 
 /* ---- 5.4.249 — 🗺 Google View dentro da biblioteca (mapa/Street View) ---- */
 .bxvm-tools button[data-bxvm-action="google"]{border-color:#3c6ea3;background:linear-gradient(180deg,#123048,#0d2233);color:#cfe6ff}
-.bxvm-google-panel{position:absolute;top:12px;left:50%;transform:translateX(-50%);z-index:41;width:min(760px,96%);display:flex;flex-direction:column;gap:8px;padding:12px;border:1px solid rgba(134,200,255,.5);border-radius:16px;background:linear-gradient(180deg,rgba(8,26,38,.98),rgba(4,14,22,.98));box-shadow:0 14px 50px rgba(0,0,0,.7);backdrop-filter:blur(8px)}
+/* 5.4.249 — a janela do Google acompanha a IMAGEM GRANDE (o diálogo é
+   min(1380px,98vw) por min(900px,96vh)): era 760px e o mapa ficava pequeno
+   demais para andar na rua. Fica um degrau abaixo do diálogo para as bordas
+   da janela continuarem à vista, mas com a mesma proporção larga. */
+.bxvm-google-panel{position:absolute;top:12px;left:50%;transform:translateX(-50%);z-index:41;width:min(1240px,97vw);display:flex;flex-direction:column;gap:8px;padding:12px;border:1px solid rgba(134,200,255,.5);border-radius:16px;background:linear-gradient(180deg,rgba(8,26,38,.98),rgba(4,14,22,.98));box-shadow:0 14px 50px rgba(0,0,0,.7);backdrop-filter:blur(8px)}
 .bxvm-google-panel[hidden]{display:none!important}
+/* A janela nunca pode passar da tela: com o leque de passeios dentro dela, a
+   soma (título + busca + botões + leque + mapa) fica alta. O teto em vh e o
+   rolar vertical garantem que o rodapé e o leque continuem alcançáveis em
+   qualquer altura de tela — sem cortar nada embaixo. */
+.bxvm-google-panel{max-height:calc(100vh - 24px);overflow-y:auto;overscroll-behavior:contain}
 .bxvm-google-solto[hidden]{display:none!important}
 .bxvm-google-head{display:flex;align-items:center;gap:8px}
 .bxvm-google-head b{font:900 .92rem/1.2 system-ui;color:#eaf8ff}
@@ -155,7 +169,7 @@ body.bxvm-lock{overflow:hidden!important}.bxvm-overlay{position:fixed;inset:0;z-
 .bxvm-tools button.is-on{border-color:#ffd479;color:#ffe08a;background:rgba(255,212,121,.14)}
 .bxvm-google-fora{margin-left:auto;color:#8fd0ff;font:800 .76rem/1.1 system-ui;text-decoration:none}
 .bxvm-google-stage{position:relative;min-height:300px;border:1px solid rgba(134,200,255,.2);border-radius:12px;overflow:hidden;background:#02070d}
-.bxvm-google-frame{display:block;width:100%;height:min(56vh,420px);border:0}
+.bxvm-google-frame{display:block;width:100%;height:min(56vh,500px);border:0}
 .bxvm-google-vazio{margin:0;padding:26px 16px;text-align:center;color:#9fb5ca;font-size:.84rem}
 .bxvm-google-pe{margin:0;color:#9fb5ca;font-size:.72rem;line-height:1.4}
 /* ⛶ TELA CHEIA do Google (dentro do app): o mapa ocupa tudo e as setas do
@@ -181,10 +195,43 @@ body.bxvm-lock{overflow:hidden!important}.bxvm-overlay{position:fixed;inset:0;z-
    as barras e o painel virou a tela toda. As medidas ficam explícitas porque o
    :fullscreen do navegador estica o elemento por conta própria, mas não mexe no
    que está DENTRO dele — o stage é que precisa crescer até o rodapé. */
-.bxvm-google-panel.is-cheio:fullscreen{display:flex;flex-direction:column;width:100%;height:100%;max-width:none;padding:0;gap:0;border:0;border-radius:0;background:#02070d}
+.bxvm-google-panel.is-cheio:fullscreen{display:flex;flex-direction:column;width:100%;height:100%;max-width:none;max-height:none;overflow:hidden;padding:0;gap:0;border:0;border-radius:0;background:#02070d}
 .bxvm-google-panel.is-cheio:fullscreen .bxvm-google-stage{flex:1 1 auto;min-height:0}
 .bxvm-google-panel.is-cheio:fullscreen .bxvm-google-frame{height:100%;min-height:0;border-radius:0}
-.bxvm-google-panel.is-cheio:-webkit-full-screen{display:flex;flex-direction:column;width:100%;height:100%;padding:0;gap:0;border:0;border-radius:0;background:#02070d}
-@media(max-width:680px){.bxvm-google-panel{top:6px;width:96%}.bxvm-google-frame{height:46vh}.bxvm-google-fora{margin-left:0}}
+.bxvm-google-panel.is-cheio:-webkit-full-screen{display:flex;flex-direction:column;width:100%;height:100%;max-height:none;overflow:hidden;padding:0;gap:0;border:0;border-radius:0;background:#02070d}
+@media(max-width:680px){.bxvm-google-panel{top:6px;width:97%;max-height:calc(100vh - 12px)}.bxvm-google-frame{height:min(42vh,340px)}.bxvm-google-fora{margin-left:0}}
+/* 5.4.249 — POP-UP do 🚶 quando a foto não tem lugar no catálogo: em vez de
+   deixar a pessoa numa tela vazia pedindo para digitar, o app abre um lugar
+   de verdade e DIZ que aquela referência não temos — apontando o leque de
+   passeios prontos logo abaixo. Fica sobre a janela, some sozinho. */
+.bxvm-google-aviso{position:absolute;left:12px;right:12px;top:52px;z-index:6;display:grid;gap:8px;padding:12px 14px;border:1px solid rgba(255,212,121,.55);border-radius:14px;background:linear-gradient(180deg,rgba(38,30,10,.97),rgba(20,16,6,.97));box-shadow:0 16px 44px rgba(0,0,0,.66);animation:bxvm-aviso-rise .22s ease both}
+.bxvm-google-aviso[hidden]{display:none!important}
+.bxvm-google-aviso b{color:#ffe6a8;font:900 .86rem/1.25 system-ui}
+.bxvm-google-aviso p{margin:0;color:#e7dcc2;font-size:.78rem;line-height:1.45}
+.bxvm-google-aviso-botoes{display:flex;flex-wrap:wrap;gap:8px}
+.bxvm-google-aviso button{min-height:36px;padding:7px 12px;border:1px solid rgba(255,212,121,.45);border-radius:11px;background:#2b230c;color:#ffe6a8;font:800 .78rem/1.1 system-ui;cursor:pointer}
+.bxvm-google-aviso button:hover{background:#3d3110}
+.bxvm-google-aviso button[data-bxvm-aviso="ok"]{border-color:#4a5a66;background:#141d24;color:#cfdde6}
+@keyframes bxvm-aviso-rise{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
+/* o leque de passeios pisca quando a pessoa pede para vê-lo: é onde ela toca */
+.bxvm-google-passeios.is-pisca{outline:2px solid #ffd479;outline-offset:4px;border-radius:12px;animation:bxvm-pisca 1.6s ease 2}
+@keyframes bxvm-pisca{0%,100%{outline-color:#ffd479}50%{outline-color:rgba(255,212,121,.12)}}
 .bxvm-pano-plano{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;overflow:hidden;background:#04070c;cursor:grab;touch-action:none}.bxvm-pano-plano:active{cursor:grabbing}.bxvm-pano-plano img{display:block;max-width:none;max-height:none;width:auto;height:auto;user-select:none;-webkit-user-drag:none;will-change:transform;transform-origin:center}.bxvm-pano-nota{position:absolute;left:50%;bottom:9px;z-index:3;transform:translateX(-50%);width:max-content;max-width:92%;margin:0;padding:7px 14px;border:1px solid #2b4759;border-radius:999px;background:rgba(4,11,17,.86);color:#cfdde6;font-size:.72rem;font-weight:650;text-align:center;pointer-events:none}
 .bxvm-google-passeios{display:grid;gap:6px;margin:2px 0 8px}.bxvm-google-passeios b{color:#9fb6c4;font-size:.72rem;font-weight:800}.bxvm-google-chips{display:flex;flex-wrap:wrap;gap:6px;max-height:96px;overflow:auto;padding:2px}.bxvm-google-chips button{padding:6px 10px;border:1px solid #2f5568;border-radius:999px;background:#0b1e2b;color:#dceaf1;font:700 .74rem/1 system-ui;cursor:pointer;white-space:nowrap}.bxvm-google-chips button:hover,.bxvm-google-chips button:focus-visible{border-color:#c19a48;color:#ffe08a;outline:none}.bxvm-google-chips button.is-sorte{border-color:#8a6f2a;background:#241d08;color:#ffdf8a}
+
+/* ---- 5.4.250 — LEGENDA DO LUGAR dentro do Google View ----------------------
+   Ao cair numa rua (passeio pronto ou 🎲 Surpreenda-me) a janela mostra a
+   referência da passagem, o lugar e os três blocos da região. Fica ABAIXO do
+   mapa, recolhível num toque, porque no celular ela sozinha ocupa meia tela. */
+.bxvm-google-legenda{margin-top:8px;border:1px solid rgba(216,180,110,.45);border-radius:12px;background:linear-gradient(180deg,rgba(14,22,18,.96),rgba(6,11,9,.96));overflow:hidden}
+.bxvm-google-legenda[hidden]{display:none!important}
+.bxvm-google-legenda-top{display:flex;align-items:center;gap:8px;width:100%;padding:8px 11px;border:0;background:transparent;color:#f0e2bd;font:800 .76rem/1.25 system-ui;text-align:left;cursor:pointer}
+.bxvm-google-legenda-top b{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#ffe9ad}
+.bxvm-google-legenda-seta{margin-left:auto;flex:none;color:#8fb0ad;font:800 .62rem/1 system-ui;letter-spacing:.02em}
+.bxvm-google-legenda-corpo{padding:0 0 4px}
+.bxvm-google-legenda.is-recolhida .bxvm-google-legenda-corpo{display:none}
+.bxvm-google-legenda-seg{display:grid;grid-template-columns:auto minmax(0,1fr);gap:8px;align-items:start;padding:5px 11px;border-top:1px solid rgba(216,180,110,.22)}
+.bxvm-google-legenda-seg b{color:#d8a95a;font:900 .68rem/1.3 system-ui;letter-spacing:.04em;text-transform:uppercase;padding-top:1px}
+.bxvm-google-legenda-seg span{min-width:0;color:#efe2c2;font:400 .76rem/1.45 system-ui}
+.bxvm-google-legenda-nota{margin:0;padding:6px 11px 9px;color:#a5bcb4;font:600 .72rem/1.4 system-ui}
+@media(max-width:680px){.bxvm-google-legenda-seg{grid-template-columns:1fr;gap:2px}.bxvm-google-legenda{max-height:34vh;overflow:auto}}
