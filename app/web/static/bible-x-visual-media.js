@@ -1035,7 +1035,7 @@
        abre a RUA ali dentro (360°, arrastando para olhar em volta). São
        coordenadas de lugares bíblicos com imagem de rua/foto esférica do
        Google, escolhidas para dar variedade de cenário. */
-    const PASSEIOS = [
+    const PASSEIOS_BASE = [
       ["🧱", "Muro das Lamentações", 31.7767469, 35.2344484],
       ["✝️", "Santo Sepulcro", 31.7784463, 35.2297723],
       ["🚶", "Via Dolorosa", 31.7795250, 35.2327100],
@@ -1055,6 +1055,19 @@
       ["🏝", "Patmos", 37.3094000, 26.5470000],
       ["⛪", "Corinto", 37.9060000, 22.8790000],
     ];
+    /* 5.4.249 — a lista de passeios agora é o CATÁLOGO inteiro, o mesmo que
+       alimenta os acervos públicos: cada lugar com o seu emoji e a coordenada
+       da RUA (é a única que tem as setas brancas de andar no chão — a do sítio
+       cai na pracinha ou no terraço da foto esférica, sem seta nenhuma). Só
+       entram os que dão para andar; os 8 sem carro de rua do Google ficam de
+       fora daqui e continuam acessíveis pelo mapa/satélite na biblioteca. Se o
+       catálogo ainda não tiver carregado, fica a lista curta daqui de cima. */
+    const PASSEIOS = (() => {
+      const tem = window.BibleXLugaresTemRua;
+      const todos = (window.BibleXLugares || []).filter(l => tem ? tem(l) : false);
+      if (!todos.length) return PASSEIOS_BASE;
+      return todos.map(l => [l[0] || "📍", l[1], l[4], l[5]]);
+    })();
     const chipsPasseio = $("[data-bxvm-google-chips]", googlePanel);
     if (chipsPasseio) {
       chipsPasseio.innerHTML = PASSEIOS.map((p, i) =>
@@ -1124,13 +1137,24 @@
     /* Qual coordenada usar: para ANDAR é a RUA (onde o carro do Google passou
        e as setas do chão existem); para olhar de cima (mapa/satélite) é o SÍTIO,
        que mostra o monumento inteiro. Publicações da web trazem só uma. */
+    /* `Number(null)` é 0 e `isFinite(0)` é true: sem este cuidado, um lugar sem
+       carro de rua do Google (Síria, Iraque, Irã, mar aberto) passava no teste
+       e o mapa abria em 0,0 — no Golfo da Guiné, a milhares de km do lugar. */
+    const gNum = v => (v === null || v === undefined || v === "" || !Number.isFinite(Number(v))) ? null : Number(v);
     const googlePos = (item, modo) => {
       const g = item && item.gmap;
-      if (g && Number.isFinite(Number(g.ruaLat))) {
-        return modo === "sv" ? [Number(g.ruaLat), Number(g.ruaLon)] : [Number(g.lat), Number(g.lon)];
+      if (g) {
+        const ruaLat = gNum(g.ruaLat), ruaLon = gNum(g.ruaLon);
+        const siLat = gNum(g.lat), siLon = gNum(g.lon);
+        /* 🚶 só entra na RUA quando ela existe; sem rua, cai no SÍTIO e o pé
+           da janela explica que ali o Google não tem carro de rua */
+        if (modo === "sv" && ruaLat !== null && ruaLon !== null) return [ruaLat, ruaLon];
+        if (siLat !== null && siLon !== null) return [siLat, siLon];
+        if (ruaLat !== null && ruaLon !== null) return [ruaLat, ruaLon];
       }
       const c = item && item.coords;
-      if (c && c.lat !== null && c.lat !== undefined && Number.isFinite(Number(c.lon))) return [Number(c.lat), Number(c.lon)];
+      const cLat = c ? gNum(c.lat) : null, cLon = c ? gNum(c.lon) : null;
+      if (cLat !== null && cLon !== null) return [cLat, cLon];
       return null;
     };
     /* Abre o painel do Google já num modo (é o que os botões da barra fazem). */
@@ -1303,10 +1327,12 @@
     /* ---- 5.4.249 — cheguei aqui pelo cartão 🗺 Google dos ACERVOS PÚBLICOS:
        a janela já abre NA RUA daquele lugar (Street View), para arrastar e
        olhar em volta — sem digitar nada, sem saber o endereço. */
-    if (options.rua && Number.isFinite(Number(options.rua.lat)) && Number.isFinite(Number(options.rua.lon))) {
+    const ruaLat = options.rua ? gNum(options.rua.lat) : null;
+    const ruaLon = options.rua ? gNum(options.rua.lon) : null;
+    if (ruaLat !== null && ruaLon !== null) {
       googlePanel.hidden = false;
-      googleCampo.value = Number(options.rua.lat).toFixed(5) + "," + Number(options.rua.lon).toFixed(5);
-      googleMostrar("sv", Number(options.rua.lat), Number(options.rua.lon), options.rua.nome || "",
+      googleCampo.value = ruaLat.toFixed(5) + "," + ruaLon.toFixed(5);
+      googleMostrar("sv", ruaLat, ruaLon, options.rua.nome || "",
         (options.rua.emoji ? options.rua.emoji + " " : "🚶 ") + (options.rua.nome || "Street View")
           + " — você está na rua. Arraste para olhar em volta; as setas brancas no chão andam pela rua.");
     }

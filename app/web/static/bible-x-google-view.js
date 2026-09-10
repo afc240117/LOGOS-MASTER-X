@@ -111,6 +111,9 @@
         var l = ultimo && ultimo.lugar;
         var p = posicao(l, acao);
         if (p) mostrar(acao, p[0], p[1], l ? l[1] : (ultimo ? ultimo.texto : ""));
+        /* sem lugar no catálogo, troca de vista MANTENDO o que está na tela —
+           senão o 🚶 num versículo sem lugar caía num mapa em branco */
+        else if (ultimo && ultimo.lat !== null && ultimo.lat !== undefined) mostrar(acao, ultimo.lat, ultimo.lon, ultimo.texto || "");
         else mostrar(acao, null, null, ultimo ? ultimo.texto : "");
         return;
       }
