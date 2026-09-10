@@ -92,7 +92,7 @@
     { id: "ruinas", rotulo: "🏺 Ruínas e arqueologia", termos: "holy land ruins" },
     { id: "cultura", rotulo: "🏛 Cultura e costumes", termos: "biblical archaeology" },
     { id: "paisagem", rotulo: "🌄 Paisagem e geografia", termos: "ancient israel" },
-    { id: "objetos", rotulo: "⚱ Objetos e utensílios", termos: "ancient artifacts" }
+    { id: "objetos", rotulo: "⚱ Objetos e utensílios", termos: "ancient oil lamp" }
   ];
 
   /* ---------- utilidades ---------- */
@@ -205,7 +205,11 @@
      mapas digitalizados, e reproduções (pintura, gravura, aquarela). Para a
      passagem queremos a foto — estes títulos descem na nota. */
   function ehReproducao(titulo) {
-    return /\(ia |internet archive|manuscript|codex|digitized|scan(ned)?\b|\bbook\b|\blivro\b|\batlas\b|\bmap\b|\bmapa\b|\bpainting\b|oil on|watercolou?r|\bdrawing\b|\bsketch\b|woodcut|etching|engraving|lithograph|\bWGA\d|museum of art/i.test(String(titulo || ""));
+    var t = String(titulo || "");
+    /* título com ano de 1600 a 1949 quase sempre é publicação antiga digitalizada
+       ("LASKARIS ALEXANDROS 1856 A SHORT HISTORY OF THE CHURCH"), não foto. */
+    if (/\b(1[6-9]\d{2}|19[0-4]\d)\b/.test(t)) return true;
+    return /\(ia |internet archive|manuscript|codex|digitized|scan(ned)?\b|\bbook\b|\blivro\b|\batlas\b|\bmap\b|\bmapa\b|short history|history of|\bpainting\b|oil on|watercolou?r|\bdrawing\b|\bsketch\b|woodcut|etching|engraving|lithograph|\bWGA\d|museum of art/i.test(t);
   }
 
   /* Foto de evento moderno (político, turista, festa) não serve de ilustração
