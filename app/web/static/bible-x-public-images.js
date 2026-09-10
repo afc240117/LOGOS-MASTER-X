@@ -1067,6 +1067,21 @@
       + "</small></div>";
   }
 
+  /* Clique no vídeo: abre em tela cheia e já toca. São três caminhos porque os
+     navegadores não concordam — o padrão, o prefixado do Safari e o do iOS, que
+     só existe no próprio elemento de vídeo. */
+  function abrirVideoCheio(video) {
+    try {
+      if (document.fullscreenElement || document.webkitFullscreenElement) return;
+      var pedido = null;
+      if (typeof video.requestFullscreen === "function") pedido = video.requestFullscreen();
+      else if (typeof video.webkitRequestFullscreen === "function") pedido = video.webkitRequestFullscreen();
+      else if (typeof video.webkitEnterFullscreen === "function") { video.webkitEnterFullscreen(); pedido = null; }
+      if (pedido && pedido.catch) pedido.catch(function () {});
+    } catch (_) {}
+    try { var p = video.play(); if (p && p.catch) p.catch(function () {}); } catch (_) {}
+  }
+
   function itemPorId(id) {
     for (var i = 0; i < estado.itens.length; i++) if (estado.itens[i].id === id) return estado.itens[i];
     return null;
@@ -1203,8 +1218,10 @@
         return;
       }
       if (alvo.closest("[data-bxpub-buscar]")) { buscar(); return; }
-      /* o vídeo toca no próprio cartão (controles nativos) */
-      if (alvo.closest("[data-bxpub-video]")) return;
+      if (alvo.closest("[data-bxpub-mais]")) { carregarMais(); return; }
+      /* o vídeo toca no próprio cartão, e o clique o abre em TELA CHEIA */
+      var videoEl = alvo.closest("[data-bxpub-video]");
+      if (videoEl) { abrirVideoCheio(videoEl); return; }
       var img = alvo.closest("[data-bxpub-img]");
       if (img) {
         var it = itemPorId(img.getAttribute("data-bxpub-img"));
