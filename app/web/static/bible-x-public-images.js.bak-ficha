@@ -1177,18 +1177,6 @@
       ".bxpub-item.is-gmap .bxpub-gmap small{font-size:.68rem;color:#9fb5ca}",
       ".bxpub-item.is-gmap img{position:absolute;inset:0}",
       ".bxpub-selo.is-mapa{color:#ffd479;border-color:rgba(244,199,107,.55)}",
-      /* ℹ️ do cartão: o texto dos selos (4K, Full HD, ▶ Vídeo, 🗺 Vista ao chão)
-         fica EM CIMA da miniatura no PC, onde há espaço. No celular ele tomava
-         a tela do cartão inteiro, então lá ele sai de cima da imagem e passa a
-         viver neste pop-up, aberto pelo ℹ️ do canto. */
-      ".bxpub-info{position:absolute;right:8px;bottom:8px;display:none;align-items:center;justify-content:center;width:30px;height:30px;padding:0;border-radius:50%;border:1px solid rgba(134,200,255,.5);background:rgba(4,14,24,.86);color:#dff1ff;font-size:.86rem;font-weight:900;font-style:normal;line-height:1;cursor:pointer}",
-      ".bxpub-info:hover{background:rgba(14,36,56,.96)}",
-      ".bxpub-ficha-pop{position:fixed;inset:0;z-index:100600;display:flex;align-items:center;justify-content:center;padding:18px;background:rgba(2,7,13,.8)}",
-      ".bxpub-ficha-card{width:100%;max-width:340px;border:1px solid rgba(134,200,255,.3);border-radius:14px;background:#061321;padding:16px 16px 14px;box-shadow:0 18px 50px rgba(0,0,0,.55)}",
-      ".bxpub-ficha-card h4{margin:0 0 10px;font-size:.98rem;color:#ffd479;line-height:1.35}",
-      ".bxpub-ficha-selos{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 10px}",
-      ".bxpub-ficha-card p{margin:0;font-size:.8rem;color:#9fb5ca;line-height:1.5;word-break:break-word}",
-      ".bxpub-ficha-card button{width:100%;margin-top:14px;padding:10px;border-radius:10px;border:1px solid rgba(134,200,255,.4);background:rgba(12,32,52,.9);color:#dff1ff;font-weight:800;cursor:pointer}",
       /* O cartão é SÓ miniatura + selos: por isso ela ficou mais alta. */
       ".bxpub-item[title]{cursor:zoom-in}",
       ".bxpub-vazio{padding:28px 20px;text-align:center;color:#9fb5ca;font-size:.86rem}",
@@ -1215,10 +1203,7 @@
       ".bxpub-grade{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;padding:12px 14px}",
       ".bxpub-item img,.bxpub-item video{height:132px}",
       ".bxpub-item.is-gmap .bxpub-gmap{height:132px}",
-      ".bxpub-rodape{padding:8px 14px}",
-      /* celular: os selos saem de cima da imagem e o ℹ️ entra no lugar deles */
-      ".bxpub-selos{display:none}",
-      ".bxpub-info{display:flex}",
+            ".bxpub-rodape{padding:8px 14px}",
       "}"
     ].join("");
     document.head.appendChild(style);
@@ -1321,10 +1306,6 @@
         + ' data-bxpub-ficha="' + esc(item.fonte + (item.largura ? " • " + item.largura + "×" + item.altura : "") + " • " + item.autor + " • " + item.licenca) + '">'
         + visor
         + (selos.length ? '<span class="bxpub-selos">' + selos.join("") + "</span>" : "")
-        /* No celular os selos acima ficam escondidos por CSS e quem aparece é
-           este ℹ️, que abre a mesma informação num pop-up. No PC ele fica
-           display:none — nada muda lá. */
-        + (selos.length ? '<button type="button" class="bxpub-info" data-bxpub-info="' + esc(item.id) + '" aria-label="Detalhes da imagem" title="Detalhes da imagem">ℹ</button>' : "")
         + "</article>";
     }).join("");
 
@@ -1362,33 +1343,6 @@
   function itemPorId(id) {
     for (var i = 0; i < estado.itens.length; i++) if (estado.itens[i].id === id) return estado.itens[i];
     return null;
-  }
-
-  /* ---------- ℹ️ ficha do cartão (celular) ----------
-     No celular o texto dos selos saiu de cima da miniatura e vive aqui: o ℹ️ do
-     canto abre este pop-up com os selos (4K, Full HD, ▶ Vídeo, 🌐 360°, 🗺 Vista
-     ao chão) e a ficha que já vinha no cartão (fonte • tamanho • autor •
-     licença). Vai para o <body>, e não para dentro do cartão, para não ficar
-     preso no recorte (overflow:hidden) nem depender de nenhum ancestral. */
-  function abrirFicha(cartao) {
-    if (!cartao) return;
-    var antigo = document.querySelector(".bxpub-ficha-pop");
-    if (antigo) antigo.remove();
-    var selos = cartao.querySelector(".bxpub-selos");
-    var pop = document.createElement("div");
-    pop.className = "bxpub-ficha-pop";
-    pop.innerHTML = '<div class="bxpub-ficha-card">'
-      + "<h4>" + esc(cartao.getAttribute("title") || "Detalhes da imagem") + "</h4>"
-      + (selos ? '<div class="bxpub-ficha-selos">' + selos.innerHTML + "</div>" : "")
-      + "<p>" + esc(cartao.getAttribute("data-bxpub-ficha") || "") + "</p>"
-      + '<button type="button" data-bxpub-ficha-x>Fechar</button></div>';
-    pop.addEventListener("click", function (ev) {
-      var alvo = ev.target;
-      if (alvo === pop || (alvo.closest && alvo.closest("[data-bxpub-ficha-x]"))) pop.remove();
-      /* o clique é da ficha: não pode chegar ao painel e abrir a galeria atrás */
-      ev.stopPropagation();
-    });
-    document.body.appendChild(pop);
   }
 
   /* ---------- abrir no NOSSO visualizador ----------
@@ -1501,10 +1455,6 @@
 
     overlay.addEventListener("click", function (ev) {
       var alvo = ev.target;
-      /* ℹ️ do cartão (só aparece no celular): abre a ficha num pop-up. Vem
-         antes de tudo porque o cartão inteiro abre a galeria ao ser tocado. */
-      var info = alvo.closest ? alvo.closest("[data-bxpub-info]") : null;
-      if (info) { abrirFicha(info.closest(".bxpub-item")); return; }
       if (alvo.classList.contains("bxpub-overlay") || alvo.closest("[data-bxpub-fechar]")) { fechar(); return; }
       var tema = alvo.closest("[data-bxpub-tema]");
       if (tema) {
@@ -1691,9 +1641,6 @@
   function fechar() {
     var overlay = $(".bxpub-overlay");
     if (overlay) overlay.remove();
-    /* a ficha vive no <body>, fora do painel: se ela estiver aberta, sai junto */
-    var ficha = document.querySelector(".bxpub-ficha-pop");
-    if (ficha) ficha.remove();
     estado.aberto = false;
   }
 
