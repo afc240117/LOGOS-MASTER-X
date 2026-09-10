@@ -145,6 +145,8 @@ body.bxvm-lock{overflow:hidden!important}.bxvm-overlay{position:fixed;inset:0;z-
 .bxvm-google-head b{font:900 .92rem/1.2 system-ui;color:#eaf8ff}
 .bxvm-google-head small{flex:1 1 auto;color:#9fb5ca;font-size:.72rem}
 .bxvm-google-cheio{width:34px;height:34px;border-radius:10px;border:1px solid #5a6a78;background:#101b24;color:#d7e2e8;font:900 1rem/1 system-ui;cursor:pointer}
+.bxvm-google-cheio{width:34px;height:34px;border-radius:10px;border:1px solid #5a6a78;background:#101b24;color:#d7e2e8;font:900 1rem/1 system-ui;cursor:pointer}
+.bxvm-google-cheio{width:34px;height:34px;border-radius:10px;border:1px solid #5a6a78;background:#101b24;color:#d7e2e8;font:900 1rem/1 system-ui;cursor:pointer}
 .bxvm-google-x{width:34px;height:34px;border-radius:10px;border:1px solid #5a6a78;background:#101b24;color:#d7e2e8;font:900 1rem/1 system-ui;cursor:pointer}
 .bxvm-google-linha input{width:100%;min-height:40px;padding:8px 12px;border:1px solid rgba(134,200,255,.3);border-radius:12px;background:#061321;color:#eef8ff;font-size:.82rem}
 .bxvm-google-acoes{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
@@ -155,6 +157,18 @@ body.bxvm-lock{overflow:hidden!important}.bxvm-overlay{position:fixed;inset:0;z-
 .bxvm-google-frame{display:block;width:100%;height:min(56vh,420px);border:0}
 .bxvm-google-vazio{margin:0;padding:26px 16px;text-align:center;color:#9fb5ca;font-size:.84rem}
 .bxvm-google-pe{margin:0;color:#9fb5ca;font-size:.72rem;line-height:1.4}
+/* ⛶ TELA CHEIA do Google (dentro do app): o mapa ocupa tudo e as setas do
+   chão ficam grandes — é assim que se ANDA com o dedo no celular. */
+.bxvm-google-panel.is-cheio{position:fixed;inset:0;top:0;left:0;transform:none;width:auto;max-width:none;height:auto;max-height:none;border-radius:0;border:0;z-index:100700;padding:8px;gap:6px}
+.bxvm-google-panel.is-cheio .bxvm-google-stage{flex:1 1 auto;min-height:0}
+.bxvm-google-panel.is-cheio .bxvm-google-frame{height:100%;min-height:56vh}
+.bxvm-google-panel.is-cheio .bxvm-google-passeios{max-height:74px;overflow:auto}
+/* ⛶ TELA CHEIA do Google (dentro do app): o mapa ocupa tudo e as setas do
+   chão ficam grandes — é assim que se ANDA com o dedo no celular. */
+.bxvm-google-panel.is-cheio{position:fixed;inset:0;top:0;left:0;transform:none;width:auto;max-width:none;height:auto;max-height:none;border-radius:0;border:0;z-index:100700;padding:8px;gap:6px}
+.bxvm-google-panel.is-cheio .bxvm-google-stage{flex:1 1 auto;min-height:0}
+.bxvm-google-panel.is-cheio .bxvm-google-frame{height:100%;min-height:56vh}
+.bxvm-google-panel.is-cheio .bxvm-google-passeios{max-height:74px;overflow:auto}
 /* ⛶ TELA CHEIA do Google (dentro do app): o mapa ocupa tudo e as setas do
    chão ficam grandes — é assim que se ANDA com o dedo no celular. */
 .bxvm-google-panel.is-cheio{position:fixed;inset:0;top:0;left:0;transform:none;width:auto;max-width:none;height:auto;max-height:none;border-radius:0;border:0;z-index:100700;padding:8px;gap:6px}
