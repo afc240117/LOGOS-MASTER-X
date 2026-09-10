@@ -1362,6 +1362,10 @@
       pageUrl: item.pagina || "",
       description: item.midia === "360" ? "Panorama 360° — " + item.fonte : item.fonte,
       coords: item.coords || null,
+      /* O cartão do 🗺 leva TAMBÉM as duas coordenadas: a do SÍTIO (mapa e
+         satélite) e a da RUA (Street View, onde existem as setas do chão para
+         ANDAR). Sem isto os botões da barra caíam na praça, sem seta nenhuma. */
+      gmap: item.gmap || null,
       _reference: referenciaAtual()
     };
   }
