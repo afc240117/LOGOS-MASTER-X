@@ -52,7 +52,12 @@
     /* Openverse sai DESLIGADO: medido no navegador, ele recusa a chamada da
        página (401/"Failed to fetch") e só fazia perder tempo e encher a tela de
        erro. O chip continua ali para quem quiser tentar. */
-    fontes: { wikimedia: true, openverse: false, pexels: false },
+    /* As três fontes vêm LIGADAS. O Pexels é a principal: quando a chave do
+       servidor existe (PEXELS_API_KEY), as fotos e vídeos dele entram primeiro,
+       porque são de câmera, em alta resolução e com licença de uso livre. Sem a
+       chave, essa fonte apenas não devolve nada — os erros vão só para o
+       console, nunca para a tela do usuário. */
+    fontes: { wikimedia: true, openverse: true, pexels: true },
     carregando: false,
     fase: "",
     itens: [],
@@ -466,7 +471,8 @@
     if (item.largura >= 3840) pontos += 1.5; /* 4K */
     if (item.midia === "360") pontos += 1;
     if (item.midia === "video") pontos += 1;
-    if (item.fonte.indexOf("Pexels") === 0) pontos += 0.6;
+    /* Pexels é a fonte PRINCIPAL: sobe na frente quando existe resultado dele */
+    if (item.fonte.indexOf("Pexels") === 0) pontos += 2.6;
     else if (item.fonte.indexOf("Openverse") === 0) pontos += 0.4;
     return pontos;
   }
@@ -652,6 +658,15 @@
       registrar("Pexels: " + (e && e.message ? e.message : e));
       return [];
     };
+    /* Ordem das tarefas = ordem de desempate na tela. O Pexels entra primeiro
+       porque é a fonte principal; Commons e Openverse completam o acervo. */
+    if (estado.fontes.pexels) {
+      var tipos = midia === "tudo" ? ["foto", "video"] : [midia === "video" ? "video" : "foto"];
+      tipos.forEach(function (tp) {
+        var pedido = tp === "video" ? buscaVideosPexels(consulta, pag) : buscaPexels(consulta, pag);
+        tarefas.push(pedido.catch(erroPexels));
+      });
+    }
     if (estado.fontes.wikimedia) {
       if (midia === "video") {
         tarefas.push(buscaWikimedia(consulta, "video", "video", salto)
@@ -669,13 +684,6 @@
     if ((midia === "foto" || midia === "tudo") && estado.fontes.openverse) {
       tarefas.push(buscaOpenverse(consulta, pag)
         .catch(function (e) { registrar("Openverse: " + e.message); return []; }));
-    }
-    if (estado.fontes.pexels) {
-      var tipos = midia === "tudo" ? ["foto", "video"] : [midia === "video" ? "video" : "foto"];
-      tipos.forEach(function (tp) {
-        var pedido = tp === "video" ? buscaVideosPexels(consulta, pag) : buscaPexels(consulta, pag);
-        tarefas.push(pedido.catch(erroPexels));
-      });
     }
     return Promise.all(tarefas);
   }
