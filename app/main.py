@@ -46,6 +46,25 @@ app.include_router(audio_x_router)
 app.include_router(biblia_x_share_router)
 app.include_router(biblia_x_mediacloud_router)
 app.include_router(biblia_x_public_images_router)
+
+# ---- 5.4.249 — retrato das preferências locais (barras, botões, ordem) -------
+# Serve SÓ para transformar a configuração de um usuário no PADRÃO do app para
+# todos os outros. O navegador manda o que guardou (apenas chaves do LOGOS
+# MASTER X) e o arquivo fica FORA do projeto publicado, em H:\bx-test — nada
+# disso vai para o Render nem para o repositório.
+@app.post("/api/bx/snapshot")
+async def bx_snapshot(request:Request):
+    try:
+        dados=await request.json()
+    except Exception:
+        dados={}
+    if not isinstance(dados,dict) or not dados:
+        raise HTTPException(status_code=400,detail="snapshot vazio")
+    destino=Path(os.environ.get("BX_SNAPSHOT_FILE",r"H:\bx-test\config-local.json"))
+    destino.parent.mkdir(parents=True,exist_ok=True)
+    destino.write_text(json.dumps(dados,ensure_ascii=False,indent=2),encoding="utf-8")
+    return {"ok":True,"chaves":len(dados),"arquivo":str(destino)}
+
 class Generate(BaseModel):
  mode:str="SERMÃO";text:str=Field(min_length=1);theme:str|None=None;duration:int=40;cult:str="Avivamento";audience:str="Igreja local";intensity:int=10;objective:str|None=None;notes:str|None=None;provider:str="auto";ai_mode:str="automatico";model:str|None=None
 class BibleCommentAI(BaseModel):
