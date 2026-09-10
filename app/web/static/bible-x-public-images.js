@@ -507,15 +507,18 @@
      JavaScript entregaria ela a qualquer visitante (DevTools) e o repositório é
      público — por isso o caminho normal é pedir a este proxy. Só se o usuário
      tiver uma chave própria guardada aqui é que ele fala direto com o Pexels. */
-  function pedirAoPexels(tipo, consulta) {
+  function pedirAoPexels(tipo, consulta, pagina) {
     var url, cabecalhos;
+    var pag = Math.max(1, pagina || 1);
     if (estado.pexelsKey) {
       url = (tipo === "video" ? "https://api.pexels.com/videos/search" : "https://api.pexels.com/v1/search")
-        + "?query=" + encodeURIComponent(consulta) + "&per_page=" + LIMITE_PEXELS + "&orientation=landscape";
+        + "?query=" + encodeURIComponent(consulta) + "&per_page=" + LIMITE_PEXELS + "&orientation=landscape"
+        + (pag > 1 ? "&page=" + pag : "");
       cabecalhos = { Authorization: estado.pexelsKey, Accept: "application/json" };
     } else if (estado.pexelsServidor) {
       url = "/api/bible/public-images/pexels?tipo=" + (tipo === "video" ? "video" : "foto")
-        + "&per_page=" + LIMITE_PEXELS + "&q=" + encodeURIComponent(consulta);
+        + "&per_page=" + LIMITE_PEXELS + "&q=" + encodeURIComponent(consulta)
+        + (pag > 1 ? "&pagina=" + pag : "");
       cabecalhos = { Accept: "application/json" };
     } else {
       return Promise.reject(new Error("chave ausente"));
@@ -529,8 +532,8 @@
     });
   }
 
-  function buscaPexels(consulta) {
-    return pedirAoPexels("foto", consulta)
+  function buscaPexels(consulta, pagina) {
+    return pedirAoPexels("foto", consulta, pagina)
       .then(function (json) {
         return (json && json.photos ? json.photos : []).map(function (p) {
           var src = p.src || {};
