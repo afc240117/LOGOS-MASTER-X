@@ -4038,3 +4038,11 @@ body.bx-immersion-lock {
     min-width: 0;
   }
 }
+
+/* 5.4.248d — zoom do palco no celular: os botões −/＋ ficavam com 30px. */
+@media (max-width: 760px) {
+  .bx-immersion-dialog .bx-immersion-stage-tools button {
+    min-width: 2.3rem;
+    min-height: 2.3rem;
+  }
+}
