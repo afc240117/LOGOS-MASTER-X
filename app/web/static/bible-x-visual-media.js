@@ -933,6 +933,22 @@
       legendPlate.classList.remove("bxvm-legend-collapsed");
       renderLegendPlate(item);
       previous.hidden = next.hidden = items.length < 2;
+      /* O ‹ › passeia pela galeria — e o painel 🗺 Google View VAI JUNTO, indo
+         para a rua do próximo lugar. É assim que a pessoa percorre os cenários
+         sem digitar nada: chega pelo cartão, arrasta para olhar, toca em ›. */
+      if (!googlePanel.hidden) {
+        const g = item.gmap || null;
+        const temCoord = item.coords && item.coords.lat !== null && item.coords.lat !== undefined;
+        if (g && Number.isFinite(Number(g.lat)) && Number.isFinite(Number(g.lon))) {
+          googleCampo.value = Number(g.lat).toFixed(5) + "," + Number(g.lon).toFixed(5);
+          googleMostrar("sv", Number(g.lat), Number(g.lon), item.title || "",
+            (g.emoji ? g.emoji + " " : "🚶 ") + (item.title || "Street View")
+              + " — você está na rua. Arraste para olhar em volta; as setas brancas no chão andam.");
+        } else if (temCoord && Number.isFinite(Number(item.coords.lon))) {
+          googleCampo.value = Number(item.coords.lat).toFixed(5) + "," + Number(item.coords.lon).toFixed(5);
+          googleMostrar(googleModo, Number(item.coords.lat), Number(item.coords.lon), "");
+        }
+      }
     };
     const close = () => {
       stopSlides();

@@ -1292,6 +1292,10 @@
       + (estado.reserva.length ? " • " + estado.reserva.length + " já na reserva" : "")
       + (!temMais ? " • o acervo deste tema chegou ao fim: troque o tema ou o termo" : "")
       + "</small></div>";
+
+    /* Cartão do 🗺 Google: agora que a grade está na tela, pede a miniatura de
+       satélite dos que ainda estão sem (e repete quando o token chega). */
+    pintarMapas();
   }
 
   /* Clique no vídeo: abre em tela cheia e já toca. São três caminhos porque os
