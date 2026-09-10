@@ -35,9 +35,9 @@
 
   var VERSAO = "5.4.249";
   var LS_PEXELS = "logosx:pexelsKey";
-  var LIMITE_WIKIMEDIA = 24;
-  var LIMITE_OPENVERSE = 20;
-  var LIMITE_PEXELS = 18;
+  var LIMITE_WIKIMEDIA = 36;
+  var LIMITE_OPENVERSE = 30;
+  var LIMITE_PEXELS = 24;
 
   /* Alta definição. Foto pequena vira borrão no telão da imersão; o piso é por
      tipo de mídia porque panorama 360 é enorme e vídeo mede diferente. */
@@ -926,7 +926,10 @@
     var style = document.createElement("style");
     style.id = "bxPublicImagesStyle";
     style.textContent = [
-      ".bxpub-overlay{position:fixed;inset:0;z-index:2147483010;display:flex;align-items:center;justify-content:center;padding:18px;background:rgba(1,6,13,.86);backdrop-filter:blur(10px)}",
+      /* …007 fica ABAIXO dos visualizadores da casa (.bxvm-overlay = …009).
+         Antes este painel era …010 e a galeria abria por baixo da tela de
+         busca — a imagem aparecia atrás. */
+      ".bxpub-overlay{position:fixed;inset:0;z-index:2147483007;display:flex;align-items:center;justify-content:center;padding:18px;background:rgba(1,6,13,.86);backdrop-filter:blur(10px)}",
       ".bxpub-card{display:flex;flex-direction:column;width:min(1080px,96vw);max-height:92vh;border:1px solid rgba(244,199,107,.42);border-radius:20px;background:linear-gradient(160deg,#08192b,#04101d);color:#eef8ff;box-shadow:0 30px 90px rgba(0,0,0,.68);overflow:hidden}",
       ".bxpub-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:16px 20px;border-bottom:1px solid rgba(150,196,232,.16)}",
       ".bxpub-head small{display:block;color:#f4c76b;font-weight:900;letter-spacing:.14em;font-size:.68rem}",
