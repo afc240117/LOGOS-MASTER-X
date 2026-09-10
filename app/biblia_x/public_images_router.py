@@ -10,6 +10,10 @@ do Render); o navegador nunca a vê, só pede a busca a este endpoint.
 Sem a variável configurada o endpoint responde 503 e o app segue normalmente
 com Wikimedia Commons e Openverse, que não pedem chave.
 
+O /geo é a única parte que não depende de chave nenhuma: converte "Muro das
+Lamentações" em coordenadas (OpenStreetMap), para o mapa e o Street View do
+Google abrirem no lugar certo dentro da nossa galeria.
+
 Proteções do endpoint aberto: limite por IP e cache curto da mesma consulta,
 para o app não virar proxy de graça para terceiros.
 """
@@ -30,6 +34,11 @@ router = APIRouter(prefix="/api/bible/public-images", tags=["Fontes públicas"])
 
 _PEXELS_FOTOS = "https://api.pexels.com/v1/search"
 _PEXELS_VIDEOS = "https://api.pexels.com/videos/search"
+# Geocodificação aberta (OpenStreetMap/Nominatim) para o "🗺 Google View" do
+# app: o usuário digita o lugar e a gente descobre as coordenadas, porque o
+# Street View do Google só aceita posição (lat,lon), não nome de lugar.
+_NOMINATIM = "https://nominatim.openstreetmap.org/search"
+_UA = "LOGOS-MASTER-X/5.4.249 (+https://logos-master-x-api.onrender.com)"
 _TIMEOUT = 12.0
 
 _CACHE_SEGUNDOS = 300.0
@@ -63,6 +72,56 @@ def _liberado(ip: str) -> bool:
         for antigo in sorted(_janelas, key=lambda k: max(_janelas[k] or [0]))[:128]:
             _janelas.pop(antigo, None)
     return True
+
+
+@router.get("/geo")
+async def geo(request: Request, q: str = Query(..., min_length=2, max_length=120)):
+    """Nome do lugar -> coordenadas, para o mapa e o Street View do Google.
+
+    Feito AQUI e não no navegador porque o Nominatim exige um User-Agent que o
+    identifique (o navegador não deixa definir esse cabeçalho) e porque assim a
+    mesma consulta vale para todos, com cache.
+    """
+    consulta = " ".join((q or "").split())
+    if not consulta:
+        raise HTTPException(status_code=400, detail="consulta vazia")
+
+    marca = "g|" + consulta.lower()
+    agora = time.time()
+    guardado = _cache.get(marca)
+    if guardado and agora - guardado[0] < _CACHE_SEGUNDOS:
+        return JSONResponse(guardado[1], headers={"X-Logos-Cache": "hit"})
+
+    ip = (request.client.host if request.client else "") or "?"
+    if not _liberado(ip):
+        raise HTTPException(status_code=429, detail="muitas consultas seguidas; tente daqui a pouco")
+
+    params = {"q": consulta, "format": "jsonv2", "limit": 1, "addressdetails": 0}
+    headers = {"User-Agent": _UA, "Accept": "application/json", "Accept-Language": "pt-BR,pt;q=0.9"}
+    try:
+        async with httpx.AsyncClient(timeout=_TIMEOUT) as cliente:
+            resposta = await cliente.get(_NOMINATIM, params=params, headers=headers)
+    except httpx.HTTPError as erro:
+        raise HTTPException(status_code=502, detail=f"mapa inacessível: {erro}") from erro
+
+    if resposta.status_code >= 400:
+        raise HTTPException(status_code=502, detail=f"mapa respondeu {resposta.status_code}")
+
+    try:
+        achados = resposta.json() or []
+    except ValueError:
+        achados = []
+    if not achados:
+        raise HTTPException(status_code=404, detail=f"não encontrei \"{consulta}\" no mapa")
+
+    primeiro = achados[0]
+    dados = {
+        "lat": float(primeiro.get("lat")),
+        "lon": float(primeiro.get("lon")),
+        "nome": str(primeiro.get("display_name") or consulta)[:180],
+    }
+    _cache[marca] = (agora, dados)
+    return JSONResponse(dados, headers={"X-Logos-Cache": "miss"})
 
 
 @router.get("/status")

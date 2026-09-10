@@ -462,7 +462,9 @@
       /* o salto é o que permite "carregar mais" trazer resultado NOVO da mesma
          consulta em vez de repetir a primeira página */
       + (salto > 0 ? "&gsroffset=" + salto : "")
-      + "&prop=imageinfo&iiprop=url|extmetadata|size|user|categories|mime&iiurlwidth=640";
+      /* "coordinates" traz a posição geográfica do arquivo no Commons: é o que
+         permite abrir o 🗺 Google View já no lugar da foto (Street View). */
+      + "&prop=imageinfo|coordinates&iiprop=url|extmetadata|size|user|categories|mime&iiurlwidth=640";
     return fetch(url, { headers: { Accept: "application/json" } })
       .then(function (r) { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); })
       .then(function (json) {
@@ -489,6 +491,9 @@
             altura: info.height || 0,
             midia: midia || "foto",
             mime: mime,
+            coords: (p.coordinates && p.coordinates[0] && p.coordinates[0].lat != null)
+              ? { lat: Number(p.coordinates[0].lat), lon: Number(p.coordinates[0].lon) }
+              : null,
             video: midia === "video" ? (info.url || "") : ""
           };
         }).filter(function (i) { return i && i.thumb; });
@@ -1121,6 +1126,7 @@
       license: item.licenca,
       pageUrl: item.pagina || "",
       description: item.midia === "360" ? "Panorama 360° — " + item.fonte : item.fonte,
+      coords: item.coords || null,
       _reference: referenciaAtual()
     };
   }
