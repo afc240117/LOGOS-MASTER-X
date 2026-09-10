@@ -558,14 +558,125 @@
       });
   }
 
+  /* ---------- o que as fontes devolvem numa consulta ----------
+     Usado pela busca inicial (em cascata) e pelo "carregar mais". Em "Tudo" as
+     fontes de foto, vídeo e 360 são consultadas na MESMA passada: era isso que
+     faltava, porque antes escolher um tema desmarcava o outro. */
+  function tarefasDe(consulta, midia, pagina) {
+    var pag = Math.max(1, pagina || 1);
+    var salto = (pag - 1) * LIMITE_WIKIMEDIA;
+    var tarefas = [];
+    var erroPexels = function (e) {
+      if (e.message === "chave ausente") avisar("Pexels: sem chave aqui — toque em 🔑 Pexels e cole a sua (é gratuita em pexels.com/api).");
+      else if (e.message === "chave recusada") avisar("Pexels recusou a chave — confira em pexels.com/api se copiou a “API Key” inteira e salve de novo em 🔑.");
+      else if (e.message === "cota esgotada") avisar("Pexels: cota esgotada por agora — as outras fontes continuam trazendo resultados.");
+      else avisar("Pexels: " + e.message);
+      return [];
+    };
+    if (estado.fontes.wikimedia) {
+      if (midia === "video") {
+        tarefas.push(buscaWikimedia(consulta, "video", "video", salto)
+          .catch(function (e) { avisar("Wikimedia Commons: " + e.message); return []; }));
+      } else {
+        tarefas.push(buscaWikimedia(consulta, "bitmap", midia === "tudo" ? "foto" : midia, salto)
+          .catch(function (e) { avisar("Wikimedia Commons: " + e.message); return []; }));
+        /* o acervo de vídeo do Commons é outra busca: em "Tudo" ele entra junto */
+        if (midia === "tudo") {
+          tarefas.push(buscaWikimedia(consulta, "video", "video", salto).catch(function () { return []; }));
+        }
+      }
+    }
+    /* Openverse só tem imagem parada — fora das buscas de vídeo e de 360 */
+    if ((midia === "foto" || midia === "tudo") && estado.fontes.openverse) {
+      tarefas.push(buscaOpenverse(consulta, pag)
+        .catch(function (e) { avisar("Openverse: " + e.message); return []; }));
+    }
+    if (estado.fontes.pexels) {
+      var tipos = midia === "tudo" ? ["foto", "video"] : [midia === "video" ? "video" : "foto"];
+      tipos.forEach(function (tp) {
+        var pedido = tp === "video" ? buscaVideosPexels(consulta, pag) : buscaPexels(consulta, pag);
+        tarefas.push(pedido.catch(erroPexels));
+      });
+    }
+    return Promise.all(tarefas);
+  }
+
+  /* Uma chave curta por item: o mesmo arquivo aparece em várias fontes e com
+     títulos quase iguais, e o "carregar mais" não pode repetir o que já está na
+     tela. */
+  function chaveDoItem(item) {
+    return semAcento(item.titulo).replace(/[^a-z0-9 ]/g, "").slice(0, 34) + "|" + item.fonte.split(" • ")[0];
+  }
+
+  /* Junta as listas das fontes, tira repetidos (inclusive contra o que já foi
+     mostrado em cliques anteriores) e aplica os portões de assunto e HD. */
+  function limparListas(listas, midia, semHD) {
+    var novos = [];
+    listas.forEach(function (lista) {
+      (lista || []).forEach(function (item) {
+        if (!item) return;
+        var chave = chaveDoItem(item);
+        if (estado.chaves[chave]) return;
+        estado.chaves[chave] = 1;
+        novos.push(item);
+      });
+    });
+    return novos.filter(function (item) {
+      /* Arte, livro e mapa digitalizado ficam de fora DEFINITIVAMENTE; vídeo e
+         360 ainda passam pelo portão de lugar (ver ehDoTema). */
+      return !ehReproducao(item.titulo, item.categorias)
+        && !ehEventoModerno(item.titulo, item)
+        && ehDoTema(item)
+        && (semHD || ehAltaDefinicao(item, midia));
+    });
+  }
+
+  /* A tela não recebe tudo de uma vez: entra um lote e o resto fica na reserva,
+     que o botão "Carregar mais" vai despejando. */
+  function porNaReserva(itens, consulta) {
+    itens.sort(function (a, b) { return pontuar(b, consulta) - pontuar(a, consulta); });
+    estado.itens = estado.itens.concat(itens.slice(0, LOTE));
+    estado.reserva = estado.reserva.concat(itens.slice(LOTE));
+  }
+
+  /* Consultas vizinhas para o "carregar mais": quando o mesmo acervo se esgota,
+     o termo muda e a busca continua trazendo coisa nova. */
+  function montarExtras(usadas) {
+    var lugares = lugaresEmIngles();
+    var lugar = lugares.length ? lugares[0] : "holy land";
+    var tema = temaAtual();
+    var base = tema.id === "videos" ? "aerial" : (tema.id === "panorama" ? "panorama" : tema.termos);
+    var lista = [];
+    var juntar = function (q) {
+      q = String(q || "").replace(/\s+/g, " ").trim();
+      if (q && usadas.indexOf(q) === -1 && lista.indexOf(q) === -1) lista.push(q);
+    };
+    [lugar + " " + base, lugar + " walking tour", lugar + " old city", lugar + " city",
+      lugar + " aerial", lugar + " panorama", lugar + " archaeology", lugar + " ruins",
+      lugar + " history", lugar + " landscape", lugar + " museum",
+      "holy land " + base, "biblical sites", "ancient israel", "holy land ruins",
+      "biblical archaeology", "ancient jerusalem", "israel archaeology",
+      "holy land panorama", "biblical places", "ancient near east"
+    ].forEach(juntar);
+    return lista;
+  }
+
   function buscar() {
     if (estado.carregando) return;
     estado.consulta = ($("[data-bxpub-busca]") || {}).value || estado.consulta || montarConsulta();
     estado.carregando = true;
     estado.avisos = [];
     estado.itens = [];
+    estado.reserva = [];
+    estado.chaves = {};
+    estado.rodada = 0;
+    estado.semMais = false;
     estado.consultaUsada = "";
     desenhar();
+
+    var tentativas = montarTentativas();
+    estado.extras = montarExtras(tentativas);
+    estado.consultaBase = tentativas[0] || estado.consulta;
 
     var tentativas = montarTentativas();
     if (!Object.keys(estado.fontes).some(function (f) { return estado.fontes[f]; })) {
