@@ -23,6 +23,12 @@
   var LIMITE_OPENVERSE = 20;
   var LIMITE_PEXELS = 18;
 
+  /* Alta definição. Foto pequena vira borrão no telão da imersão; o piso é por
+     tipo de mídia porque panorama 360 é enorme e vídeo mede diferente. */
+  var MIN_FOTO = { largura: 1200, altura: 700 };
+  var MIN_VIDEO = { largura: 1280, altura: 720 };
+  var MIN_360 = { largura: 2000, altura: 700 };
+
   var estado = {
     aberto: false,
     consulta: "",
@@ -92,8 +98,22 @@
     { id: "ruinas", rotulo: "🏺 Ruínas e arqueologia", termos: "holy land ruins" },
     { id: "cultura", rotulo: "🏛 Cultura e costumes", termos: "biblical archaeology" },
     { id: "paisagem", rotulo: "🌄 Paisagem e geografia", termos: "ancient israel" },
-    { id: "objetos", rotulo: "⚱ Objetos e utensílios", termos: "ancient oil lamp" }
+    { id: "objetos", rotulo: "⚱ Objetos e utensílios", termos: "ancient oil lamp" },
+    { id: "panorama", rotulo: "🌐 Panorama 360°", termos: "360 panorama", midia: "360" },
+    { id: "videos", rotulo: "🎥 Vídeos", termos: "biblical sites", midia: "video" }
   ];
+
+  function temaAtualPorId(id) {
+    for (var i = 0; i < TEMAS.length; i++) if (TEMAS[i].id === id) return TEMAS[i];
+    return TEMAS[0];
+  }
+  /* "foto" (padrão), "360" ou "video" — decide quais acervos são consultados. */
+  function midiaAtual() { return temaAtual().midia || "foto"; }
+  function minimoDaMidia(midia) {
+    if (midia === "video") return MIN_VIDEO;
+    if (midia === "360") return MIN_360;
+    return MIN_FOTO;
+  }
 
   /* A busca em cascata repete a mesma falha a cada degrau: o aviso entra uma
      vez só, senão a tela mostra a mesma linha três vezes. */
