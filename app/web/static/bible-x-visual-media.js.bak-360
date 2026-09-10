@@ -1208,7 +1208,6 @@
     let program;
     let texture;
     let resizeObserver;
-    let plano = null;   /* preenchido quando a imagem NAO e um 360 de verdade */
     const close = () => {
       cancelAnimationFrame(animation);
       resizeObserver?.disconnect();
@@ -1273,9 +1272,9 @@
     };
     tools.addEventListener("click", event => {
       const action = event.target.closest("[data-bxvm-action]")?.dataset.bxvmAction;
-      if (action === "zoom-in") { if (plano) plano.zoom(1.28); else setFov(fov - 7); }
-      if (action === "zoom-out") { if (plano) plano.zoom(1 / 1.28); else setFov(fov + 7); }
-      if (action === "reset") { if (plano) plano.reset(); else { yaw = pitch = 0; fov = 72; } }
+      if (action === "zoom-in") setFov(fov - 7);
+      if (action === "zoom-out") setFov(fov + 7);
+      if (action === "reset") { yaw = pitch = 0; fov = 72; }
       if (action === "rotate") toggleRotate();
       if (action === "fullscreen") requestFullScreen(dialog);
       if (action === "immersion") {
@@ -1316,97 +1315,13 @@
     overlay.addEventListener("click", event => { if (event.target === overlay) close(); });
     document.addEventListener("keydown", onKey);
 
-    /* ---- Panoramica deslizante --------------------------------------------
-       Uma foto 360° de verdade e EQUIRRETANGULAR: 360° na largura por 180° na
-       altura — sempre 2:1. Foto comum (4:3) ou panoramica larga (3:1) esticada
-       numa esfera fica toda deformada. Nestas, em vez de mentir um 360°, a
-       imagem inteira aparece sem deformacao nenhuma e corre para os lados:
-       arraste para ir e vir, roda/± para aproximar, ❚❚ para parar. */
-    const abrirPlano = () => {
-      canvas.hidden = true;
-      loading.hidden = true;
-      const wrap = document.createElement("div");
-      wrap.className = "bxvm-pano-plano";
-      const img = document.createElement("img");
-      img.src = item.src;
-      img.alt = item.title;
-      img.draggable = false;
-      wrap.appendChild(img);
-      const aviso = document.createElement("p");
-      aviso.className = "bxvm-pano-nota";
-      aviso.textContent = "Esta imagem não é uma foto 360° (esférica). Mostrando em panorâmica deslizante, sem deformação.";
-      stage.append(wrap, aviso);
-      const eyebrow = $(".bxvm-heading small", overlay);
-      if (eyebrow) eyebrow.textContent = String(eyebrow.textContent || "").replace(/360°/g, "PANORÂMICA");
-      let escala = 1, dx = 0, dy = 0, sentido = 1, arrastando = false, ponto = null, ultimo = performance.now();
-      const ajustar = () => {
-        const ra = img.naturalWidth / Math.max(1, img.naturalHeight);
-        const rc = wrap.clientWidth / Math.max(1, wrap.clientHeight);
-        if (ra > rc) { img.style.height = "100%"; img.style.width = "auto"; }
-        else { img.style.width = "100%"; img.style.height = "auto"; }
-      };
-      const sobras = () => ({
-        x: Math.max(0, (img.offsetWidth * escala - wrap.clientWidth) / 2),
-        y: Math.max(0, (img.offsetHeight * escala - wrap.clientHeight) / 2)
-      });
-      const pintar = () => {
-        img.style.transform = "translate(" + dx.toFixed(1) + "px," + dy.toFixed(1) + "px) scale(" + escala.toFixed(3) + ")";
-      };
-      const passo = now => {
-        const dt = Math.min(50, now - ultimo);
-        ultimo = now;
-        const s2 = sobras();
-        if (autoRotate && !arrastando && s2.x > 2) {
-          dx += sentido * dt * .028;
-          if (dx > s2.x) { dx = s2.x; sentido = -1; }
-          if (dx < -s2.x) { dx = -s2.x; sentido = 1; }
-        }
-        pintar();
-        animation = requestAnimationFrame(passo);
-      };
-      const limitar = () => {
-        const s2 = sobras();
-        dx = clamp(dx, -s2.x, s2.x);
-        dy = clamp(dy, -s2.y, s2.y);
-      };
-      wrap.addEventListener("pointerdown", event => {
-        wrap.setPointerCapture?.(event.pointerId);
-        arrastando = true;
-        ponto = { x: event.clientX, y: event.clientY };
-      });
-      wrap.addEventListener("pointermove", event => {
-        if (!arrastando || !ponto) return;
-        dx += event.clientX - ponto.x;
-        dy += event.clientY - ponto.y;
-        ponto = { x: event.clientX, y: event.clientY };
-        limitar();
-        pintar();
-      });
-      const soltar = () => { arrastando = false; ponto = null; };
-      wrap.addEventListener("pointerup", soltar);
-      wrap.addEventListener("pointercancel", soltar);
-      wrap.addEventListener("wheel", event => {
-        event.preventDefault();
-        escala = clamp(escala * (event.deltaY < 0 ? 1.12 : 1 / 1.12), 1, 4);
-        limitar();
-        pintar();
-      }, { passive: false });
-      const pronto = () => { ajustar(); limitar(); pintar(); animation = requestAnimationFrame(passo); };
-      if (img.complete && img.naturalWidth) pronto();
-      else { img.onload = pronto; img.onerror = () => fallback("Não foi possível carregar esta imagem panorâmica."); }
-      plano = {
-        zoom: fator => { escala = clamp(escala * fator, 1, 4); limitar(); pintar(); },
-        reset: () => { escala = 1; dx = 0; dy = 0; ajustar(); limitar(); pintar(); }
-      };
-    };
-
     try {
       gl = canvas.getContext("webgl", { antialias: true, alpha: false });
       if (!gl) throw new Error("WebGL não disponível");
       program = createProgram(gl,
         `attribute vec2 aPosition; varying vec2 vUv; void main(){vUv=aPosition*.5+.5;gl_Position=vec4(aPosition,0.,1.);}`,
         `precision highp float; varying vec2 vUv; uniform sampler2D uTex; uniform float uYaw; uniform float uPitch; uniform float uFov; uniform float uAspect;
-         void main(){vec2 p=vUv*2.-1.;p.x*=uAspect;vec3 d=normalize(vec3(p.x,p.y,-1./tan(uFov*.5)));
+         void main(){vec2 p=vUv*2.-1.;p.x*=uAspect;vec3 d=normalize(vec3(p.x,-p.y,-1./tan(uFov*.5)));
          float cp=cos(uPitch),sp=sin(uPitch);d=vec3(d.x,cp*d.y-sp*d.z,sp*d.y+cp*d.z);
          float cy=cos(uYaw),sy=sin(uYaw);d=vec3(cy*d.x-sy*d.z,d.y,sy*d.x+cy*d.z);
          float lon=atan(d.x,-d.z);float lat=asin(clamp(d.y,-1.,1.));vec2 uv=vec2(fract(.5+lon/6.2831853),.5-lat/3.14159265);gl_FragColor=texture2D(uTex,uv);}`
@@ -1426,10 +1341,6 @@
       const image = new Image();
       if (isRemote(item.src)) image.crossOrigin = "anonymous";
       image.onload = () => {
-        /* 2:1 (com folga) = equirretangular, o unico caso em que a esfera mostra
-           a foto do jeito certo. Qualquer outra proporcao vai para o deslizante. */
-        const proporcao = image.width / Math.max(1, image.height);
-        if (proporcao < 1.82 || proporcao > 2.24) { abrirPlano(); return; }
         try {
           gl.bindTexture(gl.TEXTURE_2D, texture);
           gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
