@@ -81,12 +81,14 @@
     "pedro": "Peter", "judas": "Jude", "apocalipse": "Revelation"
   };
 
+  /* Termos curtos de propósito: os acervos devolvem pouca coisa quando a
+     consulta tem muitas palavras (testado: 3 a 4 palavras é o limite útil). */
   var TEMAS = [
-    { id: "lugares", rotulo: "🗺 Lugares bíblicos", termos: "biblical site archaeology" },
-    { id: "ruinas", rotulo: "🏺 Ruínas e arqueologia", termos: "ancient ruins archaeology excavation" },
-    { id: "cultura", rotulo: "🏛 Cultura e costumes", termos: "ancient near east daily life" },
-    { id: "paisagem", rotulo: "🌄 Paisagem e geografia", termos: "holy land landscape" },
-    { id: "objetos", rotulo: "⚱ Objetos e utensílios", termos: "biblical artifacts museum" }
+    { id: "lugares", rotulo: "🗺 Lugares bíblicos", termos: "biblical archaeology" },
+    { id: "ruinas", rotulo: "🏺 Ruínas e arqueologia", termos: "ancient ruins" },
+    { id: "cultura", rotulo: "🏛 Cultura e costumes", termos: "ancient culture" },
+    { id: "paisagem", rotulo: "🌄 Paisagem e geografia", termos: "biblical landscape" },
+    { id: "objetos", rotulo: "⚱ Objetos e utensílios", termos: "ancient artifacts" }
   ];
 
   /* ---------- utilidades ---------- */
@@ -159,14 +161,35 @@
 
   /* Monta a consulta: lugar(es) da passagem + tema. Se não houver lugar,
      cai para o nome do livro em inglês + "holy land". */
-  function montarConsulta() {
+  function lugaresEmIngles() {
     var vistos = [];
     lugaresDaPassagem().forEach(function (l) {
       if (vistos.indexOf(l.en) === -1) vistos.push(l.en); /* jerusalém/jerusalem não entram duas vezes */
     });
-    var lugares = vistos.slice(0, 2);
+    return vistos;
+  }
+
+  function montarConsulta() {
+    var lugares = lugaresEmIngles().slice(0, 2);
     var base = lugares.length ? lugares.join(" ") : (livroEmIngles() ? livroEmIngles() + " holy land" : "holy land biblical");
     return (base + " " + temaAtual().termos).replace(/\s+/g, " ").trim();
+  }
+
+  /* Se a consulta cheia não devolver nada, tenta variantes mais largas —
+     nunca deixa a tela vazia quando existe imagem no acervo. */
+  function montarTentativas() {
+    var lista = [];
+    var juntar = function (q) {
+      q = String(q || "").replace(/\s+/g, " ").trim();
+      if (q && lista.indexOf(q) === -1) lista.push(q);
+    };
+    juntar(estado.consulta);
+    var lugares = lugaresEmIngles();
+    if (lugares.length) juntar(lugares[0]);
+    juntar(temaAtual().termos);
+    juntar("holy land " + temaAtual().termos.split(" ").pop());
+    juntar("holy land");
+    return lista;
   }
 
   /* Acervos públicos devolvem muita coisa digitalizada (livros, manuscritos,
