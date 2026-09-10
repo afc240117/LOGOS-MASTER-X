@@ -336,8 +336,14 @@
 
   /* Foto de evento moderno (político, turista, festa) não serve de ilustração
      da passagem, mesmo quando cita o lugar certo. */
-  function ehEventoModerno(titulo) {
-    return /\bpresident\b|\btrump\b|\bminister\b|ambassador|\btourist|\btour\b|selfie|\bwedding\b|festival|\bprotest\b|\bidf\b|\bsoldier|\binterview\b|co-founder|\bceo\b|conference|keynote|\blecture\b|\bpodcast\b|webinar/i.test(String(titulo || ""));
+  function ehEventoModerno(titulo, item) {
+    var t = String(titulo || "");
+    /* "walking tour" é exatamente o que se quer em vídeo: gravação de quem
+       esteve lá, para entrar no lugar sem estar nele. Em foto parada "tour" só
+       trazia político e comício — aí continua fora. */
+    var deVideo = !!(item && (item.midia === "video" || item.midia === "360"));
+    if (!deVideo && /\btourist\b|\btour\b|selfie/i.test(t)) return true;
+    return /\bpresident\b|\btrump\b|\bminister\b|ambassador|\bwedding\b|festival|\bprotest\b|\bidf\b|\bsoldier|\binterview\b|co-founder|\bceo\b|conference|keynote|\blecture\b|\bpodcast\b|webinar/i.test(t);
   }
 
   /* O acervo de VÍDEO do Commons é pequeno e vem cheio de entrevista e palestra
