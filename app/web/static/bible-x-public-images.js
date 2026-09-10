@@ -961,7 +961,7 @@
       ".bxpub-grade{display:grid;grid-template-columns:repeat(auto-fill,minmax(196px,1fr));grid-auto-rows:max-content;gap:12px;padding:14px 20px;overflow:auto;flex:1 1 auto}",
       ".bxpub-item{display:flex;flex-direction:column;border:1px solid rgba(134,200,255,.18);border-radius:14px;background:#061321;overflow:hidden}",
       ".bxpub-item{position:relative}",
-      ".bxpub-item img,.bxpub-item video{display:block;width:100%;height:150px;object-fit:cover;background:#02070d;cursor:zoom-in}",
+      ".bxpub-item img,.bxpub-item video{display:block;width:100%;height:178px;object-fit:cover;background:#02070d;cursor:zoom-in}",
       ".bxpub-item video{cursor:zoom-in}",
       ".bxpub-item.is-360 img{object-fit:contain}",
       ".bxpub-selos{position:absolute;top:8px;left:8px;display:flex;flex-wrap:wrap;gap:4px;pointer-events:none}",
@@ -969,14 +969,8 @@
       ".bxpub-selo.is-hd{color:#9ff0dc;border-color:rgba(64,196,174,.5)}",
       ".bxpub-selo.is-video{color:#ffdca8;border-color:rgba(244,199,107,.55)}",
       ".bxpub-selo.is-360{color:#bfe3ff;border-color:rgba(134,200,255,.55)}",
-      ".bxpub-item div{padding:9px 10px;display:flex;flex-direction:column;gap:5px;flex:1 1 auto}",
-      ".bxpub-item strong{font-size:.8rem;line-height:1.25;color:#eaf8ff;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}",
-      ".bxpub-item small{font-size:.7rem;color:#9fb5ca;line-height:1.3}",
-      ".bxpub-item em{font-style:normal;font-size:.68rem;color:#f4c76b}",
-      ".bxpub-acoes{display:flex;flex-wrap:wrap;gap:6px;margin-top:auto}",
-      ".bxpub-acoes button{flex:1 1 auto;min-height:34px;padding:6px 8px;border:1px solid rgba(134,200,255,.26);border-radius:9px;background:#10243a;color:#eef8ff;font-size:.72rem;font-weight:800;cursor:pointer}",
-      ".bxpub-acoes button:hover{background:#16405a}",
-      ".bxpub-acoes button.is-salvo{border-color:rgba(64,196,174,.9);background:linear-gradient(180deg,#123f3a,#0d2f2c);color:#9ff0dc}",
+      /* O cartão é SÓ miniatura + selos: por isso ela ficou mais alta. */
+      ".bxpub-item[title]{cursor:zoom-in}",
       ".bxpub-vazio{padding:28px 20px;text-align:center;color:#9fb5ca;font-size:.86rem}",
       /* o botão do fim: a grade cresce a cada clique */
       ".bxpub-mais{grid-column:1/-1;display:flex;flex-direction:column;align-items:center;gap:6px;padding:10px 0 4px}",
@@ -999,9 +993,8 @@
       ".bxpub-controles{padding:10px 14px}",
       ".bxpub-fontes{padding:0 14px 8px}",
       ".bxpub-grade{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;padding:12px 14px}",
-      ".bxpub-item img,.bxpub-item video{height:118px}",
-      ".bxpub-acoes button{min-height:40px;flex:1 1 46%}",
-      ".bxpub-rodape{padding:8px 14px}",
+      ".bxpub-item img,.bxpub-item video{height:132px}",
+            ".bxpub-rodape{padding:8px 14px}",
       "}"
     ].join("");
     document.head.appendChild(style);
@@ -1055,28 +1048,28 @@
       return;
     }
     grade.innerHTML = estado.itens.map(function (item) {
-      var salvo = !!estado.salvo[item.id];
       var selos = [];
       if (item.midia === "video") selos.push('<i class="bxpub-selo is-video">▶ Vídeo</i>');
       if (item.midia === "360") selos.push('<i class="bxpub-selo is-360">🌐 360°</i>');
       if (item.largura >= 3840) selos.push('<i class="bxpub-selo is-hd">4K</i>');
+      else if (item.largura >= 2560) selos.push('<i class="bxpub-selo is-hd">2K</i>');
       else if (item.largura >= 1920) selos.push('<i class="bxpub-selo is-hd">Full HD</i>');
       else if (item.largura >= 1200) selos.push('<i class="bxpub-selo is-hd">HD</i>');
       var visor = item.midia === "video"
         ? '<video src="' + esc(item.video) + '" poster="' + esc(item.thumb) + '" preload="none" muted loop playsinline controls data-bxpub-video="' + esc(item.id) + '"></video>'
         : '<img src="' + esc(item.thumb) + '" alt="' + esc(item.titulo) + '" loading="lazy" referrerpolicy="no-referrer" data-bxpub-img="' + esc(item.id) + '">';
-      return '<article class="bxpub-item' + (item.midia === "360" ? " is-360" : "") + '">'
+      /* O cartão é SÓ a miniatura e os selos (4K, 2K, Full HD, HD, ▶ Vídeo,
+         🌐 360°). Nome, fonte, autor, licença e os três botões saíram daqui a
+         pedido: ao tocar na imagem abre a NOSSA galeria, e lá ficam os comandos
+         (⬇ baixar, ✏️ editar e salvar na Mídia X, 🏷 legenda, ⛶ tela cheia). O
+         crédito e a licença do autor continuam indo junto para a Mídia X. O
+         nome do arquivo fica só no title/alt, como dica ao passar o mouse. */
+      return '<article class="bxpub-item' + (item.midia === "360" ? " is-360" : "") + '"'
+        + ' title="' + esc(item.titulo) + '"'
+        + ' data-bxpub-fonte="' + esc(item.fonte + (item.largura ? " • " + item.largura + "×" + item.altura : "") + " • " + item.autor + " • " + item.licenca) + '">'
         + visor
         + (selos.length ? '<span class="bxpub-selos">' + selos.join("") + "</span>" : "")
-        + "<div>"
-        + "<strong>" + esc(item.titulo) + "</strong>"
-        + "<small>" + esc(item.fonte) + (item.largura ? " • " + item.largura + "×" + item.altura : "") + "</small>"
-        + "<em>" + esc(item.autor) + " • " + esc(item.licenca) + "</em>"
-        + '<div class="bxpub-acoes">'
-        + '<button type="button" data-bxpub-abrir="' + esc(item.id) + '">🔗 Origem</button>'
-        + '<button type="button" data-bxpub-copiar="' + esc(item.id) + '">⧉ Crédito</button>'
-        + '<button type="button" class="' + (salvo ? "is-salvo" : "") + '" data-bxpub-salvar="' + esc(item.id) + '">' + (salvo ? "✓ Na Mídia X" : "💾 Mídia X") + "</button>"
-        + "</div></div></article>";
+        + "</article>";
     }).join("");
 
     /* Fim da grade: o botão que vai gerando mais imagens e vídeos sem parar. */
@@ -1188,7 +1181,7 @@
       + "</div></div>"
       + '<div data-bxpub-avisos></div>'
       + '<div class="bxpub-pe"><div class="bxpub-grade" data-bxpub-grade></div></div>'
-      + '<footer class="bxpub-rodape">Só entram foto, vídeo e panorama <b>em alta definição</b> — pintura, gravura, desenho, livro e mapa digitalizado ficam de fora, e resultado cuja miniatura não abre no navegador não aparece. Toque na imagem para abrir na <b>nossa galeria</b> (zoom, girar 90°, baixar, tela cheia, anterior/próxima); toque no <b>vídeo</b> para ele abrir <b>em tela cheia</b> e já tocar; o botão 🔗 Origem leva ao acervo. O <b>➕ Carregar mais</b> no fim da grade vai trazendo mais imagens e vídeos a cada toque. Crédito e licença de cada autor vão junto para a Mídia X.</footer>'
+      + '<footer class="bxpub-rodape"><b>Só entra foto e vídeo em alta definição.</b> Pintura, gravura, desenho, livro e mapa digitalizado ficam de fora — e resultado cuja miniatura não abre no navegador não aparece. Cada cartão traz o selo da resolução: <b>4K</b> (3840px ou mais), <b>2K</b>, <b>Full HD</b> (1920px) e <b>HD</b> (1200px), além de <b>▶ Vídeo</b> e <b>🌐 360°</b> — material que aguenta tela grande, projeção e impressão com nitidez.<br><b>Como usar:</b> 👆 toque na imagem = abre na nossa galeria (🔍 zoom com − e +, ↻ girar 90°, ✏️ editar e salvar na Mídia X, 🏷 legenda, ⬇ baixar, ⛶ tela cheia, ‹ › anterior e próxima); ▶ toque no vídeo = abre <b>em tela cheia</b> e já toca; ➕ <b>Carregar mais</b> no fim da grade = vai trazendo mais imagens e vídeos a cada toque; 🔎 <b>Tudo</b> = busca todos os tipos de uma vez; 🖼 temas = troca o assunto. Crédito e licença de cada autor vão junto para a Mídia X.</footer>'
       + "</section>";
     document.body.appendChild(overlay);
     estado.aberto = true;
