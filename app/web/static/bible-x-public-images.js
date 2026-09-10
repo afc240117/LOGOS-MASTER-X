@@ -120,7 +120,21 @@
   function dorme(ms) { return new Promise(function (r) { setTimeout(r, ms); }); }
 
   /* ---------- contexto da passagem ---------- */
+
+  /* Quando o painel é aberto pelo botão de UM versículo, a referência e o texto
+     dele mandam na busca (é o que o usuário acabou de apontar). */
+  var refForcada = "";
+  var textoForcado = "";
+  function usarVersiculo(ref) {
+    refForcada = String(ref || "").trim();
+    textoForcado = "";
+    if (!refForcada) return;
+    var el = document.querySelector('[data-bx-verse-text="' + refForcada.replace(/"/g, '\\"') + '"]');
+    if (el) textoForcado = el.textContent || "";
+  }
+
   function referenciaAtual() {
+    if (refForcada) return refForcada;
     var imersao = window.BibleXImmersion;
     try {
       var ctx = imersao && imersao.getCurrentContext && imersao.getCurrentContext();
@@ -136,6 +150,7 @@
 
   function textoDaPassagem() {
     var partes = [];
+    if (textoForcado) partes.push(textoForcado);
     var saida = document.querySelector("#bOut");
     if (saida) partes.push(saida.textContent || "");
     var cena = document.querySelector(".bx-immersion-verse, .bx-immersion-stage-copy");
@@ -792,7 +807,6 @@
       usarVersiculo(ref);
       estado.consulta = "";
       abrir();
-      if (estado.consulta) buscar();
     }, true);
 
     try {
