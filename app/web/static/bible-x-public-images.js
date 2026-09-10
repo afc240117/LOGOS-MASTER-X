@@ -35,6 +35,7 @@
     tema: "lugares",
     fontes: { wikimedia: true, openverse: true, pexels: false },
     carregando: false,
+    fase: "",
     itens: [],
     avisos: [],
     salvo: {},
@@ -733,17 +734,27 @@
 
     if (!grade) return;
     if (estado.carregando) {
-      grade.innerHTML = '<p class="bxpub-vazio">Buscando imagens em ' + Object.keys(estado.fontes).filter(function (f) { return estado.fontes[f]; }).length + ' fonte(s)…</p>';
+      grade.innerHTML = '<p class="bxpub-vazio">' + esc(estado.fase || ("Buscando em " + Object.keys(estado.fontes).filter(function (f) { return estado.fontes[f]; }).length + " fonte(s)…")) + "</p>";
       return;
     }
     if (!estado.itens.length) {
-      grade.innerHTML = '<p class="bxpub-vazio">Nenhuma imagem encontrada para <b>' + esc(estado.consulta || montarConsulta()) + '</b>.<br>Tente outro tema, outro termo de busca ou troque as fontes.</p>';
+      grade.innerHTML = '<p class="bxpub-vazio">Nenhum resultado em alta definição para <b>' + esc(estado.consulta || montarConsulta()) + '</b>.<br>Tente outro tema, outro termo de busca ou troque as fontes.</p>';
       return;
     }
     grade.innerHTML = estado.itens.map(function (item) {
       var salvo = !!estado.salvo[item.id];
-      return '<article class="bxpub-item">'
-        + '<img src="' + esc(item.thumb) + '" alt="' + esc(item.titulo) + '" loading="lazy" referrerpolicy="no-referrer" data-bxpub-img="' + esc(item.id) + '">'
+      var selos = [];
+      if (item.midia === "video") selos.push('<i class="bxpub-selo is-video">▶ Vídeo</i>');
+      if (item.midia === "360") selos.push('<i class="bxpub-selo is-360">🌐 360°</i>');
+      if (item.largura >= 3840) selos.push('<i class="bxpub-selo is-hd">4K</i>');
+      else if (item.largura >= 1920) selos.push('<i class="bxpub-selo is-hd">Full HD</i>');
+      else if (item.largura >= 1200) selos.push('<i class="bxpub-selo is-hd">HD</i>');
+      var visor = item.midia === "video"
+        ? '<video src="' + esc(item.video) + '" poster="' + esc(item.thumb) + '" preload="none" muted loop playsinline controls data-bxpub-video="' + esc(item.id) + '"></video>'
+        : '<img src="' + esc(item.thumb) + '" alt="' + esc(item.titulo) + '" loading="lazy" referrerpolicy="no-referrer" data-bxpub-img="' + esc(item.id) + '">';
+      return '<article class="bxpub-item' + (item.midia === "360" ? " is-360" : "") + '">'
+        + visor
+        + (selos.length ? '<span class="bxpub-selos">' + selos.join("") + "</span>" : "")
         + "<div>"
         + "<strong>" + esc(item.titulo) + "</strong>"
         + "<small>" + esc(item.fonte) + (item.largura ? " • " + item.largura + "×" + item.altura : "") + "</small>"
