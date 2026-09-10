@@ -336,6 +336,7 @@
       button("Ajustar", "fit", "Ajustar à tela"),
       button("↻ 90°", "rotate", "Girar imagem 90°"),
       button("🌐 360", "panorama", "Ver esta imagem girando em 360°"),
+      button("🗺 Google", "google", "Ver no Google: mapa, satélite e Street View"),
       button("▶", "play", "Iniciar apresentação"),
       button("✏️", "edit", "Editar imagem"),
       button("🏷", "legend", "Legenda da imagem (texto do app)"),
@@ -1031,6 +1032,7 @@
         close();
         openImmersionFromVisual(item);
       }
+      if (action === "google") googleAlternar();
       if (action === "close") close();
     });
     previous.addEventListener("click", () => show(index - 1));
