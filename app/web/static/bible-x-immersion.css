@@ -4046,3 +4046,32 @@ body.bx-immersion-lock {
     min-height: 2.3rem;
   }
 }
+
+/* 5.4.248e — o mesmo aperto existia no PC: botão −/＋ do zoom com 25px de
+   largura, rótulos do mapa com 8px e a legenda com 8.8px. Vale em qualquer
+   largura (as regras do 248/248b/248d cuidam só do celular). */
+.bx-immersion-dialog .bx-immersion-quadrant-controls button {
+  min-width: 2.4rem;
+}
+.bx-immersion-dialog .bx-immersion-stage-tools button {
+  min-width: 2.3rem;
+  min-height: 2.3rem;
+}
+.bx-immersion-dialog .bx-immersion-stage-tools span {
+  font-size: .8rem;
+}
+.bx-immersion-dialog .bx-immersion-scene-map-label {
+  font-size: .68rem;
+}
+.bx-immersion-dialog .bx-immersion-map-legend {
+  font-size: .78rem;
+}
+.bx-immersion-dialog .bx-immersion-map-legend button {
+  min-height: 2.1rem;
+}
+.bx-immersion-dialog .bx-immersion-note-heading span {
+  font-size: .78rem;
+}
+.bx-immersion-dialog .bx-immersion-progress-status {
+  font-size: .8rem;
+}
