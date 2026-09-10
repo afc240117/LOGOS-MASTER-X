@@ -783,6 +783,7 @@
           estado.itens = [];
           estado.reserva = [];
           porNaReserva(vivos, consulta);
+          despejarReserva();
           estado.consultaUsada = consulta;
           estado.fase = "";
           if (consulta !== estado.consulta) {
@@ -839,19 +840,15 @@
 
   function carregarMais() {
     if (estado.maisCarregando || estado.carregando) return;
-    if (estado.reserva.length) {
-      estado.itens = estado.itens.concat(estado.reserva.splice(0, LOTE));
-      desenhar();
-      return;
-    }
+    if (despejarReserva()) { desenhar(); return; }
     if (estado.semMais) return;
     estado.maisCarregando = true;
     estado.fase = "Buscando mais imagens e vídeos…";
     desenhar();
-    proximaLeva().then(function (quantos) {
+    proximaLeva().then(function () {
       estado.maisCarregando = false;
       estado.fase = "";
-      if (quantos) estado.itens = estado.itens.concat(estado.reserva.splice(0, LOTE));
+      despejarReserva();
       desenhar();
     }).catch(function (e) {
       estado.maisCarregando = false;
