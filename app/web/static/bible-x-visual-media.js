@@ -1094,6 +1094,14 @@
             + " — arraste para olhar em volta. As setas brancas no chão andam pela rua; onde elas não aparecem, o Google só tem foto esférica ali (sem rua para andar). Para andar com o 🧍 bonequinho, use «🧍 Navegar no Google»."
           : (modo === "sat" ? "🛰 Satélite" : "🗺 Mapa") + " em " + Number(lat).toFixed(4) + ", " + Number(lon).toFixed(4) + ".")
         : "🗺 Mapa de «" + texto + "». Digite o lugar e toque em 🚶 Street View para ver da rua.");
+      /* qual vista está no ar: acende o botão dela aqui dentro E na barra */
+      var nomeAcao = modo === "sv" ? "google-rua" : (modo === "sat" ? "google-sat" : "google-mapa");
+      googlePanel.querySelectorAll("[data-bxvm-google]").forEach(function (b) {
+        b.classList.toggle("is-on", b.getAttribute("data-bxvm-google") === modo);
+      });
+      overlay.querySelectorAll('.bxvm-tools [data-bxvm-action^="google"]').forEach(function (b) {
+        b.classList.toggle("is-on", b.getAttribute("data-bxvm-action") === nomeAcao);
+      });
       googleFora.href = modo === "sv" && temPos
         ? "https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=" + lat + "," + lon
         : "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(temPos ? lat + "," + lon : texto);

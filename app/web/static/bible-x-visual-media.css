@@ -150,6 +150,8 @@ body.bxvm-lock{overflow:hidden!important}.bxvm-overlay{position:fixed;inset:0;z-
 .bxvm-google-acoes{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
 .bxvm-google-acoes button{min-height:38px;padding:7px 12px;border:1px solid rgba(134,200,255,.35);border-radius:11px;background:#10243a;color:#eef8ff;font:800 .78rem/1.1 system-ui;cursor:pointer}
 .bxvm-google-acoes button:hover{background:#16405a}
+.bxvm-google-acoes button.is-on{border-color:#ffd479;background:rgba(255,212,121,.18);color:#ffe6a8}
+.bxvm-tools button.is-on{border-color:#ffd479;color:#ffe08a;background:rgba(255,212,121,.14)}
 .bxvm-google-fora{margin-left:auto;color:#8fd0ff;font:800 .76rem/1.1 system-ui;text-decoration:none}
 .bxvm-google-stage{position:relative;min-height:300px;border:1px solid rgba(134,200,255,.2);border-radius:12px;overflow:hidden;background:#02070d}
 .bxvm-google-frame{display:block;width:100%;height:min(56vh,420px);border:0}
