@@ -308,43 +308,56 @@
     estado.itens = [];
     desenhar();
 
-    var tarefas = [];
-    if (estado.fontes.wikimedia) tarefas.push(buscaWikimedia(estado.consulta).catch(function (e) { estado.avisos.push("Wikimedia Commons: " + e.message); return []; }));
-    if (estado.fontes.openverse) tarefas.push(buscaOpenverse(estado.consulta).catch(function (e) { estado.avisos.push("Openverse: " + e.message); return []; }));
-    if (estado.fontes.pexels) {
-      tarefas.push(buscaPexels(estado.consulta).catch(function (e) {
-        estado.avisos.push(e.message === "chave ausente" || e.message === "chave recusada"
-          ? "Pexels: informe sua chave em 🔑 (fica só neste navegador)"
-          : "Pexels: " + e.message);
-        return [];
-      }));
-    }
-    if (!tarefas.length) {
+    var tentativas = montarTentativas();
+    if (!Object.keys(estado.fontes).some(function (f) { return estado.fontes[f]; })) {
       estado.carregando = false;
       estado.avisos.push("Escolha ao menos uma fonte.");
       desenhar();
       return;
     }
 
-    Promise.all(tarefas).then(function (listas) {
-      var vistos = {};
-      var tudo = [];
-      listas.forEach(function (lista) {
-        (lista || []).forEach(function (item) {
-          /* o mesmo arquivo aparece em várias fontes e com títulos quase iguais:
-             a chave curta evita repetir a mesma imagem na grade */
-          var chave = semAcento(item.titulo).replace(/[^a-z0-9 ]/g, "").slice(0, 34) + "|" + item.fonte.split(" • ")[0];
-          if (vistos[chave]) return;
-          vistos[chave] = 1;
-          tudo.push(item);
+    var indice = 0;
+    var tentar = function () {
+      var consulta = tentativas[indice++];
+      var tarefas = [];
+      if (estado.fontes.wikimedia) tarefas.push(buscaWikimedia(consulta).catch(function (e) { estado.avisos.push("Wikimedia Commons: " + e.message); return []; }));
+      if (estado.fontes.openverse) tarefas.push(buscaOpenverse(consulta).catch(function (e) { estado.avisos.push("Openverse: " + e.message); return []; }));
+      if (estado.fontes.pexels) {
+        tarefas.push(buscaPexels(consulta).catch(function (e) {
+          estado.avisos.push(e.message === "chave ausente" || e.message === "chave recusada"
+            ? "Pexels: informe sua chave em 🔑 (fica só neste navegador)"
+            : "Pexels: " + e.message);
+          return [];
+        }));
+      }
+      return Promise.all(tarefas).then(function (listas) {
+        var vistos = {};
+        var tudo = [];
+        listas.forEach(function (lista) {
+          (lista || []).forEach(function (item) {
+            /* o mesmo arquivo aparece em várias fontes e com títulos quase iguais:
+               a chave curta evita repetir a mesma imagem na grade */
+            var chave = semAcento(item.titulo).replace(/[^a-z0-9 ]/g, "").slice(0, 34) + "|" + item.fonte.split(" • ")[0];
+            if (vistos[chave]) return;
+            vistos[chave] = 1;
+            tudo.push(item);
+          });
         });
+        tudo.sort(function (a, b) { return pontuar(b, consulta) - pontuar(a, consulta); });
+        if (tudo.length || indice >= tentativas.length) {
+          estado.itens = tudo;
+          estado.consultaUsada = consulta;
+          if (consulta !== estado.consulta) {
+            estado.avisos.push("Poucos resultados para «" + estado.consulta + "»: a busca foi ampliada para «" + consulta + "».");
+          }
+          estado.carregando = false;
+          desenhar();
+          return;
+        }
+        return tentar();
       });
-      var consulta = estado.consulta;
-      tudo.sort(function (a, b) { return pontuar(b, consulta) - pontuar(a, consulta); });
-      estado.itens = tudo;
-      estado.carregando = false;
-      desenhar();
-    });
+    };
+    return tentar();
   }
 
   /* ---------- salvar na Mídia X ---------- */
