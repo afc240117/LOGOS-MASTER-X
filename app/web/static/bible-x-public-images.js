@@ -84,10 +84,10 @@
   /* Termos curtos de propósito: os acervos devolvem pouca coisa quando a
      consulta tem muitas palavras (testado: 3 a 4 palavras é o limite útil). */
   var TEMAS = [
-    { id: "lugares", rotulo: "🗺 Lugares bíblicos", termos: "biblical archaeology" },
-    { id: "ruinas", rotulo: "🏺 Ruínas e arqueologia", termos: "ancient ruins" },
-    { id: "cultura", rotulo: "🏛 Cultura e costumes", termos: "ancient culture" },
-    { id: "paisagem", rotulo: "🌄 Paisagem e geografia", termos: "biblical landscape" },
+    { id: "lugares", rotulo: "🗺 Lugares bíblicos", termos: "biblical sites" },
+    { id: "ruinas", rotulo: "🏺 Ruínas e arqueologia", termos: "holy land ruins" },
+    { id: "cultura", rotulo: "🏛 Cultura e costumes", termos: "biblical archaeology" },
+    { id: "paisagem", rotulo: "🌄 Paisagem e geografia", termos: "ancient israel" },
     { id: "objetos", rotulo: "⚱ Objetos e utensílios", termos: "ancient artifacts" }
   ];
 
