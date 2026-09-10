@@ -674,8 +674,15 @@
      que o botão "Carregar mais" vai despejando. */
   function porNaReserva(itens, consulta) {
     itens.sort(function (a, b) { return pontuar(b, consulta) - pontuar(a, consulta); });
-    estado.itens = estado.itens.concat(itens.slice(0, LOTE));
-    estado.reserva = estado.reserva.concat(itens.slice(LOTE));
+    estado.reserva = estado.reserva.concat(itens);
+  }
+
+  /* Solta um lote da reserva na grade — é o que o clique no botão faz. */
+  function despejarReserva() {
+    if (!estado.reserva.length) return 0;
+    var lote = estado.reserva.splice(0, LOTE);
+    estado.itens = estado.itens.concat(lote);
+    return lote.length;
   }
 
   /* Consultas vizinhas para o "carregar mais": quando o mesmo acervo se esgota,
