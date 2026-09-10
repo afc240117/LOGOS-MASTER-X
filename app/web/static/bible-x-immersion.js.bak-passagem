@@ -3176,57 +3176,6 @@
     }
     return out;
   }
-  /* ---- 5.4.249 — ordem da Bíblia para navegar a biblioteca inteira -------
-     "João 3:16" -> [indice do livro, capitulo, versiculo]. Livro desconhecido
-     vai para o fim, para nunca sumir da lista. */
-  function bxRefOrder(value) {
-    const texto = String(value || "").trim();
-    const m = texto.match(/^(.*?)\s+(\d+)(?::(\d+)(?:-(\d+))?)?$/);
-    if (!m) return [900, 0, 0];
-    let idx = 800;
-    try {
-      if (typeof BOOK_NAMES !== "undefined" && Array.isArray(BOOK_NAMES)) {
-        const achou = BOOK_NAMES.findIndex(b => norm(b) === norm(m[1]));
-        if (achou >= 0) idx = achou;
-      }
-    } catch (_) {}
-    return [idx, Number(m[2]) || 0, Number(m[3]) || 0];
-  }
-  function bxOrdenarPorBiblia(rows) {
-    return (rows || []).slice().sort((a, b) => {
-      const ra = bxRefOrder(a && a.reference);
-      const rb = bxRefOrder(b && b.reference);
-      for (let i = 0; i < 3; i += 1) if (ra[i] !== rb[i]) return ra[i] - rb[i];
-      return String((a && a.createdAt) || "").localeCompare(String((b && b.createdAt) || ""));
-    });
-  }
-  function bxMediaAllIds(videoOnly) {
-    const out = [];
-    for (let i = 0; i < bxMediaIdx.length; i += 1) {
-      const en = bxMediaIdx[i];
-      if (!en || !en.hasData || !en.id) continue;
-      if (videoOnly === true && !en.video) continue;
-      if (videoOnly === false && en.video) continue;
-      out.push(en.id);
-    }
-    return out;
-  }
-  function bxAbrirBibliotecaInteira(ref, videoOnly, eyebrow, emptyMsg) {
-    bxMediaIdxEnsure(() => {
-      bxReadMediaByIds(bxMediaAllIds(videoOnly), (rows) => {
-        const lista = bxOrdenarPorBiblia(videoOnly ? passageRowsToVideos(rows) : passageRowsToImages(rows));
-        if (!lista.length) { bxMediaToast(emptyMsg); return; }
-        /* começa na mídia DESTE versículo; o resto da biblioteca fica antes e
-           depois dela, para as setas não pararem no fim do versículo. */
-        const alvo = lista.findIndex(row => [row.reference].concat(Array.isArray(row.relatedReferences) ? row.relatedReferences : [])
-          .some(valor => mediaRefMatches(valor || "", ref)));
-        const chave = alvo >= 0 ? String(lista[alvo].id || lista[alvo].key || "") : "";
-        if (videoOnly) openPassageVideosDirect(lista, "", eyebrow, chave);
-        else openPassageGallery(lista, "", eyebrow, chave);
-      });
-    });
-  }
-
   function bxReadMediaByIds(ids, cb) {
     if (!ids || !ids.length) { cb([]); return; }
     try {
@@ -3282,13 +3231,21 @@
   }
 
   function openVerseImagesDirect(ref) {
-    bxAbrirBibliotecaInteira(ref, false, `MÍDIA X • IMAGENS DA PASSAGEM • ${ref}`,
-      `Nenhuma imagem salva para ${ref} ainda. Gere uma no Gerador de IA.`);
+    bxOpenVerseMedia(ref, false, (rows) => {
+      const imgs = passageRowsToImages(rows);
+      if (!imgs.length) return false;
+      openPassageGallery(imgs, "", `MÍDIA X • IMAGENS DA PASSAGEM • ${ref}`, "");
+      return true;
+    }, `Nenhuma imagem salva para ${ref} ainda. Gere uma no Gerador de IA.`);
   }
 
   function openVerseVideosDirect(ref) {
-    bxAbrirBibliotecaInteira(ref, true, `MÍDIA X • VÍDEOS DA PASSAGEM • ${ref}`,
-      `Nenhum vídeo salvo para ${ref} ainda. Gere um no Gerador de IA.`);
+    bxOpenVerseMedia(ref, true, (rows) => {
+      const vids = passageRowsToVideos(rows);
+      if (!vids.length) return false;
+      openPassageVideosDirect(vids, "", `MÍDIA X • VÍDEOS DA PASSAGEM • ${ref}`, "");
+      return true;
+    }, `Nenhum vídeo salvo para ${ref} ainda. Gere um no Gerador de IA.`);
   }
 
   function openChapterSavedMedia(chap) {
