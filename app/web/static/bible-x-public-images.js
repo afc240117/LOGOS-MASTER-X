@@ -497,14 +497,22 @@
       return;
     }
 
+    var midia = midiaAtual();
     var indice = 0;
     var tentar = function () {
       var consulta = tentativas[indice++];
       var tarefas = [];
-      if (estado.fontes.wikimedia) tarefas.push(buscaWikimedia(consulta).catch(function (e) { avisar("Wikimedia Commons: " + e.message); return []; }));
-      if (estado.fontes.openverse) tarefas.push(buscaOpenverse(consulta).catch(function (e) { avisar("Openverse: " + e.message); return []; }));
+      if (estado.fontes.wikimedia) {
+        tarefas.push(buscaWikimedia(consulta, midia === "video" ? "video" : "bitmap", midia)
+          .catch(function (e) { avisar("Wikimedia Commons: " + e.message); return []; }));
+      }
+      /* Openverse só tem imagem parada: fora das buscas de vídeo */
+      if (midia !== "video" && estado.fontes.openverse) {
+        tarefas.push(buscaOpenverse(consulta).catch(function (e) { avisar("Openverse: " + e.message); return []; }));
+      }
       if (estado.fontes.pexels) {
-        tarefas.push(buscaPexels(consulta).catch(function (e) {
+        var doPexels = midia === "video" ? buscaVideosPexels(consulta) : buscaPexels(consulta);
+        tarefas.push(doPexels.catch(function (e) {
           if (e.message === "chave ausente") avisar("Pexels: falta a chave — toque em 🔑 Pexels e cole a sua (é gratuita em pexels.com/api).");
           else if (e.message === "chave recusada") avisar("Pexels recusou a chave — confira em pexels.com/api se copiou a “API Key” inteira e salve de novo em 🔑.");
           else avisar("Pexels: " + e.message);
@@ -524,26 +532,45 @@
             tudo.push(item);
           });
         });
-        /* livro/mapa digitalizado e pintura não ilustram a passagem: saem da
-           lista. Se o acervo SÓ devolveu isso, é melhor mostrar do que nada. */
-        var limpos = tudo.filter(function (item) {
-          return !ehReproducao(item.titulo) && !ehEventoModerno(item.titulo);
+        /* Arte, livro e mapa digitalizado ficam de fora DEFINITIVAMENTE — antes
+           eles voltavam quando o acervo era pobre, e era isso que enchia a grade
+           de pintura e gravura. */
+        var naoArte = tudo.filter(function (item) {
+          return !ehReproducao(item.titulo, item.categorias) && !ehEventoModerno(item.titulo);
         });
-        var escolhidos = limpos.length ? limpos : tudo;
-        escolhidos.sort(function (a, b) { return pontuar(b, consulta) - pontuar(a, consulta); });
-        /* poucos resultados costuma significar consulta larga demais: vale
-           tentar o degrau seguinte antes de aceitar uma grade quase vazia. */
-        if (escolhidos.length >= MINIMO || indice >= tentativas.length) {
-          estado.itens = escolhidos;
+        if (!naoArte.length && tudo.length) avisar("O acervo só devolveu arte, livro ou mapa digitalizado para «" + consulta + "» — nada disso ilustra a passagem.");
+        /* Alta definição primeiro. Sem HD suficiente, desce um degrau da cascata;
+           no último degrau aceita o que houver para a tela não ficar vazia. */
+        var hd = naoArte.filter(function (item) { return ehAltaDefinicao(item, midia); });
+        var ultimoDegrau = indice >= tentativas.length;
+        var grade = hd.length >= MINIMO ? hd : (naoArte.length >= MINIMO ? naoArte : (hd.length ? hd : naoArte));
+        if (!grade.length && !ultimoDegrau) return tentar();
+        if (!grade.length) {
+          estado.itens = [];
           estado.consultaUsada = consulta;
-          if (consulta !== estado.consulta) {
-            estado.avisos.push("Sem resultados para «" + estado.consulta + "» — a busca foi ampliada para «" + consulta + "».");
-          }
           estado.carregando = false;
           desenhar();
           return;
         }
-        return tentar();
+        grade.sort(function (a, b) { return pontuar(b, consulta) - pontuar(a, consulta); });
+        /* confere no navegador se a miniatura realmente abre: o que não abre não
+           entra na grade (era o cartão "só com texto") */
+        estado.fase = "Conferindo as miniaturas…";
+        desenhar();
+        return conferirMiniaturas(grade.slice(0, 40)).then(function (vivos) {
+          var perdidos = grade.length - vivos.length;
+          if (vivos.length < MINIMO && !ultimoDegrau && vivos.length < grade.length) return tentar();
+          estado.itens = vivos;
+          estado.consultaUsada = consulta;
+          estado.fase = "";
+          if (consulta !== estado.consulta) {
+            estado.avisos.push("Sem resultados para «" + estado.consulta + "» — a busca foi ampliada para «" + consulta + "».");
+          }
+          if (perdidos > 0) avisar(perdidos + " resultado(s) saíram: a miniatura não abria no navegador (imagem removida ou bloqueada na origem).");
+          if (!hd.length && vivos.length) avisar("O acervo não tinha alta definição para este tema — a grade mostra o melhor disponível.");
+          estado.carregando = false;
+          desenhar();
+        });
       });
     };
     return tentar();
