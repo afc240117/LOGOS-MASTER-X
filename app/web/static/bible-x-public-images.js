@@ -48,7 +48,7 @@
   var estado = {
     aberto: false,
     consulta: "",
-    tema: "lugares",
+    tema: "tudo",        /* abre já em "Buscar tudo": foto, vídeo e 360° juntos */
     /* Openverse sai DESLIGADO: medido no navegador, ele recusa a chamada da
        página (401/"Failed to fetch") e só fazia perder tempo e encher a tela de
        erro. O chip continua ali para quem quiser tentar. */
@@ -138,12 +138,12 @@
      foto, panorama 360 e vídeo na MESMA passada, tudo junto. Assim ninguém
      precisa escolher um e perder o outro. */
   var TEMAS = [
-    { id: "tudo", rotulo: "🔎 Tudo", termos: "biblical sites", midia: "tudo" },
+    { id: "tudo", rotulo: "🔎 Buscar tudo", termos: "biblical sites", midia: "tudo" },
     { id: "lugares", rotulo: "🗺 Lugares bíblicos", termos: "biblical sites" },
-    { id: "ruinas", rotulo: "🏺 Ruínas e arqueologia", termos: "holy land ruins" },
+    { id: "ruinas", rotulo: "🏺 Ruínas", termos: "holy land ruins" },
     { id: "cultura", rotulo: "🏛 Cultura e costumes", termos: "biblical archaeology" },
-    { id: "paisagem", rotulo: "🌄 Paisagem e geografia", termos: "ancient israel" },
-    { id: "objetos", rotulo: "⚱ Objetos e utensílios", termos: "ancient oil lamp" },
+    { id: "paisagem", rotulo: "🌄 Geografia e paisagem", termos: "ancient israel" },
+    { id: "objetos", rotulo: "⚱ Objetos", termos: "ancient oil lamp" },
     { id: "panorama", rotulo: "🌐 Panorama 360°", termos: "360", midia: "360" },
     { id: "videos", rotulo: "🎥 Vídeos", termos: "biblical sites", midia: "video" }
   ];
