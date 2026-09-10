@@ -176,27 +176,38 @@
   }
 
   /* Se a consulta cheia não devolver nada, tenta variantes mais largas —
-     nunca deixa a tela vazia quando existe imagem no acervo. */
+     nunca deixa a tela vazia quando existe imagem no acervo.
+     Ordem pensada com medição real: consulta cheia → lugar + tema → só o tema
+     (o tema sozinho sempre devolve acervo) → lugar puro → "holy land". */
   function montarTentativas() {
     var lista = [];
     var juntar = function (q) {
       q = String(q || "").replace(/\s+/g, " ").trim();
       if (q && lista.indexOf(q) === -1) lista.push(q);
     };
-    juntar(estado.consulta);
     var lugares = lugaresEmIngles();
+    var termos = temaAtual().termos;
+    juntar(estado.consulta);
+    /* "Jerusalem biblical sites" ainda é curto o bastante; já "Jerusalem holy
+       land ruins" (4 palavras) os acervos devolvem vazio — então não junta. */
+    if (lugares.length && !/^(holy land|ancient)\b/i.test(termos)) juntar(lugares[0] + " " + termos);
+    juntar(termos);
     if (lugares.length) juntar(lugares[0]);
-    juntar(temaAtual().termos);
-    juntar("holy land " + temaAtual().termos.split(" ").pop());
     juntar("holy land");
     return lista;
   }
 
-  /* Acervos públicos devolvem muita coisa digitalizada (livros, manuscritos,
-     mapas antigos). Para a passagem queremos foto do lugar: estes títulos
-     saem da lista e as fotos horizontais sobem. */
-  function ehDigitalizacao(titulo) {
-    return /\(ia |internet archive|manuscript|codex|digitized|scan(ned)?\b|\bbook\b|\blivro\b|\batlas\b|\bmap\b|\bmapa\b|etching|engraving|lithograph/i.test(String(titulo || ""));
+  /* Acervos públicos devolvem muita coisa que não é foto do lugar: livros e
+     mapas digitalizados, e reproduções (pintura, gravura, aquarela). Para a
+     passagem queremos a foto — estes títulos descem na nota. */
+  function ehReproducao(titulo) {
+    return /\(ia |internet archive|manuscript|codex|digitized|scan(ned)?\b|\bbook\b|\blivro\b|\batlas\b|\bmap\b|\bmapa\b|\bpainting\b|oil on|watercolou?r|\bdrawing\b|\bsketch\b|woodcut|etching|engraving|lithograph|\bWGA\d|museum of art/i.test(String(titulo || ""));
+  }
+
+  /* Foto de evento moderno (político, turista, festa) não serve de ilustração
+     da passagem, mesmo quando cita o lugar certo. */
+  function ehEventoModerno(titulo) {
+    return /\bpresident\b|\btrump\b|\bminister\b|ambassador|\btourist|\btour\b|selfie|\bwedding\b|festival|\bprotest\b|\bidf\b|\bsoldier/i.test(String(titulo || ""));
   }
 
   function pontuar(item, consulta) {
@@ -209,7 +220,8 @@
       if (proporcao >= 1) pontos += 1.5;
       else if (proporcao < 0.7) pontos -= 1;
     }
-    if (ehDigitalizacao(item.titulo)) pontos -= 8;
+    if (ehReproducao(item.titulo)) pontos -= 8;
+    if (ehEventoModerno(item.titulo)) pontos -= 6;
     if (item.fonte.indexOf("Pexels") === 0) pontos += 0.6;
     else if (item.fonte.indexOf("Openverse") === 0) pontos += 0.4;
     return pontos;
@@ -348,7 +360,7 @@
           estado.itens = tudo;
           estado.consultaUsada = consulta;
           if (consulta !== estado.consulta) {
-            estado.avisos.push("Poucos resultados para «" + estado.consulta + "»: a busca foi ampliada para «" + consulta + "».");
+            estado.avisos.push("Sem resultados para «" + estado.consulta + "» — a busca foi ampliada para «" + consulta + "».");
           }
           estado.carregando = false;
           desenhar();
