@@ -1063,10 +1063,14 @@
          pedido: ao tocar na imagem abre a NOSSA galeria, e lá ficam os comandos
          (⬇ baixar, ✏️ editar e salvar na Mídia X, 🏷 legenda, ⛶ tela cheia). O
          crédito e a licença do autor continuam indo junto para a Mídia X. O
-         nome do arquivo fica só no title/alt, como dica ao passar o mouse. */
+         nome do arquivo fica só no title/alt, como dica ao passar o mouse.
+         O atributo é data-bxpub-FICHA, e não data-bxpub-fonte: "fonte" é o
+         nome dos chips de fonte aqui em cima, e usá-lo aqui fazia o clique na
+         imagem ser lido como "ligar/desligar a fonte" — a tela voltava a
+         buscar em vez de abrir a galeria. */
       return '<article class="bxpub-item' + (item.midia === "360" ? " is-360" : "") + '"'
         + ' title="' + esc(item.titulo) + '"'
-        + ' data-bxpub-fonte="' + esc(item.fonte + (item.largura ? " • " + item.largura + "×" + item.altura : "") + " • " + item.autor + " • " + item.licenca) + '">'
+        + ' data-bxpub-ficha="' + esc(item.fonte + (item.largura ? " • " + item.largura + "×" + item.altura : "") + " • " + item.autor + " • " + item.licenca) + '">'
         + visor
         + (selos.length ? '<span class="bxpub-selos">' + selos.join("") + "</span>" : "")
         + "</article>";
