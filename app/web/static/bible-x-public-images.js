@@ -943,7 +943,7 @@
       ".bxpub-item{display:flex;flex-direction:column;border:1px solid rgba(134,200,255,.18);border-radius:14px;background:#061321;overflow:hidden}",
       ".bxpub-item{position:relative}",
       ".bxpub-item img,.bxpub-item video{display:block;width:100%;height:150px;object-fit:cover;background:#02070d;cursor:zoom-in}",
-      ".bxpub-item video{cursor:default}",
+      ".bxpub-item video{cursor:zoom-in}",
       ".bxpub-item.is-360 img{object-fit:contain}",
       ".bxpub-selos{position:absolute;top:8px;left:8px;display:flex;flex-wrap:wrap;gap:4px;pointer-events:none}",
       ".bxpub-selo{font-style:normal;padding:3px 7px;border-radius:999px;font-size:.62rem;font-weight:900;letter-spacing:.04em;border:1px solid rgba(0,0,0,.45);background:rgba(4,14,24,.82);color:#dff1ff}",
@@ -959,6 +959,11 @@
       ".bxpub-acoes button:hover{background:#16405a}",
       ".bxpub-acoes button.is-salvo{border-color:rgba(64,196,174,.9);background:linear-gradient(180deg,#123f3a,#0d2f2c);color:#9ff0dc}",
       ".bxpub-vazio{padding:28px 20px;text-align:center;color:#9fb5ca;font-size:.86rem}",
+      /* o botão do fim: a grade cresce a cada clique */
+      ".bxpub-mais{grid-column:1/-1;display:flex;flex-direction:column;align-items:center;gap:6px;padding:10px 0 4px}",
+      ".bxpub-mais small{color:#8fa8bd;font-size:.72rem;text-align:center}",
+      ".bxpub-btn.is-mais{min-height:46px;padding:10px 22px;font-size:.9rem;background:linear-gradient(135deg,#164b58,#102b42)}",
+      ".bxpub-btn.is-mais:disabled{opacity:.6;cursor:default}",
       ".bxpub-pe{display:flex;flex-direction:column;flex:1 1 auto;min-height:0}",
       ".bxpub-chave{display:none;flex-direction:column;gap:8px;padding:0 20px 10px}",
       ".bxpub-chave.is-on{display:flex}",
@@ -1164,7 +1169,7 @@
       + "</div></div>"
       + '<div data-bxpub-avisos></div>'
       + '<div class="bxpub-pe"><div class="bxpub-grade" data-bxpub-grade></div></div>'
-      + '<footer class="bxpub-rodape">Só entram foto, vídeo e panorama <b>em alta definição</b> — pintura, gravura, desenho, livro e mapa digitalizado ficam de fora, e resultado cuja miniatura não abre no navegador não aparece. Toque na imagem para abrir na <b>nossa galeria</b> (zoom, girar 90°, baixar, tela cheia, anterior/próxima); o botão 🔗 Origem leva ao acervo. Crédito e licença de cada autor vão junto para a Mídia X.</footer>'
+      + '<footer class="bxpub-rodape">Só entram foto, vídeo e panorama <b>em alta definição</b> — pintura, gravura, desenho, livro e mapa digitalizado ficam de fora, e resultado cuja miniatura não abre no navegador não aparece. Toque na imagem para abrir na <b>nossa galeria</b> (zoom, girar 90°, baixar, tela cheia, anterior/próxima); toque no <b>vídeo</b> para ele abrir <b>em tela cheia</b> e já tocar; o botão 🔗 Origem leva ao acervo. O <b>➕ Carregar mais</b> no fim da grade vai trazendo mais imagens e vídeos a cada toque. Crédito e licença de cada autor vão junto para a Mídia X.</footer>'
       + "</section>";
     document.body.appendChild(overlay);
     estado.aberto = true;
