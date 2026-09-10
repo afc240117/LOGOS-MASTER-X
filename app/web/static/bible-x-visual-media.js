@@ -341,6 +341,15 @@
       button("🏷", "legend", "Legenda da imagem (texto do app)"),
       button("⬇", "download", "Baixar esta imagem"),
       button("⛶", "fullscreen", "Tela cheia"),
+      /* ---- 5.4.249 — AS OPÇÕES DE VER NO GOOGLE, logo depois da tela cheia.
+         Uma por botão, para não esconder nada atrás de menu: a RUA (é onde se
+         ANDA — arraste para olhar, setas brancas no chão para caminhar), o
+         SATÉLITE e o MAPA. O ⛶ de dentro do painel põe o Google em tela cheia,
+         que é como as setas ficam grandes no celular. */
+      button("🚶", "google-rua", "Ver da RUA (Street View) — arraste para olhar em volta e toque nas setas brancas do chão para ANDAR"),
+      button("🛰", "google-sat", "Ver do SATÉLITE"),
+      button("🌍", "google-mapa", "Ver no MAPA"),
+      button("🧍", "google-fora", "Abrir o Google Maps inteiro (com o bonequinho para arrastar até a rua), em outra aba"),
       button("×", "close", "Fechar"),
     ].forEach(node => tools.appendChild(node));
     /* ---- 5.4.244 — ✏️ Editar no visualizador -------------------------------
@@ -937,20 +946,21 @@
          para a rua do próximo lugar. É assim que a pessoa percorre os cenários
          sem digitar nada: chega pelo cartão, arrasta para olhar, toca em ›. */
       if (!googlePanel.hidden) {
+        const alvo = googlePos(item, googleModo);
         const g = item.gmap || null;
-        const temCoord = item.coords && item.coords.lat !== null && item.coords.lat !== undefined;
-        if (g && Number.isFinite(Number(g.lat)) && Number.isFinite(Number(g.lon))) {
-          googleCampo.value = Number(g.lat).toFixed(5) + "," + Number(g.lon).toFixed(5);
-          googleMostrar("sv", Number(g.lat), Number(g.lon), item.title || "",
+        if (g && alvo) {
+          googleCampo.value = alvo[0].toFixed(5) + "," + alvo[1].toFixed(5);
+          googleMostrar(googleModo, alvo[0], alvo[1], item.title || "",
             (g.emoji ? g.emoji + " " : "🚶 ") + (item.title || "Street View")
               + " — você está na rua. Arraste para olhar em volta; as setas brancas no chão andam.");
-        } else if (temCoord && Number.isFinite(Number(item.coords.lon))) {
-          googleCampo.value = Number(item.coords.lat).toFixed(5) + "," + Number(item.coords.lon).toFixed(5);
-          googleMostrar(googleModo, Number(item.coords.lat), Number(item.coords.lon), "");
+        } else if (alvo) {
+          googleCampo.value = alvo[0].toFixed(5) + "," + alvo[1].toFixed(5);
+          googleMostrar(googleModo, alvo[0], alvo[1], "");
         }
       }
     };
     const close = () => {
+      if (googlePanel) googlePanel.classList.remove("is-cheio");
       stopSlides();
       document.removeEventListener("keydown", onKey);
       window.removeEventListener("resize", onResize);
@@ -985,7 +995,9 @@
     googlePanel.className = "bxvm-google-panel";
     googlePanel.hidden = true;
     googlePanel.innerHTML =
-      '<div class="bxvm-google-head"><b>🗺 Google View</b><small>Mapa e Street View aqui dentro</small><button type="button" class="bxvm-google-x" data-bxvm-google="fechar" aria-label="Fechar">×</button></div>' +
+      '<div class="bxvm-google-head"><b>🗺 Google View</b><small>Mapa e Street View aqui dentro</small>' +
+      '<button type="button" class="bxvm-google-cheio" data-bxvm-google="cheio" title="Tela cheia do Google — no celular as setas do chão ficam grandes para ANDAR" aria-label="Tela cheia do Google">⛶</button>' +
+      '<button type="button" class="bxvm-google-x" data-bxvm-google="fechar" aria-label="Fechar">×</button></div>' +
       '<div class="bxvm-google-linha"><input type="text" data-bxvm-google-campo placeholder="Lugar ou coordenadas (ex.: Muro das Lamentações, Jerusalém / 31.7767,35.2345)"></div>' +
       '<div class="bxvm-google-acoes">' +
       '<button type="button" data-bxvm-google="sv">🚶 Street View</button>' +
@@ -1086,13 +1098,43 @@
         ? "https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=" + lat + "," + lon
         : "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(temPos ? lat + "," + lon : texto);
     };
+    /* Qual coordenada usar: para ANDAR é a RUA (onde o carro do Google passou
+       e as setas do chão existem); para olhar de cima (mapa/satélite) é o SÍTIO,
+       que mostra o monumento inteiro. Publicações da web trazem só uma. */
+    const googlePos = (item, modo) => {
+      const g = item && item.gmap;
+      if (g && Number.isFinite(Number(g.ruaLat))) {
+        return modo === "sv" ? [Number(g.ruaLat), Number(g.ruaLon)] : [Number(g.lat), Number(g.lon)];
+      }
+      const c = item && item.coords;
+      if (c && c.lat !== null && c.lat !== undefined && Number.isFinite(Number(c.lon))) return [Number(c.lat), Number(c.lon)];
+      return null;
+    };
+    /* Abre o painel do Google já num modo (é o que os botões da barra fazem). */
+    const googleAbrirModo = modo => {
+      if (googlePanel.hidden) {
+        googleAlternar();
+        if (googlePanel.hidden) return;
+      }
+      googleModo = modo;
+      const alvo = googlePos(items[index] || {}, modo);
+      if (alvo) {
+        googleCampo.value = alvo[0].toFixed(5) + "," + alvo[1].toFixed(5);
+        googleMostrar(modo, alvo[0], alvo[1], "");
+        return;
+      }
+      googleIr(modo);
+    };
     const googleIr = modo => {
       const item = items[index] || {};
       const texto = (googleCampo.value || "").trim();
       /* "31.7767,35.2345" digitado à mão também vale */
       const par = texto.match(/^(-?\d{1,3}(?:[.,]\d+)?)\s*[,;\s]\s*(-?\d{1,3}(?:[.,]\d+)?)$/);
       if (par) { googleMostrar(modo, Number(par[1].replace(",", ".")), Number(par[2].replace(",", ".")), texto); return; }
-      if (!texto && item.coords && item.coords.lat !== null && item.coords.lat !== undefined) { googleMostrar(modo, item.coords.lat, item.coords.lon, ""); return; }
+      if (!texto) {
+        const alvo = googlePos(item, modo);
+        if (alvo) { googleCampo.value = alvo[0].toFixed(5) + "," + alvo[1].toFixed(5); googleMostrar(modo, alvo[0], alvo[1], ""); return; }
+      }
       if (!texto) { googlePe.textContent = "Digite o lugar (ou as coordenadas) para eu abrir o mapa aqui dentro."; googleCampo.focus(); return; }
       googleStage.innerHTML = '<p class="bxvm-google-vazio">Procurando «' + texto + '» no mapa…</p>';
       fetch("/api/bible/public-images/geo?q=" + encodeURIComponent(texto), { headers: { Accept: "application/json" } })
@@ -1109,9 +1151,9 @@
         if (editPanel && !editPanel.hidden) closeEditPanel();
         if (legendPanel && !legendPanel.hidden) closeLegendPanel();
         const item = items[index] || {};
-        const temPos = item.coords && item.coords.lat !== null && item.coords.lat !== undefined;
-        googleCampo.value = temPos
-          ? Number(item.coords.lat).toFixed(5) + "," + Number(item.coords.lon).toFixed(5)
+        const alvo = googlePos(item, googleModo);
+        googleCampo.value = alvo
+          ? alvo[0].toFixed(5) + "," + alvo[1].toFixed(5)
           : String(item.title || "").replace(/\.[a-z0-9]{2,5}$/i, "").slice(0, 80);
       }
       googlePanel.hidden = !abrir;
@@ -1121,7 +1163,14 @@
     googlePanel.addEventListener("click", event => {
       const acao = event.target.closest("[data-bxvm-google]")?.dataset.bxvmGoogle;
       if (!acao) return;
-      if (acao === "fechar") { googlePanel.hidden = true; googleStage.innerHTML = ""; return; }
+      if (acao === "fechar") { googlePanel.classList.remove("is-cheio"); googlePanel.hidden = true; googleStage.innerHTML = ""; return; }
+      if (acao === "cheio") {
+        googlePanel.classList.toggle("is-cheio");
+        /* o iframe é recriado porque a altura muda junto com a tela */
+        const alvo = googlePos(items[index] || {}, googleModo);
+        if (alvo) googleMostrar(googleModo, alvo[0], alvo[1], "");
+        return;
+      }
       googleIr(acao);
     });
 
@@ -1204,6 +1253,19 @@
         openImmersionFromVisual(item);
       }
       if (action === "google") googleAlternar();
+      if (action === "google-rua") googleAbrirModo("sv");
+      if (action === "google-sat") googleAbrirModo("sat");
+      if (action === "google-mapa") googleAbrirModo("mapa");
+      /* O bonequinho do Street View (arrastar até a rua) só existe no Google
+         Maps inteiro — nenhum endereço de embed o mostra. Este botão leva a
+         pessoa direto para lá, já na posição do lugar. */
+      if (action === "google-fora") {
+        const alvo = googlePos(items[index] || {}, "sv");
+        const alvoUrl = alvo
+          ? "https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=" + alvo[0] + "," + alvo[1]
+          : "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(String((items[index] || {}).title || ""));
+        window.open(alvoUrl, "_blank", "noopener");
+      }
       if (action === "close") close();
     });
     previous.addEventListener("click", () => show(index - 1));
