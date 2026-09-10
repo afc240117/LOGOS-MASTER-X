@@ -3341,51 +3341,6 @@
       vidBtn.dataset.bxVerseSavedBound = "1";
       vidBtn.addEventListener("click", (ev) => { ev.preventDefault(); ev.stopImmediatePropagation(); openVerseVideosDirect(vidBtn.getAttribute("data-bx-verse-videos") || ref); });
     }
-    /* 5.4.249 — GOOGLE VIEW abaixo de CADA versículo. Verde suave quando o
-       texto cita um lugar do nosso catálogo (bible-x-lugares.js) e o clique
-       cai JÁ NA RUA, que é onde o Street View tem as setas brancas de andar;
-       branco quando não cita, igual aos botões das imagens geradas — e aí a
-       janela abre com o campo de busca pronto e o aviso dizendo que este
-       versículo não tem lugar no catálogo, em vez de inventar um. */
-    let gBtn = tools.querySelector("[data-bx-verse-gmap]");
-    if (!gBtn) { gBtn = document.createElement("button"); gBtn.type = "button"; gBtn.setAttribute("data-bx-verse-gmap", ref); place(gBtn); }
-    else gBtn.setAttribute("data-bx-verse-gmap", ref);
-    /* o texto do versículo só muda se mudou o versículo ou a tradução; a
-       chave ref+tamanho evita re-varrer o catálogo inteiro a cada passada do
-       observador (são ~150 lugares e uns 450 apelidos por versículo) */
-    const textoVerso = (() => { const n = verse.querySelector(".lmx-bible-v3-text, [data-bx-verse-text]"); return n ? String(n.innerText || n.textContent || "").trim() : ""; })();
-    const gChave = `${ref}|${textoVerso.length}`;
-    if (gBtn.dataset.bxGmapKey !== gChave) {
-      gBtn.dataset.bxGmapKey = gChave;
-      const achar = window.BibleXLugaresAchar;
-      const lugar = (achar && textoVerso) ? achar(textoVerso) : null;
-      const lista = window.BibleXLugares || [];
-      gBtn.dataset.bxGmapIdx = lugar ? String(lista.indexOf(lugar)) : "";
-      gBtn.classList.toggle("is-lugar", !!lugar);
-      gBtn.textContent = lugar ? (lugar[0] || "🗺") + " " + lugar[1] : "🗺 Google View";
-      const anda = !!(lugar && window.BibleXLugaresTemRua && window.BibleXLugaresTemRua(lugar));
-      gBtn.title = lugar
-        ? lugar[1] + (anda ? " — dá para ANDAR pela rua no Street View" : " — o Google não tem carro de rua aqui; abre no satélite") + " · toque para abrir"
-        : "Este versículo não cita um lugar do nosso catálogo — abre o Google View com a busca pronta";
-    }
-    if (!gBtn.dataset.bxGmapBound) {
-      gBtn.dataset.bxGmapBound = "1";
-      gBtn.addEventListener("click", (ev) => {
-        ev.preventDefault(); ev.stopImmediatePropagation();
-        const janela = window.BibleXGoogleView;
-        if (!janela) return;
-        const lista = window.BibleXLugares || [];
-        const i = Number(gBtn.dataset.bxGmapIdx);
-        const lugar = (gBtn.dataset.bxGmapIdx !== "" && isFinite(i) && lista[i]) ? lista[i] : null;
-        janela.abrir(lugar);
-      });
-    }
-    if (!document.getElementById("bxVerse249Gmap")) {
-      const gs = document.createElement("style");
-      gs.id = "bxVerse249Gmap";
-      gs.textContent = `#bOut .lmx-bible-v3-tools button[data-bx-verse-gmap]{border:1px solid #d3e2ea!important;border-radius:10px;padding:6px 11px!important;background:#f7fafc!important;color:#0b2a3a!important;font-weight:800;font-size:.72rem;line-height:1.15;min-height:26px;display:inline-flex;align-items:center;gap:5px;cursor:pointer;box-shadow:none!important}#bOut .lmx-bible-v3-tools button[data-bx-verse-gmap]:hover{background:#e7f4f6!important}#bOut .lmx-bible-v3-tools button[data-bx-verse-gmap].is-lugar{border-color:rgba(76,175,110,.9)!important;color:#08381d!important;background:linear-gradient(180deg,#ddf6e4,#a9e7c0)!important;box-shadow:0 0 0 1px rgba(76,175,110,.28),0 0 12px rgba(96,206,140,.35)}#bOut .lmx-bible-v3-tools button[data-bx-verse-gmap].is-lugar:hover{background:linear-gradient(180deg,#d0f2da,#96dfb1)!important}@media(max-width:680px){#bOut .lmx-bible-v3-tools button[data-bx-verse-gmap]{padding:5px 9px!important;font-size:.7rem}}`;
-      document.head.appendChild(gs);
-    }
     const scanKey = `${verseMediaRevision}|${ref}`;
     if (imgBtn.dataset.bxVerseSavedScan === scanKey) return;
     imgBtn.dataset.bxVerseSavedScan = scanKey;
