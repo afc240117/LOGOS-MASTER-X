@@ -160,16 +160,43 @@
   /* Monta a consulta: lugar(es) da passagem + tema. Se não houver lugar,
      cai para o nome do livro em inglês + "holy land". */
   function montarConsulta() {
-    var lugares = lugaresDaPassagem().slice(0, 2).map(function (l) { return l.en; });
+    var vistos = [];
+    lugaresDaPassagem().forEach(function (l) {
+      if (vistos.indexOf(l.en) === -1) vistos.push(l.en); /* jerusalém/jerusalem não entram duas vezes */
+    });
+    var lugares = vistos.slice(0, 2);
     var base = lugares.length ? lugares.join(" ") : (livroEmIngles() ? livroEmIngles() + " holy land" : "holy land biblical");
     return (base + " " + temaAtual().termos).replace(/\s+/g, " ").trim();
+  }
+
+  /* Acervos públicos devolvem muita coisa digitalizada (livros, manuscritos,
+     mapas antigos). Para a passagem queremos foto do lugar: estes títulos
+     saem da lista e as fotos horizontais sobem. */
+  function ehDigitalizacao(titulo) {
+    return /\(ia |internet archive|manuscript|codex|digitized|scan(ned)?\b|\bbook\b|\blivro\b|\batlas\b|\bmap\b|\bmapa\b|etching|engraving|lithograph/i.test(String(titulo || ""));
+  }
+
+  function pontuar(item, consulta) {
+    var titulo = semAcento(item.titulo);
+    var termos = semAcento(consulta).split(/\s+/).filter(function (p) { return p.length > 3; });
+    var pontos = 0;
+    termos.forEach(function (p) { if (titulo.indexOf(p) !== -1) pontos += 2; });
+    if (item.largura && item.altura) {
+      var proporcao = item.largura / item.altura;
+      if (proporcao >= 1) pontos += 1.5;
+      else if (proporcao < 0.7) pontos -= 1;
+    }
+    if (ehDigitalizacao(item.titulo)) pontos -= 8;
+    if (item.fonte.indexOf("Pexels") === 0) pontos += 0.6;
+    else if (item.fonte.indexOf("Openverse") === 0) pontos += 0.4;
+    return pontos;
   }
 
   /* ---------- fontes ---------- */
   function buscaWikimedia(consulta) {
     var url = "https://commons.wikimedia.org/w/api.php?action=query&format=json&origin=*"
       + "&generator=search&gsrnamespace=6&gsrlimit=" + LIMITE_WIKIMEDIA
-      + "&gsrsearch=" + encodeURIComponent(consulta)
+      + "&gsrsearch=" + encodeURIComponent("filetype:bitmap " + consulta)
       + "&prop=imageinfo&iiprop=url|extmetadata|size|user&iiurlwidth=560";
     return fetch(url, { headers: { Accept: "application/json" } })
       .then(function (r) { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); })
