@@ -49,7 +49,10 @@
     aberto: false,
     consulta: "",
     tema: "lugares",
-    fontes: { wikimedia: true, openverse: true, pexels: false },
+    /* Openverse sai DESLIGADO: medido no navegador, ele recusa a chamada da
+       página (401/"Failed to fetch") e só fazia perder tempo e encher a tela de
+       erro. O chip continua ali para quem quiser tentar. */
+    fontes: { wikimedia: true, openverse: false, pexels: false },
     carregando: false,
     fase: "",
     itens: [],
@@ -614,19 +617,17 @@
     var salto = (pag - 1) * LIMITE_WIKIMEDIA;
     var tarefas = [];
     var erroPexels = function (e) {
-      if (e.message === "chave ausente") avisar("Pexels: sem chave aqui — toque em 🔑 Pexels e cole a sua (é gratuita em pexels.com/api).");
-      else if (e.message === "chave recusada") avisar("Pexels recusou a chave — confira em pexels.com/api se copiou a “API Key” inteira e salve de novo em 🔑.");
-      else if (e.message === "cota esgotada") avisar("Pexels: cota esgotada por agora — as outras fontes continuam trazendo resultados.");
-      else avisar("Pexels: " + e.message);
+      /* Falha de acervo não vira texto na tela: console e pronto. */
+      registrar("Pexels: " + (e && e.message ? e.message : e));
       return [];
     };
     if (estado.fontes.wikimedia) {
       if (midia === "video") {
         tarefas.push(buscaWikimedia(consulta, "video", "video", salto)
-          .catch(function (e) { avisar("Wikimedia Commons: " + e.message); return []; }));
+          .catch(function (e) { registrar("Wikimedia Commons: " + e.message); return []; }));
       } else {
         tarefas.push(buscaWikimedia(consulta, "bitmap", midia === "tudo" ? "foto" : midia, salto)
-          .catch(function (e) { avisar("Wikimedia Commons: " + e.message); return []; }));
+          .catch(function (e) { registrar("Wikimedia Commons: " + e.message); return []; }));
         /* o acervo de vídeo do Commons é outra busca: em "Tudo" ele entra junto */
         if (midia === "tudo") {
           tarefas.push(buscaWikimedia(consulta, "video", "video", salto).catch(function () { return []; }));
@@ -636,7 +637,7 @@
     /* Openverse só tem imagem parada — fora das buscas de vídeo e de 360 */
     if ((midia === "foto" || midia === "tudo") && estado.fontes.openverse) {
       tarefas.push(buscaOpenverse(consulta, pag)
-        .catch(function (e) { avisar("Openverse: " + e.message); return []; }));
+        .catch(function (e) { registrar("Openverse: " + e.message); return []; }));
     }
     if (estado.fontes.pexels) {
       var tipos = midia === "tudo" ? ["foto", "video"] : [midia === "video" ? "video" : "foto"];
@@ -762,7 +763,7 @@
             && !ehEventoModerno(item.titulo, item)
             && ehDoTema(item);
         });
-        if (!naoArte.length && tudo.length) avisar("O acervo só devolveu arte, livro, mapa digitalizado ou vídeo/360 fora do tema para «" + consulta + "» — nada disso ilustra a passagem.");
+        if (!naoArte.length && tudo.length) registrar("só arte, livro ou vídeo/360 fora do tema em «" + consulta + "»");
         if (naoArte.length > melhorSemHD.length) melhorSemHD = naoArte;
         var hd = naoArte.filter(function (item) { return ehAltaDefinicao(item, midia); });
         var ultimoDegrau = indice >= tentativas.length;
@@ -795,10 +796,10 @@
           estado.consultaUsada = consulta;
           estado.fase = "";
           if (consulta !== estado.consulta) {
-            estado.avisos.push("Sem resultados para «" + estado.consulta + "» — a busca foi ampliada para «" + consulta + "».");
+            registrar("busca ampliada de «" + estado.consulta + "» para «" + consulta + "»");
           }
-          if (perdidos > 0) avisar(perdidos + " resultado(s) saíram: a miniatura não abria no navegador (imagem removida ou bloqueada na origem).");
-          if (usouSemHD && vivos.length) avisar("Nenhuma fonte tinha alta definição para este tema — a grade mostra o melhor disponível.");
+          if (perdidos > 0) registrar(perdidos + " miniatura(s) não abriram e saíram da grade.");
+          if (usouSemHD && vivos.length) registrar("sem alta definição neste tema: mostrando o melhor disponível.");
           estado.carregando = false;
           desenhar();
         });
@@ -861,7 +862,7 @@
     }).catch(function (e) {
       estado.maisCarregando = false;
       estado.fase = "";
-      avisar("Não deu para carregar mais agora: " + (e && e.message ? e.message : e));
+      registrar("carregar mais falhou: " + (e && e.message ? e.message : e));
       desenhar();
     });
   }
