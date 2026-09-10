@@ -172,6 +172,31 @@
   function semAcento(txt) {
     return String(txt || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
   }
+  /* Quem digita "mar vermelho" procura o Mar Vermelho — mas o acervo público
+     é indexado em inglês e devolveria quase nada. Aqui o termo digitado passa
+     pelo mesmo dicionário de lugares da Bíblia (LUGARES) antes de virar busca,
+     sem acento e sem diferenciar maiúsculas. Termo que não está no dicionário
+     segue como o usuário escreveu. */
+  function traduzirTermo(txt) {
+    var original = String(txt || "");
+    if (!original) return original;
+    var alvo = semAcento(original);
+    var saida = original;
+    var desloc = 0;
+    Object.keys(LUGARES).forEach(function (pt) {
+      var chave = semAcento(pt);
+      if (chave.length < 4) return;          /* siglas de 2-3 letras casariam demais */
+      var de = alvo.indexOf(chave);
+      while (de !== -1) {
+        var en = LUGARES[pt];
+        saida = saida.slice(0, de + desloc) + en + saida.slice(de + desloc + chave.length);
+        desloc += en.length - chave.length;
+        de = alvo.indexOf(chave, de + chave.length);
+      }
+    });
+    return saida.replace(/\s+/g, " ").trim();
+  }
+
   function limparHtml(txt) {
     var d = document.createElement("div");
     d.innerHTML = String(txt || "");
@@ -280,6 +305,7 @@
     var midia = midiaAtual();
     var lugar = lugares.length ? lugares[0] : "";
     juntar(estado.consulta);
+    juntar(traduzirTermo(estado.consulta));
 
     /* 360: medido no Commons — "Jerusalem 360" devolve 360 de verdade do lugar
        (até 25000×1650), enquanto "360 panorama" sozinho devolve os Alpes. O
@@ -1015,10 +1041,12 @@
     if (subtitulo) subtitulo.textContent = ref ? "Passagem aberta: " + ref + (lugaresDaPassagem().length ? " • " + lugaresDaPassagem().slice(0, 3).map(function (l) { return l.pt; }).join(", ") : "") : "Escolha a passagem na Bíblia para o vínculo automático";
 
     var campoBusca = $("[data-bxpub-busca]", overlay);
-    if (campoBusca && !campoBusca.value) campoBusca.value = estado.consulta || montarConsulta();
     /* guarda o texto que NÓS escrevemos no campo: é como o clique no tema sabe
        se pode trocar o texto (automático) ou se deve respeitar o do usuário */
-    if (campoBusca && !estado.consultaAuto) estado.consultaAuto = campoBusca.value;
+    if (campoBusca && !campoBusca.value) {
+      campoBusca.value = estado.consulta || montarConsulta();
+      estado.consultaAuto = campoBusca.value;
+    }
 
     $$("[data-bxpub-tema]", overlay).forEach(function (b) {
       b.classList.toggle("is-on", b.getAttribute("data-bxpub-tema") === estado.tema);
@@ -1041,7 +1069,9 @@
       var linhas = estado.avisos.map(function (a) { return '<p class="bxpub-aviso">' + esc(a) + "</p>"; });
       if (!estado.carregando && estado.itens.length) {
         linhas.push('<p class="bxpub-aviso is-conta">' + estado.itens.length + " resultado(s) • busca: «"
-          + esc(estado.consultaUsada || estado.consulta) + "»</p>");
+          + esc(estado.consulta) + "»"
+          + (estado.consultaUsada && estado.consultaUsada !== estado.consulta ? " • busca ampliada" : "")
+          + "</p>");
       }
       avisos.innerHTML = linhas.join("");
     }
