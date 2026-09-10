@@ -4013,3 +4013,17 @@ body.bx-immersion-lock {
   .bx-immersion-dialog .bx-immersion-mini-map > small { font-size: .8rem; line-height: 1.45; }
   .bx-immersion-dialog .bx-immersion-mini-map-actions button { font-size: .8rem; min-height: 2.2rem; }
 }
+
+/* 5.4.248b — a faixa de chips é filha de uma coluna flex com align-items
+   start: sem max-width ela crescia para 677px, escapava do topo e ficava
+   cortada sem poder rolar. Aqui ela volta a ser uma faixa do topo. */
+@media (max-width: 760px) {
+  .bx-immersion-dialog .bx-immersion-meta {
+    align-self: stretch;
+    max-width: 100%;
+  }
+
+  /* Alvos de toque que ainda ficavam abaixo de 32px. */
+  .bx-immersion-dialog .bx-immersion-quadrant-controls button { min-width: 2.4rem; }
+  .bx-immersion-dialog .bx-immersion-map-legend button { font-size: .78rem; min-height: 2.2rem; }
+}
