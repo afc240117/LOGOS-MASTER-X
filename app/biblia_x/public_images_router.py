@@ -96,21 +96,35 @@ async def geo(request: Request, q: str = Query(..., min_length=2, max_length=120
     if not _liberado(ip):
         raise HTTPException(status_code=429, detail="muitas consultas seguidas; tente daqui a pouco")
 
-    params = {"q": consulta, "format": "jsonv2", "limit": 1, "addressdetails": 0}
     headers = {"User-Agent": _UA, "Accept": "application/json", "Accept-Language": "pt-BR,pt;q=0.9"}
+    # "Muro das Lamentações, Jerusalém" não existe com esse nome no mapa aberto,
+    # mas "Jerusalém" existe: se a consulta inteira não achar nada, tenta o que
+    # vem antes da vírgula. Duas tentativas no máximo, para não abusar do serviço.
+    tentativas = [consulta]
+    antes = consulta.split(",")[0].strip()
+    if antes and antes.lower() != consulta.lower():
+        tentativas.append(antes)
+
+    achados: list = []
     try:
         async with httpx.AsyncClient(timeout=_TIMEOUT) as cliente:
-            resposta = await cliente.get(_NOMINATIM, params=params, headers=headers)
+            for texto in tentativas:
+                resposta = await cliente.get(
+                    _NOMINATIM,
+                    params={"q": texto, "format": "jsonv2", "limit": 1, "addressdetails": 0},
+                    headers=headers,
+                )
+                if resposta.status_code >= 400:
+                    raise HTTPException(status_code=502, detail=f"mapa respondeu {resposta.status_code}")
+                try:
+                    achados = resposta.json() or []
+                except ValueError:
+                    achados = []
+                if achados:
+                    break
     except httpx.HTTPError as erro:
         raise HTTPException(status_code=502, detail=f"mapa inacessível: {erro}") from erro
 
-    if resposta.status_code >= 400:
-        raise HTTPException(status_code=502, detail=f"mapa respondeu {resposta.status_code}")
-
-    try:
-        achados = resposta.json() or []
-    except ValueError:
-        achados = []
     if not achados:
         raise HTTPException(status_code=404, detail=f"não encontrei \"{consulta}\" no mapa")
 
