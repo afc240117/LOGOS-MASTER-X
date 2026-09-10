@@ -724,6 +724,7 @@
   function buscar() {
     if (estado.carregando) return;
     estado.consulta = ($("[data-bxpub-busca]") || {}).value || estado.consulta || montarConsulta();
+    estado.consultaAuto = "";   /* quem digitou foi o usuário: o tema não mexe mais nisso */
     estado.carregando = true;
     estado.avisos = [];
     estado.itens = [];
@@ -1016,6 +1017,9 @@
 
     var campoBusca = $("[data-bxpub-busca]", overlay);
     if (campoBusca && !campoBusca.value) campoBusca.value = estado.consulta || montarConsulta();
+    /* guarda o texto que NÓS escrevemos no campo: é como o clique no tema sabe
+       se pode trocar o texto (automático) ou se deve respeitar o do usuário */
+    if (campoBusca && !estado.consultaAuto) estado.consultaAuto = campoBusca.value;
 
     $$("[data-bxpub-tema]", overlay).forEach(function (b) {
       b.classList.toggle("is-on", b.getAttribute("data-bxpub-tema") === estado.tema);
@@ -1203,7 +1207,16 @@
       if (tema) {
         estado.tema = tema.getAttribute("data-bxpub-tema");
         var campo = $("[data-bxpub-busca]", overlay);
-        if (campo) campo.value = montarConsulta();
+        /* O que o usuário DIGITOU manda: trocar de tema troca o filtro (foto,
+           vídeo, 360°, tudo), não as palavras dele. Antes este clique reescrevia
+           o campo com o texto automático do tema e a busca voltava para a
+           passagem aberta ("Jerusalem") — quem procurava "mar vermelho" perdia
+           o termo. Só preenche sozinho quando o campo está vazio ou ainda tem o
+           texto automático que nós mesmos colocamos. */
+        var digitado = campo ? String(campo.value || "").trim() : "";
+        var eraAutomatico = !digitado || digitado === String(estado.consultaAuto || "");
+        if (campo && eraAutomatico) campo.value = montarConsulta();
+        if (campo) estado.consultaAuto = campo.value;
         estado.consulta = campo ? campo.value : estado.consulta;
         buscar();
         return;
