@@ -772,6 +772,44 @@
     return null;
   }
 
+  /* ---------- abrir no NOSSO visualizador ----------
+     Antes o clique mandava para o site de origem. Agora abre na galeria da casa
+     (zoom, ↻ 90°, ⬇ baixar, ⛶ tela cheia, anterior/próxima) e o 360 abre no
+     panorama. O link da origem continua no botão 🔗 Origem. */
+  function paraGaleria(item) {
+    return {
+      title: item.titulo,
+      src: item.original || item.thumb,
+      thumb: item.thumb,
+      credit: item.autor + " • " + item.fonte,
+      license: item.licenca,
+      pageUrl: item.pagina || "",
+      description: item.midia === "360" ? "Panorama 360° — " + item.fonte : item.fonte,
+      _reference: referenciaAtual()
+    };
+  }
+
+  function abrirNoVisualizador(item) {
+    var api = window.BibleXVisualMedia;
+    if (!api) return false;
+    try {
+      if (item.midia === "360" && typeof api.openPanorama === "function") {
+        api.openPanorama(paraGaleria(item), { eyebrow: "MÍDIA X • PANORAMA 360°" });
+        return true;
+      }
+      if (typeof api.openGallery !== "function") return false;
+      /* a galeria navega só entre as imagens paradas — vídeo toca no próprio cartão */
+      var lista = estado.itens.filter(function (i) { return i.midia !== "video"; });
+      var inicio = 0;
+      for (var i = 0; i < lista.length; i++) if (lista[i].id === item.id) inicio = i;
+      if (!lista.length) return false;
+      api.openGallery(lista.map(paraGaleria), inicio, { eyebrow: "MÍDIA X • ACERVOS PÚBLICOS" });
+      return true;
+    } catch (_) {
+      return false;
+    }
+  }
+
   function copiar(txt) {
     if (navigator.clipboard && navigator.clipboard.writeText) return navigator.clipboard.writeText(txt);
     var a = document.createElement("textarea");
@@ -855,10 +893,15 @@
         return;
       }
       if (alvo.closest("[data-bxpub-buscar]")) { buscar(); return; }
+      /* o vídeo toca no próprio cartão (controles nativos) */
+      if (alvo.closest("[data-bxpub-video]")) return;
       var img = alvo.closest("[data-bxpub-img]");
       if (img) {
         var it = itemPorId(img.getAttribute("data-bxpub-img"));
-        if (it && it.pagina) window.open(it.pagina, "_blank", "noopener");
+        if (!it) return;
+        /* abre na nossa galeria; só cai no site de origem se ela não existir */
+        if (abrirNoVisualizador(it)) return;
+        if (it.pagina) window.open(it.pagina, "_blank", "noopener");
         return;
       }
       var abrirBtn = alvo.closest("[data-bxpub-abrir]");
