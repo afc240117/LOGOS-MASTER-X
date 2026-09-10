@@ -976,7 +976,9 @@
       '<button type="button" data-bxvm-google="sv">🚶 Street View</button>' +
       '<button type="button" data-bxvm-google="mapa">🗺 Mapa</button>' +
       '<button type="button" data-bxvm-google="sat">🛰 Satélite</button>' +
-      '<a class="bxvm-google-fora" data-bxvm-google-fora target="_blank" rel="noopener">Abrir no Google ↗</a>' +
+      /* o 🧍 bonequinho e as setas de andar só existem no Google Maps inteiro —
+         nenhum endereço de embed os mostra (conferido). Por isso este atalho. */
+      '<a class="bxvm-google-fora" data-bxvm-google-fora target="_blank" rel="noopener" title="Abre o Google Maps em outra aba, com o bonequinho para arrastar até a rua">🧍 Navegar no Google ↗</a>' +
       "</div>" +
       '<div class="bxvm-google-stage" data-bxvm-google-stage></div>' +
       '<p class="bxvm-google-pe" data-bxvm-google-pe></p>';
