@@ -958,6 +958,106 @@
       else if (event.key === " ") { event.preventDefault(); toggleSlides(); }
     };
 
+    /* ---- 5.4.249 — 🗺 Google View DENTRO da biblioteca --------------------
+       Mapa, satélite e Street View numa janela nossa (iframe), sem sair do app
+       e SEM chave de API: são os endereços de embed do próprio Google. O Street
+       View aceita posição (lat,lon), não nome de lugar — então: se a foto já
+       trouxer a coordenada (as do Wikimedia Commons trazem, é a posição do
+       arquivo), o botão abre direto nela; se não, o lugar digitado é convertido
+       em coordenadas pelo NOSSO servidor (/api/bible/public-images/geo) e, sem
+       coordenada nenhuma, cai no mapa com o nome digitado mesmo. */
+    const googlePanel = document.createElement("div");
+    googlePanel.className = "bxvm-google-panel";
+    googlePanel.hidden = true;
+    googlePanel.innerHTML =
+      '<div class="bxvm-google-head"><b>🗺 Google View</b><small>Mapa e Street View aqui dentro</small><button type="button" class="bxvm-google-x" data-bxvm-google="fechar" aria-label="Fechar">×</button></div>' +
+      '<div class="bxvm-google-linha"><input type="text" data-bxvm-google-campo placeholder="Lugar ou coordenadas (ex.: Muro das Lamentações, Jerusalém / 31.7767,35.2345)"></div>' +
+      '<div class="bxvm-google-acoes">' +
+      '<button type="button" data-bxvm-google="sv">🚶 Street View</button>' +
+      '<button type="button" data-bxvm-google="mapa">🗺 Mapa</button>' +
+      '<button type="button" data-bxvm-google="sat">🛰 Satélite</button>' +
+      '<a class="bxvm-google-fora" data-bxvm-google-fora target="_blank" rel="noopener">Abrir no Google ↗</a>' +
+      "</div>" +
+      '<div class="bxvm-google-stage" data-bxvm-google-stage></div>' +
+      '<p class="bxvm-google-pe" data-bxvm-google-pe></p>';
+    overlay.appendChild(googlePanel);
+    const googleCampo = $("[data-bxvm-google-campo]", googlePanel);
+    const googleStage = $("[data-bxvm-google-stage]", googlePanel);
+    const googlePe = $("[data-bxvm-google-pe]", googlePanel);
+    const googleFora = $("[data-bxvm-google-fora]", googlePanel);
+    let googleModo = "sv";
+
+    const googleUrl = (modo, lat, lon, texto) => {
+      const temPos = lat !== null && lat !== undefined && lon !== null && lon !== undefined;
+      if (temPos) {
+        const pos = lat + "," + lon;
+        if (modo === "sv") return "https://maps.google.com/maps?layer=c&cbll=" + pos + "&cbp=11,0,0,0,0&output=svembed";
+        if (modo === "sat") return "https://www.google.com/maps?q=" + pos + "&t=k&z=18&output=embed";
+        return "https://www.google.com/maps?q=" + pos + "&z=17&output=embed";
+      }
+      return "https://www.google.com/maps?q=" + encodeURIComponent(texto || "") + "&z=14&output=embed";
+    };
+    const googleMostrar = (modo, lat, lon, texto, aviso) => {
+      googleModo = modo;
+      const temPos = lat !== null && lat !== undefined && lon !== null && lon !== undefined;
+      googleStage.innerHTML = "";
+      const frame = document.createElement("iframe");
+      frame.className = "bxvm-google-frame";
+      frame.src = googleUrl(modo, lat, lon, texto);
+      frame.loading = "lazy";
+      frame.referrerPolicy = "no-referrer";
+      frame.allowFullscreen = true;
+      frame.setAttribute("allow", "fullscreen; geolocation");
+      frame.title = "Google Maps dentro do LOGOS MASTER X";
+      googleStage.appendChild(frame);
+      googlePe.textContent = aviso || (temPos
+        ? (modo === "sv"
+          ? "🚶 Street View em " + Number(lat).toFixed(4) + ", " + Number(lon).toFixed(4) + " — arraste para olhar ao redor e ande pelas setas."
+          : (modo === "sat" ? "🛰 Satélite" : "🗺 Mapa") + " em " + Number(lat).toFixed(4) + ", " + Number(lon).toFixed(4) + ".")
+        : "🗺 Mapa de «" + texto + "». Digite o lugar e toque em 🚶 Street View para ver da rua.");
+      googleFora.href = modo === "sv" && temPos
+        ? "https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=" + lat + "," + lon
+        : "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(temPos ? lat + "," + lon : texto);
+    };
+    const googleIr = modo => {
+      const item = items[index] || {};
+      const texto = (googleCampo.value || "").trim();
+      /* "31.7767,35.2345" digitado à mão também vale */
+      const par = texto.match(/^(-?\d{1,3}(?:[.,]\d+)?)\s*[,;\s]\s*(-?\d{1,3}(?:[.,]\d+)?)$/);
+      if (par) { googleMostrar(modo, Number(par[1].replace(",", ".")), Number(par[2].replace(",", ".")), texto); return; }
+      if (!texto && item.coords && item.coords.lat !== null && item.coords.lat !== undefined) { googleMostrar(modo, item.coords.lat, item.coords.lon, ""); return; }
+      if (!texto) { googlePe.textContent = "Digite o lugar (ou as coordenadas) para eu abrir o mapa aqui dentro."; googleCampo.focus(); return; }
+      googleStage.innerHTML = '<p class="bxvm-google-vazio">Procurando «' + texto + '» no mapa…</p>';
+      fetch("/api/bible/public-images/geo?q=" + encodeURIComponent(texto), { headers: { Accept: "application/json" } })
+        .then(r => (r.ok ? r.json() : null))
+        .then(d => {
+          if (d && d.lat !== null && d.lat !== undefined) googleMostrar(modo, Number(d.lat), Number(d.lon), texto, "📍 " + (d.nome || texto));
+          else googleMostrar("mapa", null, null, texto, "Não achei as coordenadas de «" + texto + "» — mostrei o mapa da busca.");
+        })
+        .catch(() => googleMostrar("mapa", null, null, texto, "Sem resposta do servidor do mapa — mostrei o mapa da busca."));
+    };
+    const googleAlternar = () => {
+      const abrir = googlePanel.hidden;
+      if (abrir) {
+        if (editPanel && !editPanel.hidden) closeEditPanel();
+        if (legendPanel && !legendPanel.hidden) closeLegendPanel();
+        const item = items[index] || {};
+        const temPos = item.coords && item.coords.lat !== null && item.coords.lat !== undefined;
+        googleCampo.value = temPos
+          ? Number(item.coords.lat).toFixed(5) + "," + Number(item.coords.lon).toFixed(5)
+          : String(item.title || "").replace(/\.[a-z0-9]{2,5}$/i, "").slice(0, 80);
+      }
+      googlePanel.hidden = !abrir;
+      if (abrir) googleIr(googleModo);
+      else googleStage.innerHTML = "";
+    };
+    googlePanel.addEventListener("click", event => {
+      const acao = event.target.closest("[data-bxvm-google]")?.dataset.bxvmGoogle;
+      if (!acao) return;
+      if (acao === "fechar") { googlePanel.hidden = true; googleStage.innerHTML = ""; return; }
+      googleIr(acao);
+    });
+
     image.addEventListener("load", () => { loading.hidden = true; image.classList.add("loaded"); updateFit(); });
     image.addEventListener("error", () => { loading.textContent = "Não foi possível carregar esta imagem."; });
     const onResize = () => updateFit();
