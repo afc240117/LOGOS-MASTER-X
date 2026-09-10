@@ -477,6 +477,9 @@
     else if (megapixels >= 2) pontos += 1;
     if (item.largura >= 3840) pontos += 1.5; /* 4K */
     if (item.midia === "360") pontos += 1;
+    /* O cartão do 🗺 Google é a porta da VISTA AO CHÃO: ele vai na frente da
+       grade (senão ficava na reserva, atrás de 30 fotos, e ninguém achava). */
+    if (item.midia === "gmap") pontos += 9;
     if (item.midia === "video") pontos += 1;
     /* Pexels é a fonte PRINCIPAL: sobe na frente quando existe resultado dele */
     if (item.fonte.indexOf("Pexels") === 0) pontos += 2.6;
@@ -660,24 +663,25 @@
      com nada, mostra variedade de cenário do mesmo jeito, porque a ideia é
      justamente dar o que ver. Tocar no cartão cai na rua, arrastando. */
   var LUGARES_GOOGLE = [
-    ["🧱", "Muro das Lamentações", 31.7767469, 35.2344484],
-    ["✝️", "Santo Sepulcro", 31.7784463, 35.2297723],
-    ["🚶", "Via Dolorosa", 31.7795250, 35.2327100],
-    ["🕊", "Getsêmani", 31.7794160, 35.2397330],
-    ["🏔", "Monte das Oliveiras", 31.7784000, 35.2437000],
-    ["🌊", "Mar da Galileia", 32.8808000, 35.5750000],
-    ["💧", "Rio Jordão (Qasr al-Yahud)", 31.8375000, 35.5350000],
-    ["⭐", "Belém — Natividade", 31.7042000, 35.2075000],
-    ["🏠", "Nazaré", 32.6996000, 35.3035000],
-    ["🎺", "Jericó", 31.8700000, 35.4440000],
-    ["🏜", "Massada", 31.3156000, 35.3537000],
-    ["⛰", "Monte Sinai", 28.5392000, 33.9755000],
-    ["🐪", "Pirâmides de Gizé", 29.9792000, 31.1342000],
-    ["🏛", "Areópago (Atenas)", 37.9715000, 23.7267000],
-    ["🏟", "Coliseu (Roma)", 41.8902000, 12.4922000],
-    ["🏺", "Éfeso", 37.9397000, 27.3417000],
-    ["🏝", "Patmos", 37.3094000, 26.5470000],
-    ["⛪", "Corinto", 37.9060000, 22.8790000]
+    /* emoji, nome, lat, lon, apelidos de busca (o que a pessoa digitaria) */
+    ["🧱", "Muro das Lamentações", 31.7767469, 35.2344484, "jerusalem muro lamentacoes western wall"],
+    ["✝️", "Santo Sepulcro", 31.7784463, 35.2297723, "jerusalem santo sepulcro holy sepulchre cruz"],
+    ["🚶", "Via Dolorosa", 31.7795250, 35.2327100, "jerusalem via dolorosa caminho cruz"],
+    ["🕊", "Getsêmani", 31.7794160, 35.2397330, "jerusalem getsemani horto oliveiras"],
+    ["🏔", "Monte das Oliveiras", 31.7784000, 35.2437000, "jerusalem monte oliveiras ascensao"],
+    ["🌊", "Mar da Galileia", 32.8808000, 35.5750000, "galileia tiberiades genesare mar"],
+    ["💧", "Rio Jordão (Qasr al-Yahud)", 31.8375000, 35.5350000, "jordao batismo joao batista rio"],
+    ["⭐", "Belém — Natividade", 31.7042000, 35.2075000, "belem natal natividade manjedoura"],
+    ["🏠", "Nazaré", 32.6996000, 35.3035000, "nazare anunciaçao jesus infancia"],
+    ["🎺", "Jericó", 31.8700000, 35.4440000, "jerico muralhas jordao cidade"],
+    ["🏜", "Massada", 31.3156000, 35.3537000, "massada herodes fortaleza deserto"],
+    ["⛰", "Monte Sinai", 28.5392000, 33.9755000, "sinai horebe moises dez mandamentos"],
+    ["🐪", "Pirâmides de Gizé", 29.9792000, 31.1342000, "egito gize piramides farao"],
+    ["🏛", "Areópago (Atenas)", 37.9715000, 23.7267000, "atenas areopago paulo grecia"],
+    ["🏟", "Coliseu (Roma)", 41.8902000, 12.4922000, "roma coliseu paulo imperio"],
+    ["🏺", "Éfeso", 37.9397000, 27.3417000, "efeso artemis paulo asia menor"],
+    ["🏝", "Patmos", 37.3094000, 26.5470000, "patmos apocalipse joao ilha"],
+    ["⛪", "Corinto", 37.9060000, 22.8790000, "corinto paulo grecia igreja"]
   ];
 
   /* Emblema do lugar (SVG no próprio dado): é o que fica no cartão quando a
@@ -731,7 +735,9 @@
     var palavras = semAcento(String(consulta || "").toLowerCase())
       .split(/[^a-z0-9]+/).filter(function (p) { return p.length > 2; });
     var notas = LUGARES_GOOGLE.map(function (lugar, i) {
-      var nome = semAcento(String(lugar[1]).toLowerCase());
+      /* casa com o nome do lugar E com os apelidos: quem digita "Jerusalém"
+         acha o Muro das Lamentações, o Santo Sepulcro e a Via Dolorosa */
+      var nome = semAcento(String(lugar[1]) + " " + String(lugar[4] || "")).toLowerCase();
       var nota = 0;
       palavras.forEach(function (p) { if (nome.indexOf(p) >= 0) nota += 1; });
       return { lugar: lugar, indice: i, nota: nota };
