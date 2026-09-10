@@ -744,7 +744,16 @@
     });
     var acertos = notas.filter(function (x) { return x.nota > 0; })
       .sort(function (a, b) { return b.nota - a.nota || a.indice - b.indice; });
-    var escolhidos = (acertos.length ? acertos : notas).slice(0, acertos.length ? 8 : 6);
+    /* Casou: o que casou vem primeiro. Se casou pouco, completa com os outros
+       para a pessoa ter sempre o que explorar (piso de 4 lugares na grade);
+       não casou nada: variedade de cenário, que é a graça do botão. */
+    var escolhidos;
+    if (acertos.length) {
+      var resto = notas.filter(function (x) { return x.nota === 0; });
+      escolhidos = acertos.concat(resto).slice(0, Math.max(4, Math.min(8, acertos.length)));
+    } else {
+      escolhidos = notas.slice(0, 6);
+    }
     return escolhidos.map(function (x) {
       var lugar = x.lugar;
       return {
