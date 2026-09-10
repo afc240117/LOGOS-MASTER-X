@@ -150,9 +150,17 @@
   }
 
   /* A busca em cascata repete a mesma falha a cada degrau: o aviso entra uma
-     vez só, senão a tela mostra a mesma linha três vezes. */
+     vez só, senão a tela mostra a mesma linha três vezes.
+     Só entra aqui o que o usuário precisa LER (uma chave que falta, por
+     exemplo). Erro técnico de acervo — "HTTP 401", "Failed to fetch" — vai para
+     o console e a tela segue mostrando o que veio de bom, como ele pediu. */
   function avisar(msg) {
-    if (msg && estado.avisos.indexOf(msg) === -1) estado.avisos.push(msg);
+    if (!msg) return;
+    registrar(msg);
+    if (estado.avisos.indexOf(msg) === -1) estado.avisos.push(msg);
+  }
+  function registrar(msg) {
+    try { console.warn("[Fontes públicas] " + msg); } catch (_) {}
   }
 
   /* ---------- utilidades ---------- */
@@ -946,7 +954,10 @@
       ".bxpub-chip.is-on{border-color:rgba(244,199,107,.72);background:rgba(244,199,107,.16);color:#ffe9b6}",
       ".bxpub-aviso{margin:0 20px 8px;padding:8px 12px;border:1px solid rgba(255,199,110,.36);border-radius:10px;background:rgba(120,72,20,.22);color:#ffdfa6;font-size:.78rem}",
       ".bxpub-aviso.is-conta{border-color:rgba(120,190,255,.28);background:rgba(24,58,92,.28);color:#bcd7ef}",
-      ".bxpub-grade{display:grid;grid-template-columns:repeat(auto-fill,minmax(196px,1fr));gap:12px;padding:14px 20px;overflow:auto;flex:1 1 auto}",
+      /* grid-auto-rows:max-content é o que impede as linhas de serem esmagadas
+         quando a grade tem muito item e altura fixa: sem isso o cartão ficava
+         com 34px e a miniatura não aparecia — só uma tira, "formato de botão". */
+      ".bxpub-grade{display:grid;grid-template-columns:repeat(auto-fill,minmax(196px,1fr));grid-auto-rows:max-content;gap:12px;padding:14px 20px;overflow:auto;flex:1 1 auto}",
       ".bxpub-item{display:flex;flex-direction:column;border:1px solid rgba(134,200,255,.18);border-radius:14px;background:#061321;overflow:hidden}",
       ".bxpub-item{position:relative}",
       ".bxpub-item img,.bxpub-item video{display:block;width:100%;height:150px;object-fit:cover;background:#02070d;cursor:zoom-in}",
