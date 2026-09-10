@@ -3908,3 +3908,108 @@ body.bx-immersion-lock {
     overflow: visible;
   }
 }
+
+/* ============================================================
+   5.4.248 — MODO IMERSÃO ("Entrar na história"): respiro no celular.
+   Achados da auditoria (MOB 390/360 e PC 1280):
+   (1) As "Conexões da cena" vinham em 4 colunas em QUALQUER largura — a
+       regra de 2 colunas (max-width:1120px) ficava ANTES da base no
+       arquivo e morria. Os cartões caíam para 76px e o texto era esmagado
+       numa coluna de 14px: era este o "visual apertado".
+   (2) As abas nasciam cortadas: 24px de altura útil contra 50px de
+       conteúdo (e 41px contra 56px no PC), porque overflow-x:auto zera o
+       min-height do item flex. No celular o trilho tinha 814px em 388px,
+       então metade das abas ficava fora da tela.
+   (3) O topo ocupava 379px (45% da tela): os chips de meta empilhavam
+       3 linhas (144px) e o rodapé tomava outros 187px.
+   (4) Alvos de toque de 16px (−/＋) e legendas de 8px a 10px.
+   Este bloco fica por último de propósito: prevalece sobre as escalas
+   acumuladas acima.
+   ============================================================ */
+
+/* (1) Conexões da cena: largura mínima legível em qualquer tela. */
+.bx-immersion-dialog .bx-immersion-connection-hub {
+  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+}
+
+/* (2) Abas: altura própria — nunca mais cortadas ao meio. */
+.bx-immersion-dialog .bx-immersion-tabs {
+  flex: 0 0 auto;
+  min-height: 4.1rem;
+}
+
+@media (max-width: 760px) {
+  /* (3a) Topo enxuto: título menor e chips de meta numa faixa rolável só. */
+  .bx-immersion-dialog .bx-immersion-topbar { gap: .3rem; padding: .7rem .8rem; }
+  .bx-immersion-dialog .bx-immersion-topbar h2 { font-size: 1.28rem; line-height: 1.2; }
+  .bx-immersion-dialog .bx-immersion-subtitle { font-size: .88rem; line-height: 1.4; }
+  .bx-immersion-dialog .bx-immersion-meta {
+    flex-wrap: nowrap;
+    gap: .3rem;
+    margin-top: .4rem;
+    overflow-x: auto;
+    padding-bottom: .12rem;
+    scrollbar-width: none;
+  }
+  .bx-immersion-dialog .bx-immersion-meta::-webkit-scrollbar { display: none; }
+  .bx-immersion-dialog .bx-immersion-meta span { font-size: .74rem; padding: .28rem .5rem; white-space: nowrap; }
+
+  /* (2b) Abas em duas linhas: as cinco visíveis, sem arrastar às cegas. */
+  .bx-immersion-dialog .bx-immersion-tabs {
+    flex-wrap: wrap;
+    gap: .3rem;
+    min-height: 0;
+    overflow: visible;
+    padding: .45rem .7rem;
+  }
+  .bx-immersion-dialog .bx-immersion-tabs .bx-immersion-tab {
+    flex: 1 1 auto;
+    font-size: .78rem;
+    justify-content: center;
+    min-height: 2.4rem;
+    padding: .4rem .55rem;
+  }
+
+  /* (3b) Rodapé: nota curta e as três ações numa única fileira. */
+  .bx-immersion-dialog .bx-immersion-footer { gap: .5rem; padding: .6rem .7rem; }
+  .bx-immersion-dialog .bx-immersion-source-note { font-size: .78rem; line-height: 1.4; }
+  .bx-immersion-dialog .bx-immersion-footer-actions {
+    display: grid;
+    gap: .35rem;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .bx-immersion-dialog .bx-immersion-footer-actions .bx-immersion-action-btn {
+    font-size: .72rem;
+    min-height: 2.3rem;
+    padding: .3rem .35rem;
+    text-align: center;
+  }
+
+  /* (4a) Controles de quadrante: alvo de toque real e faixa distribuída. */
+  .bx-immersion-dialog .bx-immersion-quadrant-controls {
+    gap: .3rem;
+    justify-content: space-between;
+    min-height: 0;
+    padding: .3rem .45rem;
+  }
+  .bx-immersion-dialog .bx-immersion-quadrant-controls strong { font-size: .84rem; }
+  .bx-immersion-dialog .bx-immersion-quadrant-controls span { font-size: .8rem; }
+  .bx-immersion-dialog .bx-immersion-quadrant-controls button {
+    font-size: .98rem;
+    min-height: 2.2rem;
+    min-width: 2.2rem;
+    padding: .2rem .35rem;
+  }
+  .bx-immersion-dialog .bx-immersion-quadrant-controls [data-imm-quadrant-action="fullscreen"] {
+    font-size: .78rem;
+    min-width: 4.2rem;
+  }
+
+  /* (4b) Legendas que estavam entre 8px e 10px viram texto legível. */
+  .bx-immersion-dialog .bx-immersion-scene-map-label { font-size: .7rem; }
+  .bx-immersion-dialog .bx-immersion-map-legend button { font-size: .76rem; min-height: 1.9rem; }
+  .bx-immersion-dialog .bx-immersion-note-heading span { font-size: .76rem; }
+  .bx-immersion-dialog .bx-immersion-progress-status { font-size: .76rem; line-height: 1.4; }
+  .bx-immersion-dialog .bx-immersion-mini-map > small { font-size: .8rem; line-height: 1.45; }
+  .bx-immersion-dialog .bx-immersion-mini-map-actions button { font-size: .8rem; min-height: 2.2rem; }
+}
