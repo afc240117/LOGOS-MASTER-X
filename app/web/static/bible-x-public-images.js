@@ -1234,6 +1234,9 @@
     });
     $$("[data-bxpub-fonte]", overlay).forEach(function (b) {
       var id = b.getAttribute("data-bxpub-fonte");
+      /* o 🗺 está SEMPRE aceso: o Google View nunca sai do ar (sempre
+         navegável); o que este chip controla é o resto */
+      estado.fontes.google = true;
       b.classList.toggle("is-on", !!estado.fontes[id]);
       /* o 🗺 sozinho na fileira é o MODO Google View: fica marcado com ouro */
       b.classList.toggle("is-so", id === "google" && !!estado.fontes.google
@@ -1475,7 +1478,13 @@
            segundo toque devolve exatamente as fontes que estavam ligadas —
            nada se perde. */
         if (nome === "google") {
-          if (!estado.fontes.google) {
+          /* O 🗺 NUNCA DESliga: o Google View fica SEMPRE aceso, sempre
+             navegável. Este toque mexe nas OUTRAS fontes:
+               • com as outras ligadas → desmarca todas; a tela fica só com a
+                 navegação de rua (Street View), que é o que se pediu;
+               • tocando de novo → as outras voltam, e o 🗺 continua aceso. */
+          var outrasLigadas = !!(estado.fontes.wikimedia || estado.fontes.openverse || estado.fontes.pexels);
+          if (outrasLigadas) {
             estado.fontesAntesGoogle = {
               wikimedia: !!estado.fontes.wikimedia,
               openverse: !!estado.fontes.openverse,
@@ -1483,15 +1492,15 @@
             };
             estado.fontes = { wikimedia: false, openverse: false, pexels: false, google: true };
             estado.avisoGoogle = "🗺 Modo Google View: as outras fontes foram desmarcadas e a tela mostra só a navegação de rua. "
-              + "Toque num cartão para cair na rua, arraste para olhar em volta e use as setas brancas do chão para andar. "
-              + "Toque no 🗺 de novo para voltar as fontes.";
+              + "Toque num cartão para cair na rua, arraste para olhar em volta e use as setas brancas do chão para ANDAR. "
+              + "Toque no 🗺 de novo para as outras fontes voltarem (o 🗺 fica sempre aceso).";
           } else {
             var antes = estado.fontesAntesGoogle || { wikimedia: true, openverse: true, pexels: true };
             estado.fontes = {
               wikimedia: !!antes.wikimedia,
               openverse: !!antes.openverse,
               pexels: !!antes.pexels,
-              google: false
+              google: true
             };
             estado.avisoGoogle = "";
           }
