@@ -335,6 +335,7 @@
       button("+", "zoom-in", "Aumentar zoom"),
       button("Ajustar", "fit", "Ajustar à tela"),
       button("↻ 90°", "rotate", "Girar imagem 90°"),
+      button("🌐 360", "panorama", "Ver esta imagem girando em 360°"),
       button("▶", "play", "Iniciar apresentação"),
       button("✏️", "edit", "Editar imagem"),
       button("🏷", "legend", "Legenda da imagem (texto do app)"),
@@ -988,6 +989,24 @@
       if (action === "zoom-out") setScale(scale - .25);
       if (action === "fit") setScale(1);
       if (action === "rotate") setAngle(angle + 90);
+      /* 5.4.249 — "ver uma imagem normal em 360°": reabre a imagem que está na
+         tela no visualizador de panorama (esfera girável, arrastar para olhar
+         ao redor). Abre POR CIMA da galeria, então fechar o 360° volta para a
+         mesma imagem, sem perder o lugar. Serve para qualquer imagem: foto
+         panorâmica de verdade fica certa; foto comum vira uma vista imersiva. */
+      if (action === "panorama") {
+        const it = items[index] || {};
+        if (!it.src) { editToast("Esta imagem não tem endereço para abrir em 360°."); return; }
+        try {
+          openPanorama({ ...it, description: it.description || "Vista 360° da imagem" }, {
+            eyebrow: (options.eyebrow || "MÍDIA X") + " • 360°",
+            autoRotate: true,
+          });
+          editToast("🌐 Modo 360°: arraste para olhar ao redor • × volta para a galeria");
+        } catch (_) {
+          editToast("Não foi possível abrir em 360° nesta tela.");
+        }
+      }
       if (action === "play") toggleSlides();
       if (action === "fullscreen") requestFullScreen(dialog);
       if (action === "edit") { if (legendPanel && !legendPanel.hidden) closeLegendPanel(); toggleEditPanel(); }
