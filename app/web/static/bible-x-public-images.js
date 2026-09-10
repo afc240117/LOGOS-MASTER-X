@@ -245,12 +245,62 @@
   /* Acervos públicos devolvem muita coisa que não é foto do lugar: livros e
      mapas digitalizados, e reproduções (pintura, gravura, aquarela). Para a
      passagem queremos a foto — estes títulos descem na nota. */
-  function ehReproducao(titulo) {
+  /* Arte e papelada. O usuário pediu bloqueio: pintura/gravura/desenho e livro
+     ou mapa digitalizado não ilustram a passagem, então saem da lista de vez
+     (antes só caíam de nota e voltavam quando o acervo era pobre). */
+  var NAO_E_FOTO = /paint|oil on|watercolou?r|gouache|tempera|\bfresco|aquarela|\bdrawing\b|\bsketch|woodcut|etching|engraving|lithograph|aquatint|mezzotint|caricature|woodblock|\bposter\b|postcard|illuminat|\bicon\b|iconost|triptych|altarpiece|polyptych|\bsculpture|statue|statuette|\bbust\b|\brelief\b|tapestry|mosaic|stained glass|\bWGA\d|museum of art|national gallery|mus[ée]e|pinacoteca|kunsthalle|rijksmuseum|louvre|uffizi|\bprado\b|hermitage|art institute|getty museum|auction|christie|sotheby|photochrom|stereograph|stereo view|lantern slide|facsimile|reprint|manuscript|codex|papyrus|digitized|scan(ned)?\b|\(ia |internet archive|short history|history of|\bbook\b|\blivro\b|\batlas\b|\bmap\b|\bmapa\b|gravura|pintura|desenho|estampa/i;
+
+  /* As categorias do Wikimedia denunciam arte mesmo quando o título é inocente
+     ("Jerusalem" numa pintura de 1870). Vale mais que o título. */
+  var CATEGORIA_ARTE = /painting|drawing|engraving|woodcut|lithograph|\bprint|etching|artwork|art of|sculpture|statue|\bicon|manuscript|\bbook|old map|\bmaps\b|illustration|portrait|postcard|photochrom|stereograph|watercolou?r|fresco|mosaic|tapestry|illuminat|museum|archive|collection of/i;
+
+  function ehReproducao(titulo, categorias) {
     var t = String(titulo || "");
     /* título com ano de 1600 a 1949 quase sempre é publicação antiga digitalizada
        ("LASKARIS ALEXANDROS 1856 A SHORT HISTORY OF THE CHURCH"), não foto. */
     if (/\b(1[6-9]\d{2}|19[0-4]\d)\b/.test(t)) return true;
-    return /\(ia |internet archive|manuscript|codex|digitized|scan(ned)?\b|\bbook\b|\blivro\b|\batlas\b|\bmap\b|\bmapa\b|short history|history of|\bpainting\b|oil on|watercolou?r|\bdrawing\b|\bsketch\b|woodcut|etching|engraving|lithograph|\bWGA\d|museum of art/i.test(t);
+    if (NAO_E_FOTO.test(t)) return true;
+    var cats = Array.isArray(categorias) ? categorias.join(" | ") : String(categorias || "");
+    return !!cats && CATEGORIA_ARTE.test(cats);
+  }
+
+  /* Alta definição: sem medida confiável a imagem passa (a miniatura real decide
+     depois), mas com medida pequena não entra. */
+  function ehAltaDefinicao(item, midia) {
+    var min = minimoDaMidia(midia);
+    if (!item.largura || !item.altura) return true;
+    return item.largura >= min.largura && item.altura >= min.altura;
+  }
+
+  /* ---------- miniatura de verdade ----------
+     O acervo devolve URL que não abre (hotlink bloqueado, arquivo removido) e o
+     cartão ficava só com o texto. Aqui a imagem é carregada de fato antes de
+     entrar na grade; o que não carrega não aparece. */
+  function miniaturaViva(url, limite) {
+    return new Promise(function (resolve) {
+      if (!url) { resolve(false); return; }
+      var img = new Image();
+      var encerrado = false;
+      var fim = function (ok) {
+        if (encerrado) return;
+        encerrado = true;
+        clearTimeout(relogio);
+        img.onload = img.onerror = null;
+        resolve(ok);
+      };
+      var relogio = setTimeout(function () { fim(false); }, limite || 8000);
+      img.onload = function () { fim(img.naturalWidth > 2 && img.naturalHeight > 2); };
+      img.onerror = function () { fim(false); };
+      img.referrerPolicy = "no-referrer";
+      img.decoding = "async";
+      img.src = url;
+    });
+  }
+
+  function conferirMiniaturas(lista) {
+    return Promise.all(lista.map(function (item) {
+      return miniaturaViva(item.thumb).then(function (ok) { return ok ? item : null; });
+    })).then(function (arr) { return arr.filter(Boolean); });
   }
 
   /* Foto de evento moderno (político, turista, festa) não serve de ilustração
