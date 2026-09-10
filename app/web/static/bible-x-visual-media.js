@@ -335,7 +335,6 @@
       button("+", "zoom-in", "Aumentar zoom"),
       button("Ajustar", "fit", "Ajustar à tela"),
       button("↻ 90°", "rotate", "Girar imagem 90°"),
-      button("🌐 360", "panorama", "Ver esta imagem girando em 360°"),
       button("🗺 Google", "google", "Ver no Google: mapa, satélite e Street View"),
       button("▶", "play", "Iniciar apresentação"),
       button("✏️", "edit", "Editar imagem"),
@@ -980,6 +979,10 @@
          nenhum endereço de embed os mostra (conferido). Por isso este atalho. */
       '<a class="bxvm-google-fora" data-bxvm-google-fora target="_blank" rel="noopener" title="Abre o Google Maps em outra aba, com o bonequinho para arrastar até a rua">🧍 Navegar no Google ↗</a>' +
       "</div>" +
+      '<div class="bxvm-google-passeios">' +
+      '<b>🧭 Passeios prontos — toque e você já cai na rua:</b>' +
+      '<div class="bxvm-google-chips" data-bxvm-google-chips></div>' +
+      "</div>" +
       '<div class="bxvm-google-stage" data-bxvm-google-stage></div>' +
       '<p class="bxvm-google-pe" data-bxvm-google-pe></p>';
     overlay.appendChild(googlePanel);
@@ -988,6 +991,51 @@
     const googlePe = $("[data-bxvm-google-pe]", googlePanel);
     const googleFora = $("[data-bxvm-google-fora]", googlePanel);
     let googleModo = "sv";
+
+    /* ---- 5.4.249 — Passeios prontos -------------------------------------
+       A pessoa não precisa saber procurar: toca no lugar e o Google View já
+       abre a RUA ali dentro (360°, arrastando para olhar em volta). São
+       coordenadas de lugares bíblicos com imagem de rua/foto esférica do
+       Google, escolhidas para dar variedade de cenário. */
+    const PASSEIOS = [
+      ["🧱", "Muro das Lamentações", 31.7767469, 35.2344484],
+      ["✝️", "Santo Sepulcro", 31.7784463, 35.2297723],
+      ["🚶", "Via Dolorosa", 31.7795250, 35.2327100],
+      ["🕊", "Getsêmani", 31.7794160, 35.2397330],
+      ["🏔", "Monte das Oliveiras", 31.7784000, 35.2437000],
+      ["🌊", "Mar da Galileia", 32.8808000, 35.5750000],
+      ["💧", "Rio Jordão (Qasr al-Yahud)", 31.8375000, 35.5350000],
+      ["⭐", "Belém — Natividade", 31.7042000, 35.2075000],
+      ["🏠", "Nazaré", 32.6996000, 35.3035000],
+      ["🎺", "Jericó", 31.8700000, 35.4440000],
+      ["🏜", "Massada", 31.3156000, 35.3537000],
+      ["⛰", "Monte Sinai", 28.5392000, 33.9755000],
+      ["🐪", "Pirâmides de Gizé", 29.9792000, 31.1342000],
+      ["🏛", "Areópago (Atenas)", 37.9715000, 23.7267000],
+      ["🏟", "Coliseu (Roma)", 41.8902000, 12.4922000],
+      ["🏺", "Éfeso", 37.9397000, 27.3417000],
+      ["🏝", "Patmos", 37.3094000, 26.5470000],
+      ["⛪", "Corinto", 37.9060000, 22.8790000],
+    ];
+    const chipsPasseio = $("[data-bxvm-google-chips]", googlePanel);
+    if (chipsPasseio) {
+      chipsPasseio.innerHTML = PASSEIOS.map((p, i) =>
+        '<button type="button" data-bxvm-passeio="' + i + '" title="Ir para ' + p[1] + '">' + p[0] + " " + p[1] + "</button>"
+      ).join("") +
+        '<button type="button" class="is-sorte" data-bxvm-passeio="sorte" title="Escolher um lugar para mim">🎲 Surpreenda-me</button>';
+      chipsPasseio.addEventListener("click", event => {
+        const alvo = event.target.closest("[data-bxvm-passeio]");
+        if (!alvo) return;
+        const valor = alvo.getAttribute("data-bxvm-passeio");
+        const passeio = valor === "sorte"
+          ? PASSEIOS[Math.floor(Math.random() * PASSEIOS.length)]
+          : PASSEIOS[Number(valor)];
+        if (!passeio) return;
+        googleCampo.value = passeio[1];
+        googleMostrar("sv", passeio[2], passeio[3], passeio[1],
+          passeio[0] + " " + passeio[1] + " — você está na rua. Arraste para olhar em volta; as setas brancas no chão andam. Sem seta = o Google só tem foto esférica aqui.");
+      });
+    }
 
     const googleUrl = (modo, lat, lon, texto) => {
       const temPos = lat !== null && lat !== undefined && lon !== null && lon !== undefined;
@@ -1098,7 +1146,11 @@
          ao redor). Abre POR CIMA da galeria, então fechar o 360° volta para a
          mesma imagem, sem perder o lugar. Serve para qualquer imagem: foto
          panorâmica de verdade fica certa; foto comum vira uma vista imersiva. */
-      if (action === "panorama") {
+      /* 5.4.249 — o botao 🌐 360 saiu: girar uma foto comum na esfera nao
+         ajudava ninguem. A imersao de verdade agora e o 🗺 Google View, que
+         leva a pessoa para dentro da rua. O trecho abaixo fica inerte caso
+         algum modulo antigo ainda peca a acao. */
+      if (action === "panorama" && false) {
         const it = items[index] || {};
         if (!it.src) { editToast("Esta imagem não tem endereço para abrir em 360°."); return; }
         try {
