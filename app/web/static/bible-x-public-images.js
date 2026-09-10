@@ -856,7 +856,7 @@
       + "</div></div>"
       + '<div data-bxpub-avisos></div>'
       + '<div class="bxpub-pe"><div class="bxpub-grade" data-bxpub-grade></div></div>'
-      + '<footer class="bxpub-rodape">Imagens de acervos de terceiros (Wikimedia Commons, Openverse, Pexels). Cada autor e licença aparece no cartão — confira a licença na página de origem antes de reutilizar. O crédito é salvo junto quando você manda para a Mídia X.</footer>'
+      + '<footer class="bxpub-rodape">Só entram foto, vídeo e panorama <b>em alta definição</b> — pintura, gravura, desenho, livro e mapa digitalizado ficam de fora, e resultado cuja miniatura não abre no navegador não aparece. Toque na imagem para abrir na <b>nossa galeria</b> (zoom, girar 90°, baixar, tela cheia, anterior/próxima); o botão 🔗 Origem leva ao acervo. Crédito e licença de cada autor vão junto para a Mídia X.</footer>'
       + "</section>";
     document.body.appendChild(overlay);
     estado.aberto = true;
