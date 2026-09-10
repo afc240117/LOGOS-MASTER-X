@@ -731,6 +731,21 @@
     return b;
   }
 
+  /* Botão da fileira de ferramentas do versículo (a mesma do ☀️ Raio-X,
+     🖼 Gerar imagem, 💬 Comentários, 🖼 Imagem da passagem): fica junto delas,
+     abaixo do texto, e leva a referência e o texto DAQUELE versículo para a
+     busca — assim os lugares citados no versículo entram na consulta. */
+  function botaoVerso(ref) {
+    var b = document.createElement("button");
+    b.type = "button";
+    b.setAttribute("data-bx-public-images", "1");
+    b.setAttribute("data-bxpub-ref", ref);
+    b.className = "bxpub-disparo-verso";
+    b.textContent = "🖼 Fontes públicas";
+    b.title = "Buscar imagens de acervos públicos sobre " + ref;
+    return b;
+  }
+
   var pendente = false;
   function garantirBotoes() {
     if (pendente) return;
@@ -739,6 +754,22 @@
       pendente = false;
       var dockNav = document.querySelector(".bx-verse-ai-dock nav");
       if (dockNav && !dockNav.querySelector("[data-bx-public-images]")) dockNav.appendChild(botaoDock());
+
+      /* uma fileira por versículo: entra antes do ＋, como as demais */
+      $$(".lmx-bible-v3-tools").forEach(function (tools) {
+        var ref = "";
+        var linha = tools.closest("[data-ref]");
+        if (linha) ref = linha.getAttribute("data-ref") || "";
+        var meu = tools.querySelector("[data-bxpub-ref]");
+        if (!ref) { if (meu) meu.remove(); return; }
+        if (meu) {
+          if (meu.getAttribute("data-bxpub-ref") !== ref) meu.setAttribute("data-bxpub-ref", ref);
+          return;
+        }
+        var mais = tools.querySelector("[data-bx-verse-more], .lmx-bible-v3-more");
+        var botao = botaoVerso(ref);
+        if (mais) mais.before(botao); else tools.appendChild(botao);
+      });
 
       var acoesImersao = document.querySelector(".bx-immersion-stage-actions");
       if (acoesImersao && !acoesImersao.querySelector("[data-bx-public-images]")) {
@@ -757,8 +788,11 @@
       ev.preventDefault();
       ev.stopPropagation();
       if (estado.aberto) { fechar(); return; }
+      var ref = alvo.getAttribute("data-bxpub-ref") || "";
+      usarVersiculo(ref);
       estado.consulta = "";
       abrir();
+      if (estado.consulta) buscar();
     }, true);
 
     try {
