@@ -3350,6 +3350,13 @@
     let gBtn = tools.querySelector("[data-bx-verse-gmap]");
     if (!gBtn) { gBtn = document.createElement("button"); gBtn.type = "button"; gBtn.setAttribute("data-bx-verse-gmap", ref); place(gBtn); }
     else gBtn.setAttribute("data-bx-verse-gmap", ref);
+    /* O bridge de pré-visualização (bible-x-verse-popups.js) pega QUALQUER botão
+       da barra do versículo em CAPTURA no document e mata o evento antes dele
+       chegar ao botão — por isso o clique no Google View não abria nada, sem
+       erro nenhum no console. Este é o bilhete de saída que o próprio módulo
+       oferece (o mesmo que o "🕶 Entrar na história" usa): deixa o clique
+       original chegar inteiro. */
+    gBtn.dataset.bxPopupBypass = "1";
     /* o texto do versículo só muda se mudou o versículo ou a tradução; a
        chave ref+tamanho evita re-varrer o catálogo inteiro a cada passada do
        observador (são ~150 lugares e uns 450 apelidos por versículo) */
