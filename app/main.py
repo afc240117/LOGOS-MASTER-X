@@ -12,6 +12,7 @@ from app.atlas_x.router import router as atlas_x_router
 from app.audio_x.router import router as audio_x_router
 from app.biblia_x.share_router import router as biblia_x_share_router
 from app.biblia_x.mediacloud_router import router as biblia_x_mediacloud_router
+from app.biblia_x.public_images_router import router as biblia_x_public_images_router
 
 # Load project .env before AIHub is instantiated, so provider keys/models are available.
 # Local project .env is authoritative when present. This fixes Windows/session variables
