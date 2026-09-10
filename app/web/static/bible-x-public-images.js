@@ -115,17 +115,22 @@
 
   /* Termos curtos de propósito: os acervos devolvem pouca coisa quando a
      consulta tem muitas palavras (testado: 3 a 4 palavras é o limite útil). */
+  /* Os temas são de escolha única, então "🔎 Tudo" é o que faz a busca larga:
+     foto, panorama 360 e vídeo na MESMA passada, tudo junto. Assim ninguém
+     precisa escolher um e perder o outro. */
   var TEMAS = [
+    { id: "tudo", rotulo: "🔎 Tudo", termos: "biblical sites", midia: "tudo" },
     { id: "lugares", rotulo: "🗺 Lugares bíblicos", termos: "biblical sites" },
     { id: "ruinas", rotulo: "🏺 Ruínas e arqueologia", termos: "holy land ruins" },
     { id: "cultura", rotulo: "🏛 Cultura e costumes", termos: "biblical archaeology" },
     { id: "paisagem", rotulo: "🌄 Paisagem e geografia", termos: "ancient israel" },
     { id: "objetos", rotulo: "⚱ Objetos e utensílios", termos: "ancient oil lamp" },
-    { id: "panorama", rotulo: "🌐 Panorama 360°", termos: "360 panorama", midia: "360" },
+    { id: "panorama", rotulo: "🌐 Panorama 360°", termos: "360", midia: "360" },
     { id: "videos", rotulo: "🎥 Vídeos", termos: "biblical sites", midia: "video" }
   ];
 
-  /* "foto" (padrão), "360" ou "video" — decide quais acervos são consultados. */
+  /* "foto" (padrão), "360", "video" ou "tudo" — decide quais acervos são
+     consultados e qual piso de alta definição vale. */
   function midiaAtual() { return temaAtual().midia || "foto"; }
   function minimoDaMidia(midia) {
     if (midia === "video") return MIN_VIDEO;
