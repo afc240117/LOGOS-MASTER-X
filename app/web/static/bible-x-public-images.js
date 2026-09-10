@@ -443,7 +443,8 @@
             autor: String(i.creator || "Autor não indicado"),
             licenca: licenca,
             largura: i.width || 0,
-            altura: i.height || 0
+            altura: i.height || 0,
+            midia: "foto"
           };
         }).filter(function (i) { return i.thumb; });
       });
@@ -472,7 +473,8 @@
             autor: String(p.photographer || "Pexels"),
             licenca: "Licença Pexels (uso livre; crédito apreciado)",
             largura: p.width || 0,
-            altura: p.height || 0
+            altura: p.height || 0,
+            midia: "foto"
           };
         }).filter(function (i) { return i.thumb; });
       });
