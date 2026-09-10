@@ -632,19 +632,28 @@
       if (fonte) {
         var nome = fonte.getAttribute("data-bxpub-fonte");
         estado.fontes[nome] = !estado.fontes[nome];
-        if (nome === "pexels" && estado.fontes.pexels && !estado.pexelsKey) desenhar();
-        else buscar();
+        if (nome === "pexels" && estado.fontes.pexels && !estado.pexelsKey) {
+          /* sem chave ainda: abre o campo em vez de buscar e falhar */
+          desenhar();
+          var campo2 = $("[data-bxpub-pexels]", overlay);
+          if (campo2) campo2.focus();
+        } else buscar();
         return;
       }
       if (alvo.closest("[data-bxpub-salvarchave]")) {
         var entrada = $("[data-bxpub-pexels]", overlay);
         var valor = entrada ? entrada.value.trim() : "";
-        if (valor) {
-          estado.pexelsKey = valor;
-          try { localStorage.setItem(LS_PEXELS, valor); } catch (_) {}
-          estado.fontes.pexels = true;
-          buscar();
+        if (!valor) {
+          estado.avisos = ["Cole a chave do Pexels antes de salvar (é gratuita em pexels.com/api)."];
+          desenhar();
+          if (entrada) entrada.focus();
+          return;
         }
+        estado.pexelsKey = valor;
+        try { localStorage.setItem(LS_PEXELS, valor); } catch (_) {}
+        estado.fontes.pexels = true;
+        estado.avisos = [];
+        buscar();
         return;
       }
       if (alvo.closest("[data-bxpub-buscar]")) { buscar(); return; }
