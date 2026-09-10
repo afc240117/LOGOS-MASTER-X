@@ -347,13 +347,13 @@
     var tentar = function () {
       var consulta = tentativas[indice++];
       var tarefas = [];
-      if (estado.fontes.wikimedia) tarefas.push(buscaWikimedia(consulta).catch(function (e) { estado.avisos.push("Wikimedia Commons: " + e.message); return []; }));
-      if (estado.fontes.openverse) tarefas.push(buscaOpenverse(consulta).catch(function (e) { estado.avisos.push("Openverse: " + e.message); return []; }));
+      if (estado.fontes.wikimedia) tarefas.push(buscaWikimedia(consulta).catch(function (e) { avisar("Wikimedia Commons: " + e.message); return []; }));
+      if (estado.fontes.openverse) tarefas.push(buscaOpenverse(consulta).catch(function (e) { avisar("Openverse: " + e.message); return []; }));
       if (estado.fontes.pexels) {
         tarefas.push(buscaPexels(consulta).catch(function (e) {
-          estado.avisos.push(e.message === "chave ausente" || e.message === "chave recusada"
-            ? "Pexels: informe sua chave em 🔑 (fica só neste navegador)"
-            : "Pexels: " + e.message);
+          if (e.message === "chave ausente") avisar("Pexels: falta a chave — toque em 🔑 Pexels e cole a sua (é gratuita em pexels.com/api).");
+          else if (e.message === "chave recusada") avisar("Pexels recusou a chave — confira em pexels.com/api se copiou a “API Key” inteira e salve de novo em 🔑.");
+          else avisar("Pexels: " + e.message);
           return [];
         }));
       }
