@@ -1195,16 +1195,6 @@
     overlay.addEventListener("click", event => { if (event.target === overlay) close(); });
     document.addEventListener("keydown", onKey);
     show(index);
-    /* ---- 5.4.249 — cheguei aqui pelo cartão 🗺 Google dos ACERVOS PÚBLICOS:
-       a janela já abre NA RUA daquele lugar (Street View), para arrastar e
-       olhar em volta — sem digitar nada, sem saber o endereço. */
-    if (options.rua && Number.isFinite(Number(options.rua.lat)) && Number.isFinite(Number(options.rua.lon))) {
-      googlePanel.hidden = false;
-      googleCampo.value = Number(options.rua.lat).toFixed(5) + "," + Number(options.rua.lon).toFixed(5);
-      googleMostrar("sv", Number(options.rua.lat), Number(options.rua.lon), options.rua.nome || "",
-        (options.rua.emoji ? options.rua.emoji + " " : "🚶 ") + (options.rua.nome || "Street View")
-          + " — você está na rua. Arraste para olhar em volta; as setas brancas no chão andam pela rua.");
-    }
     if (options.autoplay) toggleSlides();
     return { close, show, play: toggleSlides };
   }

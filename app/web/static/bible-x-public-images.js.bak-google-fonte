@@ -57,13 +57,7 @@
        porque são de câmera, em alta resolução e com licença de uso livre. Sem a
        chave, essa fonte apenas não devolve nada — os erros vão só para o
        console, nunca para a tela do usuário. */
-    /* O 🗺 Google entra junto das outras fontes: não é acervo de foto, é a
-       porta da VISTA AO CHÃO (Street View) — o cartão dele leva a pessoa para
-       dentro da cena, arrastando para olhar em volta. */
-    fontes: { wikimedia: true, openverse: true, pexels: true, google: true },
-    /* token público do Mapbox (pk.) para a miniatura de satélite do cartão 🗺;
-       vem do nosso próprio servidor e nunca é impresso em log */
-    mapaToken: "",
+    fontes: { wikimedia: true, openverse: true, pexels: true },
     carregando: false,
     rebuscar: false,
     fase: "",
@@ -652,113 +646,6 @@
       });
   }
 
-  /* ---------- 🗺 Google — vista ao chão ----------
-     O chip 🗺 Google não devolve foto de acervo: devolve LUGARES onde existe
-     imagem de rua do Google. É a lista escolhida a dedo dos cenários bíblicos
-     (a mesma do painel 🗺 Google View do visualizador), ordenada pelo que a
-     pessoa digitou — procurou "Jerusalém", Jerusalém vem primeiro; não casou
-     com nada, mostra variedade de cenário do mesmo jeito, porque a ideia é
-     justamente dar o que ver. Tocar no cartão cai na rua, arrastando. */
-  var LUGARES_GOOGLE = [
-    ["🧱", "Muro das Lamentações", 31.7767469, 35.2344484],
-    ["✝️", "Santo Sepulcro", 31.7784463, 35.2297723],
-    ["🚶", "Via Dolorosa", 31.7795250, 35.2327100],
-    ["🕊", "Getsêmani", 31.7794160, 35.2397330],
-    ["🏔", "Monte das Oliveiras", 31.7784000, 35.2437000],
-    ["🌊", "Mar da Galileia", 32.8808000, 35.5750000],
-    ["💧", "Rio Jordão (Qasr al-Yahud)", 31.8375000, 35.5350000],
-    ["⭐", "Belém — Natividade", 31.7042000, 35.2075000],
-    ["🏠", "Nazaré", 32.6996000, 35.3035000],
-    ["🎺", "Jericó", 31.8700000, 35.4440000],
-    ["🏜", "Massada", 31.3156000, 35.3537000],
-    ["⛰", "Monte Sinai", 28.5392000, 33.9755000],
-    ["🐪", "Pirâmides de Gizé", 29.9792000, 31.1342000],
-    ["🏛", "Areópago (Atenas)", 37.9715000, 23.7267000],
-    ["🏟", "Coliseu (Roma)", 41.8902000, 12.4922000],
-    ["🏺", "Éfeso", 37.9397000, 27.3417000],
-    ["🏝", "Patmos", 37.3094000, 26.5470000],
-    ["⛪", "Corinto", 37.9060000, 22.8790000]
-  ];
-
-  /* Emblema do lugar (SVG no próprio dado): é o que fica no cartão quando a
-     miniatura de satélite ainda não chegou — nunca um retângulo vazio. */
-  function desenhoDoLugar(lugar) {
-    var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360">'
-      + '<rect width="640" height="360" fill="#0b1c2e"/>'
-      + '<text x="320" y="170" font-size="96" text-anchor="middle">' + lugar[0] + "</text>"
-      + '<text x="320" y="250" font-size="32" fill="#ffd479" font-family="sans-serif" text-anchor="middle">'
-      + String(lugar[1]).replace(/&/g, "&amp;").replace(/</g, "&lt;") + "</text></svg>";
-    return "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg);
-  }
-
-  /* Miniatura de satélite do lugar (Mapbox). O token é público (pk.) e vem do
-     endpoint que já existe no nosso servidor; sem ele o cartão fica só com o
-     emblema, e o toque continua levando à rua. */
-  function mapaThumb(lugar) {
-    if (!estado.mapaToken) return "";
-    return "https://api.mapbox.com/styles/v1/mapbox/satellite-streets-v12/static/"
-      + lugar[3] + "," + lugar[2] + ",15,0/640x360@2x?access_token=" + encodeURIComponent(estado.mapaToken);
-  }
-
-  function sondarMapaToken() {
-    if (estado.mapaToken) return;
-    try {
-      fetch("/api/bible/geo/mapbox-config", { headers: { Accept: "application/json" }, cache: "no-store" })
-        .then(function (r) { return r.ok ? r.json() : null; })
-        .then(function (d) {
-          var t = d && d.token ? String(d.token) : "";
-          if (!t || t.indexOf("pk.") !== 0) return;
-          estado.mapaToken = t;
-          pintarMapas();
-        })
-        .catch(function () {});
-    } catch (_) {}
-  }
-
-  /* Chegou o token depois da grade desenhada? Preenche as miniaturas que ainda
-     estão sem src (as que falharem somem sozinhas, no tratador de erro). */
-  function pintarMapas() {
-    var overlay = $(".bxpub-overlay");
-    if (!overlay || !estado.mapaToken) return;
-    $$("img[data-bxpub-mapa]", overlay).forEach(function (img) {
-      if (img.getAttribute("src")) return;
-      var lugar = LUGARES_GOOGLE[Number(img.getAttribute("data-bxpub-mapa"))];
-      if (lugar) img.setAttribute("src", mapaThumb(lugar));
-    });
-  }
-
-  function cartoesGoogle(consulta) {
-    var palavras = semAcento(String(consulta || "").toLowerCase())
-      .split(/[^a-z0-9]+/).filter(function (p) { return p.length > 2; });
-    var notas = LUGARES_GOOGLE.map(function (lugar, i) {
-      var nome = semAcento(String(lugar[1]).toLowerCase());
-      var nota = 0;
-      palavras.forEach(function (p) { if (nome.indexOf(p) >= 0) nota += 1; });
-      return { lugar: lugar, indice: i, nota: nota };
-    });
-    var acertos = notas.filter(function (x) { return x.nota > 0; })
-      .sort(function (a, b) { return b.nota - a.nota || a.indice - b.indice; });
-    var escolhidos = (acertos.length ? acertos : notas).slice(0, acertos.length ? 8 : 6);
-    return escolhidos.map(function (x) {
-      var lugar = x.lugar;
-      return {
-        id: "gmap-" + x.indice,
-        fonte: "🗺 Google View",
-        titulo: lugar[1],
-        autor: "Google",
-        licenca: "Vista ao chão do Google",
-        midia: "gmap",
-        thumb: desenhoDoLugar(lugar),
-        original: desenhoDoLugar(lugar),
-        pagina: "https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=" + lugar[2] + "," + lugar[3],
-        largura: 0,
-        altura: 0,
-        coords: { lat: lugar[2], lon: lugar[3] },
-        gmap: { lat: lugar[2], lon: lugar[3], nome: lugar[1], emoji: lugar[0], indice: x.indice }
-      };
-    });
-  }
-
   /* ---------- o que as fontes devolvem numa consulta ----------
      Usado pela busca inicial (em cascata) e pelo "carregar mais". Em "Tudo" as
      fontes de foto, vídeo e 360 são consultadas na MESMA passada: era isso que
@@ -799,8 +686,6 @@
       tarefas.push(buscaOpenverse(consulta, pag)
         .catch(function (e) { registrar("Openverse: " + e.message); return []; }));
     }
-    /* 🗺 Google: lista nossa, não depende de rede — entra já resolvida. */
-    if (estado.fontes.google) tarefas.push(Promise.resolve(cartoesGoogle(consulta)));
     return Promise.all(tarefas);
   }
 
@@ -825,10 +710,6 @@
       });
     });
     return novos.filter(function (item) {
-      /* O cartão do 🗺 Google é um lugar escolhido a dedo para levar à rua: não
-         é foto de acervo, então não passa pelos portões de assunto nem de
-         resolução (que o derrubariam por não ter largura de arquivo). */
-      if (item.midia === "gmap") return true;
       /* Arte, livro e mapa digitalizado ficam de fora DEFINITIVAMENTE; vídeo e
          360 ainda passam pelo portão de lugar (ver ehDoTema). */
       return !ehReproducao(item.titulo, item.categorias)
@@ -1143,16 +1024,6 @@
       ".bxpub-selo.is-hd{color:#9ff0dc;border-color:rgba(64,196,174,.5)}",
       ".bxpub-selo.is-video{color:#ffdca8;border-color:rgba(244,199,107,.55)}",
       ".bxpub-selo.is-360{color:#bfe3ff;border-color:rgba(134,200,255,.55)}",
-      /* cartão do 🗺 Google: emblema + nome por baixo e, por cima, a miniatura
-         de satélite do lugar quando o token do mapa chega (se ela não vier, o
-         emblema continua ali — o cartão nunca fica em branco) */
-      ".bxpub-item.is-gmap{border-color:rgba(244,199,107,.34)}",
-      ".bxpub-item.is-gmap .bxpub-gmap{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;height:178px;padding:0 10px;text-align:center;background:linear-gradient(160deg,#0e2438,#061321 72%)}",
-      ".bxpub-item.is-gmap .bxpub-gmap em{font-style:normal;font-size:1.9rem;line-height:1.1}",
-      ".bxpub-item.is-gmap .bxpub-gmap b{font-size:.92rem;color:#ffd479}",
-      ".bxpub-item.is-gmap .bxpub-gmap small{font-size:.68rem;color:#9fb5ca}",
-      ".bxpub-item.is-gmap img{position:absolute;inset:0}",
-      ".bxpub-selo.is-mapa{color:#ffd479;border-color:rgba(244,199,107,.55)}",
       /* O cartão é SÓ miniatura + selos: por isso ela ficou mais alta. */
       ".bxpub-item[title]{cursor:zoom-in}",
       ".bxpub-vazio{padding:28px 20px;text-align:center;color:#9fb5ca;font-size:.86rem}",
@@ -1178,7 +1049,6 @@
       ".bxpub-fontes{padding:0 14px 8px}",
       ".bxpub-grade{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;padding:12px 14px}",
       ".bxpub-item img,.bxpub-item video{height:132px}",
-      ".bxpub-item.is-gmap .bxpub-gmap{height:132px}",
             ".bxpub-rodape{padding:8px 14px}",
       "}"
     ].join("");
@@ -1243,19 +1113,13 @@
       var selos = [];
       if (item.midia === "video") selos.push('<i class="bxpub-selo is-video">▶ Vídeo</i>');
       if (item.midia === "360") selos.push('<i class="bxpub-selo is-360">🌐 360°</i>');
-      if (item.midia === "gmap") selos.push('<i class="bxpub-selo is-mapa">🗺 Vista ao chão</i>');
       if (item.largura >= 3840) selos.push('<i class="bxpub-selo is-hd">4K</i>');
       else if (item.largura >= 2560) selos.push('<i class="bxpub-selo is-hd">2K</i>');
       else if (item.largura >= 1920) selos.push('<i class="bxpub-selo is-hd">Full HD</i>');
       else if (item.largura >= 1200) selos.push('<i class="bxpub-selo is-hd">HD</i>');
       var visor = item.midia === "video"
         ? '<video src="' + esc(item.video) + '" poster="' + esc(item.thumb) + '" preload="none" muted loop playsinline controls data-bxpub-video="' + esc(item.id) + '"></video>'
-        : item.midia === "gmap"
-          ? '<span class="bxpub-gmap"><em>' + esc(item.gmap.emoji) + "</em><b>" + esc(item.titulo)
-            + "</b><small>toque para cair na rua</small></span>"
-            + '<img data-bxpub-mapa="' + esc(String(item.gmap.indice)) + '" alt="' + esc(item.titulo)
-            + '" loading="lazy" referrerpolicy="no-referrer">'
-          : '<img src="' + esc(item.thumb) + '" alt="' + esc(item.titulo) + '" loading="lazy" referrerpolicy="no-referrer" data-bxpub-img="' + esc(item.id) + '">';
+        : '<img src="' + esc(item.thumb) + '" alt="' + esc(item.titulo) + '" loading="lazy" referrerpolicy="no-referrer" data-bxpub-img="' + esc(item.id) + '">';
       /* O cartão é SÓ a miniatura e os selos (4K, 2K, Full HD, HD, ▶ Vídeo,
          🌐 360°). Nome, fonte, autor, licença e os três botões saíram daqui a
          pedido: ao tocar na imagem abre a NOSSA galeria, e lá ficam os comandos
@@ -1266,10 +1130,8 @@
          nome dos chips de fonte aqui em cima, e usá-lo aqui fazia o clique na
          imagem ser lido como "ligar/desligar a fonte" — a tela voltava a
          buscar em vez de abrir a galeria. */
-      return '<article class="bxpub-item' + (item.midia === "360" ? " is-360" : "")
-        + (item.midia === "gmap" ? " is-gmap" : "") + '"'
+      return '<article class="bxpub-item' + (item.midia === "360" ? " is-360" : "") + '"'
         + ' title="' + esc(item.titulo) + '"'
-        + (item.midia === "gmap" ? ' data-bxpub-gmap="' + esc(item.id) + '"' : '')
         + ' data-bxpub-ficha="' + esc(item.fonte + (item.largura ? " • " + item.largura + "×" + item.altura : "") + " • " + item.autor + " • " + item.licenca) + '">'
         + visor
         + (selos.length ? '<span class="bxpub-selos">' + selos.join("") + "</span>" : "")
@@ -1334,20 +1196,6 @@
         api.openPanorama(paraGaleria(item), { eyebrow: "MÍDIA X • PANORAMA 360°" });
         return true;
       }
-      /* Cartão do 🗺 Google: abre a galeria já NA RUA daquele lugar. O ‹ ›
-         passeia pelos outros lugares que estão na grade, então dá para conhecer
-         o cenário inteiro sem digitar nada. */
-      if (item.midia === "gmap" && item.gmap && typeof api.openGallery === "function") {
-        var ruas = estado.itens.filter(function (i) { return i.midia === "gmap" && i.gmap; });
-        var pos = 0;
-        for (var r = 0; r < ruas.length; r++) if (ruas[r].id === item.id) pos = r;
-        if (!ruas.length) return false;
-        api.openGallery(ruas.map(paraGaleria), pos, {
-          eyebrow: "MÍDIA X • GOOGLE VIEW",
-          rua: { lat: item.gmap.lat, lon: item.gmap.lon, nome: item.titulo, emoji: item.gmap.emoji }
-        });
-        return true;
-      }
       if (typeof api.openGallery !== "function") return false;
       /* a galeria navega só entre as imagens paradas — vídeo toca no próprio cartão */
       var lista = estado.itens.filter(function (i) { return i.midia !== "video"; });
@@ -1387,7 +1235,6 @@
       + '<button type="button" class="bxpub-chip" data-bxpub-fonte="wikimedia">Wikimedia</button>'
       + '<button type="button" class="bxpub-chip" data-bxpub-fonte="openverse">Openverse</button>'
       + '<button type="button" class="bxpub-chip" data-bxpub-fonte="pexels">🔑 Pexels</button>'
-      + '<button type="button" class="bxpub-chip" data-bxpub-fonte="google">🗺 Google View</button>'
       + "</div>"
       + '<div class="bxpub-chave" data-bxpub-chave>'
       + '<p class="bxpub-chave-dica">O Pexels já vem ligado no app e você <b>não precisa de chave nenhuma</b>. '
@@ -1401,7 +1248,7 @@
       + "</div></div>"
       + '<div data-bxpub-avisos></div>'
       + '<div class="bxpub-pe"><div class="bxpub-grade" data-bxpub-grade></div></div>'
-      + '<footer class="bxpub-rodape"><b>Só entra foto e vídeo em alta definição.</b> Pintura, gravura, desenho, livro e mapa digitalizado ficam de fora — e resultado cuja miniatura não abre no navegador não aparece. Cada cartão traz o selo da resolução: <b>4K</b> (3840px ou mais), <b>2K</b>, <b>Full HD</b> (1920px) e <b>HD</b> (1200px), além de <b>▶ Vídeo</b> e <b>🌐 360°</b> — material que aguenta tela grande, projeção e impressão com nitidez.<br><b>Como usar:</b> 👆 toque na imagem = abre na nossa galeria (🔍 zoom com − e +, ↻ girar 90°, ✏️ editar e salvar na Mídia X, 🏷 legenda, ⬇ baixar, ⛶ tela cheia, ‹ › anterior e próxima); ▶ toque no vídeo = abre <b>em tela cheia</b> e já toca; ➕ <b>Carregar mais</b> no fim da grade = vai trazendo mais imagens e vídeos a cada toque; 🔎 <b>Tudo</b> = busca todos os tipos de uma vez; 🖼 temas = troca o assunto; 🗺 <b>Google View</b> = lugares com vista ao chão: 👆 toque no cartão e você cai na rua, arrastando para olhar em volta, com ‹ › para passear pelos outros lugares. Crédito e licença de cada autor vão junto para a Mídia X.</footer>'
+      + '<footer class="bxpub-rodape"><b>Só entra foto e vídeo em alta definição.</b> Pintura, gravura, desenho, livro e mapa digitalizado ficam de fora — e resultado cuja miniatura não abre no navegador não aparece. Cada cartão traz o selo da resolução: <b>4K</b> (3840px ou mais), <b>2K</b>, <b>Full HD</b> (1920px) e <b>HD</b> (1200px), além de <b>▶ Vídeo</b> e <b>🌐 360°</b> — material que aguenta tela grande, projeção e impressão com nitidez.<br><b>Como usar:</b> 👆 toque na imagem = abre na nossa galeria (🔍 zoom com − e +, ↻ girar 90°, ✏️ editar e salvar na Mídia X, 🏷 legenda, ⬇ baixar, ⛶ tela cheia, ‹ › anterior e próxima); ▶ toque no vídeo = abre <b>em tela cheia</b> e já toca; ➕ <b>Carregar mais</b> no fim da grade = vai trazendo mais imagens e vídeos a cada toque; 🔎 <b>Tudo</b> = busca todos os tipos de uma vez; 🖼 temas = troca o assunto. Crédito e licença de cada autor vão junto para a Mídia X.</footer>'
       + "</section>";
     document.body.appendChild(overlay);
     estado.aberto = true;
@@ -1475,12 +1322,6 @@
       /* o vídeo toca no próprio cartão, e o clique o abre em TELA CHEIA */
       var videoEl = alvo.closest("[data-bxpub-video]");
       if (videoEl) { abrirVideoCheio(videoEl); return; }
-      var cartaoMapa = alvo.closest("[data-bxpub-gmap]");
-      if (cartaoMapa) {
-        var itMapa = itemPorId(cartaoMapa.getAttribute("data-bxpub-gmap"));
-        if (itMapa) abrirNoVisualizador(itMapa);
-        return;
-      }
       var img = alvo.closest("[data-bxpub-img]");
       if (img) {
         var it = itemPorId(img.getAttribute("data-bxpub-img"));
@@ -1532,9 +1373,6 @@
     overlay.addEventListener("error", function (ev) {
       var img = ev.target;
       if (!img || !img.getAttribute) return;
-      /* miniatura de satélite do cartão 🗺: se não abrir, sai de cena e deixa o
-         emblema do lugar (o cartão NÃO pode ser removido da grade) */
-      if (img.hasAttribute("data-bxpub-mapa")) { img.remove(); return; }
       var id = img.getAttribute("data-bxpub-img");
       if (!id) return;
       var cartao = img.closest ? img.closest(".bxpub-item") : null;
@@ -1550,7 +1388,6 @@
     });
 
     desenhar();
-    sondarMapaToken();
     buscar();
   }
 
