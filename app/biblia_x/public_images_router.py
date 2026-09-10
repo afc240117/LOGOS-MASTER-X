@@ -46,6 +46,46 @@ _MAX_POR_PAGINA = 24
 _JANELA_SEGUNDOS = 60.0
 _LIMITE_JANELA = 30          # consultas por IP a cada minuto
 
+# O mapa aberto conhece estes lugares pelo nome em inglês: quem digita em
+# português ("muro das lamentações") não achava nada. Chave sem acento e em
+# minúsculas; o valor é o nome que o mapa entende.
+_ALIASES = {
+    "muro das lamentacoes": "Western Wall",
+    "muro ocidental": "Western Wall",
+    "monte das oliveiras": "Mount of Olives",
+    "mar vermelho": "Red Sea",
+    "mar morto": "Dead Sea",
+    "mar da galileia": "Sea of Galilee",
+    "santo sepulcro": "Church of the Holy Sepulchre",
+    "via dolorosa": "Via Dolorosa",
+    "cidade de davi": "City of David",
+    "monte do templo": "Temple Mount",
+    "rio jordao": "Jordan River",
+    "rio jordão": "Jordan River",
+    "monte sinai": "Mount Sinai",
+    "monte sinaí": "Mount Sinai",
+}
+
+
+def _sem_acento(texto: str) -> str:
+    import unicodedata
+
+    return "".join(
+        c for c in unicodedata.normalize("NFKD", texto or "") if not unicodedata.combining(c)
+    ).lower()
+
+
+def _em_ingles(consulta: str) -> str:
+    """Troca o nome português pelo que o mapa conhece ("muro das lamentações"
+    -> "Western Wall"), mantendo o resto da frase como o usuário escreveu."""
+    alvo = _sem_acento(consulta)
+    for pt, en in _ALIASES.items():
+        chave = _sem_acento(pt)
+        if chave and chave in alvo:
+            return " ".join(consulta.replace(pt, en).split()) if pt in consulta.lower() else en
+    return ""
+
+
 _cache: dict[str, tuple[float, Any]] = {}
 _janelas: dict[str, list[float]] = {}
 
@@ -101,9 +141,14 @@ async def geo(request: Request, q: str = Query(..., min_length=2, max_length=120
     # mas "Jerusalém" existe: se a consulta inteira não achar nada, tenta o que
     # vem antes da vírgula. Duas tentativas no máximo, para não abusar do serviço.
     tentativas = [consulta]
+    em_ingles = _em_ingles(consulta)
+    if em_ingles:
+        tentativas.append(em_ingles)
     antes = consulta.split(",")[0].strip()
-    if antes and antes.lower() != consulta.lower():
+    if antes:
         tentativas.append(antes)
+    vistas = set()
+    tentativas = [t for t in tentativas if t and not (t.lower() in vistas or vistas.add(t.lower()))]
 
     achados: list = []
     try:
