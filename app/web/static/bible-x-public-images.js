@@ -95,6 +95,12 @@
     { id: "objetos", rotulo: "⚱ Objetos e utensílios", termos: "ancient oil lamp" }
   ];
 
+  /* A busca em cascata repete a mesma falha a cada degrau: o aviso entra uma
+     vez só, senão a tela mostra a mesma linha três vezes. */
+  function avisar(msg) {
+    if (msg && estado.avisos.indexOf(msg) === -1) estado.avisos.push(msg);
+  }
+
   /* ---------- utilidades ---------- */
   function $(sel, raiz) { return (raiz || document).querySelector(sel); }
   function $$(sel, raiz) { return Array.prototype.slice.call((raiz || document).querySelectorAll(sel)); }
