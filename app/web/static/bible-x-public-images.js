@@ -405,10 +405,13 @@
 
   /* filetype: "bitmap" para foto, "video" para vídeo. O Commons gera um quadro
      do vídeo como miniatura (thumburl), então o cartão mostra a imagem. */
-  function buscaWikimedia(consulta, filetype, midia) {
+  function buscaWikimedia(consulta, filetype, midia, salto) {
     var url = "https://commons.wikimedia.org/w/api.php?action=query&format=json&origin=*"
       + "&generator=search&gsrnamespace=6&gsrlimit=" + LIMITE_WIKIMEDIA
       + "&gsrsearch=" + encodeURIComponent("filetype:" + (filetype || "bitmap") + " " + consulta)
+      /* o salto é o que permite "carregar mais" trazer resultado NOVO da mesma
+         consulta em vez de repetir a primeira página */
+      + (salto > 0 ? "&gsroffset=" + salto : "")
       + "&prop=imageinfo&iiprop=url|extmetadata|size|user|categories|mime&iiurlwidth=640";
     return fetch(url, { headers: { Accept: "application/json" } })
       .then(function (r) { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); })
@@ -443,8 +446,8 @@
   }
 
   /* Vídeo do Pexels: vem com pôster e MP4 — toca direto no cartão. */
-  function buscaVideosPexels(consulta) {
-    return pedirAoPexels("video", consulta)
+  function buscaVideosPexels(consulta, pagina) {
+    return pedirAoPexels("video", consulta, pagina)
       .then(function (json) {
         return (json && json.videos ? json.videos : []).map(function (v) {
           var arquivos = (v.video_files || []).filter(function (f) {
