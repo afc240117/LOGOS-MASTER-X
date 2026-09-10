@@ -267,18 +267,46 @@
     var lugares = lugaresEmIngles();
     var termos = temaAtual().termos;
     var midia = midiaAtual();
+    var lugar = lugares.length ? lugares[0] : "";
     juntar(estado.consulta);
+
+    /* 360: medido no Commons — "Jerusalem 360" devolve 360 de verdade do lugar
+       (até 25000×1650), enquanto "360 panorama" sozinho devolve os Alpes. O
+       lugar vem primeiro e o termo genérico fica para o fim, onde o portão de
+       lugar (ehDoTema) já descartou o que não é da Terra Santa. */
+    if (midia === "360") {
+      if (lugar) { juntar(lugar + " 360"); juntar(lugar + " panorama"); }
+      juntar("360 panorama");
+      if (lugar) juntar(lugar);
+      juntar("holy land");
+      return lista;
+    }
+
+    /* Vídeo: medido — o acervo de vídeo do Commons só rende com consulta de
+       LUGAR ("Jerusalem old city" = 15 em HD; "biblical sites" = zero). */
+    if (midia === "video") {
+      if (lugar) {
+        juntar(lugar + " old city");
+        juntar(lugar + " city");
+        juntar(lugar + " aerial");
+        juntar(lugar + " western wall");
+      }
+      juntar(termos);
+      if (lugar) juntar(lugar);
+      juntar("holy land");
+      return lista;
+    }
+
     /* "Jerusalem biblical sites" ainda é curto o bastante; já "Jerusalem holy
        land ruins" (4 palavras) os acervos devolvem vazio — então não junta. */
-    if (lugares.length && !/^(holy land|ancient)\b/i.test(termos)) juntar(lugares[0] + " " + termos);
-    /* 360 e vídeo precisam do termo da mídia junto do lugar: sem isso a cascata
-       larga a Terra Santa e traz panorama dos Alpes. */
-    if (midia === "360" && lugares.length) juntar(lugares[0] + " 360");
-    if (midia === "video" && lugares.length) juntar(lugares[0] + " aerial");
+    if (lugares.length && !/^(holy land|ancient)\b/i.test(termos)) juntar(lugar + " " + termos);
+    if (midia === "tudo") {
+      /* foto + 360 + vídeo na mesma busca: os degraus de cada mídia entram aqui */
+      if (lugar) { juntar(lugar + " 360"); juntar(lugar + " old city"); juntar(lugar + " aerial"); }
+      juntar("360 panorama");
+    }
     juntar(termos);
-    if (midia === "360") juntar("holy land 360");
-    if (midia === "video") juntar("holy land aerial");
-    if (lugares.length) juntar(lugares[0]);
+    if (lugares.length) juntar(lugar);
     juntar("holy land");
     return lista;
   }
@@ -1026,6 +1054,17 @@
         + '<button type="button" class="' + (salvo ? "is-salvo" : "") + '" data-bxpub-salvar="' + esc(item.id) + '">' + (salvo ? "✓ Na Mídia X" : "💾 Mídia X") + "</button>"
         + "</div></div></article>";
     }).join("");
+
+    /* Fim da grade: o botão que vai gerando mais imagens e vídeos sem parar. */
+    var temMais = estado.reserva.length > 0 || !estado.semMais;
+    grade.innerHTML += '<div class="bxpub-mais">'
+      + '<button type="button" class="bxpub-btn is-mais" data-bxpub-mais>'
+      + (estado.maisCarregando ? "⏳ Buscando mais…" : "➕ Carregar mais imagens e vídeos")
+      + "</button>"
+      + "<small>" + (estado.itens.length ? estado.itens.length + " na tela" : "")
+      + (estado.reserva.length ? " • " + estado.reserva.length + " já na reserva" : "")
+      + (!temMais ? " • o acervo deste tema chegou ao fim: troque o tema ou o termo" : "")
+      + "</small></div>";
   }
 
   function itemPorId(id) {
