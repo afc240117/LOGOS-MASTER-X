@@ -557,15 +557,22 @@
            eles voltavam quando o acervo era pobre, e era isso que enchia a grade
            de pintura e gravura. */
         var naoArte = tudo.filter(function (item) {
-          return !ehReproducao(item.titulo, item.categorias) && !ehEventoModerno(item.titulo);
+          return !ehReproducao(item.titulo, item.categorias)
+            && !ehEventoModerno(item.titulo)
+            && ehVideoDoTema(item);
         });
-        if (!naoArte.length && tudo.length) avisar("O acervo só devolveu arte, livro ou mapa digitalizado para «" + consulta + "» — nada disso ilustra a passagem.");
-        /* Alta definição primeiro. Sem HD suficiente, desce um degrau da cascata;
-           no último degrau aceita o que houver para a tela não ficar vazia. */
+        if (!naoArte.length && tudo.length) avisar("O acervo só devolveu arte, livro, mapa digitalizado ou vídeo fora do tema para «" + consulta + "» — nada disso ilustra a passagem.");
+        /* Guarda o melhor conjunto SEM alta definição visto na cascata: se nenhum
+           degrau trouxer HD, é ele que aparece no fim. */
+        if (naoArte.length > melhorSemHD.length) melhorSemHD = naoArte;
         var hd = naoArte.filter(function (item) { return ehAltaDefinicao(item, midia); });
         var ultimoDegrau = indice >= tentativas.length;
-        var grade = hd.length >= MINIMO ? hd : (naoArte.length >= MINIMO ? naoArte : (hd.length ? hd : naoArte));
-        if (!grade.length && !ultimoDegrau) return tentar();
+        /* Enquanto houver degrau, continuar caçando ALTA DEFINIÇÃO: só no último
+           é que se aceita acervo sem HD (antes, o primeiro degrau — quase sempre o
+           mais pobre — fechava a grade em foto pequena e nem tentava o resto). */
+        if (hd.length < MINIMO && !ultimoDegrau) return tentar();
+        var usouSemHD = hd.length < MINIMO;
+        var grade = usouSemHD && melhorSemHD.length > hd.length ? melhorSemHD : hd;
         if (!grade.length) {
           estado.itens = [];
           estado.consultaUsada = consulta;
@@ -588,7 +595,7 @@
             estado.avisos.push("Sem resultados para «" + estado.consulta + "» — a busca foi ampliada para «" + consulta + "».");
           }
           if (perdidos > 0) avisar(perdidos + " resultado(s) saíram: a miniatura não abria no navegador (imagem removida ou bloqueada na origem).");
-          if (!hd.length && vivos.length) avisar("O acervo não tinha alta definição para este tema — a grade mostra o melhor disponível.");
+          if (usouSemHD && vivos.length) avisar("Nenhuma fonte tinha alta definição para este tema — a grade mostra o melhor disponível.");
           estado.carregando = false;
           desenhar();
         });
