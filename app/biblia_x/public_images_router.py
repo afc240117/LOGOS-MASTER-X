@@ -82,7 +82,7 @@ def _em_ingles(consulta: str) -> str:
     for pt, en in _ALIASES.items():
         chave = _sem_acento(pt)
         if chave and chave in alvo:
-            return " ".join(consulta.replace(pt, en).split()) if pt in consulta.lower() else en
+            return en
     return ""
 
 
