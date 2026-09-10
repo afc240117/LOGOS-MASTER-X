@@ -177,6 +177,14 @@ body.bxvm-lock{overflow:hidden!important}.bxvm-overlay{position:fixed;inset:0;z-
 .bxvm-google-panel.is-cheio .bxvm-google-mini button:hover{background:rgba(255,255,255,.18)}
 .bxvm-google-panel.is-cheio .bxvm-google-mini button.is-on{border-color:#ffd479;background:rgba(255,212,121,.22);color:#ffe6a8}
 @media(max-width:680px){.bxvm-google-panel.is-cheio .bxvm-google-mini{bottom:10px;gap:8px}.bxvm-google-panel.is-cheio .bxvm-google-mini button{width:46px;height:46px;font-size:1.15rem}}
+/* 5.4.249 — TELA CHEIA NATIVA (Fullscreen API): aqui o navegador já sumiu com
+   as barras e o painel virou a tela toda. As medidas ficam explícitas porque o
+   :fullscreen do navegador estica o elemento por conta própria, mas não mexe no
+   que está DENTRO dele — o stage é que precisa crescer até o rodapé. */
+.bxvm-google-panel.is-cheio:fullscreen{display:flex;flex-direction:column;width:100%;height:100%;max-width:none;padding:0;gap:0;border:0;border-radius:0;background:#02070d}
+.bxvm-google-panel.is-cheio:fullscreen .bxvm-google-stage{flex:1 1 auto;min-height:0}
+.bxvm-google-panel.is-cheio:fullscreen .bxvm-google-frame{height:100%;min-height:0;border-radius:0}
+.bxvm-google-panel.is-cheio:-webkit-full-screen{display:flex;flex-direction:column;width:100%;height:100%;padding:0;gap:0;border:0;border-radius:0;background:#02070d}
 @media(max-width:680px){.bxvm-google-panel{top:6px;width:96%}.bxvm-google-frame{height:46vh}.bxvm-google-fora{margin-left:0}}
 .bxvm-pano-plano{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;overflow:hidden;background:#04070c;cursor:grab;touch-action:none}.bxvm-pano-plano:active{cursor:grabbing}.bxvm-pano-plano img{display:block;max-width:none;max-height:none;width:auto;height:auto;user-select:none;-webkit-user-drag:none;will-change:transform;transform-origin:center}.bxvm-pano-nota{position:absolute;left:50%;bottom:9px;z-index:3;transform:translateX(-50%);width:max-content;max-width:92%;margin:0;padding:7px 14px;border:1px solid #2b4759;border-radius:999px;background:rgba(4,11,17,.86);color:#cfdde6;font-size:.72rem;font-weight:650;text-align:center;pointer-events:none}
 .bxvm-google-passeios{display:grid;gap:6px;margin:2px 0 8px}.bxvm-google-passeios b{color:#9fb6c4;font-size:.72rem;font-weight:800}.bxvm-google-chips{display:flex;flex-wrap:wrap;gap:6px;max-height:96px;overflow:auto;padding:2px}.bxvm-google-chips button{padding:6px 10px;border:1px solid #2f5568;border-radius:999px;background:#0b1e2b;color:#dceaf1;font:700 .74rem/1 system-ui;cursor:pointer;white-space:nowrap}.bxvm-google-chips button:hover,.bxvm-google-chips button:focus-visible{border-color:#c19a48;color:#ffe08a;outline:none}.bxvm-google-chips button.is-sorte{border-color:#8a6f2a;background:#241d08;color:#ffdf8a}
