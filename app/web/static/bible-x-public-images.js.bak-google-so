@@ -83,11 +83,7 @@
        Pexels já vem ligado e nenhum usuário precisa da chave dele. O campo
        "minha própria chave" fica escondido e só aparece se faltar no servidor. */
     pexelsServidor: false,
-    mostrarChave: false,
-    /* Ligar o 🗺 Google é entrar num MODO: as outras fontes saem da frente e
-       ficam guardadas aqui para voltarem quando o modo for desligado. */
-    fontesAntesGoogle: null,
-    avisoGoogle: ""
+    mostrarChave: false
   };
 
   /* Abaixo disso a grade fica pobre e a busca desce um degrau (ver
@@ -1151,9 +1147,6 @@
       ".bxpub-fontes{display:flex;flex-wrap:wrap;gap:6px;padding:0 20px 10px}",
       ".bxpub-chip{display:inline-flex;align-items:center;gap:6px;min-height:34px;padding:5px 12px;border:1px solid rgba(128,215,211,.28);border-radius:999px;background:rgba(104,184,194,.1);color:#cbe9e7;font-size:.78rem;font-weight:700;cursor:pointer}",
       ".bxpub-chip.is-on{border-color:rgba(244,199,107,.72);background:rgba(244,199,107,.16);color:#ffe9b6}",
-      /* 🗺 sozinho na fileira = MODO Google View (só navegação de rua) */
-      ".bxpub-chip.is-so{border-color:#ffd479;background:rgba(255,212,121,.2);color:#ffe6a8;box-shadow:0 0 0 1px rgba(255,212,121,.5) inset}",
-      ".bxpub-aviso.is-google{border-color:rgba(255,212,121,.5);background:rgba(255,212,121,.08);color:#ffe6a8}",
       ".bxpub-aviso{margin:0 20px 8px;padding:8px 12px;border:1px solid rgba(255,199,110,.36);border-radius:10px;background:rgba(120,72,20,.22);color:#ffdfa6;font-size:.78rem}",
       ".bxpub-aviso.is-conta{border-color:rgba(120,190,255,.28);background:rgba(24,58,92,.28);color:#bcd7ef}",
       /* grid-auto-rows:max-content é o que impede as linhas de serem esmagadas
@@ -1233,11 +1226,7 @@
       b.classList.toggle("is-on", b.getAttribute("data-bxpub-tema") === estado.tema);
     });
     $$("[data-bxpub-fonte]", overlay).forEach(function (b) {
-      var id = b.getAttribute("data-bxpub-fonte");
-      b.classList.toggle("is-on", !!estado.fontes[id]);
-      /* o 🗺 sozinho na fileira é o MODO Google View: fica marcado com ouro */
-      b.classList.toggle("is-so", id === "google" && !!estado.fontes.google
-        && !estado.fontes.wikimedia && !estado.fontes.openverse && !estado.fontes.pexels);
+      b.classList.toggle("is-on", !!estado.fontes[b.getAttribute("data-bxpub-fonte")]);
     });
     /* O campo da chave do Pexels NÃO fica à mostra: quem usa o app não precisa
        de chave nenhuma, porque a do dono já vem do servidor. Ele só aparece se
@@ -1251,9 +1240,7 @@
     }
 
     if (avisos) {
-      var linhas = [];
-      if (estado.avisoGoogle) linhas.push('<p class="bxpub-aviso is-google">' + esc(estado.avisoGoogle) + "</p>");
-      linhas = linhas.concat(estado.avisos.map(function (a) { return '<p class="bxpub-aviso">' + esc(a) + "</p>"; }));
+      var linhas = estado.avisos.map(function (a) { return '<p class="bxpub-aviso">' + esc(a) + "</p>"; });
       if (!estado.carregando && estado.itens.length) {
         linhas.push('<p class="bxpub-aviso is-conta">' + estado.itens.length + " resultado(s) • busca: «"
           + esc(estado.consulta) + "»"
@@ -1468,37 +1455,6 @@
       var fonte = alvo.closest("[data-bxpub-fonte]");
       if (fonte) {
         var nome = fonte.getAttribute("data-bxpub-fonte");
-        /* ---- 5.4.249 — 🗺 GOOGLE VIEW É MODO, NÃO FONTE ------------------
-           Um toque no 🗺 DESMARCA todas as outras fontes e deixa só a
-           navegação de rua: a tela passa a mostrar apenas os lugares por onde
-           dá para ANDAR (Street View), sem 30 fotos de acervo no meio. Um
-           segundo toque devolve exatamente as fontes que estavam ligadas —
-           nada se perde. */
-        if (nome === "google") {
-          if (!estado.fontes.google) {
-            estado.fontesAntesGoogle = {
-              wikimedia: !!estado.fontes.wikimedia,
-              openverse: !!estado.fontes.openverse,
-              pexels: !!estado.fontes.pexels
-            };
-            estado.fontes = { wikimedia: false, openverse: false, pexels: false, google: true };
-            estado.avisoGoogle = "🗺 Modo Google View: as outras fontes foram desmarcadas e a tela mostra só a navegação de rua. "
-              + "Toque num cartão para cair na rua, arraste para olhar em volta e use as setas brancas do chão para andar. "
-              + "Toque no 🗺 de novo para voltar as fontes.";
-          } else {
-            var antes = estado.fontesAntesGoogle || { wikimedia: true, openverse: true, pexels: true };
-            estado.fontes = {
-              wikimedia: !!antes.wikimedia,
-              openverse: !!antes.openverse,
-              pexels: !!antes.pexels,
-              google: false
-            };
-            estado.avisoGoogle = "";
-          }
-          pedirBusca();
-          return;
-        }
-        estado.avisoGoogle = "";
         estado.fontes[nome] = !estado.fontes[nome];
         if (nome === "pexels" && estado.fontes.pexels) {
           /* Com a chave do servidor não há nada a pedir: liga e busca. Sem ela
