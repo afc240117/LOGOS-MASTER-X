@@ -760,7 +760,7 @@
         + "<small>" + esc(item.fonte) + (item.largura ? " • " + item.largura + "×" + item.altura : "") + "</small>"
         + "<em>" + esc(item.autor) + " • " + esc(item.licenca) + "</em>"
         + '<div class="bxpub-acoes">'
-        + '<button type="button" data-bxpub-abrir="' + esc(item.id) + '">🔗 Abrir</button>'
+        + '<button type="button" data-bxpub-abrir="' + esc(item.id) + '">🔗 Origem</button>'
         + '<button type="button" data-bxpub-copiar="' + esc(item.id) + '">⧉ Crédito</button>'
         + '<button type="button" class="' + (salvo ? "is-salvo" : "") + '" data-bxpub-salvar="' + esc(item.id) + '">' + (salvo ? "✓ Na Mídia X" : "💾 Mídia X") + "</button>"
         + "</div></div></article>";
