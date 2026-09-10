@@ -663,25 +663,28 @@
      com nada, mostra variedade de cenário do mesmo jeito, porque a ideia é
      justamente dar o que ver. Tocar no cartão cai na rua, arrastando. */
   var LUGARES_GOOGLE = [
-    /* emoji, nome, lat, lon, apelidos de busca (o que a pessoa digitaria) */
-    ["🧱", "Muro das Lamentações", 31.7767469, 35.2344484, "jerusalem muro lamentacoes western wall"],
-    ["✝️", "Santo Sepulcro", 31.7784463, 35.2297723, "jerusalem santo sepulcro holy sepulchre cruz"],
-    ["🚶", "Via Dolorosa", 31.7795250, 35.2327100, "jerusalem via dolorosa caminho cruz"],
-    ["🕊", "Getsêmani", 31.7794160, 35.2397330, "jerusalem getsemani horto oliveiras"],
-    ["🏔", "Monte das Oliveiras", 31.7784000, 35.2437000, "jerusalem monte oliveiras ascensao"],
-    ["🌊", "Mar da Galileia", 32.8808000, 35.5750000, "galileia tiberiades genesare mar"],
-    ["💧", "Rio Jordão (Qasr al-Yahud)", 31.8375000, 35.5350000, "jordao batismo joao batista rio"],
-    ["⭐", "Belém — Natividade", 31.7042000, 35.2075000, "belem natal natividade manjedoura"],
-    ["🏠", "Nazaré", 32.6996000, 35.3035000, "nazare anunciaçao jesus infancia"],
-    ["🎺", "Jericó", 31.8700000, 35.4440000, "jerico muralhas jordao cidade"],
-    ["🏜", "Massada", 31.3156000, 35.3537000, "massada herodes fortaleza deserto"],
-    ["⛰", "Monte Sinai", 28.5392000, 33.9755000, "sinai horebe moises dez mandamentos"],
-    ["🐪", "Pirâmides de Gizé", 29.9792000, 31.1342000, "egito gize piramides farao"],
-    ["🏛", "Areópago (Atenas)", 37.9715000, 23.7267000, "atenas areopago paulo grecia"],
-    ["🏟", "Coliseu (Roma)", 41.8902000, 12.4922000, "roma coliseu paulo imperio"],
-    ["🏺", "Éfeso", 37.9397000, 27.3417000, "efeso artemis paulo asia menor"],
-    ["🏝", "Patmos", 37.3094000, 26.5470000, "patmos apocalipse joao ilha"],
-    ["⛪", "Corinto", 37.9060000, 22.8790000, "corinto paulo grecia igreja"]
+    /* emoji, nome, SÍTIO (lat,lon — mapa/satélite/miniatura), RUA (lat,lon —
+       onde o carro do Google passou: é daqui que se ANDA com as setas do
+       chão) e apelidos de busca. A RUA foi medida com o Mapbox: a via mais
+       próxima de cada sítio. */
+    ["🧱", "Muro das Lamentações", 31.7767469, 35.2344484, 31.7755560, 35.2339026, "jerusalem muro lamentacoes western wall"],
+    ["✝️", "Santo Sepulcro", 31.7784463, 35.2297723, 31.7782858, 35.2297847, "jerusalem santo sepulcro holy sepulchre cruz"],
+    ["🚶", "Via Dolorosa", 31.7795250, 35.2327100, 31.7794202, 35.2326199, "jerusalem via dolorosa caminho cruz"],
+    ["🕊", "Getsêmani", 31.7794160, 35.2397330, 31.7795078, 35.2400555, "jerusalem getsemani horto oliveiras"],
+    ["🏔", "Monte das Oliveiras", 31.7784000, 35.2437000, 31.7784377, 35.2438109, "jerusalem monte oliveiras ascensao"],
+    ["🌊", "Mar da Galileia", 32.8808000, 35.5750000, 32.8806594, 35.5743836, "galileia tiberiades genesare mar"],
+    ["💧", "Rio Jordão (Qasr al-Yahud)", 31.8375000, 35.5350000, 31.8400098, 35.5348660, "jordao batismo joao batista rio"],
+    ["⭐", "Belém — Natividade", 31.7042000, 35.2075000, 31.7038698, 35.2072133, "belem natal natividade manjedoura"],
+    ["🏠", "Nazaré", 32.6996000, 35.3035000, 32.6992607, 35.3033363, "nazare anunciaçao jesus infancia"],
+    ["🎺", "Jericó", 31.8700000, 35.4440000, 31.8698453, 35.4445059, "jerico muralhas jordao cidade"],
+    ["🏜", "Massada", 31.3156000, 35.3537000, 31.3177077, 35.3476484, "massada herodes fortaleza deserto"],
+    ["⛰", "Monte Sinai", 28.5392000, 33.9755000, 28.5391504, 33.9753766, "sinai horebe moises dez mandamentos"],
+    ["🐪", "Pirâmides de Gizé", 29.9792000, 31.1342000, 29.9791975, 31.1327927, "egito gize piramides farao"],
+    ["🏛", "Areópago (Atenas)", 37.9715000, 23.7267000, 37.9717559, 23.7266518, "atenas areopago paulo grecia"],
+    ["🏟", "Coliseu (Roma)", 41.8902000, 12.4922000, 41.8911014, 12.4924177, "roma coliseu paulo imperio"],
+    ["🏺", "Éfeso", 37.9397000, 27.3417000, 37.9403837, 27.3406564, "efeso artemis paulo asia menor"],
+    ["🏝", "Patmos", 37.3094000, 26.5470000, 37.3096991, 26.5471467, "patmos apocalipse joao ilha"],
+    ["⛪", "Corinto", 37.9060000, 22.8790000, 37.9062576, 22.8782022, "corinto paulo grecia igreja"]
   ];
 
   /* Emblema do lugar (SVG no próprio dado): é o que fica no cartão quando a
@@ -737,7 +740,7 @@
     var notas = LUGARES_GOOGLE.map(function (lugar, i) {
       /* casa com o nome do lugar E com os apelidos: quem digita "Jerusalém"
          acha o Muro das Lamentações, o Santo Sepulcro e a Via Dolorosa */
-      var nome = semAcento(String(lugar[1]) + " " + String(lugar[4] || "")).toLowerCase();
+      var nome = semAcento(String(lugar[1]) + " " + String(lugar[6] || "")).toLowerCase();
       var nota = 0;
       palavras.forEach(function (p) { if (nome.indexOf(p) >= 0) nota += 1; });
       return { lugar: lugar, indice: i, nota: nota };
@@ -765,11 +768,13 @@
         midia: "gmap",
         thumb: desenhoDoLugar(lugar),
         original: desenhoDoLugar(lugar),
-        pagina: "https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=" + lugar[2] + "," + lugar[3],
+        pagina: "https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=" + lugar[4] + "," + lugar[5],
         largura: 0,
         altura: 0,
         coords: { lat: lugar[2], lon: lugar[3] },
-        gmap: { lat: lugar[2], lon: lugar[3], nome: lugar[1], emoji: lugar[0], indice: x.indice }
+        /* sitio = mapa/satélite; rua = onde se ANDA (o carro do Google passou) */
+        gmap: { lat: lugar[2], lon: lugar[3], ruaLat: lugar[4], ruaLon: lugar[5],
+                nome: lugar[1], emoji: lugar[0], indice: x.indice }
       };
     });
   }
@@ -1363,7 +1368,8 @@
         if (!ruas.length) return false;
         api.openGallery(ruas.map(paraGaleria), pos, {
           eyebrow: "MÍDIA X • GOOGLE VIEW",
-          rua: { lat: item.gmap.lat, lon: item.gmap.lon, nome: item.titulo, emoji: item.gmap.emoji }
+          rua: { lat: item.gmap.ruaLat, lon: item.gmap.ruaLon, nome: item.titulo, emoji: item.gmap.emoji,
+                 sitio: { lat: item.gmap.lat, lon: item.gmap.lon } }
         });
         return true;
       }
