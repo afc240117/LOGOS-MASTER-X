@@ -76,7 +76,7 @@
   var MINIMO = 8;
   /* Quantos cartões entram por vez. O resto fica na reserva e o botão "Carregar
      mais" vai soltando — a grade cresce sem fim, a cada clique. */
-  var LOTE = 18;
+  var LOTE = 30;
 
   /* ---------- vocabulário: português → inglês (os acervos indexam em inglês) ---------- */
   var LUGARES = {
@@ -776,7 +776,7 @@
            entra na grade (era o cartão "só com texto") */
         estado.fase = "Conferindo as miniaturas…";
         desenhar();
-        return conferirMiniaturas(grade.slice(0, 40)).then(function (vivos) {
+        return conferirMiniaturas(grade.slice(0, 60)).then(function (vivos) {
           var perdidos = grade.length - vivos.length;
           if (vivos.length < MINIMO && !ultimoDegrau && vivos.length < grade.length) return tentar();
           estado.consultaBase = consulta;
@@ -831,7 +831,7 @@
         estado.semMais = true;
         return 0;
       }
-      return conferirMiniaturas(novos.slice(0, 40)).then(function (vivos) {
+      return conferirMiniaturas(novos.slice(0, 60)).then(function (vivos) {
         porNaReserva(vivos, consulta);
         return vivos.length;
       });
